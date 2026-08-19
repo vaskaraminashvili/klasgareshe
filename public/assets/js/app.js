@@ -23,6 +23,7 @@
  *   Auto-init Swiper rails ......................... line 167
  *     · [data-swiper-rail]      — content row (free-mode)
  *     · [data-swiper-rail-tabs] — filter chip row (tap-preserving)
+ *     · Re-init on livewire:navigated (wire:navigate)
  * ═══════════════════════════════════════════════════════════════════ */
 
 "use strict";
@@ -55,8 +56,8 @@ function toggleTheme() {
   else html.classList.remove("dark");
 })();
 
-// Sync icon visibility after DOM ready.
-document.addEventListener("DOMContentLoaded", () => {
+// Sync icon visibility after DOM ready and after wire:navigate.
+function syncThemeIcons() {
   const isDark = document.documentElement.classList.contains("dark");
   document
     .querySelectorAll(".theme-icon-moon")
@@ -64,7 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .querySelectorAll(".theme-icon-sun")
     .forEach((el) => (el.style.display = isDark ? "block" : "none"));
-});
+}
+
+document.addEventListener("DOMContentLoaded", syncThemeIcons);
+document.addEventListener("livewire:navigated", syncThemeIcons);
 
 window.toggleTheme = toggleTheme;
 
@@ -178,7 +182,7 @@ window.toggleTheme = toggleTheme;
 //
 // window.Swiper is exposed by the bundled index.js with `defer`, so we
 // wait for DOMContentLoaded before initializing — see NOTES.md
-// "Swiper timing".
+// "Swiper timing". Re-run after wire:navigate: body swap drops instances.
 (function () {
   const initRailSwipers = () => {
     if (!window.Swiper) return;
@@ -216,9 +220,21 @@ window.toggleTheme = toggleTheme;
         });
       });
   };
+
+  const destroyRailSwipers = () => {
+    document.querySelectorAll(".swiper").forEach((el) => {
+      if (el.swiper) el.swiper.destroy(true, true);
+    });
+  };
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initRailSwipers);
   } else {
     initRailSwipers();
   }
+
+  document.addEventListener("livewire:navigating", destroyRailSwipers);
+  document.addEventListener("livewire:navigated", () => {
+    requestAnimationFrame(initRailSwipers);
+  });
 })();

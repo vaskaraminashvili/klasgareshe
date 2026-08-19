@@ -14,16 +14,16 @@ new class extends Component
     <!-- =============== QUICK STATS RIBBON =============== -->
     <section class="px-5 mt-5 grid grid-cols-3 gap-2">
         <a href="streak.html" class="stat items-start hover:ring-primary transition">
-            <span class="stat-label flex items-center gap-1">🔥 Streak</span>
-            <span class="stat-value">7 <span class="text-xs font-bold text-muted">days</span></span>
+            <span class="stat-label flex items-center gap-1">🔥 {{ __('home.streak') }}</span>
+            <span class="stat-value">7 <span class="text-xs font-bold text-muted">{{ __('home.days') }}</span></span>
         </a>
         <a href="xp-progress.html" class="stat items-start hover:ring-primary transition">
-            <span class="stat-label flex items-center gap-1">⭐ XP</span>
+            <span class="stat-label flex items-center gap-1">⭐ {{ __('home.xp') }}</span>
             <span class="stat-value" id="xpStat" data-target="1240">0</span>
         </a>
         <a href="league.html" class="stat items-start hover:ring-primary transition">
-            <span class="stat-label flex items-center gap-1">🏆 League</span>
-            <span class="stat-value">Gold</span>
+            <span class="stat-label flex items-center gap-1">🏆 {{ __('home.league') }}</span>
+            <span class="stat-value">{{ __('home.gold_league') }}</span>
         </a>
     </section>
 
@@ -34,21 +34,21 @@ new class extends Component
             <span class="watermark-emoji" aria-hidden="true">🎯</span>
             <div class="relative flex items-center gap-2">
                 <span class="chip bg-white/20 border-0 text-white">
-                    <i class="ph-fill ph-sparkle"></i> TODAY'S MISSION
+                    <i class="ph-fill ph-sparkle"></i> {{ __('home.todays_mission') }}
                 </span>
                 <span class="chip bg-white/20 border-0 text-white ml-auto">
-                    <i class="ph-fill ph-clock"></i> 6h left
+                    <i class="ph-fill ph-clock"></i> {{ __('home.hours_left') }}
                 </span>
             </div>
-            <p class="h-display text-2xl mt-2 relative">Finish 3 lessons</p>
-            <p class="text-sm text-white relative">Earn <b>+120 XP</b>, a gift box & bonus badge.</p>
+            <p class="h-display text-2xl mt-2 relative">{{ __('home.finish_3_lessons') }}</p>
+            <p class="text-sm text-white relative">{{ __('home.earn_120_xp') }}</p>
             <div class="mt-3 flex items-center gap-2 relative">
                 <div class="progress on-gradient grow"><span class="w-66"></span></div>
-                <span class="text-xs font-extrabold">2 / 3</span>
+                <span class="text-xs font-extrabold">{{ __('home.progress_2_of_3') }}</span>
             </div>
             <div class="mt-3 flex items-center gap-2 relative">
-                <p class="cta-soft block">Continue <i class="ph-fill ph-arrow-right"></i></p>
-                <p class="chip bg-white/20 border-0 block text-white">+120 XP</p>
+                <p class="cta-soft block">{{ __('home.continue') }} <i class="ph-fill ph-arrow-right"></i></p>
+                <p class="chip bg-white/20 border-0 block text-white">{{ __('home.plus_120_xp') }}</p>
             </div>
         </a>
     </section>
@@ -58,18 +58,18 @@ new class extends Component
         <a href="lesson-continue.html" class="k-card p-4 relative overflow-hidden">
             <div class="flex items-center gap-2">
                 <div class="size-9 rounded-xl tile-mint grid place-items-center">➗</div>
-                <span class="text-xs font-extrabold text-mint-ink">CONTINUE</span>
+                <span class="text-xs font-extrabold text-mint-ink">{{ __('home.continue') }}</span>
             </div>
-            <p class="h-display mt-2">Counting 1–20</p>
-            <p class="text-xs text-muted">3 of 5 activities</p>
+            <p class="h-display mt-2">{{ __('home.counting_1_20') }}</p>
+            <p class="text-xs text-muted">{{ __('home.activities_progress') }}</p>
             <div class="progress progress-mint mt-2"><span class="w-72"></span></div>
         </a>
         <a href="streak.html" class="k-card p-4 relative overflow-hidden">
             <div class="flex items-center gap-2">
                 <div class="size-9 rounded-xl tile-sun grid place-items-center">🔥</div>
-                <span class="text-xs font-extrabold text-sun-ink">THIS WEEK</span>
+                <span class="text-xs font-extrabold text-sun-ink">{{ __('home.this_week') }}</span>
             </div>
-            <p class="h-display mt-2">5 / 7 days</p>
+            <p class="h-display mt-2">5 / 7 {{ __('home.days') }}</p>
             <div class="grid grid-cols-7 gap-1 mt-2" aria-label="Weekly streak" id="weekStreak">
                 <span class="streak-dot on opacity-0 transition-all duration-300">M</span>
                 <span class="streak-dot on opacity-0 transition-all duration-300">T</span>
@@ -85,36 +85,36 @@ new class extends Component
     <!-- =============== TODAY'S PLAN (new section) =============== -->
     <section class="px-5 mt-4">
         <div class="section-head">
-            <h2 class="h-display text-lg">Today's plan</h2>
-            <a href="daily-mission.html" class="link">View all</a>
+            <h2 class="h-display text-lg">{{ __('home.todays_plan') }}</h2>
+            <a href="daily-mission.html" class="link">{{ __('home.view_all') }}</a>
         </div>
         <div class="k-card p-0 overflow-hidden">
             <div class="flex items-center gap-3 p-3">
                 <div class="size-10 rounded-xl tile-mint grid place-items-center"><i
                         class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
                 <div class="grow">
-                    <p class="font-extrabold text-sm">Finish a lesson</p>
-                    <p class="text-xs text-muted">Counting to 20 · 5 min</p>
+                    <p class="font-extrabold text-sm">{{ __('home.finish_a_lesson') }}</p>
+                    <p class="text-xs text-muted">{{ __('home.counting_to_20_5min') }}</p>
                 </div>
-                <span class="chip chip-mint">+40 XP</span>
+                <span class="chip chip-mint">{{ __('home.plus_40_xp') }}</span>
             </div>
             <div class="flex items-center gap-3 p-3 border-t border-token">
                 <div class="size-10 rounded-xl tile-mint grid place-items-center"><i
                         class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
                 <div class="grow">
-                    <p class="font-extrabold text-sm">Play 1 mini-game</p>
-                    <p class="text-xs text-muted">Any category</p>
+                    <p class="font-extrabold text-sm">{{ __('home.play_1_minigame') }}</p>
+                    <p class="text-xs text-muted">{{ __('home.any_category') }}</p>
                 </div>
-                <span class="chip chip-mint">+40 XP</span>
+                <span class="chip chip-mint">{{ __('home.plus_40_xp') }}</span>
             </div>
             <a href="game-multiple-choice.html" class="flex items-center gap-3 p-3 border-t border-token">
                 <div class="size-10 rounded-xl tile-violet grid place-items-center">🎯</div>
                 <div class="grow">
-                    <p class="font-extrabold text-sm">Get 5 answers right</p>
-                    <p class="text-xs text-muted">3 / 5 — keep going!</p>
+                    <p class="font-extrabold text-sm">{{ __('home.get_5_answers_right') }}</p>
+                    <p class="text-xs text-muted">{{ __('home.progress_keep_going') }}</p>
                     <div class="progress mt-1"><span class="w-60"></span></div>
                 </div>
-                <span class="btn btn-primary h-9 min-h-0 px-4 text-sm">Play</span>
+                <span class="btn btn-primary h-9 min-h-0 px-4 text-sm">{{ __('home.play') }}</span>
             </a>
         </div>
     </section>
@@ -122,39 +122,39 @@ new class extends Component
     <!-- =============== EXPLORE SUBJECTS (Swiper) =============== -->
     <section class="mt-5">
         <div class="section-head px-5">
-            <h2 class="h-display text-lg">Explore subjects</h2>
-            <a href="learn-categories.html" class="link">See all</a>
+            <h2 class="h-display text-lg">{{ __('home.explore_subjects') }}</h2>
+            <a href="learn-categories.html" class="link">{{ __('home.see_all') }}</a>
         </div>
         <div class="swiper subjects-swiper" data-swiper-rail>
             <div class="swiper-wrapper">
                 <a href="learn-math.html" class="swiper-slide tile tile-violet">
-                    <span class="chip chip-on-tile text-violet-ink">24 lessons</span>
-                    <h3 class="mt-3">Math</h3>
-                    <p class="text-xs mt-1 text-violet-ink opacity-80">Numbers, shapes…</p>
+                    <span class="chip chip-on-tile text-violet-ink">{{ __('home.lessons_24') }}</span>
+                    <h3 class="mt-3">{{ __('home.math') }}</h3>
+                    <p class="text-xs mt-1 text-violet-ink opacity-80">{{ __('home.numbers_shapes') }}</p>
                     <span class="tile-emoji">➗</span>
                 </a>
                 <a href="learn-alphabet.html" class="swiper-slide tile tile-sun">
-                    <span class="chip chip-on-tile text-sun-ink">18 lessons</span>
-                    <h3 class="mt-3">Alphabet</h3>
-                    <p class="text-xs mt-1 text-sun-ink opacity-80">A–Z & phonics</p>
+                    <span class="chip chip-on-tile text-sun-ink">{{ __('home.lessons_18') }}</span>
+                    <h3 class="mt-3">{{ __('home.alphabet') }}</h3>
+                    <p class="text-xs mt-1 text-sun-ink opacity-80">{{ __('home.a_to_z_phonics') }}</p>
                     <span class="tile-emoji">🔤</span>
                 </a>
                 <a href="learn-animals.html" class="swiper-slide tile tile-mint">
-                    <span class="chip chip-on-tile text-mint-ink">14 lessons</span>
-                    <h3 class="mt-3">Animals</h3>
-                    <p class="text-xs mt-1 text-mint-ink opacity-80">Wildlife & habitats</p>
+                    <span class="chip chip-on-tile text-mint-ink">{{ __('home.lessons_14') }}</span>
+                    <h3 class="mt-3">{{ __('home.animals') }}</h3>
+                    <p class="text-xs mt-1 text-mint-ink opacity-80">{{ __('home.wildlife_habitats') }}</p>
                     <span class="tile-emoji">🦁</span>
                 </a>
                 <a href="learn-words.html" class="swiper-slide tile tile-coral">
-                    <span class="chip chip-on-tile text-coral-ink">20 lessons</span>
-                    <h3 class="mt-3">Words</h3>
-                    <p class="text-xs mt-1 text-coral-ink opacity-80">Read & spell</p>
+                    <span class="chip chip-on-tile text-coral-ink">{{ __('home.lessons_20') }}</span>
+                    <h3 class="mt-3">{{ __('home.words') }}</h3>
+                    <p class="text-xs mt-1 text-coral-ink opacity-80">{{ __('home.read_spell') }}</p>
                     <span class="tile-emoji">📚</span>
                 </a>
                 <a href="learn-knowledge.html" class="swiper-slide tile tile-sky">
-                    <span class="chip chip-on-tile text-sky-ink">12 lessons</span>
-                    <h3 class="mt-3">Knowledge</h3>
-                    <p class="text-xs mt-1 text-sky-ink opacity-80">World & science</p>
+                    <span class="chip chip-on-tile text-sky-ink">{{ __('home.lessons_12') }}</span>
+                    <h3 class="mt-3">{{ __('home.knowledge') }}</h3>
+                    <p class="text-xs mt-1 text-sky-ink opacity-80">{{ __('home.world_science') }}</p>
                     <span class="tile-emoji">🌍</span>
                 </a>
             </div>
@@ -164,8 +164,8 @@ new class extends Component
     <!-- =============== FEATURED GAMES =============== -->
     <section class="px-5 mt-4">
         <div class="section-head">
-            <h2 class="h-display text-lg">Featured games</h2>
-            <a href="learn-categories.html" class="link">More</a>
+            <h2 class="h-display text-lg">{{ __('home.featured_games') }}</h2>
+            <a href="learn-categories.html" class="link">{{ __('home.more') }}</a>
         </div>
 
         <a href="game-multiple-choice.html" class="k-card-lg card-hero-success relative overflow-hidden block">
@@ -173,24 +173,24 @@ new class extends Component
             <div class="relative flex items-center gap-3">
                 <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl">❓</div>
                 <div class="grow">
-                    <p class="text-xs uppercase tracking-wider font-extrabold">QUICK QUIZ</p>
-                    <p class="h-display text-xl">Beat yesterday's score</p>
-                    <p class="text-xs text-white mt-1">10 questions · ~2 min · earn up to 80 XP</p>
+                    <p class="text-xs uppercase tracking-wider font-extrabold">{{ __('home.quick_quiz') }}</p>
+                    <p class="h-display text-xl">{{ __('home.beat_yesterdays_score') }}</p>
+                    <p class="text-xs text-white mt-1">{{ __('home.quiz_description') }}</p>
                 </div>
-                <span class="cta-soft">Play</span>
+                <span class="cta-soft">{{ __('home.play') }}</span>
             </div>
         </a>
 
         <div class="grid grid-cols-2 gap-3 mt-3">
             <a href="game-word-search.html" class="k-card p-4">
                 <div class="size-10 rounded-xl tile-pink grid place-items-center mb-2">🔎</div>
-                <p class="font-extrabold text-sm">Word Search</p>
-                <p class="text-xs text-muted">5 words · easy</p>
+                <p class="font-extrabold text-sm">{{ __('home.word_search') }}</p>
+                <p class="text-xs text-muted">{{ __('home.word_search_desc') }}</p>
             </a>
             <a href="game-counting.html" class="k-card p-4">
                 <div class="size-10 rounded-xl tile-sky grid place-items-center mb-2">🔢</div>
-                <p class="font-extrabold text-sm">Counting fun</p>
-                <p class="text-xs text-muted">Add & subtract</p>
+                <p class="font-extrabold text-sm">{{ __('home.counting_fun') }}</p>
+                <p class="text-xs text-muted">{{ __('home.add_subtract') }}</p>
             </a>
         </div>
     </section>
@@ -198,30 +198,29 @@ new class extends Component
     <!-- =============== FRIENDS ACTIVITY (new) =============== -->
     <section class="px-5 mt-5">
         <div class="section-head">
-            <h2 class="h-display text-lg">Friends today</h2>
-            <a href="ranking-friends.html" class="link">Ranking</a>
+            <h2 class="h-display text-lg">{{ __('home.friends_today') }}</h2>
+            <a href="ranking-friends.html" class="link">{{ __('home.ranking') }}</a>
         </div>
         <div class="k-card p-0 overflow-hidden">
             <div class="flex items-center gap-3 p-3">
                 <div class="size-10 rounded-full tile-sun grid place-items-center text-xl">👦</div>
                 <div class="grow">
-                    <p class="font-extrabold text-sm">Leo finished <span class="text-primary-ink">Math Lv 9</span></p>
-                    <p class="text-xs text-muted">5 min ago · +80 XP</p>
+                    <p class="font-extrabold text-sm">{{ __('home.leo_finished_math') }}</p>
+                    <p class="text-xs text-muted">{{ __('home.minutes_ago_5') }} · {{ __('home.plus_80_xp') }}</p>
                 </div>
-                <span class="chip chip-sun">🔥 12</span>
+                <span class="chip chip-sun">{{ __('home.streak_count_12') }}</span>
             </div>
             <div class="flex items-center gap-3 p-3 border-t border-token">
                 <div class="size-10 rounded-full tile-mint grid place-items-center text-xl">🐰</div>
                 <div class="grow">
-                    <p class="font-extrabold text-sm">Ana earned <span class="text-primary-ink">Bookworm</span> badge
-                    </p>
-                    <p class="text-xs text-muted">1 h ago</p>
+                    <p class="font-extrabold text-sm">{{ __('home.ana_earned_badge') }}</p>
+                    <p class="text-xs text-muted">{{ __('home.hours_ago_1') }}</p>
                 </div>
-                <span class="chip chip-mint">NEW</span>
+                <span class="chip chip-mint">{{ __('home.new') }}</span>
             </div>
             <a href="ranking-friends.html"
                 class="flex items-center justify-center gap-2 p-3 border-t border-token text-sm font-extrabold text-primary-ink">
-                Beat your friends <i class="ph ph-arrow-right"></i>
+                {{ __('home.beat_your_friends') }} <i class="ph ph-arrow-right"></i>
             </a>
         </div>
     </section>
@@ -229,30 +228,30 @@ new class extends Component
     <!-- =============== RECENT ACHIEVEMENTS (Swiper) =============== -->
     <section class="px-5 mt-5">
         <div class="section-head">
-            <h2 class="h-display text-lg">Recent achievements</h2>
-            <a href="badges.html" class="link">See all</a>
+            <h2 class="h-display text-lg">{{ __('home.recent_achievements') }}</h2>
+            <a href="badges.html" class="link">{{ __('home.see_all') }}</a>
         </div>
         <div class="swiper achievements-swiper" data-swiper-rail>
             <div class="swiper-wrapper">
                 <a href="badge-unlock.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
                     <span class="badge-medal">🏆</span>
-                    <p class="text-xs font-extrabold">First Win</p>
-                    <span class="chip chip-mint">NEW</span>
+                    <p class="text-xs font-extrabold">{{ __('home.first_win') }}</p>
+                    <span class="chip chip-mint">{{ __('home.new') }}</span>
                 </a>
                 <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
                     <span class="badge-medal silver">📚</span>
-                    <p class="text-xs font-extrabold">Bookworm</p>
-                    <p class="text-[11px] text-muted">Yesterday</p>
+                    <p class="text-xs font-extrabold">{{ __('home.bookworm') }}</p>
+                    <p class="text-[11px] text-muted">{{ __('home.yesterday') }}</p>
                 </a>
                 <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
                     <span class="badge-medal bronze">🔥</span>
-                    <p class="text-xs font-extrabold">On Fire</p>
-                    <p class="text-[11px] text-muted">7-day streak</p>
+                    <p class="text-xs font-extrabold">{{ __('home.on_fire') }}</p>
+                    <p class="text-[11px] text-muted">{{ __('home.seven_day_streak') }}</p>
                 </a>
                 <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2 locked">
                     <span class="badge-medal">🔒</span>
-                    <p class="text-xs font-extrabold">Math Pro</p>
-                    <p class="text-[11px] text-muted">20 lessons</p>
+                    <p class="text-xs font-extrabold">{{ __('home.math_pro') }}</p>
+                    <p class="text-[11px] text-muted">{{ __('home.lessons_20') }}</p>
                 </a>
             </div>
         </div>
@@ -263,11 +262,10 @@ new class extends Component
         <div class="k-card parent-note flex items-start gap-3">
             <div class="size-10 rounded-xl grid place-items-center text-xl bg-white/60 dark:bg-white/10">👨‍👩‍👧</div>
             <div class="grow">
-                <p class="font-extrabold text-sm text-ink">Parent tip</p>
-                <p class="text-xs text-muted mt-0.5">Luna learns best in the evening. 10 min after dinner builds strong
-                    habits.</p>
+                <p class="font-extrabold text-sm text-ink">{{ __('home.parent_tip') }}</p>
+                <p class="text-xs text-muted mt-0.5">{{ __('home.parent_tip_text') }}</p>
             </div>
-            <a href="settings.html" class="chip chip-primary">Report</a>
+            <a href="settings.html" class="chip chip-primary">{{ __('home.report') }}</a>
         </div>
     </section>
 
@@ -278,8 +276,8 @@ new class extends Component
                     class="ph-fill ph-download-simple"></i>
             </div>
             <div class="grow">
-                <p class="font-extrabold text-sm">Install Kidzio</p>
-                <p class="text-xs text-muted">Add to Home Screen · works offline</p>
+                <p class="font-extrabold text-sm">{{ __('home.install_kidzio') }}</p>
+                <p class="text-xs text-muted">{{ __('home.install_desc') }}</p>
             </div>
             <i class="ph ph-caret-right text-xl"></i>
         </button>
@@ -292,26 +290,28 @@ new class extends Component
         aria-labelledby="searchTitle">
         <button type="button" id="searchBackdrop"
             class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300"
-            aria-label="Close"></button>
+            aria-label="{{ __('home.close') }}"></button>
         <div id="searchPanel"
             class="absolute inset-x-0 top-0 bottom-0 mx-auto max-w-[430px] bg-surface translate-y-full transition-transform duration-300 ease-out flex flex-col">
             <header class="appbar safe-top">
-                <button type="button" id="searchClose" class="icon-btn" aria-label="Close"><i
+                <button type="button" id="searchClose" class="icon-btn" aria-label="{{ __('home.close') }}"><i
                         class="ph ph-caret-left text-xl"></i></button>
                 <div class="grow">
-                    <p class="text-xs text-muted">Find anything</p>
-                    <h2 id="searchTitle" class="h-display text-lg leading-tight">Search</h2>
+                    <p class="text-xs text-muted">{{ __('home.find_anything') }}</p>
+                    <h2 id="searchTitle" class="h-display text-lg leading-tight">{{ __('home.search') }}</h2>
                 </div>
             </header>
 
             <section class="px-5">
                 <div class="input-wrap">
                     <i class="ph ph-magnifying-glass i-left"></i>
-                    <input id="homeSearch" class="input has-left" placeholder="Search subjects, games, lessons…"
-                        aria-label="Search" autocomplete="off" />
-                    <button id="clearBtn" type="button" class="i-right hidden" aria-label="Clear search"><i
+                    <input id="homeSearch" class="input has-left" placeholder="{{ __('home.search_placeholder') }}"
+                        aria-label="{{ __('home.search_label') }}" autocomplete="off" />
+                    <button id="clearBtn" type="button" class="i-right hidden"
+                        aria-label="{{ __('home.clear_search') }}"><i
                             class="ph ph-x-circle text-muted text-xl"></i></button>
-                    <button id="micBtn" type="button" class="i-right" aria-label="Voice search"><i
+                    <button id="micBtn" type="button" class="i-right"
+                        aria-label="{{ __('home.voice_search') }}"><i
                             class="ph ph-microphone text-xl text-muted"></i></button>
                 </div>
             </section>
@@ -319,7 +319,7 @@ new class extends Component
             <!-- Suggestions (shown when query is empty) -->
             <div id="searchSuggest" class="overflow-y-auto grow">
                 <section class="px-5 mt-4">
-                    <p class="section-label">Recent</p>
+                    <p class="section-label">{{ __('home.recent') }}</p>
                     <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
                         <button type="button" class="chip" data-recent>counting</button>
                         <button type="button" class="chip" data-recent>animals</button>
@@ -328,7 +328,7 @@ new class extends Component
                 </section>
 
                 <section class="px-5 mt-4">
-                    <p class="section-label">Popular right now</p>
+                    <p class="section-label">{{ __('home.popular_right_now') }}</p>
                     <div class="mt-2 flex flex-wrap gap-2">
                         <button type="button" class="chip" data-recent>alphabet</button>
                         <button type="button" class="chip" data-recent>spell</button>
@@ -339,23 +339,23 @@ new class extends Component
                 </section>
 
                 <section class="px-5 mt-5">
-                    <p class="section-label">Jump to</p>
+                    <p class="section-label">{{ __('home.jump_to') }}</p>
                     <div class="mt-2 grid grid-cols-2 gap-2">
                         <a href="learn-math.html" class="k-card p-3 flex items-center gap-2">
                             <div class="size-9 rounded-xl tile-violet grid place-items-center text-base">➗</div>
-                            <span class="font-extrabold text-sm text-ink">Math</span>
+                            <span class="font-extrabold text-sm text-ink">{{ __('home.math') }}</span>
                         </a>
                         <a href="learn-alphabet.html" class="k-card p-3 flex items-center gap-2">
                             <div class="size-9 rounded-xl tile-sun grid place-items-center text-base">🔤</div>
-                            <span class="font-extrabold text-sm text-ink">Alphabet</span>
+                            <span class="font-extrabold text-sm text-ink">{{ __('home.alphabet') }}</span>
                         </a>
                         <a href="learn-animals.html" class="k-card p-3 flex items-center gap-2">
                             <div class="size-9 rounded-xl tile-mint grid place-items-center text-base">🦁</div>
-                            <span class="font-extrabold text-sm text-ink">Animals</span>
+                            <span class="font-extrabold text-sm text-ink">{{ __('home.animals') }}</span>
                         </a>
                         <a href="learn-words.html" class="k-card p-3 flex items-center gap-2">
                             <div class="size-9 rounded-xl tile-coral grid place-items-center text-base">📚</div>
-                            <span class="font-extrabold text-sm text-ink">Words</span>
+                            <span class="font-extrabold text-sm text-ink">{{ __('home.words') }}</span>
                         </a>
                     </div>
                 </section>
@@ -366,7 +366,7 @@ new class extends Component
 
             <div class="px-5 pb-6 pt-3 safe-bottom">
                 <a href="learn-categories.html" class="btn btn-ghost w-full">
-                    <i class="ph ph-books"></i> Browse full library
+                    <i class="ph ph-books"></i> {{ __('home.browse_full_library') }}
                 </a>
             </div>
         </div>
@@ -376,7 +376,8 @@ new class extends Component
     <div id="notifSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true"
         aria-labelledby="notifTitle">
         <button type="button" data-sheet="notifSheet"
-            class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm" aria-label="Close"></button>
+            class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm"
+            aria-label="{{ __('home.close') }}"></button>
         <div
             class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom">
             <div class="flex justify-center pt-3">
@@ -386,14 +387,16 @@ new class extends Component
                 <div class="flex items-start gap-3">
                     <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl shrink-0">🔔</div>
                     <div class="grow min-w-0">
-                        <p id="notifTitle" class="h-display text-xl leading-tight text-ink">Notifications</p>
-                        <p class="text-xs text-muted mt-1"><span id="notifCount">3</span> new today</p>
+                        <p id="notifTitle" class="h-display text-xl leading-tight text-ink">
+                            {{ __('home.notifications') }}</p>
+                        <p class="text-xs text-muted mt-1">{{ __('home.new_today') }}</p>
                     </div>
                     <button type="button" id="markAllBtn" class="chip chip-primary shrink-0"
-                        aria-label="Mark all as read">
-                        <i class="ph ph-check"></i> Mark all
+                        aria-label="{{ __('home.mark_all') }}">
+                        <i class="ph ph-check"></i> {{ __('home.mark_all') }}
                     </button>
-                    <button type="button" class="icon-btn shrink-0" data-sheet="notifSheet" aria-label="Close">
+                    <button type="button" class="icon-btn shrink-0" data-sheet="notifSheet"
+                        aria-label="{{ __('home.close') }}">
                         <i class="ph ph-x"></i>
                     </button>
                 </div>
@@ -402,9 +405,10 @@ new class extends Component
                     <a href="streak.html" class="setting-row" data-notif>
                         <div class="setting-ico tile-sun"><i class="ph-fill ph-fire"></i></div>
                         <div class="grow min-w-0">
-                            <p class="setting-text font-extrabold text-sm text-ink">Streak at risk</p>
-                            <p class="text-[11px] text-muted">Your 7-day streak needs a lesson before midnight.</p>
-                            <p class="text-[10px] text-muted mt-0.5">Just now</p>
+                            <p class="setting-text font-extrabold text-sm text-ink">{{ __('home.streak_at_risk') }}
+                            </p>
+                            <p class="text-[11px] text-muted">{{ __('home.streak_at_risk_desc') }}</p>
+                            <p class="text-[10px] text-muted mt-0.5">{{ __('home.just_now') }}</p>
                         </div>
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
                             aria-label="Unread"></span>
@@ -412,9 +416,10 @@ new class extends Component
                     <a href="badges.html" class="setting-row" data-notif>
                         <div class="setting-ico tile-mint"><i class="ph-fill ph-medal"></i></div>
                         <div class="grow min-w-0">
-                            <p class="setting-text font-extrabold text-sm text-ink">Leo earned a new badge</p>
-                            <p class="text-[11px] text-muted">He just unlocked Math Pro — beat him?</p>
-                            <p class="text-[10px] text-muted mt-0.5">5 min ago</p>
+                            <p class="setting-text font-extrabold text-sm text-ink">
+                                {{ __('home.leo_earned_new_badge') }}</p>
+                            <p class="text-[11px] text-muted">{{ __('home.leo_badge_desc') }}</p>
+                            <p class="text-[10px] text-muted mt-0.5">{{ __('home.minutes_ago_5') }}</p>
                         </div>
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
                             aria-label="Unread"></span>
@@ -422,9 +427,10 @@ new class extends Component
                     <a href="rewards-dashboard.html" class="setting-row" data-notif>
                         <div class="setting-ico tile-violet"><i class="ph-fill ph-gift"></i></div>
                         <div class="grow min-w-0">
-                            <p class="setting-text font-extrabold text-sm text-ink">Daily gift ready</p>
-                            <p class="text-[11px] text-muted">Claim your mystery box — +40 XP inside.</p>
-                            <p class="text-[10px] text-muted mt-0.5">1 h ago</p>
+                            <p class="setting-text font-extrabold text-sm text-ink">{{ __('home.daily_gift_ready') }}
+                            </p>
+                            <p class="text-[11px] text-muted">{{ __('home.daily_gift_desc') }}</p>
+                            <p class="text-[10px] text-muted mt-0.5">{{ __('home.hours_ago_1') }}</p>
                         </div>
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
                             aria-label="Unread"></span>
@@ -432,23 +438,25 @@ new class extends Component
                     <a href="daily-mission.html" class="setting-row opacity-70" data-notif data-read>
                         <div class="setting-ico tile-sky"><i class="ph-fill ph-target"></i></div>
                         <div class="grow min-w-0">
-                            <p class="setting-text font-extrabold text-sm text-ink">Today's mission unlocked</p>
-                            <p class="text-[11px] text-muted">Finish 3 tasks to open the gift box.</p>
-                            <p class="text-[10px] text-muted mt-0.5">This morning</p>
+                            <p class="setting-text font-extrabold text-sm text-ink">
+                                {{ __('home.todays_mission_unlocked') }}</p>
+                            <p class="text-[11px] text-muted">{{ __('home.todays_mission_desc') }}</p>
+                            <p class="text-[10px] text-muted mt-0.5">{{ __('home.this_morning') }}</p>
                         </div>
                     </a>
                     <a href="league.html" class="setting-row opacity-70" data-notif data-read>
                         <div class="setting-ico tile-pink"><i class="ph-fill ph-trophy"></i></div>
                         <div class="grow min-w-0">
-                            <p class="setting-text font-extrabold text-sm text-ink">Promoted to Gold league</p>
-                            <p class="text-[11px] text-muted">Top 10 this week — keep climbing!</p>
-                            <p class="text-[10px] text-muted mt-0.5">Yesterday</p>
+                            <p class="setting-text font-extrabold text-sm text-ink">{{ __('home.promoted_to_gold') }}
+                            </p>
+                            <p class="text-[11px] text-muted">{{ __('home.gold_league_desc') }}</p>
+                            <p class="text-[10px] text-muted mt-0.5">{{ __('home.yesterday') }}</p>
                         </div>
                     </a>
                 </div>
 
-                <a href="settings.html" class="btn btn-ghost w-full mt-4"><i class="ph ph-gear"></i> Notification
-                    settings</a>
+                <a href="settings.html" class="btn btn-ghost w-full mt-4"><i class="ph ph-gear"></i>
+                    {{ __('home.notification_settings') }}</a>
             </div>
         </div>
     </div>
