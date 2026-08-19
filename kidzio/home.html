@@ -2,484 +2,521 @@
 <html lang="en">
 
 <!-- Mirrored from kidzio-three.vercel.app/home.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:12 GMT -->
-<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>Home · Kidzio</title>
-<meta name="theme-color" content="#FFF8F1"/>
-<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
-<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Home · Kidzio</title>
+  <meta name="theme-color" content="#FFF8F1" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/images/icon.png" />
 
-    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
-    <script>
-      (function () {
-        var saved = localStorage.getItem('theme');
-        var theme = saved ||
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        if (theme === 'dark') document.documentElement.classList.add('dark');
-        else document.documentElement.classList.remove('dark');
-        var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
-      })();
-    </script>
-  <link href="assets/css/index.css" rel="stylesheet"></head>
+  <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('theme');
+      var theme = saved ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      if (theme === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+    })();
+  </script>
+  <link href="assets/css/index.css" rel="stylesheet">
+</head>
+
 <body>
-<main class="device-frame min-h-screen flex flex-col">
+  <main class="device-frame min-h-screen flex flex-col">
 
-  <!-- =============== TOP APPBAR =============== -->
-  <header class="px-5 pt-4 safe-top flex items-center gap-3">
-    <a href="profile.html" class="size-11 rounded-2xl grid place-items-center text-2xl tile-sun relative" aria-label="Open profile">
-      🐻
-      <span class="absolute -bottom-1 -right-1 size-4 rounded-full bg-[var(--color-k-mint)] border-2 border-[var(--color-k-surface)]" aria-hidden="true"></span>
-    </a>
-    <div class="grow leading-tight">
-      <p class="text-xs text-muted flex items-center gap-1"><span class="live-dot"> </span><span></span> <span id="greetLine">Online · let's learn</span></p>
-      <p class="h-display text-lg">Hi, <span id="kidName">Luna</span>!</p>
-    </div>
-    <button id="searchIconBtn" type="button" class="icon-btn" aria-label="Search"><i class="ph ph-magnifying-glass text-xl"></i></button>
-    <button id="bellBtn" type="button" class="icon-btn relative" data-sheet="notifSheet" aria-haspopup="dialog" aria-controls="notifSheet" aria-label="Notifications">
-      <i class="ph ph-bell text-xl"></i>
-      <span id="bellBadge" class="absolute -top-1 -right-1 size-5 rounded-full bg-[var(--color-k-coral)] text-white text-[10px] font-extrabold grid place-items-center">3</span>
-    </button>
-    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">
-      <i class="ph ph-moon text-xl"></i>
-    </button>
-  </header>
-
-  <!-- =============== QUICK STATS RIBBON =============== -->
-  <section class="px-5 mt-5 grid grid-cols-3 gap-2">
-    <a href="streak.html" class="stat items-start hover:ring-primary transition">
-      <span class="stat-label flex items-center gap-1">🔥 Streak</span>
-      <span class="stat-value">7 <span class="text-xs font-bold text-muted">days</span></span>
-    </a>
-    <a href="xp-progress.html" class="stat items-start hover:ring-primary transition">
-      <span class="stat-label flex items-center gap-1">⭐ XP</span>
-      <span class="stat-value" id="xpStat" data-target="1240">0</span>
-    </a>
-    <a href="league.html" class="stat items-start hover:ring-primary transition">
-      <span class="stat-label flex items-center gap-1">🏆 League</span>
-      <span class="stat-value">Gold</span>
-    </a>
-  </section>
-
-  <!-- =============== DAILY MISSION HERO =============== -->
-  <section class="px-5 mt-4">
-    <a href="daily-mission.html" class="block k-card-lg card-hero-primary relative overflow-hidden focus:outline-none">
-      <span class="watermark-emoji" aria-hidden="true">🎯</span>
-      <div class="relative flex items-center gap-2">
-        <span class="chip bg-white/20 border-0 text-white">
-          <i class="ph-fill ph-sparkle"></i> TODAY'S MISSION
-        </span>
-        <span class="chip bg-white/20 border-0 text-white ml-auto">
-          <i class="ph-fill ph-clock"></i> 6h left
-        </span>
-      </div>
-      <p class="h-display text-2xl mt-2 relative">Finish 3 lessons</p>
-      <p class="text-sm text-white relative">Earn <b>+120 XP</b>, a gift box & bonus badge.</p>
-      <div class="mt-3 flex items-center gap-2 relative">
-        <div class="progress on-gradient grow"><span class="w-66"></span></div>
-        <span class="text-xs font-extrabold">2 / 3</span>
-      </div>
-      <div class="mt-3 flex items-center gap-2 relative">
-        <p class="cta-soft block">Continue <i class="ph-fill ph-arrow-right"></i></p>
-        <p class="chip bg-white/20 border-0 block text-white">+120 XP</p>
-      </div>
-    </a>
-  </section>
-
-  <!-- =============== CONTINUE + WEEKLY STREAK =============== -->
-  <section class="px-5 mt-4 grid grid-cols-2 gap-3">
-    <a href="lesson-continue.html" class="k-card p-4 relative overflow-hidden">
-      <div class="flex items-center gap-2">
-        <div class="size-9 rounded-xl tile-mint grid place-items-center">➗</div>
-        <span class="text-xs font-extrabold text-mint-ink">CONTINUE</span>
-      </div>
-      <p class="h-display mt-2">Counting 1–20</p>
-      <p class="text-xs text-muted">3 of 5 activities</p>
-      <div class="progress progress-mint mt-2"><span class="w-72"></span></div>
-    </a>
-    <a href="streak.html" class="k-card p-4 relative overflow-hidden">
-      <div class="flex items-center gap-2">
-        <div class="size-9 rounded-xl tile-sun grid place-items-center">🔥</div>
-        <span class="text-xs font-extrabold text-sun-ink">THIS WEEK</span>
-      </div>
-      <p class="h-display mt-2">5 / 7 days</p>
-      <div class="grid grid-cols-7 gap-1 mt-2" aria-label="Weekly streak" id="weekStreak">
-        <span class="streak-dot on opacity-0 transition-all duration-300">M</span>
-        <span class="streak-dot on opacity-0 transition-all duration-300">T</span>
-        <span class="streak-dot on opacity-0 transition-all duration-300">W</span>
-        <span class="streak-dot on opacity-0 transition-all duration-300">T</span>
-        <span class="streak-dot on today opacity-0 transition-all duration-300">F</span>
-        <span class="streak-dot opacity-0 transition-all duration-300">S</span>
-        <span class="streak-dot opacity-0 transition-all duration-300">S</span>
-      </div>
-    </a>
-  </section>
-
-  <!-- =============== TODAY'S PLAN (new section) =============== -->
-  <section class="px-5 mt-4">
-    <div class="section-head">
-      <h2 class="h-display text-lg">Today's plan</h2>
-      <a href="daily-mission.html" class="link">View all</a>
-    </div>
-    <div class="k-card p-0 overflow-hidden">
-      <div class="flex items-center gap-3 p-3">
-        <div class="size-10 rounded-xl tile-mint grid place-items-center"><i class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
-        <div class="grow">
-          <p class="font-extrabold text-sm">Finish a lesson</p>
-          <p class="text-xs text-muted">Counting to 20 · 5 min</p>
-        </div>
-        <span class="chip chip-mint">+40 XP</span>
-      </div>
-      <div class="flex items-center gap-3 p-3 border-t border-token">
-        <div class="size-10 rounded-xl tile-mint grid place-items-center"><i class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
-        <div class="grow">
-          <p class="font-extrabold text-sm">Play 1 mini-game</p>
-          <p class="text-xs text-muted">Any category</p>
-        </div>
-        <span class="chip chip-mint">+40 XP</span>
-      </div>
-      <a href="game-multiple-choice.html" class="flex items-center gap-3 p-3 border-t border-token">
-        <div class="size-10 rounded-xl tile-violet grid place-items-center">🎯</div>
-        <div class="grow">
-          <p class="font-extrabold text-sm">Get 5 answers right</p>
-          <p class="text-xs text-muted">3 / 5 — keep going!</p>
-          <div class="progress mt-1"><span class="w-60"></span></div>
-        </div>
-        <span class="btn btn-primary h-9 min-h-0 px-4 text-sm">Play</span>
+    <!-- =============== TOP APPBAR =============== -->
+    <header class="px-5 pt-4 safe-top flex items-center gap-3">
+      <a href="profile.html" class="size-11 rounded-2xl grid place-items-center text-2xl tile-sun relative"
+        aria-label="Open profile">
+        🐻
+        <span
+          class="absolute -bottom-1 -right-1 size-4 rounded-full bg-[var(--color-k-mint)] border-2 border-[var(--color-k-surface)]"
+          aria-hidden="true"></span>
       </a>
-    </div>
-  </section>
-
-  <!-- =============== EXPLORE SUBJECTS (Swiper) =============== -->
-  <section class="mt-5">
-    <div class="section-head px-5">
-      <h2 class="h-display text-lg">Explore subjects</h2>
-      <a href="learn-categories.html" class="link">See all</a>
-    </div>
-    <div class="swiper subjects-swiper" data-swiper-rail>
-      <div class="swiper-wrapper">
-        <a href="learn-math.html" class="swiper-slide tile tile-violet">
-          <span class="chip chip-on-tile text-violet-ink">24 lessons</span>
-          <h3 class="mt-3">Math</h3>
-          <p class="text-xs mt-1 text-violet-ink opacity-80">Numbers, shapes…</p>
-          <span class="tile-emoji">➗</span>
-        </a>
-        <a href="learn-alphabet.html" class="swiper-slide tile tile-sun">
-          <span class="chip chip-on-tile text-sun-ink">18 lessons</span>
-          <h3 class="mt-3">Alphabet</h3>
-          <p class="text-xs mt-1 text-sun-ink opacity-80">A–Z & phonics</p>
-          <span class="tile-emoji">🔤</span>
-        </a>
-        <a href="learn-animals.html" class="swiper-slide tile tile-mint">
-          <span class="chip chip-on-tile text-mint-ink">14 lessons</span>
-          <h3 class="mt-3">Animals</h3>
-          <p class="text-xs mt-1 text-mint-ink opacity-80">Wildlife & habitats</p>
-          <span class="tile-emoji">🦁</span>
-        </a>
-        <a href="learn-words.html" class="swiper-slide tile tile-coral">
-          <span class="chip chip-on-tile text-coral-ink">20 lessons</span>
-          <h3 class="mt-3">Words</h3>
-          <p class="text-xs mt-1 text-coral-ink opacity-80">Read & spell</p>
-          <span class="tile-emoji">📚</span>
-        </a>
-        <a href="learn-knowledge.html" class="swiper-slide tile tile-sky">
-          <span class="chip chip-on-tile text-sky-ink">12 lessons</span>
-          <h3 class="mt-3">Knowledge</h3>
-          <p class="text-xs mt-1 text-sky-ink opacity-80">World & science</p>
-          <span class="tile-emoji">🌍</span>
-        </a>
+      <div class="grow leading-tight">
+        <p class="text-xs text-muted flex items-center gap-1"><span class="live-dot"> </span><span></span> <span
+            id="greetLine">Online · let's learn</span></p>
+        <p class="h-display text-lg">Hi, <span id="kidName">Luna</span>!</p>
       </div>
-    </div>
-  </section>
+      <button id="searchIconBtn" type="button" class="icon-btn" aria-label="Search"><i
+          class="ph ph-magnifying-glass text-xl"></i></button>
+      <button id="bellBtn" type="button" class="icon-btn relative" data-sheet="notifSheet" aria-haspopup="dialog"
+        aria-controls="notifSheet" aria-label="Notifications">
+        <i class="ph ph-bell text-xl"></i>
+        <span id="bellBadge"
+          class="absolute -top-1 -right-1 size-5 rounded-full bg-[var(--color-k-coral)] text-white text-[10px] font-extrabold grid place-items-center">3</span>
+      </button>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">
+        <i class="ph ph-moon text-xl"></i>
+      </button>
+    </header>
 
-  <!-- =============== FEATURED GAMES =============== -->
-  <section class="px-5 mt-4">
-    <div class="section-head">
-      <h2 class="h-display text-lg">Featured games</h2>
-      <a href="learn-categories.html" class="link">More</a>
-    </div>
-
-    <a href="game-multiple-choice.html" class="k-card-lg card-hero-success relative overflow-hidden block">
-      <span class="watermark-emoji" aria-hidden="true">❓</span>
-      <div class="relative flex items-center gap-3">
-        <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl">❓</div>
-        <div class="grow">
-          <p class="text-xs uppercase tracking-wider font-extrabold">QUICK QUIZ</p>
-          <p class="h-display text-xl">Beat yesterday's score</p>
-          <p class="text-xs text-white mt-1">10 questions · ~2 min · earn up to 80 XP</p>
-        </div>
-        <span class="cta-soft">Play</span>
-      </div>
-    </a>
-
-    <div class="grid grid-cols-2 gap-3 mt-3">
-      <a href="game-word-search.html" class="k-card p-4">
-        <div class="size-10 rounded-xl tile-pink grid place-items-center mb-2">🔎</div>
-        <p class="font-extrabold text-sm">Word Search</p>
-        <p class="text-xs text-muted">5 words · easy</p>
+    <!-- =============== QUICK STATS RIBBON =============== -->
+    <section class="px-5 mt-5 grid grid-cols-3 gap-2">
+      <a href="streak.html" class="stat items-start hover:ring-primary transition">
+        <span class="stat-label flex items-center gap-1">🔥 Streak</span>
+        <span class="stat-value">7 <span class="text-xs font-bold text-muted">days</span></span>
       </a>
-      <a href="game-counting.html" class="k-card p-4">
-        <div class="size-10 rounded-xl tile-sky grid place-items-center mb-2">🔢</div>
-        <p class="font-extrabold text-sm">Counting fun</p>
-        <p class="text-xs text-muted">Add & subtract</p>
+      <a href="xp-progress.html" class="stat items-start hover:ring-primary transition">
+        <span class="stat-label flex items-center gap-1">⭐ XP</span>
+        <span class="stat-value" id="xpStat" data-target="1240">0</span>
       </a>
-    </div>
-  </section>
-
-  <!-- =============== FRIENDS ACTIVITY (new) =============== -->
-  <section class="px-5 mt-5">
-    <div class="section-head">
-      <h2 class="h-display text-lg">Friends today</h2>
-      <a href="ranking-friends.html" class="link">Ranking</a>
-    </div>
-    <div class="k-card p-0 overflow-hidden">
-      <div class="flex items-center gap-3 p-3">
-        <div class="size-10 rounded-full tile-sun grid place-items-center text-xl">👦</div>
-        <div class="grow">
-          <p class="font-extrabold text-sm">Leo finished <span class="text-primary-ink">Math Lv 9</span></p>
-          <p class="text-xs text-muted">5 min ago · +80 XP</p>
-        </div>
-        <span class="chip chip-sun">🔥 12</span>
-      </div>
-      <div class="flex items-center gap-3 p-3 border-t border-token">
-        <div class="size-10 rounded-full tile-mint grid place-items-center text-xl">🐰</div>
-        <div class="grow">
-          <p class="font-extrabold text-sm">Ana earned <span class="text-primary-ink">Bookworm</span> badge</p>
-          <p class="text-xs text-muted">1 h ago</p>
-        </div>
-        <span class="chip chip-mint">NEW</span>
-      </div>
-      <a href="ranking-friends.html" class="flex items-center justify-center gap-2 p-3 border-t border-token text-sm font-extrabold text-primary-ink">
-        Beat your friends <i class="ph ph-arrow-right"></i>
+      <a href="league.html" class="stat items-start hover:ring-primary transition">
+        <span class="stat-label flex items-center gap-1">🏆 League</span>
+        <span class="stat-value">Gold</span>
       </a>
-    </div>
-  </section>
+    </section>
 
-  <!-- =============== RECENT ACHIEVEMENTS (Swiper) =============== -->
-  <section class="px-5 mt-5">
-    <div class="section-head">
-      <h2 class="h-display text-lg">Recent achievements</h2>
-      <a href="badges.html" class="link">See all</a>
-    </div>
-    <div class="swiper achievements-swiper" data-swiper-rail>
-      <div class="swiper-wrapper">
-        <a href="badge-unlock.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
-          <span class="badge-medal">🏆</span>
-          <p class="text-xs font-extrabold">First Win</p>
+    <!-- =============== DAILY MISSION HERO =============== -->
+    <section class="px-5 mt-4">
+      <a href="daily-mission.html"
+        class="block k-card-lg card-hero-primary relative overflow-hidden focus:outline-none">
+        <span class="watermark-emoji" aria-hidden="true">🎯</span>
+        <div class="relative flex items-center gap-2">
+          <span class="chip bg-white/20 border-0 text-white">
+            <i class="ph-fill ph-sparkle"></i> TODAY'S MISSION
+          </span>
+          <span class="chip bg-white/20 border-0 text-white ml-auto">
+            <i class="ph-fill ph-clock"></i> 6h left
+          </span>
+        </div>
+        <p class="h-display text-2xl mt-2 relative">Finish 3 lessons</p>
+        <p class="text-sm text-white relative">Earn <b>+120 XP</b>, a gift box & bonus badge.</p>
+        <div class="mt-3 flex items-center gap-2 relative">
+          <div class="progress on-gradient grow"><span class="w-66"></span></div>
+          <span class="text-xs font-extrabold">2 / 3</span>
+        </div>
+        <div class="mt-3 flex items-center gap-2 relative">
+          <p class="cta-soft block">Continue <i class="ph-fill ph-arrow-right"></i></p>
+          <p class="chip bg-white/20 border-0 block text-white">+120 XP</p>
+        </div>
+      </a>
+    </section>
+
+    <!-- =============== CONTINUE + WEEKLY STREAK =============== -->
+    <section class="px-5 mt-4 grid grid-cols-2 gap-3">
+      <a href="lesson-continue.html" class="k-card p-4 relative overflow-hidden">
+        <div class="flex items-center gap-2">
+          <div class="size-9 rounded-xl tile-mint grid place-items-center">➗</div>
+          <span class="text-xs font-extrabold text-mint-ink">CONTINUE</span>
+        </div>
+        <p class="h-display mt-2">Counting 1–20</p>
+        <p class="text-xs text-muted">3 of 5 activities</p>
+        <div class="progress progress-mint mt-2"><span class="w-72"></span></div>
+      </a>
+      <a href="streak.html" class="k-card p-4 relative overflow-hidden">
+        <div class="flex items-center gap-2">
+          <div class="size-9 rounded-xl tile-sun grid place-items-center">🔥</div>
+          <span class="text-xs font-extrabold text-sun-ink">THIS WEEK</span>
+        </div>
+        <p class="h-display mt-2">5 / 7 days</p>
+        <div class="grid grid-cols-7 gap-1 mt-2" aria-label="Weekly streak" id="weekStreak">
+          <span class="streak-dot on opacity-0 transition-all duration-300">M</span>
+          <span class="streak-dot on opacity-0 transition-all duration-300">T</span>
+          <span class="streak-dot on opacity-0 transition-all duration-300">W</span>
+          <span class="streak-dot on opacity-0 transition-all duration-300">T</span>
+          <span class="streak-dot on today opacity-0 transition-all duration-300">F</span>
+          <span class="streak-dot opacity-0 transition-all duration-300">S</span>
+          <span class="streak-dot opacity-0 transition-all duration-300">S</span>
+        </div>
+      </a>
+    </section>
+
+    <!-- =============== TODAY'S PLAN (new section) =============== -->
+    <section class="px-5 mt-4">
+      <div class="section-head">
+        <h2 class="h-display text-lg">Today's plan</h2>
+        <a href="daily-mission.html" class="link">View all</a>
+      </div>
+      <div class="k-card p-0 overflow-hidden">
+        <div class="flex items-center gap-3 p-3">
+          <div class="size-10 rounded-xl tile-mint grid place-items-center"><i
+              class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
+          <div class="grow">
+            <p class="font-extrabold text-sm">Finish a lesson</p>
+            <p class="text-xs text-muted">Counting to 20 · 5 min</p>
+          </div>
+          <span class="chip chip-mint">+40 XP</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 border-t border-token">
+          <div class="size-10 rounded-xl tile-mint grid place-items-center"><i
+              class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
+          <div class="grow">
+            <p class="font-extrabold text-sm">Play 1 mini-game</p>
+            <p class="text-xs text-muted">Any category</p>
+          </div>
+          <span class="chip chip-mint">+40 XP</span>
+        </div>
+        <a href="game-multiple-choice.html" class="flex items-center gap-3 p-3 border-t border-token">
+          <div class="size-10 rounded-xl tile-violet grid place-items-center">🎯</div>
+          <div class="grow">
+            <p class="font-extrabold text-sm">Get 5 answers right</p>
+            <p class="text-xs text-muted">3 / 5 — keep going!</p>
+            <div class="progress mt-1"><span class="w-60"></span></div>
+          </div>
+          <span class="btn btn-primary h-9 min-h-0 px-4 text-sm">Play</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =============== EXPLORE SUBJECTS (Swiper) =============== -->
+    <section class="mt-5">
+      <div class="section-head px-5">
+        <h2 class="h-display text-lg">Explore subjects</h2>
+        <a href="learn-categories.html" class="link">See all</a>
+      </div>
+      <div class="swiper subjects-swiper" data-swiper-rail>
+        <div class="swiper-wrapper">
+          <a href="learn-math.html" class="swiper-slide tile tile-violet">
+            <span class="chip chip-on-tile text-violet-ink">24 lessons</span>
+            <h3 class="mt-3">Math</h3>
+            <p class="text-xs mt-1 text-violet-ink opacity-80">Numbers, shapes…</p>
+            <span class="tile-emoji">➗</span>
+          </a>
+          <a href="learn-alphabet.html" class="swiper-slide tile tile-sun">
+            <span class="chip chip-on-tile text-sun-ink">18 lessons</span>
+            <h3 class="mt-3">Alphabet</h3>
+            <p class="text-xs mt-1 text-sun-ink opacity-80">A–Z & phonics</p>
+            <span class="tile-emoji">🔤</span>
+          </a>
+          <a href="learn-animals.html" class="swiper-slide tile tile-mint">
+            <span class="chip chip-on-tile text-mint-ink">14 lessons</span>
+            <h3 class="mt-3">Animals</h3>
+            <p class="text-xs mt-1 text-mint-ink opacity-80">Wildlife & habitats</p>
+            <span class="tile-emoji">🦁</span>
+          </a>
+          <a href="learn-words.html" class="swiper-slide tile tile-coral">
+            <span class="chip chip-on-tile text-coral-ink">20 lessons</span>
+            <h3 class="mt-3">Words</h3>
+            <p class="text-xs mt-1 text-coral-ink opacity-80">Read & spell</p>
+            <span class="tile-emoji">📚</span>
+          </a>
+          <a href="learn-knowledge.html" class="swiper-slide tile tile-sky">
+            <span class="chip chip-on-tile text-sky-ink">12 lessons</span>
+            <h3 class="mt-3">Knowledge</h3>
+            <p class="text-xs mt-1 text-sky-ink opacity-80">World & science</p>
+            <span class="tile-emoji">🌍</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== FEATURED GAMES =============== -->
+    <section class="px-5 mt-4">
+      <div class="section-head">
+        <h2 class="h-display text-lg">Featured games</h2>
+        <a href="learn-categories.html" class="link">More</a>
+      </div>
+
+      <a href="game-multiple-choice.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+        <span class="watermark-emoji" aria-hidden="true">❓</span>
+        <div class="relative flex items-center gap-3">
+          <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl">❓</div>
+          <div class="grow">
+            <p class="text-xs uppercase tracking-wider font-extrabold">QUICK QUIZ</p>
+            <p class="h-display text-xl">Beat yesterday's score</p>
+            <p class="text-xs text-white mt-1">10 questions · ~2 min · earn up to 80 XP</p>
+          </div>
+          <span class="cta-soft">Play</span>
+        </div>
+      </a>
+
+      <div class="grid grid-cols-2 gap-3 mt-3">
+        <a href="game-word-search.html" class="k-card p-4">
+          <div class="size-10 rounded-xl tile-pink grid place-items-center mb-2">🔎</div>
+          <p class="font-extrabold text-sm">Word Search</p>
+          <p class="text-xs text-muted">5 words · easy</p>
+        </a>
+        <a href="game-counting.html" class="k-card p-4">
+          <div class="size-10 rounded-xl tile-sky grid place-items-center mb-2">🔢</div>
+          <p class="font-extrabold text-sm">Counting fun</p>
+          <p class="text-xs text-muted">Add & subtract</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- =============== FRIENDS ACTIVITY (new) =============== -->
+    <section class="px-5 mt-5">
+      <div class="section-head">
+        <h2 class="h-display text-lg">Friends today</h2>
+        <a href="ranking-friends.html" class="link">Ranking</a>
+      </div>
+      <div class="k-card p-0 overflow-hidden">
+        <div class="flex items-center gap-3 p-3">
+          <div class="size-10 rounded-full tile-sun grid place-items-center text-xl">👦</div>
+          <div class="grow">
+            <p class="font-extrabold text-sm">Leo finished <span class="text-primary-ink">Math Lv 9</span></p>
+            <p class="text-xs text-muted">5 min ago · +80 XP</p>
+          </div>
+          <span class="chip chip-sun">🔥 12</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 border-t border-token">
+          <div class="size-10 rounded-full tile-mint grid place-items-center text-xl">🐰</div>
+          <div class="grow">
+            <p class="font-extrabold text-sm">Ana earned <span class="text-primary-ink">Bookworm</span> badge</p>
+            <p class="text-xs text-muted">1 h ago</p>
+          </div>
           <span class="chip chip-mint">NEW</span>
-        </a>
-        <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
-          <span class="badge-medal silver">📚</span>
-          <p class="text-xs font-extrabold">Bookworm</p>
-          <p class="text-[11px] text-muted">Yesterday</p>
-        </a>
-        <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
-          <span class="badge-medal bronze">🔥</span>
-          <p class="text-xs font-extrabold">On Fire</p>
-          <p class="text-[11px] text-muted">7-day streak</p>
-        </a>
-        <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2 locked">
-          <span class="badge-medal">🔒</span>
-          <p class="text-xs font-extrabold">Math Pro</p>
-          <p class="text-[11px] text-muted">20 lessons</p>
+        </div>
+        <a href="ranking-friends.html"
+          class="flex items-center justify-center gap-2 p-3 border-t border-token text-sm font-extrabold text-primary-ink">
+          Beat your friends <i class="ph ph-arrow-right"></i>
         </a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- =============== PARENT TIP (new, informative) =============== -->
-  <section class="px-5 mt-5">
-    <div class="k-card parent-note flex items-start gap-3">
-      <div class="size-10 rounded-xl grid place-items-center text-xl bg-white/60 dark:bg-white/10">👨‍👩‍👧</div>
-      <div class="grow">
-        <p class="font-extrabold text-sm text-ink">Parent tip</p>
-        <p class="text-xs text-muted mt-0.5">Luna learns best in the evening. 10 min after dinner builds strong habits.</p>
+    <!-- =============== RECENT ACHIEVEMENTS (Swiper) =============== -->
+    <section class="px-5 mt-5">
+      <div class="section-head">
+        <h2 class="h-display text-lg">Recent achievements</h2>
+        <a href="badges.html" class="link">See all</a>
       </div>
-      <a href="settings.html" class="chip chip-primary">Report</a>
-    </div>
-  </section>
-
-  <!-- =============== INSTALL PROMPT (only if available) =============== -->
-  <section class="px-5 mt-4 mb-5">
-    <button data-install class="w-full k-card flex items-center gap-3 text-left">
-      <div class="size-10 rounded-xl tile-violet grid place-items-center"><i class="ph-fill ph-download-simple"></i></div>
-      <div class="grow">
-        <p class="font-extrabold text-sm">Install Kidzio</p>
-        <p class="text-xs text-muted">Add to Home Screen · works offline</p>
+      <div class="swiper achievements-swiper" data-swiper-rail>
+        <div class="swiper-wrapper">
+          <a href="badge-unlock.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
+            <span class="badge-medal">🏆</span>
+            <p class="text-xs font-extrabold">First Win</p>
+            <span class="chip chip-mint">NEW</span>
+          </a>
+          <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
+            <span class="badge-medal silver">📚</span>
+            <p class="text-xs font-extrabold">Bookworm</p>
+            <p class="text-[11px] text-muted">Yesterday</p>
+          </a>
+          <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
+            <span class="badge-medal bronze">🔥</span>
+            <p class="text-xs font-extrabold">On Fire</p>
+            <p class="text-[11px] text-muted">7-day streak</p>
+          </a>
+          <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2 locked">
+            <span class="badge-medal">🔒</span>
+            <p class="text-xs font-extrabold">Math Pro</p>
+            <p class="text-[11px] text-muted">20 lessons</p>
+          </a>
+        </div>
       </div>
-      <i class="ph ph-caret-right text-xl"></i>
-    </button>
-  </section>
+    </section>
 
-  <!-- =============== TAB BAR =============== -->
-  <nav class="tabbar mt-auto" aria-label="Primary">
-    <div class="tabbar-inner">
-      <a class="tab active" href="home.html"><span class="tab-ico"><i class="ph-fill ph-house-simple text-xl"></i></span>Home</a>
-      <a class="tab" href="learn-categories.html"><span class="tab-ico"><i class="ph ph-books text-xl"></i></span>Learn</a>
-      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
-      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
-      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
-    </div>
-  </nav>
-
-  <!-- =============== SEARCH OVERLAY =============== -->
-  <div id="searchOverlay" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="searchTitle">
-    <button type="button" id="searchBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
-    <div id="searchPanel" class="absolute inset-x-0 top-0 bottom-0 mx-auto max-w-[430px] bg-surface translate-y-full transition-transform duration-300 ease-out flex flex-col">
-      <header class="appbar safe-top">
-        <button type="button" id="searchClose" class="icon-btn" aria-label="Close"><i class="ph ph-caret-left text-xl"></i></button>
+    <!-- =============== PARENT TIP (new, informative) =============== -->
+    <section class="px-5 mt-5">
+      <div class="k-card parent-note flex items-start gap-3">
+        <div class="size-10 rounded-xl grid place-items-center text-xl bg-white/60 dark:bg-white/10">👨‍👩‍👧</div>
         <div class="grow">
-          <p class="text-xs text-muted">Find anything</p>
-          <h2 id="searchTitle" class="h-display text-lg leading-tight">Search</h2>
+          <p class="font-extrabold text-sm text-ink">Parent tip</p>
+          <p class="text-xs text-muted mt-0.5">Luna learns best in the evening. 10 min after dinner builds strong
+            habits.</p>
         </div>
-      </header>
-
-      <section class="px-5">
-        <div class="input-wrap">
-          <i class="ph ph-magnifying-glass i-left"></i>
-          <input id="homeSearch" class="input has-left" placeholder="Search subjects, games, lessons…" aria-label="Search" autocomplete="off"/>
-          <button id="clearBtn" type="button" class="i-right hidden" aria-label="Clear search"><i class="ph ph-x-circle text-muted text-xl"></i></button>
-          <button id="micBtn" type="button" class="i-right" aria-label="Voice search"><i class="ph ph-microphone text-xl text-muted"></i></button>
-        </div>
-      </section>
-
-      <!-- Suggestions (shown when query is empty) -->
-      <div id="searchSuggest" class="overflow-y-auto grow">
-        <section class="px-5 mt-4">
-          <p class="section-label">Recent</p>
-          <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
-            <button type="button" class="chip" data-recent>counting</button>
-            <button type="button" class="chip" data-recent>animals</button>
-            <button type="button" class="chip" data-recent>quiz</button>
-          </div>
-        </section>
-
-        <section class="px-5 mt-4">
-          <p class="section-label">Popular right now</p>
-          <div class="mt-2 flex flex-wrap gap-2">
-            <button type="button" class="chip" data-recent>alphabet</button>
-            <button type="button" class="chip" data-recent>spell</button>
-            <button type="button" class="chip" data-recent>space</button>
-            <button type="button" class="chip" data-recent>shapes</button>
-            <button type="button" class="chip" data-recent>match</button>
-          </div>
-        </section>
-
-        <section class="px-5 mt-5">
-          <p class="section-label">Jump to</p>
-          <div class="mt-2 grid grid-cols-2 gap-2">
-            <a href="learn-math.html" class="k-card p-3 flex items-center gap-2">
-              <div class="size-9 rounded-xl tile-violet grid place-items-center text-base">➗</div>
-              <span class="font-extrabold text-sm text-ink">Math</span>
-            </a>
-            <a href="learn-alphabet.html" class="k-card p-3 flex items-center gap-2">
-              <div class="size-9 rounded-xl tile-sun grid place-items-center text-base">🔤</div>
-              <span class="font-extrabold text-sm text-ink">Alphabet</span>
-            </a>
-            <a href="learn-animals.html" class="k-card p-3 flex items-center gap-2">
-              <div class="size-9 rounded-xl tile-mint grid place-items-center text-base">🦁</div>
-              <span class="font-extrabold text-sm text-ink">Animals</span>
-            </a>
-            <a href="learn-words.html" class="k-card p-3 flex items-center gap-2">
-              <div class="size-9 rounded-xl tile-coral grid place-items-center text-base">📚</div>
-              <span class="font-extrabold text-sm text-ink">Words</span>
-            </a>
-          </div>
-        </section>
+        <a href="settings.html" class="chip chip-primary">Report</a>
       </div>
+    </section>
 
-      <!-- Results (shown when query is not empty) -->
-      <div id="searchResults" class="overflow-y-auto grow px-5 mt-4 space-y-2 hidden"></div>
+    <!-- =============== INSTALL PROMPT (only if available) =============== -->
+    <section class="px-5 mt-4 mb-5">
+      <button data-install class="w-full k-card flex items-center gap-3 text-left">
+        <div class="size-10 rounded-xl tile-violet grid place-items-center"><i class="ph-fill ph-download-simple"></i>
+        </div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">Install Kidzio</p>
+          <p class="text-xs text-muted">Add to Home Screen · works offline</p>
+        </div>
+        <i class="ph ph-caret-right text-xl"></i>
+      </button>
+    </section>
 
-      <div class="px-5 pb-6 pt-3 safe-bottom">
-        <a href="learn-categories.html" class="btn btn-ghost w-full">
-          <i class="ph ph-books"></i> Browse full library
-        </a>
+    <!-- =============== TAB BAR =============== -->
+    <nav class="tabbar mt-auto" aria-label="Primary">
+      <div class="tabbar-inner">
+        <a class="tab active" href="home.html"><span class="tab-ico"><i
+              class="ph-fill ph-house-simple text-xl"></i></span>Home</a>
+        <a class="tab" href="learn-categories.html"><span class="tab-ico"><i
+              class="ph ph-books text-xl"></i></span>Learn</a>
+        <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i
+              class="ph ph-gift text-xl"></i></span>Rewards</a>
+        <a class="tab" href="leaderboard.html"><span class="tab-ico"><i
+              class="ph ph-trophy text-xl"></i></span>Ranking</a>
+        <a class="tab" href="profile.html"><span class="tab-ico"><i
+              class="ph ph-user-circle text-xl"></i></span>Profile</a>
+      </div>
+    </nav>
+
+    <!-- =============== SEARCH OVERLAY =============== -->
+    <div id="searchOverlay" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true"
+      aria-labelledby="searchTitle">
+      <button type="button" id="searchBackdrop"
+        class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+        aria-label="Close"></button>
+      <div id="searchPanel"
+        class="absolute inset-x-0 top-0 bottom-0 mx-auto max-w-[430px] bg-surface translate-y-full transition-transform duration-300 ease-out flex flex-col">
+        <header class="appbar safe-top">
+          <button type="button" id="searchClose" class="icon-btn" aria-label="Close"><i
+              class="ph ph-caret-left text-xl"></i></button>
+          <div class="grow">
+            <p class="text-xs text-muted">Find anything</p>
+            <h2 id="searchTitle" class="h-display text-lg leading-tight">Search</h2>
+          </div>
+        </header>
+
+        <section class="px-5">
+          <div class="input-wrap">
+            <i class="ph ph-magnifying-glass i-left"></i>
+            <input id="homeSearch" class="input has-left" placeholder="Search subjects, games, lessons…"
+              aria-label="Search" autocomplete="off" />
+            <button id="clearBtn" type="button" class="i-right hidden" aria-label="Clear search"><i
+                class="ph ph-x-circle text-muted text-xl"></i></button>
+            <button id="micBtn" type="button" class="i-right" aria-label="Voice search"><i
+                class="ph ph-microphone text-xl text-muted"></i></button>
+          </div>
+        </section>
+
+        <!-- Suggestions (shown when query is empty) -->
+        <div id="searchSuggest" class="overflow-y-auto grow">
+          <section class="px-5 mt-4">
+            <p class="section-label">Recent</p>
+            <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
+              <button type="button" class="chip" data-recent>counting</button>
+              <button type="button" class="chip" data-recent>animals</button>
+              <button type="button" class="chip" data-recent>quiz</button>
+            </div>
+          </section>
+
+          <section class="px-5 mt-4">
+            <p class="section-label">Popular right now</p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <button type="button" class="chip" data-recent>alphabet</button>
+              <button type="button" class="chip" data-recent>spell</button>
+              <button type="button" class="chip" data-recent>space</button>
+              <button type="button" class="chip" data-recent>shapes</button>
+              <button type="button" class="chip" data-recent>match</button>
+            </div>
+          </section>
+
+          <section class="px-5 mt-5">
+            <p class="section-label">Jump to</p>
+            <div class="mt-2 grid grid-cols-2 gap-2">
+              <a href="learn-math.html" class="k-card p-3 flex items-center gap-2">
+                <div class="size-9 rounded-xl tile-violet grid place-items-center text-base">➗</div>
+                <span class="font-extrabold text-sm text-ink">Math</span>
+              </a>
+              <a href="learn-alphabet.html" class="k-card p-3 flex items-center gap-2">
+                <div class="size-9 rounded-xl tile-sun grid place-items-center text-base">🔤</div>
+                <span class="font-extrabold text-sm text-ink">Alphabet</span>
+              </a>
+              <a href="learn-animals.html" class="k-card p-3 flex items-center gap-2">
+                <div class="size-9 rounded-xl tile-mint grid place-items-center text-base">🦁</div>
+                <span class="font-extrabold text-sm text-ink">Animals</span>
+              </a>
+              <a href="learn-words.html" class="k-card p-3 flex items-center gap-2">
+                <div class="size-9 rounded-xl tile-coral grid place-items-center text-base">📚</div>
+                <span class="font-extrabold text-sm text-ink">Words</span>
+              </a>
+            </div>
+          </section>
+        </div>
+
+        <!-- Results (shown when query is not empty) -->
+        <div id="searchResults" class="overflow-y-auto grow px-5 mt-4 space-y-2 hidden"></div>
+
+        <div class="px-5 pb-6 pt-3 safe-bottom">
+          <a href="learn-categories.html" class="btn btn-ghost w-full">
+            <i class="ph ph-books"></i> Browse full library
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- =============== NOTIFICATIONS BOTTOM SHEET =============== -->
-  <div id="notifSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="notifTitle">
-    <button type="button" data-sheet="notifSheet" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm" aria-label="Close"></button>
-    <div class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom">
-      <div class="flex justify-center pt-3">
-        <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
-      </div>
-      <div class="px-5 pt-4 pb-6">
-        <div class="flex items-start gap-3">
-          <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl shrink-0">🔔</div>
-          <div class="grow min-w-0">
-            <p id="notifTitle" class="h-display text-xl leading-tight text-ink">Notifications</p>
-            <p class="text-xs text-muted mt-1"><span id="notifCount">3</span> new today</p>
+    <!-- =============== NOTIFICATIONS BOTTOM SHEET =============== -->
+    <div id="notifSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="notifTitle">
+      <button type="button" data-sheet="notifSheet" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm"
+        aria-label="Close"></button>
+      <div
+        class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom">
+        <div class="flex justify-center pt-3">
+          <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+        </div>
+        <div class="px-5 pt-4 pb-6">
+          <div class="flex items-start gap-3">
+            <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl shrink-0">🔔</div>
+            <div class="grow min-w-0">
+              <p id="notifTitle" class="h-display text-xl leading-tight text-ink">Notifications</p>
+              <p class="text-xs text-muted mt-1"><span id="notifCount">3</span> new today</p>
+            </div>
+            <button type="button" id="markAllBtn" class="chip chip-primary shrink-0" aria-label="Mark all as read">
+              <i class="ph ph-check"></i> Mark all
+            </button>
+            <button type="button" class="icon-btn shrink-0" data-sheet="notifSheet" aria-label="Close">
+              <i class="ph ph-x"></i>
+            </button>
           </div>
-          <button type="button" id="markAllBtn" class="chip chip-primary shrink-0" aria-label="Mark all as read">
-            <i class="ph ph-check"></i> Mark all
-          </button>
-          <button type="button" class="icon-btn shrink-0" data-sheet="notifSheet" aria-label="Close">
-            <i class="ph ph-x"></i>
-          </button>
-        </div>
 
-        <div class="mt-4 space-y-2 max-h-[55vh] overflow-y-auto" id="notifList">
-          <a href="streak.html" class="setting-row" data-notif>
-            <div class="setting-ico tile-sun"><i class="ph-fill ph-fire"></i></div>
-            <div class="grow min-w-0">
-              <p class="setting-text font-extrabold text-sm text-ink">Streak at risk</p>
-              <p class="text-[11px] text-muted">Your 7-day streak needs a lesson before midnight.</p>
-              <p class="text-[10px] text-muted mt-0.5">Just now</p>
-            </div>
-            <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0" aria-label="Unread"></span>
-          </a>
-          <a href="badges.html" class="setting-row" data-notif>
-            <div class="setting-ico tile-mint"><i class="ph-fill ph-medal"></i></div>
-            <div class="grow min-w-0">
-              <p class="setting-text font-extrabold text-sm text-ink">Leo earned a new badge</p>
-              <p class="text-[11px] text-muted">He just unlocked Math Pro — beat him?</p>
-              <p class="text-[10px] text-muted mt-0.5">5 min ago</p>
-            </div>
-            <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0" aria-label="Unread"></span>
-          </a>
-          <a href="rewards-dashboard.html" class="setting-row" data-notif>
-            <div class="setting-ico tile-violet"><i class="ph-fill ph-gift"></i></div>
-            <div class="grow min-w-0">
-              <p class="setting-text font-extrabold text-sm text-ink">Daily gift ready</p>
-              <p class="text-[11px] text-muted">Claim your mystery box — +40 XP inside.</p>
-              <p class="text-[10px] text-muted mt-0.5">1 h ago</p>
-            </div>
-            <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0" aria-label="Unread"></span>
-          </a>
-          <a href="daily-mission.html" class="setting-row opacity-70" data-notif data-read>
-            <div class="setting-ico tile-sky"><i class="ph-fill ph-target"></i></div>
-            <div class="grow min-w-0">
-              <p class="setting-text font-extrabold text-sm text-ink">Today's mission unlocked</p>
-              <p class="text-[11px] text-muted">Finish 3 tasks to open the gift box.</p>
-              <p class="text-[10px] text-muted mt-0.5">This morning</p>
-            </div>
-          </a>
-          <a href="league.html" class="setting-row opacity-70" data-notif data-read>
-            <div class="setting-ico tile-pink"><i class="ph-fill ph-trophy"></i></div>
-            <div class="grow min-w-0">
-              <p class="setting-text font-extrabold text-sm text-ink">Promoted to Gold league</p>
-              <p class="text-[11px] text-muted">Top 10 this week — keep climbing!</p>
-              <p class="text-[10px] text-muted mt-0.5">Yesterday</p>
-            </div>
-          </a>
-        </div>
+          <div class="mt-4 space-y-2 max-h-[55vh] overflow-y-auto" id="notifList">
+            <a href="streak.html" class="setting-row" data-notif>
+              <div class="setting-ico tile-sun"><i class="ph-fill ph-fire"></i></div>
+              <div class="grow min-w-0">
+                <p class="setting-text font-extrabold text-sm text-ink">Streak at risk</p>
+                <p class="text-[11px] text-muted">Your 7-day streak needs a lesson before midnight.</p>
+                <p class="text-[10px] text-muted mt-0.5">Just now</p>
+              </div>
+              <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0" aria-label="Unread"></span>
+            </a>
+            <a href="badges.html" class="setting-row" data-notif>
+              <div class="setting-ico tile-mint"><i class="ph-fill ph-medal"></i></div>
+              <div class="grow min-w-0">
+                <p class="setting-text font-extrabold text-sm text-ink">Leo earned a new badge</p>
+                <p class="text-[11px] text-muted">He just unlocked Math Pro — beat him?</p>
+                <p class="text-[10px] text-muted mt-0.5">5 min ago</p>
+              </div>
+              <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0" aria-label="Unread"></span>
+            </a>
+            <a href="rewards-dashboard.html" class="setting-row" data-notif>
+              <div class="setting-ico tile-violet"><i class="ph-fill ph-gift"></i></div>
+              <div class="grow min-w-0">
+                <p class="setting-text font-extrabold text-sm text-ink">Daily gift ready</p>
+                <p class="text-[11px] text-muted">Claim your mystery box — +40 XP inside.</p>
+                <p class="text-[10px] text-muted mt-0.5">1 h ago</p>
+              </div>
+              <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0" aria-label="Unread"></span>
+            </a>
+            <a href="daily-mission.html" class="setting-row opacity-70" data-notif data-read>
+              <div class="setting-ico tile-sky"><i class="ph-fill ph-target"></i></div>
+              <div class="grow min-w-0">
+                <p class="setting-text font-extrabold text-sm text-ink">Today's mission unlocked</p>
+                <p class="text-[11px] text-muted">Finish 3 tasks to open the gift box.</p>
+                <p class="text-[10px] text-muted mt-0.5">This morning</p>
+              </div>
+            </a>
+            <a href="league.html" class="setting-row opacity-70" data-notif data-read>
+              <div class="setting-ico tile-pink"><i class="ph-fill ph-trophy"></i></div>
+              <div class="grow min-w-0">
+                <p class="setting-text font-extrabold text-sm text-ink">Promoted to Gold league</p>
+                <p class="text-[11px] text-muted">Top 10 this week — keep climbing!</p>
+                <p class="text-[10px] text-muted mt-0.5">Yesterday</p>
+              </div>
+            </a>
+          </div>
 
-        <a href="settings.html" class="btn btn-ghost w-full mt-4"><i class="ph ph-gear"></i> Notification settings</a>
+          <a href="settings.html" class="btn btn-ghost w-full mt-4"><i class="ph ph-gear"></i> Notification settings</a>
+        </div>
       </div>
     </div>
-  </div>
-</main>
+  </main>
 
-<script src="assets/js/home.js"></script>
-<script src="assets/js/app.js"></script>
-<script defer src="index.js"></script></body>
+  <script src="assets/js/home.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script defer src="index.js"></script>
+</body>
 
 <!-- Mirrored from kidzio-three.vercel.app/home.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:26 GMT -->
+
 </html>
