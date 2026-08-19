@@ -11,6 +11,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 - `[ ]` not started · `[x]` done
 - Build in the **suggested order** below unless a later feature is needed earlier.
 - Parent-gated screens (PIN, reports, screen time) should never be reachable by the kid without verification.
+- **Porting a screen from `kidzio/*.html`:** follow `.cursor/rules/kidzio-screen-port.mdc` (also in `CLAUDE.md`). Copy `<main>` into `resources/views/pages/⚡{name}.blade.php`. Reference: login (`kidzio/login.html` → `pages::user-login`).
 
 ---
 
@@ -46,9 +47,9 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 Parent owns the account. Kid is a profile on that account.
 
-- [ ] Login (email or phone + password)
-- [ ] Remember me
-- [ ] Show / hide password
+- [x] Login (email + password UI; phone not wired) — `pages::user-login`
+- [x] Remember me
+- [x] Show / hide password
 - [ ] Social login: Google, Apple, Facebook
 - [ ] Sign up: kid name, age (3–14), gender, parent email, password
 - [ ] Parent/guardian consent checkbox (Terms + Privacy)

@@ -1,0 +1,61 @@
+---
+description: Playbook for porting a kidzio/*.html screen into a Livewire page — use this for every screen, do not rediscover layout/CSS
+alwaysApply: true
+---
+
+# Port a `kidzio/*.html` screen to Livewire
+
+Do this in order. Layout, CSS, icons, and theme JS are **already wired**. Do not recopy `<head>` or restyle.
+
+Reference (first completed port): `kidzio/login.html` → `resources/views/pages/⚡user-login.blade.php`
+
+## Already in the app — do not redo
+
+| Piece | Path |
+|---|---|
+| Layout (fonts, Phosphor, theme script, Livewire) | `resources/views/layouts/app.blade.php` |
+| Kidzio CSS (load after Vite, already) | `public/assets/css/index.css` |
+| Images | `public/assets/images/` |
+| `data-theme-toggle`, `data-pwd-toggle`, `data-back`, sheets, tabs | `public/assets/js/app.js` (layout) |
+| Phosphor | `public/assets/icons/regular/` and `fill/` |
+
+## Files for one screen
+
+1. **Source:** `kidzio/{screen}.html` — copy `<main>…</main>` only (plus overlays/sheets in `<body>` if present). Strip HTTrack comments. Do **not** copy `<head>` or `<script>`.
+2. **Target:** `resources/views/pages/⚡{name}.blade.php`. If the page already exists, **replace** the placeholder. Do not wrap the template in a `<div>` or nest `livewire:…-form`.
+3. **Route** (only if missing) in `routes/web.php`:
+
+```php
+Route::livewire('/login', 'pages::user-login')->name('user-login');
+```
+
+Keep existing names: `login.html` → `pages::user-login` (`/login`), `signup.html` → `pages::user-register` (`/register`), `home.html` → `pages::home` (`/`). New screens: kebab-case from the HTML filename (`forgot-password.html` → `pages::forgot-password`).
+
+## Livewire file shape
+
+PHP at the top, then `<main class="device-frame …">` as the **root**. Put validate + action on this page (thin: Auth facade or a service — never `User::` in Livewire).
+
+```php
+new #[Title('Login · Kidzio')] class extends Component { /* … */ };
+```
+
+Copy the HTML `<title>` into `#[Title]`. Redirect with `$this->redirectRoute('…', navigate: true)`. After login: `Auth::attempt` + `session()->regenerate()`.
+
+## Wiring only — same nodes, same classes
+
+| Template | Blade |
+|---|---|
+| `href="signup.html"` | `route('user-register')` + `wire:navigate` |
+| `href="login.html"` | `route('user-login')` + `wire:navigate` |
+| `href="index.html"` | `route('home')`, keep `data-back`, **no** `wire:navigate` |
+| `href="{page}.html"` with no route yet | `href="#"` — do not invent screens |
+| `src="assets/images/…"` | `asset('assets/images/…')` |
+| `onsubmit` / `location.href='…'` | `wire:submit` |
+| inputs / checkboxes | `wire:model` |
+| dummy names / XP | Livewire/Blade vars **in that same node** |
+| `id="pwd"` + `data-pwd-toggle="pwd"` | keep both (layout JS) |
+| extra `<button>`s in a form | `type="button"` |
+
+Errors: `@error` as `<p class="text-sm" style="color:var(--color-k-coral)">` beside the field. Do not restyle.
+
+Done when the Blade matches the HTML class-for-class and submit/links work.

@@ -36,57 +36,85 @@ Leagues: Bronze → Silver → Gold → Emerald → Sapphire → Diamond.
 
 Started, not product-ready.
 
-- Routes: `/login`, `/register`, `/` (placeholder `"test"`)
-- `User`: `name`, `surname`, `nickname`, `email`, `password`
-- Login/register Livewire forms exist; they hit `User` directly (move behind a repository)
+- Routes: `/login` (`pages::user-login`), `/register` (`pages::user-register`), `/` (`pages::home`)
+- Login **UI** is ported: `kidzio/login.html` → `resources/views/pages/⚡user-login.blade.php` (Auth::attempt + remember). Phone and social login are not wired.
+- Register still uses a placeholder form (not the Kidzio signup HTML). Home is a placeholder.
+- `User`: `name`, `surname`, `nickname`, `email`, `password`. Register still hits `User` directly (move behind a repository).
 
-Build next: auth polish → parent verification → kid profile → onboarding → home shell → XP.
+Build next: register UI port → parent verification → kid profile → onboarding → home shell → XP.
 
 ---
 
 ## UI — copy from `kidzio/`, never redesign
 
-The look is already done. Every screen and component must be a **verbatim port** of `kidzio/*.html` plus `kidzio/assets/css/index.css`.
+The look is already done. Every screen must be a **verbatim port** of `kidzio/{screen}.html` plus `kidzio/assets/css/index.css`.
 
-### Source files
+Cursor playbook (always apply): `.cursor/rules/kidzio-screen-port.mdc`.  
+Reference port: `kidzio/login.html` → `resources/views/pages/⚡user-login.blade.php`.
 
-| Need | Copy from |
+### Already wired — do not recopy per page
+
+| Need | Where it lives |
 |---|---|
-| Screen markup | `kidzio/{screen}.html` — the `<main>…</main>` (and matching overlays/sheets) |
-| CSS | `kidzio/assets/css/index.css` — this is the stylesheet. Do not rewrite it in `resources/css/app.css`. |
-| Images | `kidzio/assets/images/` |
-| Page JS (only if still needed) | `kidzio/assets/js/` |
-| Icons | Phosphor (`ph` / `ph-fill`) as in the HTML |
-| Fonts | Baloo 2 + Nunito (template `<head>`), not Instrument Sans |
+| Layout `<head>` (theme script, Phosphor, Baloo 2 + Nunito, theme-color) | `resources/views/layouts/app.blade.php` |
+| CSS | `public/assets/css/index.css` (after Vite in the layout). Do not rewrite in `resources/css/app.css`. |
+| Images | `public/assets/images/` → `asset('assets/images/…')` |
+| Theme / back / password-eye / sheets / tabs | `public/assets/js/app.js` (`data-theme-toggle`, `data-back`, `data-pwd-toggle`, …) |
+| Icons | Phosphor in `public/assets/icons/{regular,fill}/` — keep `ph` / `ph-fill` classes |
+| Page JS | Only if the HTML still needs a unique script; copy from `kidzio/assets/js/` into `public/assets/js/` and load from the layout or that page. Prefer layout `app.js`. |
 
-Put shared `<head>` bits (theme script, Phosphor, fonts, `index.css`, theme-color) in `resources/views/layouts/app.blade.php` so every page matches the template.
+Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/app.js">` into a Livewire page.
 
-### How to build a screen
+### Screen → Livewire → route
 
-1. Open the matching `kidzio/{name}.html`.
-2. Copy the HTML **class-for-class, node-for-node** into the Livewire Blade view.
-3. Keep copy, emojis, chips, structure, and class names (`device-frame`, `appbar`, `btn btn-primary`, `input-wrap`, `k-card`, …).
-4. Only swap static wiring for Laravel/Livewire:
-   - `href="signup.html"` → `href="{{ route('user-register') }}"` + `wire:navigate`
-   - `src="assets/images/icon.png"` → `asset(...)` or Vite after copying the file into `public/`
-   - `onsubmit="..."` / dummy click handlers → `wire:submit` / `wire:click`
-   - `<input>` → `wire:model`
-   - hardcoded names/XP → Livewire/Blade variables **inside the same markup**
-5. Strip HTTrack comments and `../unpkg.com/` paths. Use a CDN or vendor copy of Phosphor, same icon classes.
+| `kidzio/` HTML | Livewire page | Route name | URL |
+|---|---|---|---|
+| `login.html` | `pages::user-login` | `user-login` | `/login` |
+| `signup.html` | `pages::user-register` | `user-register` | `/register` |
+| `home.html` | `pages::home` | `home` | `/` |
+| `index.html` (splash) | not built yet; back buttons use `home` | `home` | `/` |
+| any other `{name}.html` | `pages::{name}` (kebab-case) | `{name}` | `/{name}` unless a name already exists |
+
+Keep existing component names. Do not create `pages::login` when `pages::user-login` already exists.
+
+### How to port a screen
+
+1. Open `kidzio/{screen}.html`. Copy **only** `<main>…</main>` (and overlays/sheets in `<body>`).
+2. Put it in `resources/views/pages/⚡{name}.blade.php`. If that file is a placeholder, **replace it**. Do not nest `livewire:…-form` inside the copied `<main>`.
+3. Root element is the copied `<main class="device-frame …">`. No extra wrapper `<div>`.
+4. PHP class at the top of the same file: `#[Title]` from the HTML title; validate + action here; no Eloquent in Livewire.
+5. Add `Route::livewire` in `routes/web.php` only if the route is missing.
+6. Wire in place — same tags and classes:
+
+   - `href="signup.html"` → `route('user-register')` + `wire:navigate`
+   - `href="login.html"` → `route('user-login')` + `wire:navigate`
+   - `href="index.html"` → `route('home')`, keep `data-back`, **no** `wire:navigate` (layout JS uses history)
+   - `href="{page}.html"` with no Laravel route yet → `href="#"` (do not invent screens)
+   - `src="assets/images/icon.png"` → `asset('assets/images/icon.png')`
+   - `onsubmit` / `location.href='home.html'` → `wire:submit`
+   - `<input>` / checkbox → `wire:model`
+   - Keep `id="pwd"` + `data-pwd-toggle="pwd"` so layout JS still toggles visibility
+   - Extra buttons inside a `<form>` → `type="button"`
+   - Hardcoded names/XP → Livewire/Blade variables **inside the same node**
+   - Validation: `@error` as `<p class="text-sm" style="color:var(--color-k-coral)">` next to the field
+
+7. Auth login pattern (already on the login page): `Auth::attempt(..., $remember)` → `session()->regenerate()` → `$this->redirectRoute('home', navigate: true)`.
 
 ### Allowed vs forbidden
 
-**Allowed:** copy HTML; copy CSS; copy images; bind Livewire; named routes; replace dummy data.
+**Allowed:** copy HTML; bind Livewire; named routes; replace dummy data.
 
 **Forbidden:**
 - Restyling or “cleaning up” Tailwind classes
 - New layouts, new color palettes, new typography
 - Rebuilding a screen from scratch because Livewire exists
-- Writing equivalent UI in `resources/css/app.css` instead of using `kidzio/assets/css/index.css`
+- Writing equivalent UI in `resources/css/app.css`
 - Dropping sections that exist in the template (social login, remember me, chips, etc.)
+- Copying `<head>` or page scripts that the layout already loads
+- Querying `User::` (or any Eloquent) from the Livewire page
 
-Wrong: a plain `<h1>User Login</h1>` form while `kidzio/login.html` has the real UI.
-Right: the `kidzio/login.html` `<main>` in Blade, with `wire:model` / `wire:submit` on the existing inputs and button.
+Wrong: a plain `<h1>User Login</h1>` form while `kidzio/login.html` has the real UI.  
+Right: the `kidzio/login.html` `<main>` in `⚡user-login.blade.php`, with `wire:model` / `wire:submit` on the existing inputs and button.
 
 ---
 
@@ -122,23 +150,22 @@ Use `wire:navigate` for in-app links.
 
 ### Livewire file shape
 
-PHP class at the top of the Blade file, then markup. Name files `⚡user-login.blade.php` so Livewire 4 picks them up.
-
-The Livewire root **is** the copied `<main class="device-frame …">`. Do not wrap it in an extra unstyled `<div>`.
+Match `resources/views/pages/⚡user-login.blade.php`. PHP class at the top, then the copied `<main>` as root — no wrapper `<div>`, no nested form component.
 
 ```php
 <?php
 
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new class extends Component
+new #[Title('Login · Kidzio')] class extends Component
 {
-    //
+    // validate + action here (Auth facade or a service — not Eloquent)
 };
 ?>
 
 <main class="device-frame min-h-screen flex flex-col safe-top">
-    {{-- pasted from kidzio/{screen}.html --}}
+    {{-- pasted from kidzio/{screen}.html, then wired --}}
 </main>
 ```
 

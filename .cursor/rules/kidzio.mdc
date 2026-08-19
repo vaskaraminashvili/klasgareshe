@@ -9,4 +9,4 @@ Follow `CLAUDE.md` at the repo root on every task. It is the source of truth for
 - Stack: Laravel 13, Livewire 4 (single-file `⚡*.blade.php`). Not Vue.
 - Architecture: repositories for all Eloquent, services for business logic, thin Livewire components.
 - Parent-gated features stay behind PIN / parent verification.
-- UI is a port of `kidzio/`, not a redesign. Copy HTML and CSS from that folder into Blade.
+- UI is a port of `kidzio/`, not a redesign. Screen-port playbook: `.cursor/rules/kidzio-screen-port.mdc`. Reference: `resources/views/pages/⚡user-login.blade.php`.

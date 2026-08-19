@@ -7,12 +7,14 @@ alwaysApply: true
 
 `kidzio/` is the design. Laravel/Livewire only adds data and behavior.
 
+**How:** follow `.cursor/rules/kidzio-screen-port.mdc`. Reference port: `kidzio/login.html` → `resources/views/pages/⚡user-login.blade.php`.
+
 When implementing any screen or component:
 
-1. Open the matching file in `kidzio/` (e.g. login → `kidzio/login.html`).
-2. Copy the markup into the Livewire Blade view **verbatim** (same tags, classes, copy, icons, structure).
-3. Use `kidzio/assets/css/index.css` as the stylesheet. Do not restyle in `resources/css/app.css`.
-4. Copy images from `kidzio/assets/images/`.
+1. Open `kidzio/{screen}.html`.
+2. Copy `<main>…</main>` into `resources/views/pages/⚡{name}.blade.php` **verbatim** (same tags, classes, copy, icons). Layout/CSS/JS already live in `layouts/app.blade.php` — do not copy `<head>`.
+3. Stylesheet is `public/assets/css/index.css`. Do not restyle in `resources/css/app.css`.
+4. Images: `asset('assets/images/…')` (files already in `public/assets/images/`).
 5. Change only wiring: `route()`, `wire:navigate`, `wire:model`, `wire:submit`, `asset()`, Livewire variables in existing nodes.
 
 Never:
@@ -20,5 +22,6 @@ Never:
 - Invent a new layout or Tailwind class set
 - Replace a template screen with a simplified form
 - Skip blocks that exist in the HTML (headers, social buttons, chips, tab bars, sheets)
+- Nest an old `livewire:…-form` inside a newly ported `<main>`
 
 If the Blade does not look like the `kidzio/` HTML, it is wrong. Fix it by copying the template, not by restyling.
