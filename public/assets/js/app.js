@@ -23,6 +23,7 @@
  *   Auto-init Swiper rails ......................... line 167
  *     · [data-swiper-rail]      — content row (free-mode)
  *     · [data-swiper-rail-tabs] — filter chip row (tap-preserving)
+ *     · Re-init on livewire:navigated (wire:navigate)
  * ═══════════════════════════════════════════════════════════════════ */
 
 "use strict";
@@ -181,7 +182,7 @@ window.toggleTheme = toggleTheme;
 //
 // window.Swiper is exposed by the bundled index.js with `defer`, so we
 // wait for DOMContentLoaded before initializing — see NOTES.md
-// "Swiper timing".
+// "Swiper timing". Re-run after wire:navigate: body swap drops instances.
 (function () {
   const initRailSwipers = () => {
     if (!window.Swiper) return;
@@ -219,9 +220,21 @@ window.toggleTheme = toggleTheme;
         });
       });
   };
+
+  const destroyRailSwipers = () => {
+    document.querySelectorAll(".swiper").forEach((el) => {
+      if (el.swiper) el.swiper.destroy(true, true);
+    });
+  };
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initRailSwipers);
   } else {
     initRailSwipers();
   }
+
+  document.addEventListener("livewire:navigating", destroyRailSwipers);
+  document.addEventListener("livewire:navigated", () => {
+    requestAnimationFrame(initRailSwipers);
+  });
 })();
