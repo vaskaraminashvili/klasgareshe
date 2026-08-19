@@ -70,7 +70,7 @@ return [
     'leo_finished_math' => 'ლეომ დაასრულა მათემატიკა Lv 9',
     'minutes_ago_5' => '5 წთ წინ',
     'plus_80_xp' => '+80 XP',
-    'streak_count_12' => '🔥 12',
+    'streak_count_12' => '12',
     'ana_earned_badge' => 'ანამ მიიღო Bookworm სამკერდე ნიშანი',
     'hours_ago_1' => '1 სთ წინ',
     'new' => 'ახალი',

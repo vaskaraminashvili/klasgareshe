@@ -208,7 +208,9 @@ new class extends Component
                     <p class="font-extrabold text-sm">{{ __('home.leo_finished_math') }}</p>
                     <p class="text-xs text-muted">{{ __('home.minutes_ago_5') }} · {{ __('home.plus_80_xp') }}</p>
                 </div>
-                <span class="chip chip-sun">{{ __('home.streak_count_12') }}</span>
+                <span class="chip chip-sun">
+                    <i class="ph-fill ph-fire"></i> {{ __('home.streak_count_12') }}
+                </span>
             </div>
             <div class="flex items-center gap-3 p-3 border-t border-token">
                 <div class="size-10 rounded-full tile-mint grid place-items-center text-xl">🐰</div>
