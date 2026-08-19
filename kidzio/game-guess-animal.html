@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/game-guess-animal.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:06 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Guess animal · Kidzio</title><meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+  <header class="appbar">
+    <a href="game-connect-pair.html" class="icon-btn" data-back><i class="ph ph-x"></i></a>
+    <div class="grow"><div class="progress progress-sun"><span style="width:66%"></span></div></div>
+    <span class="chip chip-sun">💡 2</span>
+  </header>
+
+  <section class="px-6 mt-2 text-center">
+    <p class="text-xs font-extrabold" style="color:var(--color-k-muted)">GUESS THE ANIMAL</p>
+    <h1 class="h-display text-xl mt-1">Who am I?</h1>
+  </section>
+
+  <section class="px-5 mt-4">
+    <div class="k-card-lg tile-mint aspect-[4/3] grid place-items-center relative overflow-hidden">
+      <div class="text-8xl opacity-30">🐾</div>
+      <div class="absolute inset-0 grid place-items-center">
+        <span class="text-7xl">🦓</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-5 mt-4 space-y-2">
+    <div class="k-card flex items-center gap-3"><span class="text-xl">🟢</span><p class="text-sm"><span class="font-extrabold">Clue 1:</span> I have black and white stripes.</p></div>
+    <div class="k-card flex items-center gap-3"><span class="text-xl">🟢</span><p class="text-sm"><span class="font-extrabold">Clue 2:</span> I live in Africa's savannah.</p></div>
+    <div class="k-card flex items-center gap-3 opacity-60"><span class="text-xl">⚪</span><p class="text-sm"><span class="font-extrabold">Clue 3:</span> Tap hint to reveal</p></div>
+  </section>
+
+  <section class="px-6 mt-4 grid grid-cols-3 gap-2" data-ans-group>
+    <button class="ans justify-center py-4 h-display" data-ans="">Horse</button>
+    <button class="ans justify-center py-4 h-display" data-ans="correct">Zebra</button>
+    <button class="ans justify-center py-4 h-display" data-ans="">Tiger</button>
+  </section>
+
+  <div class="mt-auto px-6 pb-6 pt-4 safe-bottom">
+    <a href="game-where-live.html" class="btn btn-primary w-full">Submit</a>
+  </div>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+<!-- Mirrored from kidzio-three.vercel.app/game-guess-animal.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:06 GMT -->
+</html>

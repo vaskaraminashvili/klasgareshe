@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/game-spell-word.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:03 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Spell · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+  <header class="appbar">
+    <a href="game-tap-correct.html" class="icon-btn" data-back aria-label="Close"><i class="ph ph-x"></i></a>
+    <div class="grow"><div class="progress"><span id="progressFill" class="w-60"></span></div></div>
+    <button id="speakerBtn" type="button" class="icon-btn" aria-label="Hear word"><i class="ph-fill ph-speaker-high"></i></button>
+  </header>
+
+  <section class="px-6 mt-2 text-center">
+    <p class="text-xs font-extrabold text-muted tracking-wider">SPELL THE WORD</p>
+    <div class="mt-3 mx-auto size-44 rounded-[32px] tile-sun grid place-items-center text-7xl">🍎</div>
+  </section>
+
+  <section class="px-6 mt-5">
+    <div class="flex justify-center gap-2" id="slots">
+      <div class="w-12 h-14 rounded-xl border-2 border-token grid place-items-center text-2xl h-display bg-surface text-ink" data-slot="0"></div>
+      <div class="w-12 h-14 rounded-xl border-2 border-token grid place-items-center text-2xl h-display bg-surface text-ink" data-slot="1"></div>
+      <div class="w-12 h-14 rounded-xl border-2 border-token grid place-items-center text-2xl h-display bg-surface text-ink" data-slot="2"></div>
+      <div class="w-12 h-14 rounded-xl border-2 border-token grid place-items-center text-2xl h-display bg-surface text-ink" data-slot="3"></div>
+      <div class="w-12 h-14 rounded-xl border-2 border-token grid place-items-center text-2xl h-display bg-surface text-ink" data-slot="4"></div>
+    </div>
+    <p id="feedback" class="text-center text-xs text-muted mt-3">Tap letters to spell the word.</p>
+  </section>
+
+  <section class="px-6 mt-8">
+    <p class="text-xs font-extrabold text-center mb-3 text-muted tracking-wider">CHOOSE LETTERS</p>
+    <div class="flex flex-wrap justify-center gap-2" id="kbd">
+      <button type="button" class="kbd" data-k="L">L</button>
+      <button type="button" class="kbd" data-k="E">E</button>
+      <button type="button" class="kbd" data-k="A">A</button>
+      <button type="button" class="kbd" data-k="P">P</button>
+      <button type="button" class="kbd" data-k="N">N</button>
+      <button type="button" class="kbd" data-k="T">T</button>
+      <button type="button" class="kbd" data-k="S">S</button>
+      <button type="button" class="kbd" data-k="O">O</button>
+    </div>
+  </section>
+
+  <div class="mt-auto px-6 pb-6 pt-6 safe-bottom grid grid-cols-2 gap-3">
+    <button id="eraseBtn" type="button" class="btn btn-secondary"><i class="ph ph-backspace"></i> Erase</button>
+    <button id="checkBtn" type="button" class="btn btn-primary" disabled>Check <i class="ph ph-check"></i></button>
+  </div>
+</main>
+
+<script src="assets/js/game-spell-word.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/game-spell-word.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:04 GMT -->
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-alphabet.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:38 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Alphabet · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="learn-categories.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Learn · Category</p>
+      <h1 class="h-display text-lg leading-tight">Alphabet</h1>
+    </div>
+    <button class="icon-btn" aria-label="Favourite"><i class="ph ph-heart text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-alphabet">
+      <span class="hero-alphabet-watermark" aria-hidden="true">🔤</span>
+
+      <div class="relative flex items-center gap-2">
+        <span class="chip ha-chip">
+          <i class="ph-fill ph-text-aa"></i> ABC WORLD
+        </span>
+        <span class="chip ha-chip ml-auto">Age 4–7</span>
+      </div>
+
+      <p class="h-display text-2xl mt-2 relative leading-tight">Learn A–Z 🔤</p>
+      <p class="text-sm relative opacity-80">Letter shapes, sounds and first words.</p>
+
+      <div class="relative mt-4 flex items-center gap-3">
+        <div class="progress grow"><span class="w-50"></span></div>
+        <span class="text-sm font-extrabold shrink-0">13 / 26</span>
+      </div>
+      <p class="relative text-[11px] mt-1 opacity-80">50% complete · 13 more letters to master</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="k-card p-3 text-center !bg-white/60 !border-transparent">
+          <p class="h-display text-base">26</p>
+          <p class="text-[10px] font-extrabold uppercase tracking-wide opacity-70">Letters</p>
+        </div>
+        <div class="k-card p-3 text-center !bg-white/60 !border-transparent">
+          <p class="h-display text-base">A-M</p>
+          <p class="text-[10px] font-extrabold uppercase tracking-wide opacity-70">Unlocked</p>
+        </div>
+        <div class="k-card p-3 text-center !bg-white/60 !border-transparent">
+          <p class="h-display text-base">68%</p>
+          <p class="text-[10px] font-extrabold uppercase tracking-wide opacity-70">Phonics</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex flex-wrap items-center gap-2">
+        <a href="game-trace-letter.html" class="cta-soft">
+          Trace letter M <i class="ph-fill ph-arrow-right"></i>
+        </a>
+        <span class="chip ha-chip ml-auto">
+          <i class="ph-fill ph-speaker-high"></i> Sounds
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== CONTINUE CTA =============== -->
+  <section class="px-5 mt-4">
+    <a href="game-trace-letter.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">✍️</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">✍️</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">CONTINUE WITH</p>
+          <p class="h-display text-lg leading-tight">Letter M · Trace &amp; sound</p>
+          <p class="text-xs text-white/90">~2 min · +30 XP · earn a star</p>
+        </div>
+        <span class="cta-soft shrink-0">Go</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== LETTER GRID =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🔤 Letters A–Z</h2>
+      <span class="link cursor-default">Tap to practice</span>
+    </div>
+
+    <div data-swiper-rail-tabs class="swiper rail-swiper mb-3" data-tabs>
+      <div class="swiper-wrapper">
+      <button class="swiper-slide chip chip-primary" data-tab="all">All</button>
+      <button class="swiper-slide chip" data-tab="upper">A B C</button>
+      <button class="swiper-slide chip" data-tab="lower">a b c</button>
+      <button class="swiper-slide chip" data-tab="vowel">Vowels</button>
+      <button class="swiper-slide chip" data-tab="new">New</button>
+    </div>
+    </div>
+
+    <div class="grid grid-cols-6 gap-2" id="letters"></div>
+
+    <div class="mt-3 flex items-center justify-center gap-4 text-[11px] text-muted font-extrabold">
+      <span class="inline-flex items-center gap-1">
+        <span class="size-3 rounded-md bg-gradient-to-br from-[#FFE27A] to-[#FFB547]"></span> Done
+      </span>
+      <span class="inline-flex items-center gap-1">
+        <span class="size-3 rounded-md bg-gradient-to-br from-[#B9A6FF] to-[#7C5CFF]"></span> Current
+      </span>
+      <span class="inline-flex items-center gap-1">
+        <span class="size-3 rounded-md bg-[color:var(--color-k-border)]"></span> Locked
+      </span>
+    </div>
+  </section>
+
+  <!-- =============== LETTER OF THE DAY =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">⭐ Letter of the day</h2>
+      <span class="day-badge">TODAY</span>
+    </div>
+    <a href="game-trace-letter.html" class="k-card-lg flex items-center gap-4">
+      <div class="size-20 rounded-2xl grid place-items-center shrink-0 text-4xl h-display"
+           style="background: radial-gradient(circle at 30% 30%, #FFE27A, #FFB547 70%); color: #7A4D14;">M</div>
+      <div class="grow min-w-0">
+        <p class="font-extrabold text-base text-ink">M is for Moon 🌙</p>
+        <p class="text-xs text-muted">"Mmm" sound · say it with lips closed</p>
+        <div class="mt-2 flex flex-wrap gap-1">
+          <span class="chip chip-primary">+30 XP</span>
+          <span class="chip chip-mint">Trace</span>
+          <span class="chip chip-sun">Sound</span>
+        </div>
+      </div>
+      <i class="ph ph-caret-right text-muted shrink-0"></i>
+    </a>
+  </section>
+
+  <!-- =============== PHONICS GAMES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🎮 Phonics fun</h2>
+      <a href="learn-categories.html" class="link">More</a>
+    </div>
+    <div class="space-y-2">
+      <a href="game-spell-word.html" class="lesson-item">
+        <div class="lesson-node" aria-hidden="true">✏️</div>
+        <div class="lesson-body">
+          <p class="lesson-title">Spell it!</p>
+          <p class="lesson-sub">Spell 10 simple words</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 3 min</span>
+            <span><i class="ph ph-sparkle"></i> +40 XP</span>
+          </div>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold shrink-0">Easy</span>
+      </a>
+      <a href="game-fill-letter.html" class="lesson-item">
+        <div class="lesson-node" aria-hidden="true">🧩</div>
+        <div class="lesson-body">
+          <p class="lesson-title">Fill the letter</p>
+          <p class="lesson-sub">Complete the word</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 2 min</span>
+            <span><i class="ph ph-sparkle"></i> +30 XP</span>
+          </div>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold shrink-0">Easy</span>
+      </a>
+      <a href="game-trace-letter.html" class="lesson-item">
+        <div class="lesson-node" aria-hidden="true">✍️</div>
+        <div class="lesson-body">
+          <p class="lesson-title">Trace the letter</p>
+          <p class="lesson-sub">Follow the dots to draw</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 2 min</span>
+            <span><i class="ph ph-sparkle"></i> +30 XP</span>
+          </div>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold shrink-0">Easy</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== WORDS I KNOW =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">📚 Words I know</h2>
+      <span class="link cursor-default">32 collected</span>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <div class="swiper-slide word-card">
+        <div class="wc-letter">A</div>
+        <div class="wc-emoji">🍎</div>
+        <p class="wc-word">Apple</p>
+        <p class="wc-sound">/æ/</p>
+      </div>
+      <div class="swiper-slide word-card">
+        <div class="wc-letter">B</div>
+        <div class="wc-emoji">🐻</div>
+        <p class="wc-word">Bear</p>
+        <p class="wc-sound">/b/</p>
+      </div>
+      <div class="swiper-slide word-card">
+        <div class="wc-letter">C</div>
+        <div class="wc-emoji">🐱</div>
+        <p class="wc-word">Cat</p>
+        <p class="wc-sound">/k/</p>
+      </div>
+      <div class="swiper-slide word-card">
+        <div class="wc-letter">D</div>
+        <div class="wc-emoji">🐶</div>
+        <p class="wc-word">Dog</p>
+        <p class="wc-sound">/d/</p>
+      </div>
+      <div class="swiper-slide word-card">
+        <div class="wc-letter">E</div>
+        <div class="wc-emoji">🥚</div>
+        <p class="wc-word">Egg</p>
+        <p class="wc-sound">/e/</p>
+      </div>
+      <div class="swiper-slide word-card">
+        <div class="wc-letter">F</div>
+        <div class="wc-emoji">🐟</div>
+        <p class="wc-word">Fish</p>
+        <p class="wc-sound">/f/</p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== SOUND LIBRARY =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🔊 Letter sounds</h2>
+      <a href="game-spell-word.html" class="link">Practice</a>
+    </div>
+    <div class="sound-strip">
+      <div class="sound-ico">M</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Say "Mmm…"</p>
+        <div class="sound-wave mt-1">
+          <span class="h-2"></span><span class="h-4"></span><span class="h-5"></span>
+          <span class="h-3"></span><span class="h-5"></span><span class="h-4"></span>
+          <span class="h-2"></span><span class="h-3"></span><span class="h-4"></span>
+        </div>
+      </div>
+      <button class="btn btn-primary h-10 min-h-0 px-4 text-sm shrink-0" aria-label="Play M sound">
+        <i class="ph-fill ph-speaker-high"></i> Play
+      </button>
+    </div>
+    <div class="mt-3 grid grid-cols-5 gap-2">
+      <button class="letter-tile" aria-label="Play N sound">N</button>
+      <button class="letter-tile" aria-label="Play O sound">O</button>
+      <button class="letter-tile" aria-label="Play P sound">P</button>
+      <button class="letter-tile" aria-label="Play Q sound">Q</button>
+      <button class="letter-tile" aria-label="Play R sound">R</button>
+    </div>
+  </section>
+
+  <!-- =============== ALPHABET BADGES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🏅 Alphabet badges</h2>
+      <a href="badges.html" class="link">All 6</a>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal silver mx-auto">🔤</div>
+        <p class="text-xs font-extrabold mt-2">Letter Lord</p>
+        <p class="text-[10px] text-muted">Earned</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal bronze mx-auto">A</div>
+        <p class="text-xs font-extrabold mt-2">ABC Starter</p>
+        <p class="text-[10px] text-muted">Earned</p>
+      </div>
+      <div class="k-card p-3 text-center locked">
+        <div class="badge-medal mx-auto">📖</div>
+        <p class="text-xs font-extrabold mt-2">Spell Star</p>
+        <p class="text-[10px] text-muted">Locked</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Alphabet tip</p>
+        <p class="text-xs text-muted">Sing letters out loud — hearing + seeing the shape locks memory twice as fast.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Audio</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab active" href="learn-categories.html"><span class="tab-ico"><i class="ph-fill ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+
+<!-- =============== LETTER GRID SCRIPT =============== -->
+<script src="assets/js/learn-alphabet.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-alphabet.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:39 GMT -->
+</html>

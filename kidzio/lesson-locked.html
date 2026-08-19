@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/lesson-locked.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:06 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Locked · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="section-list.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Math · Chapter 1</p>
+      <h1 class="h-display text-lg leading-tight">Locked lesson</h1>
+    </div>
+    <button type="button" id="previewBtn" class="icon-btn" aria-label="Preview"><i class="ph ph-eye text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-learn text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-28 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-6xl opacity-80">➕</div>
+        <div class="absolute -bottom-1 -right-1 size-12 rounded-full bg-white grid place-items-center shadow-lg">
+          <i class="ph-fill ph-lock-simple text-2xl text-primary-ink"></i>
+        </div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-5">
+        <i class="ph-fill ph-lock-simple"></i> LOCKED · 2 STEPS AWAY
+      </p>
+      <p class="relative h-display text-2xl mt-2 leading-tight">Addition basics</p>
+      <p class="relative text-xs text-white/90 mt-1 max-w-[300px] mx-auto">
+        Finish <span class="font-extrabold">Counting to 20</span> &amp; reach 500 XP to unlock this lesson.
+      </p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none text-white"><span id="doneVal">0</span>/4</p>
+          <p class="text-[10px] text-white/85 mt-1">Steps done</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none text-white"><span id="xpVal">0</span></p>
+          <p class="text-[10px] text-white/85 mt-1">XP of 500</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none text-white">+60</p>
+          <p class="text-[10px] text-white/85 mt-1">XP reward</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex items-center gap-3">
+        <div class="progress on-gradient grow"><span id="unlockFill" class="w-0 transition-all duration-700"></span></div>
+        <span class="text-sm font-extrabold shrink-0 text-white" id="unlockPct">0%</span>
+      </div>
+      <p class="relative text-[11px] text-white/85 mt-1">Unlock progress</p>
+    </div>
+  </section>
+
+  <!-- =============== REQUIREMENTS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">What you need</p>
+    <div class="mt-3 space-y-2">
+      <div class="setting-row" data-req data-done="1">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-check-circle text-mint-ink"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink line-through">Complete "Numbers 1–10"</p>
+          <p class="text-[11px] text-muted">Done · Apr 14</p>
+        </div>
+        <span class="chip chip-mint">✓</span>
+      </div>
+      <div class="setting-row" data-req data-done="1">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-check-circle text-mint-ink"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink line-through">Complete "Counting objects"</p>
+          <p class="text-[11px] text-muted">Done · Apr 15</p>
+        </div>
+        <span class="chip chip-mint">✓</span>
+      </div>
+      <a href="lesson-continue.html" class="setting-row" data-req data-done="0">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-play-circle"></i></div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="setting-text font-extrabold text-sm text-ink">Finish "Counting to 20"</p>
+            <span class="chip chip-primary">3 / 5</span>
+          </div>
+          <p class="text-[11px] text-muted">2 activities left · ~4 min</p>
+          <div class="progress mt-1"><span class="w-60"></span></div>
+        </div>
+        <i class="ph ph-caret-right text-muted shrink-0"></i>
+      </a>
+      <button type="button" id="xpReqBtn" class="setting-row w-full text-left" data-req data-done="0">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-lightning"></i></div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="setting-text font-extrabold text-sm text-ink">Reach 500 XP</p>
+            <span class="chip chip-sun">320 / 500</span>
+          </div>
+          <p class="text-[11px] text-muted">180 XP to go · ~3 games</p>
+          <div class="progress progress-sun mt-1"><span class="w-62"></span></div>
+        </div>
+        <i class="ph ph-caret-right text-muted shrink-0"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== WHAT YOU'LL LEARN =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">What you'll learn (preview)</p>
+    <div class="mt-3 grid grid-cols-2 gap-3">
+      <div class="k-card p-3">
+        <div class="size-9 rounded-xl tile-violet grid place-items-center text-lg">1+1</div>
+        <p class="font-extrabold text-sm text-ink mt-2">First sums</p>
+        <p class="text-[11px] text-muted">Single digits</p>
+      </div>
+      <div class="k-card p-3">
+        <div class="size-9 rounded-xl tile-mint grid place-items-center text-lg">🍎</div>
+        <p class="font-extrabold text-sm text-ink mt-2">Add objects</p>
+        <p class="text-[11px] text-muted">Apples &amp; stars</p>
+      </div>
+      <div class="k-card p-3">
+        <div class="size-9 rounded-xl tile-coral grid place-items-center text-lg">🔢</div>
+        <p class="font-extrabold text-sm text-ink mt-2">Number bonds</p>
+        <p class="text-[11px] text-muted">Pairs to 10</p>
+      </div>
+      <div class="k-card p-3">
+        <div class="size-9 rounded-xl tile-sun grid place-items-center text-lg">🏅</div>
+        <p class="font-extrabold text-sm text-ink mt-2">Boss quiz</p>
+        <p class="text-[11px] text-muted">Earn the badge</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== REWARDS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Reward when unlocked</p>
+    <div class="k-card p-4 mt-3 flex items-center gap-3">
+      <div class="size-12 rounded-2xl tile-mint grid place-items-center text-2xl shrink-0">🏅</div>
+      <div class="grow min-w-0">
+        <p class="font-extrabold text-sm text-ink">Addition Ace badge</p>
+        <p class="text-[11px] text-muted">Rare · +60 XP on first finish</p>
+      </div>
+      <span class="chip chip-mint">Rare</span>
+    </div>
+  </section>
+
+  <!-- =============== TIP =============== -->
+  <section class="px-5 mt-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Almost there!</p>
+        <p class="text-xs text-muted">Just 2 activities + 180 XP. You can do it in about 7 minutes.</p>
+      </div>
+      <button type="button" id="notifyBtn" class="chip chip-primary"><i class="ph ph-bell"></i> Notify</button>
+    </div>
+  </section>
+
+  <div class="mt-auto px-5 pb-8 pt-6 safe-bottom space-y-2">
+    <a href="lesson-continue.html" class="btn btn-primary w-full">
+      <i class="ph-fill ph-play"></i> Continue previous lesson
+    </a>
+    <button type="button" id="previewBtn2" class="btn btn-secondary w-full">
+      <i class="ph ph-eye"></i> Sneak peek
+    </button>
+    <a href="section-list.html" class="btn btn-ghost w-full">Back to chapter</a>
+  </div>
+</main>
+
+<!-- =============== PREVIEW BOTTOM SHEET =============== -->
+<div id="previewSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+  <button type="button" id="previewBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="previewPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div id="previewTile" class="size-14 rounded-2xl tile-violet grid place-items-center text-3xl shrink-0">➕</div>
+        <div class="grow min-w-0">
+          <p id="previewTitle" class="h-display text-xl leading-tight text-ink">Addition basics</p>
+          <p class="text-xs text-muted mt-0.5">5 activities · ~6 min · Ages 5–9</p>
+        </div>
+        <button type="button" id="previewClose" class="icon-btn shrink-0" aria-label="Close"><i class="ph ph-x"></i></button>
+      </div>
+
+      <p class="section-label mt-5">Sample questions</p>
+      <div class="mt-2 space-y-2" id="sampleList">
+        <div class="setting-row blur-sm pointer-events-none">
+          <div class="setting-ico tile-violet"><i class="ph-fill ph-question"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">What is 2 + 3?</p>
+            <p class="text-[11px] text-muted">Pick the correct answer</p>
+          </div>
+          <span class="chip chip-primary">Easy</span>
+        </div>
+        <div class="setting-row blur-sm pointer-events-none">
+          <div class="setting-ico tile-mint"><i class="ph-fill ph-question"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Count 4 apples + 2 apples</p>
+            <p class="text-[11px] text-muted">Tap to count</p>
+          </div>
+          <span class="chip chip-mint">Medium</span>
+        </div>
+        <div class="setting-row blur-sm pointer-events-none">
+          <div class="setting-ico tile-coral"><i class="ph-fill ph-question"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Which pair adds to 10?</p>
+            <p class="text-[11px] text-muted">Drag to match</p>
+          </div>
+          <span class="chip chip-coral">Boss</span>
+        </div>
+      </div>
+      <p class="text-[11px] text-center text-muted mt-3"><i class="ph ph-lock-simple"></i> Unlock to see full questions</p>
+
+      <p class="section-label mt-5">Skills built</p>
+      <div class="mt-2 flex flex-wrap gap-2">
+        <span class="chip chip-primary">🔢 Addition</span>
+        <span class="chip chip-mint">🧠 Memory</span>
+        <span class="chip chip-sun">🎯 Focus</span>
+      </div>
+
+      <div class="mt-5 grid grid-cols-2 gap-2">
+        <button type="button" id="previewToCurrent" class="btn btn-ghost"><i class="ph ph-book-open"></i> Current lesson</button>
+        <a href="lesson-continue.html" class="btn btn-primary"><i class="ph-fill ph-play"></i> Keep going</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== SPEND XP BOTTOM SHEET =============== -->
+<div id="xpSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="xpTitle">
+  <button type="button" id="xpBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="xpPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div class="size-12 rounded-2xl tile-sun grid place-items-center text-2xl shrink-0">⚡</div>
+        <div class="grow min-w-0">
+          <p id="xpTitle" class="h-display text-xl leading-tight text-ink">Need 180 more XP</p>
+          <p class="text-xs text-muted mt-1">Pick a fast way to earn it.</p>
+        </div>
+        <button type="button" id="xpClose" class="icon-btn shrink-0" aria-label="Close"><i class="ph ph-x"></i></button>
+      </div>
+
+      <div class="mt-4 flex items-center gap-3">
+        <div class="progress progress-sun grow"><span class="w-62"></span></div>
+        <span class="text-sm font-extrabold text-ink shrink-0">320 / 500</span>
+      </div>
+
+      <p class="section-label mt-5">Quick XP</p>
+      <div class="mt-2 space-y-2">
+        <a href="game-multiple-choice.html" class="setting-row">
+          <div class="setting-ico tile-violet"><i class="ph-fill ph-question"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Quick Quiz</p>
+            <p class="text-[11px] text-muted">10 questions · ~2 min</p>
+          </div>
+          <span class="chip chip-primary">+80 XP</span>
+        </a>
+        <a href="game-counting.html" class="setting-row">
+          <div class="setting-ico tile-sky"><i class="ph-fill ph-number-square-five"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Counting fun</p>
+            <p class="text-[11px] text-muted">Add &amp; subtract · ~2 min</p>
+          </div>
+          <span class="chip chip-sky">+60 XP</span>
+        </a>
+        <a href="game-word-search.html" class="setting-row">
+          <div class="setting-ico tile-coral"><i class="ph-fill ph-magnifying-glass"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Word search</p>
+            <p class="text-[11px] text-muted">Find 5 words · ~3 min</p>
+          </div>
+          <span class="chip chip-coral">+50 XP</span>
+        </a>
+      </div>
+
+      <div class="mt-5 grid grid-cols-2 gap-2">
+        <button type="button" id="xpCancel" class="btn btn-ghost">Maybe later</button>
+        <a href="daily-mission.html" class="btn btn-primary"><i class="ph-fill ph-target"></i> Today's mission</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== UNLOCK ANIMATION OVERLAY (demo) =============== -->
+<div id="unlockOverlay" class="hidden fixed inset-0 z-50 grid place-items-center" role="dialog" aria-modal="true">
+  <div id="unlockBg" class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+  <div id="unlockCard" class="relative w-[320px] max-w-[90%] k-card-lg hero-learn text-center opacity-0 scale-90 transition-all duration-400">
+    <div class="text-7xl">🔓</div>
+    <p class="h-display text-2xl mt-3 leading-tight">Unlocked!</p>
+    <p class="text-xs text-white/90 mt-1">Addition basics is ready.</p>
+    <a href="lesson-details.html" class="btn btn-secondary w-full mt-5"><i class="ph-fill ph-play"></i> Start it</a>
+  </div>
+</div>
+
+<script src="assets/js/lesson-locked.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/lesson-locked.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:06 GMT -->
+</html>

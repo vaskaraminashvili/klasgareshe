@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/preferred-subjects.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:22 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Preferred subjects · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="parent-controls.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Learning plan</p>
+      <h1 class="h-display text-lg leading-tight">Preferred subjects</h1>
+    </div>
+    <button type="button" id="resetBtn" class="chip">Reset</button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-learn text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-24 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-5xl">📚</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <i class="ph-fill ph-sparkle"></i> TAILORED FOR LUNA
+      </p>
+      <p class="relative h-display text-2xl mt-2 leading-tight">Pick 3 favourites</p>
+      <p class="relative text-xs text-white/90 mt-1 max-w-[280px] mx-auto">Daily plans prioritise what Luna loves most.</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none"><span id="selVal">0</span>/3</p>
+          <p class="text-[10px] text-white/85 mt-1">Selected</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none" id="lessonsVal">0</p>
+          <p class="text-[10px] text-white/85 mt-1">Lessons</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none"><span id="minsVal">0</span>m</p>
+          <p class="text-[10px] text-white/85 mt-1">Daily time</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4">
+        <div class="progress on-gradient"><span id="heroFill" class="w-0 transition-all duration-500"></span></div>
+        <p class="text-[11px] text-white/85 mt-2" id="heroHint">Pick up to 3 · you're at 0 of 3</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== SUGGESTIONS RAIL =============== -->
+  <section class="px-5 mt-4">
+    <p class="text-[11px] text-muted mb-2 font-extrabold tracking-wider">SUGGESTED FOR AGE 6</p>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <button type="button" class="swiper-slide chip chip-primary" data-quick="top">🌟 Top for age 6</button>
+      <button type="button" class="swiper-slide chip" data-quick="read">📖 Reading bundle</button>
+      <button type="button" class="swiper-slide chip" data-quick="stem">🧪 STEM bundle</button>
+      <button type="button" class="swiper-slide chip" data-quick="balanced">⚖️ Balanced</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== SUBJECTS GRID =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">All subjects</h2>
+      <span class="link cursor-default" id="pickCount">Pick up to 3</span>
+    </div>
+
+    <div class="mt-3 grid grid-cols-2 gap-3" id="subjectGrid">
+      <button type="button" class="tile tile-violet pick-card text-left" data-subject="math" data-name="Math" data-emoji="➗" data-lessons="24" data-mins="15" data-fit="best">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-violet-ink">24 lessons</span>
+          <span class="check-badge hidden size-7 rounded-full bg-[var(--color-k-primary)] text-white grid place-items-center text-sm"><i class="ph-fill ph-check"></i></span>
+        </div>
+        <h3 class="mt-4 text-violet-ink">Math</h3>
+        <p class="text-xs mt-1 text-violet-ink opacity-80">Numbers, shapes</p>
+        <span class="tile-emoji">➗</span>
+      </button>
+
+      <button type="button" class="tile tile-sun pick-card text-left" data-subject="alphabet" data-name="Alphabet" data-emoji="🔤" data-lessons="18" data-mins="10" data-fit="best">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-sun-ink">18 lessons</span>
+          <span class="check-badge hidden size-7 rounded-full bg-[var(--color-k-primary)] text-white grid place-items-center text-sm"><i class="ph-fill ph-check"></i></span>
+        </div>
+        <h3 class="mt-4 text-sun-ink">Alphabet</h3>
+        <p class="text-xs mt-1 text-sun-ink opacity-80">A–Z &amp; sounds</p>
+        <span class="tile-emoji">🔤</span>
+      </button>
+
+      <button type="button" class="tile tile-mint pick-card text-left" data-subject="animals" data-name="Animals" data-emoji="🦁" data-lessons="14" data-mins="12" data-fit="good">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-mint-ink">14 lessons</span>
+          <span class="check-badge hidden size-7 rounded-full bg-[var(--color-k-primary)] text-white grid place-items-center text-sm"><i class="ph-fill ph-check"></i></span>
+        </div>
+        <h3 class="mt-4 text-mint-ink">Animals</h3>
+        <p class="text-xs mt-1 text-mint-ink opacity-80">Wildlife &amp; habitats</p>
+        <span class="tile-emoji">🦁</span>
+      </button>
+
+      <button type="button" class="tile tile-coral pick-card text-left" data-subject="words" data-name="Words" data-emoji="📚" data-lessons="20" data-mins="12" data-fit="good">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-coral-ink">20 lessons</span>
+          <span class="check-badge hidden size-7 rounded-full bg-[var(--color-k-primary)] text-white grid place-items-center text-sm"><i class="ph-fill ph-check"></i></span>
+        </div>
+        <h3 class="mt-4 text-coral-ink">Words</h3>
+        <p class="text-xs mt-1 text-coral-ink opacity-80">Sight &amp; spelling</p>
+        <span class="tile-emoji">📚</span>
+      </button>
+
+      <button type="button" class="tile tile-sky pick-card text-left" data-subject="knowledge" data-name="Knowledge" data-emoji="🌍" data-lessons="12" data-mins="15" data-fit="stretch">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-sky-ink">12 lessons</span>
+          <span class="check-badge hidden size-7 rounded-full bg-[var(--color-k-primary)] text-white grid place-items-center text-sm"><i class="ph-fill ph-check"></i></span>
+        </div>
+        <h3 class="mt-4 text-sky-ink">Knowledge</h3>
+        <p class="text-xs mt-1 text-sky-ink opacity-80">World &amp; science</p>
+        <span class="tile-emoji">🌍</span>
+      </button>
+
+      <button type="button" class="tile tile-pink pick-card text-left" data-subject="opposites" data-name="Opposites" data-emoji="⚖️" data-lessons="10" data-mins="8" data-fit="good">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-coral-ink">10 lessons</span>
+          <span class="check-badge hidden size-7 rounded-full bg-[var(--color-k-primary)] text-white grid place-items-center text-sm"><i class="ph-fill ph-check"></i></span>
+        </div>
+        <h3 class="mt-4 text-coral-ink">Opposites</h3>
+        <p class="text-xs mt-1 text-coral-ink opacity-80">Big &amp; small</p>
+        <span class="tile-emoji">⚖️</span>
+      </button>
+    </div>
+    <p class="text-[11px] text-muted mt-2 text-center">Tap to pick · long-press (or <i class="ph ph-info"></i> info) for a preview</p>
+  </section>
+
+  <!-- =============== YOUR PLAN =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <p class="section-label">Your plan</p>
+      <span class="link cursor-default" id="planMeta">Tap arrows to reorder</span>
+    </div>
+    <div id="planBox" class="k-card p-4 mt-3">
+      <p class="text-sm text-muted text-center" id="planEmpty">Pick at least 1 subject to build a daily plan.</p>
+      <div id="planRows" class="space-y-2 hidden"></div>
+    </div>
+  </section>
+
+  <!-- =============== DIFFICULTY =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Starting difficulty</p>
+    <div class="mt-3 grid grid-cols-3 gap-2" id="diffPicker">
+      <button type="button" class="pick-card !p-2 flex-col text-center is-selected" data-diff="easy">
+        <span class="text-xl">🌱</span>
+        <span class="pc-name text-xs mt-1">Easy</span>
+        <span class="pc-sub">Ages 4–6</span>
+      </button>
+      <button type="button" class="pick-card !p-2 flex-col text-center" data-diff="medium">
+        <span class="text-xl">🌿</span>
+        <span class="pc-name text-xs mt-1">Medium</span>
+        <span class="pc-sub">Ages 6–8</span>
+      </button>
+      <button type="button" class="pick-card !p-2 flex-col text-center" data-diff="hard">
+        <span class="text-xl">🌳</span>
+        <span class="pc-name text-xs mt-1">Challenge</span>
+        <span class="pc-sub">Ages 8+</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== TIP =============== -->
+  <section class="px-5 mt-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Pro tip</p>
+        <p class="text-xs text-muted">Kids learn best when they pick. Let Luna nudge your choices — taste changes over time.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- =============== STICKY SAVE BAR =============== -->
+<div class="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
+  <div class="mx-auto max-w-[430px] pointer-events-auto">
+    <div class="bg-surface border-t border-token safe-bottom px-5 pt-3 pb-3 flex items-center gap-2">
+      <a href="parent-controls.html" class="btn btn-ghost grow">Cancel</a>
+      <button type="button" id="saveBtn" class="btn btn-primary grow" disabled>
+        <i class="ph-fill ph-check"></i> Save · <span id="saveCount">0</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =============== PREVIEW BOTTOM SHEET =============== -->
+<div id="previewSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+  <button type="button" id="previewBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="previewPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div id="previewTile" class="size-14 rounded-2xl tile-violet grid place-items-center text-3xl shrink-0">➗</div>
+        <div class="grow min-w-0">
+          <p id="previewTitle" class="h-display text-xl leading-tight text-ink">Math</p>
+          <p id="previewSub" class="text-xs text-muted mt-0.5">24 lessons · ~15 min / day</p>
+        </div>
+        <span id="previewFit" class="chip chip-mint shrink-0">Best for age 6</span>
+        <button type="button" class="icon-btn shrink-0" id="previewClose" aria-label="Close">
+          <i class="ph ph-x"></i>
+        </button>
+      </div>
+
+      <p class="section-label mt-5">Sample lessons</p>
+      <div id="previewLessons" class="mt-2 space-y-2"></div>
+
+      <p class="section-label mt-5">Skills built</p>
+      <div id="previewSkills" class="mt-2 flex flex-wrap gap-2"></div>
+
+      <button type="button" id="previewToggle" class="btn btn-primary w-full mt-5">
+        <i class="ph-fill ph-plus-circle"></i> Add to plan
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =============== SAVED SUCCESS BOTTOM SHEET =============== -->
+<div id="savedSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="savedTitle">
+  <button type="button" id="savedBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="savedPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6 text-center">
+      <div class="mx-auto size-20 rounded-full tile-mint grid place-items-center text-4xl">✅</div>
+      <p id="savedTitle" class="h-display text-2xl mt-3 text-ink">Plan saved!</p>
+      <p id="savedSub" class="text-sm text-muted mt-1">Luna will see 3 favourites every day.</p>
+
+      <div id="savedRows" class="mt-5 text-left space-y-2"></div>
+
+      <div class="mt-5 grid grid-cols-2 gap-2">
+        <button type="button" id="savedStay" class="btn btn-ghost">Edit more</button>
+        <a href="parent-controls.html" class="btn btn-primary"><i class="ph-fill ph-arrow-right"></i> Done</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/preferred-subjects.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/preferred-subjects.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:23 GMT -->
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/section-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Sections · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="learn-math.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Math · Chapter 1</p>
+      <h1 class="h-display text-lg leading-tight">Numbers &amp; counting</h1>
+    </div>
+    <button class="icon-btn" aria-label="Favourite"><i class="ph ph-heart text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== CHAPTER HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-chapter">
+      <div class="relative flex items-center gap-3">
+        <div class="text-5xl">🔢</div>
+        <div class="grow">
+          <span class="chip bg-white/20 border-0 text-white">
+            <i class="ph-fill ph-book-open"></i> CHAPTER 1
+          </span>
+          <p class="h-display text-xl mt-1 leading-tight">Numbers &amp; counting</p>
+          <p class="text-xs text-white/90">Master numbers 1–20 with fun activities</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex items-center gap-3">
+        <div class="progress on-gradient grow"><span class="w-40"></span></div>
+        <span class="text-sm font-extrabold shrink-0">2 / 5</span>
+      </div>
+      <p class="relative text-[11px] text-white/85 mt-1">40% complete · 3 lessons remaining</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="hero-metric">
+          <p class="hm-v">+100</p>
+          <p class="hm-l">XP earned</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">~15m</p>
+          <p class="hm-l">Left</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">🏆</p>
+          <p class="hm-l">Boss badge</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== CONTINUE CTA =============== -->
+  <section class="px-5 mt-4">
+    <a href="lesson-continue.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">▶️</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">▶️</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">CONTINUE LESSON 3</p>
+          <p class="h-display text-lg leading-tight">Counting to 20</p>
+          <p class="text-xs text-white/90">60% done · finish in ~3 min · +50 XP</p>
+        </div>
+        <span class="cta-soft shrink-0">Play</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== CHAPTER JUMP =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">Chapters</h2>
+      <a href="learn-math.html" class="link">All Math</a>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <div class="swiper-slide chapter-chip is-current">
+        <span class="cc-num">Chapter 1</span>
+        <span class="cc-name">Numbers &amp; counting</span>
+        <span class="text-[10px] text-primary-ink font-extrabold">In progress</span>
+      </div>
+      <div class="swiper-slide chapter-chip is-locked">
+        <span class="cc-num">Chapter 2</span>
+        <span class="cc-name">Addition basics</span>
+        <span class="text-[10px] text-muted font-extrabold">Locked</span>
+      </div>
+      <div class="swiper-slide chapter-chip is-locked">
+        <span class="cc-num">Chapter 3</span>
+        <span class="cc-name">Subtraction</span>
+        <span class="text-[10px] text-muted font-extrabold">Locked</span>
+      </div>
+      <div class="swiper-slide chapter-chip is-locked">
+        <span class="cc-num">Chapter 4</span>
+        <span class="cc-name">Shapes around us</span>
+        <span class="text-[10px] text-muted font-extrabold">Locked</span>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== LESSON LIST (flat cards, no connecting bar) =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Lessons</h2>
+      <span class="link cursor-default">5 total · 2 done</span>
+    </div>
+
+    <div class="space-y-3">
+      <!-- Completed 1 -->
+      <a href="lesson-details.html" class="lesson-item is-done">
+        <div class="lesson-node"><i class="ph-fill ph-check"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Lesson 1 · Numbers 1–10</p>
+          <p class="lesson-sub">Completed · perfect score 🎉</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 4 min</span>
+            <span><i class="ph ph-star"></i> 3/3</span>
+            <span><i class="ph ph-sparkle"></i> +50 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-mint shrink-0">Done</span>
+      </a>
+
+      <!-- Completed 2 -->
+      <a href="lesson-details.html" class="lesson-item is-done">
+        <div class="lesson-node"><i class="ph-fill ph-check"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Lesson 2 · Counting objects</p>
+          <p class="lesson-sub">Completed · +50 XP</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 5 min</span>
+            <span><i class="ph ph-star"></i> 2/3</span>
+            <span><i class="ph ph-sparkle"></i> +50 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-mint shrink-0">Done</span>
+      </a>
+
+      <!-- Current -->
+      <a href="lesson-continue.html" class="lesson-item is-current">
+        <div class="lesson-node"><i class="ph-fill ph-play"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Lesson 3 · Counting to 20</p>
+          <p class="lesson-sub">In progress · 3 of 5 activities</p>
+          <div class="chapter-bar mt-2"><span class="w-60"></span></div>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> ~3 min</span>
+            <span><i class="ph ph-sparkle"></i> +50 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-primary shrink-0">Now</span>
+      </a>
+
+      <!-- Locked -->
+      <a href="lesson-locked.html" class="lesson-item is-locked">
+        <div class="lesson-node"><i class="ph-fill ph-lock"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Lesson 4 · Addition basics</p>
+          <p class="lesson-sub">Finish lesson 3 to unlock</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 6 min</span>
+            <span><i class="ph ph-sparkle"></i> +60 XP</span>
+          </div>
+        </div>
+        <span class="chip shrink-0">Locked</span>
+      </a>
+
+      <!-- Locked 2 -->
+      <a href="lesson-locked.html" class="lesson-item is-locked">
+        <div class="lesson-node"><i class="ph-fill ph-lock"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Lesson 5 · Number line fun</p>
+          <p class="lesson-sub">Unlock after lesson 4</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 5 min</span>
+            <span><i class="ph ph-sparkle"></i> +55 XP</span>
+          </div>
+        </div>
+        <span class="chip shrink-0">Locked</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== CHAPTER BOSS QUIZ =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Chapter challenge</p>
+    <a href="lesson-locked.html" class="boss-card mt-3">
+      <div class="lesson-node bg-white/80 shrink-0" aria-hidden="true">🏆</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Chapter boss quiz</p>
+        <p class="text-[11px] text-muted">Complete all 5 lessons to unlock</p>
+        <div class="lesson-meta">
+          <span><i class="ph ph-clock"></i> 8 min</span>
+          <span><i class="ph ph-sparkle"></i> +150 XP</span>
+          <span><i class="ph ph-medal"></i> Exclusive badge</span>
+        </div>
+      </div>
+      <span class="chip">Locked</span>
+    </a>
+  </section>
+
+  <!-- =============== SECTION REWARDS =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🎁 Chapter rewards</h2>
+      <span class="link cursor-default">Earn all 3</span>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal mx-auto">⭐</div>
+        <p class="text-xs font-extrabold mt-2">3-star streak</p>
+        <p class="text-[10px] text-muted">1 / 2 earned</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal silver mx-auto">🔢</div>
+        <p class="text-xs font-extrabold mt-2">Counter Champ</p>
+        <p class="text-[10px] text-muted">Unlocked ✓</p>
+      </div>
+      <div class="k-card p-3 text-center locked">
+        <div class="badge-medal mx-auto">🏆</div>
+        <p class="text-xs font-extrabold mt-2">Chapter hero</p>
+        <p class="text-[10px] text-muted">Finish boss</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== CHAPTER TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Chapter tip</p>
+        <p class="text-xs text-muted">Lessons unlock one-by-one. Earn 3 stars on each by playing carefully — no rush!</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Help</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab active" href="learn-categories.html"><span class="tab-ico"><i class="ph-fill ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/section-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:21 GMT -->
+</html>

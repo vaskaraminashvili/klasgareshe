@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/game-match-animal.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:04 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Match animal · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+  <header class="appbar">
+    <a href="game-match-word.html" class="icon-btn" data-back aria-label="Close"><i class="ph ph-x"></i></a>
+    <div class="grow"><div class="progress"><span id="progressFill" class="w-90"></span></div></div>
+    <span class="chip chip-sun" id="streakChip">🔥 3</span>
+  </header>
+
+  <section class="px-6 mt-2 text-center">
+    <p class="text-xs font-extrabold text-muted tracking-wider">MATCH ANIMAL TO NAME</p>
+    <h1 class="h-display text-xl mt-1" id="prompt">Who's this?</h1>
+  </section>
+
+  <section class="px-6 mt-4">
+    <div class="k-card-lg tile-sky aspect-[4/3] grid place-items-center text-8xl" id="animalTile">🦒</div>
+  </section>
+
+  <section class="px-6 mt-5 grid grid-cols-2 gap-3" data-ans-group id="ansGroup">
+    <button type="button" class="ans justify-center py-5 h-display text-xl" data-ans="" data-val="Zebra">Zebra</button>
+    <button type="button" class="ans justify-center py-5 h-display text-xl" data-ans="correct" data-val="Giraffe">Giraffe</button>
+    <button type="button" class="ans justify-center py-5 h-display text-xl" data-ans="" data-val="Kangaroo">Kangaroo</button>
+    <button type="button" class="ans justify-center py-5 h-display text-xl" data-ans="" data-val="Horse">Horse</button>
+  </section>
+
+  <section class="px-6 mt-4">
+    <div class="k-card flex items-center gap-3">
+      <div class="text-3xl">🔊</div>
+      <p class="text-sm grow text-ink" id="hearText"><span class="font-extrabold">Tap to hear</span> the animal's name</p>
+      <button id="speakerBtn" type="button" class="size-10 rounded-full grid place-items-center bg-[var(--color-k-primary)] text-white shrink-0" aria-label="Hear name"><i class="ph-fill ph-speaker-high"></i></button>
+    </div>
+  </section>
+
+  <div class="mt-auto px-6 pb-6 pt-4 safe-bottom">
+    <button id="nextBtn" type="button" class="btn btn-primary w-full" disabled>
+      <i class="ph-fill ph-arrow-right"></i> Next
+    </button>
+  </div>
+</main>
+
+<script src="assets/js/game-match-animal.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/game-match-animal.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:05 GMT -->
+</html>

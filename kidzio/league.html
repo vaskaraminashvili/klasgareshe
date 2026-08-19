@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/league.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:33 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>League · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="leaderboard.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Ranking · Season 4</p>
+      <h1 class="h-display text-lg leading-tight">Leagues</h1>
+    </div>
+    <button class="icon-btn" aria-label="Help"><i class="ph ph-question text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== TABS =============== -->
+  <section class="px-5">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" role="tablist" aria-label="Ranking views">
+      <div class="swiper-wrapper">
+      <a href="leaderboard.html" class="swiper-slide chip" role="tab">🌍 Global</a>
+      <a href="ranking-weekly.html" class="swiper-slide chip" role="tab">📅 Weekly</a>
+      <a href="ranking-friends.html" class="swiper-slide chip" role="tab">👫 Friends</a>
+      <a href="league.html" class="swiper-slide chip chip-primary" role="tab" aria-selected="true">🏆 League</a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== CURRENT LEAGUE HERO =============== -->
+  <section class="px-5 mt-2">
+    <div class="hero-league k-card-lg">
+      <span class="relative league-trophy" aria-hidden="true">🏆</span>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <span class="live-dot"></span> ACTIVE SEASON
+      </p>
+      <p class="relative h-display text-3xl mt-2 leading-tight">Gold League</p>
+      <p class="relative text-sm text-white/90">Week 3 · Season 4 · 12 players</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="mini-stat">
+          <p class="mini-v">#4</p>
+          <p class="mini-l">Your spot</p>
+        </div>
+        <div class="mini-stat">
+          <p class="mini-v">Hold</p>
+          <p class="mini-l">Status</p>
+        </div>
+        <div class="mini-stat">
+          <p class="mini-v">2d 4h</p>
+          <p class="mini-l">Ends in</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== PROGRESS TO NEXT LEAGUE =============== -->
+  <section class="px-5 mt-4">
+    <div class="k-card p-4">
+      <div class="flex items-center gap-3">
+        <div class="size-11 rounded-2xl tile-mint grid place-items-center text-xl shrink-0">💎</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">390 XP to reach Emerald</p>
+          <p class="text-[11px] text-muted">Finish 2 lessons to leap into promotion zone</p>
+        </div>
+        <span class="chip chip-primary">Gold → Emerald</span>
+      </div>
+      <div class="progress mt-3"><span class="w-72"></span></div>
+      <div class="flex items-center justify-between text-[10px] text-muted font-extrabold mt-2">
+        <span>You · 1,240</span>
+        <span>Promote at 1,630</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== TIER LADDER (horizontal rail, no stripes) =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">Tier ladder</h2>
+      <span class="link cursor-default">6 tiers</span>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <div class="swiper-slide tier-card tier-bronze is-done">
+        <div class="tier-ico">🥉</div>
+        <p class="tier-name">Bronze</p>
+        <p class="tier-sub">Earned</p>
+      </div>
+      <div class="swiper-slide tier-card tier-silver is-done">
+        <div class="tier-ico">🥈</div>
+        <p class="tier-name">Silver</p>
+        <p class="tier-sub">Earned</p>
+      </div>
+      <div class="swiper-slide tier-card tier-gold is-current">
+        <div class="tier-ico">🥇</div>
+        <p class="tier-name">Gold</p>
+        <p class="tier-sub text-primary">You are here</p>
+      </div>
+      <div class="swiper-slide tier-card tier-emerald is-locked">
+        <div class="tier-ico"><i class="ph-fill ph-diamond"></i></div>
+        <p class="tier-name">Emerald</p>
+        <p class="tier-sub">Next tier</p>
+      </div>
+      <div class="swiper-slide tier-card tier-sapphire is-locked">
+        <div class="tier-ico"><i class="ph-fill ph-star"></i></div>
+        <p class="tier-name">Sapphire</p>
+        <p class="tier-sub">Locked</p>
+      </div>
+      <div class="swiper-slide tier-card tier-diamond is-locked">
+        <div class="tier-ico"><i class="ph-fill ph-diamonds-four"></i></div>
+        <p class="tier-name">Diamond</p>
+        <p class="tier-sub">Elite</p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== SEASON PRIZES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🎁 League rewards</h2>
+      <span class="link cursor-default">For staying in Gold</span>
+    </div>
+    <div class="space-y-2">
+      <div class="season-prize">
+        <div class="prize-emoji">⭐</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">+200 XP bonus</p>
+          <p class="text-[11px] text-muted">Paid every Monday you stay in Gold</p>
+        </div>
+        <span class="chip chip-mint">Weekly</span>
+      </div>
+      <div class="season-prize">
+        <div class="prize-emoji">🏅</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Gold champion badge</p>
+          <p class="text-[11px] text-muted">Unlock at 4 weeks in Gold · 3 more to go</p>
+        </div>
+        <span class="chip chip-sun">1 / 4</span>
+      </div>
+      <div class="season-prize">
+        <div class="prize-emoji">🎨</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Gold avatar frame</p>
+          <p class="text-[11px] text-muted">Equip from your profile when earned</p>
+        </div>
+        <span class="chip">Reward</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== THIS WEEK'S LEAGUE =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">This week's league</h2>
+      <span class="chip chip-primary">⏳ 2d left</span>
+    </div>
+    <p class="text-xs text-muted">Top 3 promote · bottom 3 relegate · rest stay in Gold</p>
+
+    <!-- Promote zone -->
+    <div class="mt-3">
+      <p class="section-label">↑ Promote to Emerald</p>
+      <div class="space-y-2 mt-3">
+        <a href="profile.html" class="rank-row">
+          <span class="rank-num medal-gold">1</span>
+          <div class="rank-av tile-sun">👦<span class="live"></span></div>
+          <div class="grow min-w-0">
+            <p class="font-extrabold text-sm text-ink">Leo</p>
+            <div class="rank-meta"><span>Lv 9</span>·<span class="text-sun-ink">🔥 12d</span></div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="chip outcome-promote">↑ Promote</span>
+            <p class="text-[10px] text-muted mt-1">+2,140 XP</p>
+          </div>
+        </a>
+        <a href="profile.html" class="rank-row">
+          <span class="rank-num medal-silver">2</span>
+          <div class="rank-av tile-mint">👧</div>
+          <div class="grow min-w-0">
+            <p class="font-extrabold text-sm text-ink">Mia</p>
+            <div class="rank-meta"><span>Lv 8</span>·<span class="text-sun-ink">🔥 9d</span></div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="chip outcome-promote">↑ Promote</span>
+            <p class="text-[10px] text-muted mt-1">+1,820 XP</p>
+          </div>
+        </a>
+        <a href="profile.html" class="rank-row">
+          <span class="rank-num medal-bronze">3</span>
+          <div class="rank-av tile-coral">🧒<span class="live"></span></div>
+          <div class="grow min-w-0">
+            <p class="font-extrabold text-sm text-ink">Sam</p>
+            <div class="rank-meta"><span>Lv 8</span>·<span class="text-sun-ink">🔥 6d</span></div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="chip outcome-promote">↑ Promote</span>
+            <p class="text-[10px] text-muted mt-1">+1,630 XP</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Hold zone -->
+    <div class="mt-4">
+      <p class="section-label">◦ Hold in Gold</p>
+      <div class="space-y-2 mt-3">
+        <div class="rank-row you">
+          <span class="rank-num">4</span>
+          <div class="rank-av tile-violet">🐻<span class="live"></span></div>
+          <div class="grow min-w-0">
+            <p class="font-extrabold text-sm text-ink">You (Luna)</p>
+            <div class="rank-meta"><span>Lv 7</span>·<span class="text-sun-ink">🔥 7d</span>·<span>390 to promote</span></div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="chip outcome-hold">Hold</span>
+            <p class="text-[10px] text-muted mt-1">+1,240 XP</p>
+          </div>
+        </div>
+        <a href="profile.html" class="rank-row">
+          <span class="rank-num">5</span>
+          <div class="rank-av tile-sky">🦊</div>
+          <div class="grow min-w-0">
+            <p class="font-extrabold text-sm text-ink">Noah</p>
+            <div class="rank-meta"><span>Lv 7</span></div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="chip outcome-hold">Hold</span>
+            <p class="text-[10px] text-muted mt-1">+1,190 XP</p>
+          </div>
+        </a>
+        <a href="profile.html" class="rank-row">
+          <span class="rank-num">6</span>
+          <div class="rank-av tile-mint">🐨<span class="live"></span></div>
+          <div class="grow min-w-0">
+            <p class="font-extrabold text-sm text-ink">Ava</p>
+            <div class="rank-meta"><span>Lv 6</span></div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="chip outcome-hold">Hold</span>
+            <p class="text-[10px] text-muted mt-1">+1,080 XP</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Relegate zone -->
+    <div class="mt-4">
+      <p class="section-label">↓ Relegate to Silver</p>
+      <div class="space-y-2 mt-3">
+        <a href="profile.html" class="rank-row">
+          <span class="rank-num">10</span>
+          <div class="rank-av tile-pink">🦄</div>
+          <div class="grow min-w-0">
+            <p class="font-extrabold text-sm text-ink">Zoe</p>
+            <div class="rank-meta"><span>Lv 5</span>·<span class="text-sun-ink">🔥 2d</span></div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="chip outcome-demote">↓ Drop</span>
+            <p class="text-[10px] text-muted mt-1">+740 XP</p>
+          </div>
+        </a>
+        <a href="profile.html" class="rank-row">
+          <span class="rank-num">11</span>
+          <div class="rank-av tile-coral">🦁</div>
+          <div class="grow min-w-0">
+            <p class="font-extrabold text-sm text-ink">Maya</p>
+            <div class="rank-meta"><span>Lv 4</span></div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="chip outcome-demote">↓ Drop</span>
+            <p class="text-[10px] text-muted mt-1">+620 XP</p>
+          </div>
+        </a>
+        <a href="profile.html" class="rank-row">
+          <span class="rank-num">12</span>
+          <div class="rank-av tile-sky">🐙</div>
+          <div class="grow min-w-0">
+            <p class="font-extrabold text-sm text-ink">Theo</p>
+            <div class="rank-meta"><span>Lv 3</span></div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="chip outcome-demote">↓ Drop</span>
+            <p class="text-[10px] text-muted mt-1">+540 XP</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== CLIMB CTA =============== -->
+  <section class="px-5 mt-5">
+    <a href="daily-mission.html" class="k-card-lg card-hero-primary relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">🚀</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">🚀</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">PROMOTE TO EMERALD</p>
+          <p class="h-display text-lg leading-tight">Earn 390 XP this week</p>
+          <p class="text-xs text-white/90">Today's mission gives +120 XP · 6h left</p>
+        </div>
+        <span class="cta-soft shrink-0">Start</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== SEASON JOURNEY =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Season journey</h2>
+      <span class="link cursor-default">Week 3 of 8</span>
+    </div>
+    <div class="space-y-2">
+      <div class="tier-row is-done">
+        <div class="tier-ico-sm bg-gradient-to-br from-[#FFD9A0] to-[#8B4C14] text-[#5A2F05]">🥉</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Week 1 · Bronze</p>
+          <p class="text-[11px] text-muted">Finished #2 · promoted ✓</p>
+        </div>
+        <span class="chip chip-mint">Done</span>
+      </div>
+      <div class="tier-row is-done">
+        <div class="tier-ico-sm bg-gradient-to-br from-[#F2F4F8] to-[#7D8591] text-[#3A424E]">🥈</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Week 2 · Silver</p>
+          <p class="text-[11px] text-muted">Finished #3 · promoted ✓</p>
+        </div>
+        <span class="chip chip-mint">Done</span>
+      </div>
+      <div class="tier-row is-current">
+        <div class="tier-ico-sm bg-gradient-to-br from-[#FFF2B0] to-[#B47E00] text-[#6B4500]">🥇</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Week 3 · Gold (now)</p>
+          <p class="text-[11px] text-muted">Ranked #4 · 2 days remaining</p>
+        </div>
+        <span class="chip chip-primary">Live</span>
+      </div>
+      <div class="tier-row is-locked">
+        <div class="tier-ico-sm bg-gradient-to-br from-[#C8F6E3] to-[#0F8660] text-[#0F5A42]"><i class="ph-fill ph-diamond"></i></div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Week 4 · Emerald</p>
+          <p class="text-[11px] text-muted">Unlocks after this week's promotion</p>
+        </div>
+        <span class="chip">Next</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== FAQ TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">How leagues work</p>
+        <p class="text-xs text-muted">Every Monday 00:00, top 3 promote · bottom 3 relegate · the rest stay. Earn XP from lessons and mini-games to climb.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Help</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab" href="learn-categories.html"><span class="tab-ico"><i class="ph ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab active" href="leaderboard.html"><span class="tab-ico"><i class="ph-fill ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/league.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:33 GMT -->
+</html>

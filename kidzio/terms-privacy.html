@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/terms-privacy.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:19 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Terms &amp; Privacy · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="settings.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Last updated · Apr 17, 2026 · v1.0</p>
+      <h1 class="h-display text-lg leading-tight">Terms &amp; Privacy</h1>
+    </div>
+    <button class="icon-btn" aria-label="Share" onclick="toast('Link copied')"><i class="ph ph-share-fat text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-profile text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-24 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-5xl">🛡️</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <i class="ph-fill ph-shield-check"></i> KID-SAFE BY DESIGN
+      </p>
+      <p class="relative h-display text-2xl mt-2 leading-tight">Privacy first, always</p>
+      <p class="relative text-xs text-white/90 mt-1 max-w-[270px] mx-auto">No ads · no trackers · no selling data · COPPA &amp; GDPR-K compliant</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none">0</p>
+          <p class="text-[10px] text-white/85 mt-1">Ads shown</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none">0</p>
+          <p class="text-[10px] text-white/85 mt-1">Trackers</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none">100%</p>
+          <p class="text-[10px] text-white/85 mt-1">Encrypted</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== COMPLIANCE BADGES =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Certified &amp; compliant</p>
+    <div class="mt-3 grid grid-cols-4 gap-2">
+      <div class="k-card p-3 text-center">
+        <div class="size-10 mx-auto rounded-xl tile-sky grid place-items-center text-lg">🇺🇸</div>
+        <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">COPPA</p>
+        <p class="text-[10px] text-muted leading-tight">US · under 13</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="size-10 mx-auto rounded-xl tile-mint grid place-items-center text-lg">🇪🇺</div>
+        <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">GDPR-K</p>
+        <p class="text-[10px] text-muted leading-tight">EU &amp; UK</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="size-10 mx-auto rounded-xl tile-violet grid place-items-center text-lg">🇧🇷</div>
+        <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">LGPD</p>
+        <p class="text-[10px] text-muted leading-tight">Brazil</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="size-10 mx-auto rounded-xl tile-coral grid place-items-center text-lg">✓</div>
+        <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">kidSAFE</p>
+        <p class="text-[10px] text-muted leading-tight">Seal certified</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== TABS =============== -->
+  <section class="px-5 mt-5">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" data-tabs role="tablist" aria-label="Legal sections">
+      <div class="swiper-wrapper">
+      <button class="swiper-slide chip chip-primary" data-tab="privacy" role="tab" aria-selected="true">🛡️ Privacy</button>
+      <button class="swiper-slide chip" data-tab="terms" role="tab" aria-selected="false">📄 Terms</button>
+      <button class="swiper-slide chip" data-tab="coppa" role="tab" aria-selected="false">👨‍👩‍👧 COPPA</button>
+      <button class="swiper-slide chip" data-tab="cookies" role="tab" aria-selected="false">🍪 Cookies</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== PRIVACY PANEL =============== -->
+  <section class="px-5 mt-4" data-panel="privacy">
+    <p class="section-label">What we collect</p>
+    <div class="mt-3 space-y-2">
+      <div class="setting-row">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-check-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Learning progress</p>
+          <p class="text-[11px] text-muted">XP, streaks, lessons completed — stored locally</p>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-check-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Parent email</p>
+          <p class="text-[11px] text-muted">Only for weekly reports &amp; password resets</p>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-check-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Kid's name &amp; age</p>
+          <p class="text-[11px] text-muted">To tailor lessons — never shared with 3rd parties</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-label mt-5">What we never do</p>
+    <div class="mt-3 space-y-2">
+      <div class="setting-row danger">
+        <div class="setting-ico"><i class="ph-fill ph-x-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm">Show ads to kids</p>
+          <p class="text-[11px] text-muted">Zero ads, zero marketing to children</p>
+        </div>
+      </div>
+      <div class="setting-row danger">
+        <div class="setting-ico"><i class="ph-fill ph-x-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm">Sell or share data</p>
+          <p class="text-[11px] text-muted">Your data is yours. We never sell it.</p>
+        </div>
+      </div>
+      <div class="setting-row danger">
+        <div class="setting-ico"><i class="ph-fill ph-x-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm">Track across apps</p>
+          <p class="text-[11px] text-muted">No cross-site trackers or fingerprinting</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== TERMS PANEL =============== -->
+  <section class="px-5 mt-4 hidden" data-panel="terms">
+    <p class="section-label">The short version</p>
+    <div class="mt-3 space-y-2">
+      <div class="setting-row">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-handshake"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Parents agree on behalf of kids</p>
+          <p class="text-[11px] text-muted">A parent or guardian must accept these terms</p>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-gift"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Kidzio is free</p>
+          <p class="text-[11px] text-muted">Premium (if any) is parent-verified subscription</p>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-users-four"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">One account per family</p>
+          <p class="text-[11px] text-muted">Sharing with siblings is fine — reselling is not</p>
+        </div>
+      </div>
+      <div class="setting-row danger">
+        <div class="setting-ico"><i class="ph-fill ph-prohibit"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm">No scraping or reverse-engineering</p>
+          <p class="text-[11px] text-muted">Content is copyright Kidzio 2026</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== COPPA PANEL =============== -->
+  <section class="px-5 mt-4 hidden" data-panel="coppa">
+    <p class="section-label">How parental consent works</p>
+    <div class="mt-3 space-y-3">
+      <div class="k-card p-4 flex items-start gap-3">
+        <div class="size-10 rounded-xl tile-sky grid place-items-center text-lg shrink-0 font-extrabold text-sky-ink">1</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Parent signs up first</p>
+          <p class="text-[11px] text-muted mt-1">A verified email + age-gate unlocks kid profiles</p>
+        </div>
+      </div>
+      <div class="k-card p-4 flex items-start gap-3">
+        <div class="size-10 rounded-xl tile-mint grid place-items-center text-lg shrink-0 font-extrabold text-mint-ink">2</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Verifiable consent</p>
+          <p class="text-[11px] text-muted mt-1">Before any data is collected from a child under 13</p>
+        </div>
+      </div>
+      <div class="k-card p-4 flex items-start gap-3">
+        <div class="size-10 rounded-xl tile-violet grid place-items-center text-lg shrink-0 font-extrabold">3</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Full parent controls</p>
+          <p class="text-[11px] text-muted mt-1">Review, edit or delete kid data anytime — no questions</p>
+        </div>
+      </div>
+      <div class="k-card p-4 flex items-start gap-3">
+        <div class="size-10 rounded-xl tile-coral grid place-items-center text-lg shrink-0 font-extrabold text-coral-ink">4</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Friend requests need approval</p>
+          <p class="text-[11px] text-muted mt-1">Usernames default to random emoji — real names never shown</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== COOKIES PANEL =============== -->
+  <section class="px-5 mt-4 hidden" data-panel="cookies">
+    <p class="section-label">Storage we use</p>
+    <div class="mt-3 space-y-2">
+      <div class="setting-row">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-check-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Essential local storage</p>
+          <p class="text-[11px] text-muted">Remembers progress, theme, language on this device</p>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-check-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Service worker cache</p>
+          <p class="text-[11px] text-muted">Lets Kidzio work offline — clearable anytime</p>
+        </div>
+      </div>
+      <div class="setting-row danger">
+        <div class="setting-ico"><i class="ph-fill ph-x-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm">No advertising cookies</p>
+          <p class="text-[11px] text-muted">Not now, not ever</p>
+        </div>
+      </div>
+      <div class="setting-row danger">
+        <div class="setting-ico"><i class="ph-fill ph-x-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm">No 3rd-party trackers</p>
+          <p class="text-[11px] text-muted">No Google, Meta, or ad-network pixels</p>
+        </div>
+      </div>
+    </div>
+    <a href="clear-cache.html" class="btn btn-ghost w-full mt-4">
+      <i class="ph-fill ph-broom"></i> Manage storage
+    </a>
+  </section>
+
+  <!-- =============== YOUR RIGHTS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Your rights · quick actions</p>
+    <div class="mt-3 space-y-2">
+      <a href="export-progress.html" class="setting-row">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-download-simple"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Export your data</p>
+          <p class="text-[11px] text-muted">Download a complete PDF recap</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="clear-cache.html" class="setting-row">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-arrows-clockwise"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Clear local data</p>
+          <p class="text-[11px] text-muted">Free up space, reset cache</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="privacy-policy.html" class="setting-row">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-shield-check"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Full privacy policy</p>
+          <p class="text-[11px] text-muted">Plain-English detailed version</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="#delete" class="setting-row danger">
+        <div class="setting-ico"><i class="ph-fill ph-trash"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm">Delete account</p>
+          <p class="text-[11px] text-muted">All data removed within 24h</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== FULL TEXT ACCORDION =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Read the full text</p>
+    <div class="mt-3 space-y-2">
+
+      <details class="k-card p-0 overflow-hidden group">
+        <summary class="flex items-center gap-3 p-4 cursor-pointer list-none">
+          <div class="size-10 rounded-xl tile-sky grid place-items-center"><i class="ph-fill ph-shield-check"></i></div>
+          <p class="font-extrabold text-sm grow text-ink">1. Privacy policy</p>
+          <i class="ph ph-caret-down text-muted group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <div class="px-4 pb-4 text-[12px] text-muted leading-relaxed space-y-2 border-t border-token pt-3">
+          <p>Kidzio is built for children under 13 and complies with COPPA, GDPR-K, and similar laws worldwide.</p>
+          <p>We store the minimum data needed to personalise learning. Parent email is used only for verification and weekly reports.</p>
+          <p>All data is encrypted in transit (TLS 1.3) and at rest (AES-256). You can request a full export or deletion at any time from Settings.</p>
+        </div>
+      </details>
+
+      <details class="k-card p-0 overflow-hidden group">
+        <summary class="flex items-center gap-3 p-4 cursor-pointer list-none">
+          <div class="size-10 rounded-xl tile-violet grid place-items-center"><i class="ph-fill ph-file-text"></i></div>
+          <p class="font-extrabold text-sm grow text-ink">2. Terms of use</p>
+          <i class="ph ph-caret-down text-muted group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <div class="px-4 pb-4 text-[12px] text-muted leading-relaxed space-y-2 border-t border-token pt-3">
+          <p>By using Kidzio, a parent or guardian agrees to these terms on behalf of the child.</p>
+          <p>Kidzio is free to use. Premium features (when available) require a parent-verified subscription.</p>
+          <p>Accounts are per-family. Sharing accounts is fine; reselling or scraping content is not.</p>
+        </div>
+      </details>
+
+      <details class="k-card p-0 overflow-hidden group">
+        <summary class="flex items-center gap-3 p-4 cursor-pointer list-none">
+          <div class="size-10 rounded-xl tile-mint grid place-items-center"><i class="ph-fill ph-users-three"></i></div>
+          <p class="font-extrabold text-sm grow text-ink">3. COPPA &amp; parental consent</p>
+          <i class="ph ph-caret-down text-muted group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <div class="px-4 pb-4 text-[12px] text-muted leading-relaxed space-y-2 border-t border-token pt-3">
+          <p>We obtain verifiable parental consent before collecting any data from kids under 13.</p>
+          <p>Parents can review, edit, or delete their kid's information at any time — no questions asked.</p>
+          <p>Friend connections require parent approval; usernames default to random emoji names.</p>
+        </div>
+      </details>
+
+      <details class="k-card p-0 overflow-hidden group">
+        <summary class="flex items-center gap-3 p-4 cursor-pointer list-none">
+          <div class="size-10 rounded-xl tile-sun grid place-items-center">🍪</div>
+          <p class="font-extrabold text-sm grow text-ink">4. Cookies &amp; storage</p>
+          <i class="ph ph-caret-down text-muted group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <div class="px-4 pb-4 text-[12px] text-muted leading-relaxed space-y-2 border-t border-token pt-3">
+          <p>Kidzio only uses essential local storage to remember your progress and preferences.</p>
+          <p>No third-party advertising cookies. No cross-app tracking. You can clear cache in Settings → Storage &amp; data.</p>
+        </div>
+      </details>
+
+      <details class="k-card p-0 overflow-hidden group">
+        <summary class="flex items-center gap-3 p-4 cursor-pointer list-none">
+          <div class="size-10 rounded-xl tile-coral grid place-items-center"><i class="ph-fill ph-trash"></i></div>
+          <p class="font-extrabold text-sm grow text-ink">5. Your rights</p>
+          <i class="ph ph-caret-down text-muted group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <div class="px-4 pb-4 text-[12px] text-muted leading-relaxed space-y-2 border-t border-token pt-3">
+          <p><b class="text-ink">Access:</b> export all your data as PDF from Settings → Storage.</p>
+          <p><b class="text-ink">Delete:</b> remove your account and all data with one tap.</p>
+          <p><b class="text-ink">Contact:</b> email privacy@kidzio.app for any data request.</p>
+        </div>
+      </details>
+
+      <details class="k-card p-0 overflow-hidden group">
+        <summary class="flex items-center gap-3 p-4 cursor-pointer list-none">
+          <div class="size-10 rounded-xl tile-pink grid place-items-center"><i class="ph-fill ph-pencil-simple"></i></div>
+          <p class="font-extrabold text-sm grow text-ink">6. Changes to these terms</p>
+          <i class="ph ph-caret-down text-muted group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <div class="px-4 pb-4 text-[12px] text-muted leading-relaxed space-y-2 border-t border-token pt-3">
+          <p>We notify parents by email at least 30 days before any material change.</p>
+          <p>Past versions are archived at kidzio.app/legal/history and remain accessible.</p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- =============== CONTACT CTA =============== -->
+  <section class="px-5 mt-5 mb-10">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Questions?</p>
+        <p class="text-xs text-muted">Email <span class="text-primary-ink font-extrabold">privacy@kidzio.app</span> — a real human replies within 24h.</p>
+      </div>
+      <a href="contact-us.html" class="chip chip-primary">Contact</a>
+    </div>
+    <div class="mt-3 grid grid-cols-2 gap-2">
+      <a href="export-progress.html" class="btn btn-ghost w-full">
+        <i class="ph-fill ph-download-simple"></i> Export PDF
+      </a>
+      <a href="contact-us.html" class="btn btn-primary w-full">
+        <i class="ph-fill ph-envelope-simple"></i> Contact
+      </a>
+    </div>
+    <p class="text-[11px] text-center text-muted mt-5">© 2026 Kidzio · v1.0.0 · Last updated Apr 17, 2026</p>
+  </section>
+</main>
+
+<script src="assets/js/terms-privacy.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/terms-privacy.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:19 GMT -->
+</html>

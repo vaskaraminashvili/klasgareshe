@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/edit-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:58 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Edit profile · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="profile.html" id="backLink" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Your kid's profile</p>
+      <h1 class="h-display text-lg leading-tight">Edit profile</h1>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO PREVIEW =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-profile text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-28 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-6xl" id="heroAvatar">🐻</div>
+        <button class="absolute -bottom-1 -right-1 size-10 rounded-full tile-sun grid place-items-center shadow-lg" data-sheet="avatarSheet" aria-label="Change avatar">
+          <i class="ph-fill ph-camera text-lg text-sun-ink"></i>
+        </button>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">LIVE PREVIEW</p>
+      <p class="relative h-display text-2xl mt-2 leading-tight" id="heroName">Luna Parker</p>
+      <p class="relative text-[11px] text-white/80 -mt-0.5" id="heroNickname">@Star Luna</p>
+      <p class="relative text-xs text-white/90 mt-1" id="heroMeta">Age 6 · Kindergarten · Loves Math</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none">1,240</p>
+          <p class="text-[10px] text-white/85 mt-1">Total XP</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none">42</p>
+          <p class="text-[10px] text-white/85 mt-1">Day streak</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none">8</p>
+          <p class="text-[10px] text-white/85 mt-1">Badges</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== AVATAR PICKER =============== -->
+  <section class="px-5 mt-5">
+    <div class="flex items-end justify-between">
+      <p class="section-label">Pick an avatar</p>
+      <button type="button" class="chip" data-sheet="avatarSheet">
+        <i class="ph ph-grid-four"></i> All
+      </button>
+    </div>
+    <div class="mt-3 grid grid-cols-6 gap-2" id="avatarPicker">
+      <button type="button" class="aspect-square rounded-2xl tile-sun grid place-items-center text-2xl pick-card is-selected" data-avatar="🐻">🐻</button>
+      <button type="button" class="aspect-square rounded-2xl tile-mint grid place-items-center text-2xl pick-card" data-avatar="🐰">🐰</button>
+      <button type="button" class="aspect-square rounded-2xl tile-coral grid place-items-center text-2xl pick-card" data-avatar="🦊">🦊</button>
+      <button type="button" class="aspect-square rounded-2xl tile-sky grid place-items-center text-2xl pick-card" data-avatar="🐨">🐨</button>
+      <button type="button" class="aspect-square rounded-2xl tile-violet grid place-items-center text-2xl pick-card" data-avatar="🐼">🐼</button>
+      <button type="button" class="aspect-square rounded-2xl tile-pink grid place-items-center text-2xl pick-card" data-avatar="🦄">🦄</button>
+    </div>
+  </section>
+
+  <form id="profileForm" class="px-5 mt-5 space-y-5" onsubmit="event.preventDefault();saveProfile()">
+
+    <!-- =============== BASICS =============== -->
+    <div>
+      <p class="section-label">Basics</p>
+      <div class="mt-3 space-y-3">
+        <div>
+          <label for="kidName" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Kid's name</label>
+          <div class="input-wrap mt-1">
+            <i class="ph ph-smiley i-left"></i>
+            <input id="kidName" type="text" class="input has-left" value="Luna Parker" maxlength="24" required autocomplete="off"/>
+          </div>
+          <p id="nameHint" class="text-[10px] text-muted mt-1"><i class="ph ph-info"></i> Shown on badges &amp; reports only — never public.</p>
+        </div>
+
+        <div>
+          <label for="nickname" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Display name <span class="text-muted font-normal normal-case">(for leaderboards)</span></label>
+          <div class="input-wrap mt-1">
+            <i class="ph ph-sparkle i-left"></i>
+            <input id="nickname" type="text" class="input has-left" value="Star Luna" maxlength="16" autocomplete="off"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="age" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Age</label>
+            <div class="input-wrap mt-1">
+              <i class="ph ph-cake i-left"></i>
+              <input id="age" type="number" min="3" max="14" class="input has-left" value="6"/>
+            </div>
+          </div>
+          <div>
+            <label for="birthday" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Birthday</label>
+            <div class="input-wrap mt-1">
+              <i class="ph ph-calendar i-left"></i>
+              <input id="birthday" type="date" class="input has-left" value="2019-08-14"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== PRONOUNS =============== -->
+    <div>
+      <p class="section-label">Pronouns</p>
+      <div class="mt-3 grid grid-cols-4 gap-2" id="pronounPicker">
+        <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-pronoun="she">
+          <span class="text-xl">👧</span>
+          <span class="pc-name text-xs mt-1">She/her</span>
+        </button>
+        <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-pronoun="he">
+          <span class="text-xl">👦</span>
+          <span class="pc-name text-xs mt-1">He/him</span>
+        </button>
+        <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-pronoun="they">
+          <span class="text-xl">🧒</span>
+          <span class="pc-name text-xs mt-1">They/them</span>
+        </button>
+        <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center is-selected" data-pronoun="prefer">
+          <span class="text-xl">✨</span>
+          <span class="pc-name text-xs mt-1">Prefer not</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- =============== SCHOOL =============== -->
+    <div>
+      <p class="section-label">School &amp; goal</p>
+      <div class="mt-3 space-y-3">
+        <div>
+          <label for="grade" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Grade level</label>
+          <div class="input-wrap mt-1">
+            <i class="ph ph-graduation-cap i-left"></i>
+            <select id="grade" class="input has-left">
+              <option>Pre-K</option>
+              <option selected>Kindergarten</option>
+              <option>Grade 1</option>
+              <option>Grade 2</option>
+              <option>Grade 3</option>
+              <option>Grade 4</option>
+              <option>Grade 5</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Favorite subject</label>
+          <div class="mt-2 grid grid-cols-4 gap-2" id="subjectPicker">
+            <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center is-selected" data-subject="Math">
+              <span class="text-xl">➕</span>
+              <span class="pc-name text-xs mt-1">Math</span>
+            </button>
+            <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-subject="Alphabet">
+              <span class="text-xl">🔤</span>
+              <span class="pc-name text-xs mt-1">ABC</span>
+            </button>
+            <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-subject="Animals">
+              <span class="text-xl">🐾</span>
+              <span class="pc-name text-xs mt-1">Animals</span>
+            </button>
+            <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-subject="Words">
+              <span class="text-xl">💬</span>
+              <span class="pc-name text-xs mt-1">Words</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Daily goal</label>
+          <div class="mt-2 grid grid-cols-4 gap-2" id="goalPicker">
+            <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-goal="5">
+              <span class="h-display text-base">5</span>
+              <span class="pc-name text-[10px] mt-0.5">min</span>
+            </button>
+            <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center is-selected" data-goal="10">
+              <span class="h-display text-base">10</span>
+              <span class="pc-name text-[10px] mt-0.5">min</span>
+            </button>
+            <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-goal="20">
+              <span class="h-display text-base">20</span>
+              <span class="pc-name text-[10px] mt-0.5">min</span>
+            </button>
+            <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-goal="30">
+              <span class="h-display text-base">30</span>
+              <span class="pc-name text-[10px] mt-0.5">min</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== PARENT =============== -->
+    <div>
+      <p class="section-label">Parent contact</p>
+      <div class="mt-3 space-y-3">
+        <div>
+          <label for="parentEmail" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Parent email</label>
+          <div class="input-wrap mt-1">
+            <i class="ph ph-envelope-simple i-left"></i>
+            <input id="parentEmail" type="email" class="input has-left" value="parent@example.com" required autocomplete="email"/>
+          </div>
+          <p id="emailHint" class="text-[10px] text-muted mt-1">
+            <i class="ph-fill ph-check-circle text-mint-ink"></i>
+            <span>Verified · used only for weekly reports.</span>
+          </p>
+        </div>
+        <a href="parent-verify.html" class="setting-row">
+          <div class="setting-ico tile-violet"><i class="ph-fill ph-shield-check"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Parent zone &amp; controls</p>
+            <p class="text-[11px] text-muted">Screen-time, privacy, weekly reports</p>
+          </div>
+          <i class="ph ph-caret-right text-muted"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- =============== PRIVACY =============== -->
+    <div>
+      <p class="section-label">Privacy on leaderboards</p>
+      <div class="mt-3 space-y-2">
+        <label class="setting-row cursor-pointer">
+          <div class="setting-ico tile-mint"><i class="ph-fill ph-eye"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Show on global ranking</p>
+            <p class="text-[11px] text-muted">Display name + emoji avatar only</p>
+          </div>
+          <span class="ks-switch">
+            <input type="checkbox" checked/>
+            <span class="track"></span>
+            <span class="thumb"></span>
+          </span>
+        </label>
+        <label class="setting-row cursor-pointer">
+          <div class="setting-ico tile-sky"><i class="ph-fill ph-users-three"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Allow friend requests</p>
+            <p class="text-[11px] text-muted">Parent approval always required</p>
+          </div>
+          <span class="ks-switch">
+            <input type="checkbox" checked/>
+            <span class="track"></span>
+            <span class="thumb"></span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- =============== DANGER =============== -->
+    <div class="pb-32">
+      <p class="section-label">Danger zone</p>
+      <div class="mt-3 space-y-2">
+        <button type="button" id="resetBtn" class="setting-row w-full text-left">
+          <div class="setting-ico tile-sun"><i class="ph-fill ph-arrows-clockwise"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Reset progress</p>
+            <p class="text-[11px] text-muted">Clears XP &amp; streak — keeps avatar</p>
+          </div>
+          <i class="ph ph-caret-right text-muted"></i>
+        </button>
+        <button type="button" id="deleteBtn" class="setting-row danger w-full text-left">
+          <div class="setting-ico"><i class="ph-fill ph-trash"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm">Delete kid profile</p>
+            <p class="text-[11px] text-muted">All data removed within 24h</p>
+          </div>
+          <i class="ph ph-caret-right text-muted"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</main>
+
+<!-- =============== STICKY SAVE BAR =============== -->
+<div class="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
+  <div class="mx-auto max-w-[430px] pointer-events-auto">
+    <div class="bg-surface border-t border-token safe-bottom px-5 pt-3 pb-3 flex items-center gap-2">
+      <button type="button" id="cancelBtn" class="btn btn-ghost grow">Cancel</button>
+      <button type="button" id="saveBtn" class="btn btn-primary grow">
+        <i class="ph-fill ph-check"></i> Save
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =============== AVATAR BOTTOM SHEET =============== -->
+<div id="avatarSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="avatarTitle">
+  <button type="button" data-sheet="avatarSheet" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm" aria-label="Close"></button>
+  <div class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div class="size-12 rounded-2xl tile-pink grid place-items-center text-2xl shrink-0">🎨</div>
+        <div class="grow min-w-0">
+          <p id="avatarTitle" class="h-display text-xl leading-tight text-ink">Choose avatar</p>
+          <p class="text-xs text-muted mt-1">24 playful animal emoji — no real photos.</p>
+        </div>
+        <button type="button" class="icon-btn shrink-0" data-sheet="avatarSheet" aria-label="Close">
+          <i class="ph ph-x"></i>
+        </button>
+      </div>
+      <div class="mt-4 grid grid-cols-6 gap-2" id="avatarAll">
+        <button type="button" class="aspect-square rounded-2xl tile-sun grid place-items-center text-2xl pick-card" data-avatar-all="🐻">🐻</button>
+        <button type="button" class="aspect-square rounded-2xl tile-mint grid place-items-center text-2xl pick-card" data-avatar-all="🐰">🐰</button>
+        <button type="button" class="aspect-square rounded-2xl tile-coral grid place-items-center text-2xl pick-card" data-avatar-all="🦊">🦊</button>
+        <button type="button" class="aspect-square rounded-2xl tile-sky grid place-items-center text-2xl pick-card" data-avatar-all="🐨">🐨</button>
+        <button type="button" class="aspect-square rounded-2xl tile-violet grid place-items-center text-2xl pick-card" data-avatar-all="🐼">🐼</button>
+        <button type="button" class="aspect-square rounded-2xl tile-pink grid place-items-center text-2xl pick-card" data-avatar-all="🦄">🦄</button>
+        <button type="button" class="aspect-square rounded-2xl tile-sun grid place-items-center text-2xl pick-card" data-avatar-all="🐯">🐯</button>
+        <button type="button" class="aspect-square rounded-2xl tile-mint grid place-items-center text-2xl pick-card" data-avatar-all="🐸">🐸</button>
+        <button type="button" class="aspect-square rounded-2xl tile-coral grid place-items-center text-2xl pick-card" data-avatar-all="🐵">🐵</button>
+        <button type="button" class="aspect-square rounded-2xl tile-sky grid place-items-center text-2xl pick-card" data-avatar-all="🐧">🐧</button>
+        <button type="button" class="aspect-square rounded-2xl tile-violet grid place-items-center text-2xl pick-card" data-avatar-all="🦉">🦉</button>
+        <button type="button" class="aspect-square rounded-2xl tile-pink grid place-items-center text-2xl pick-card" data-avatar-all="🐙">🐙</button>
+        <button type="button" class="aspect-square rounded-2xl tile-sun grid place-items-center text-2xl pick-card" data-avatar-all="🦁">🦁</button>
+        <button type="button" class="aspect-square rounded-2xl tile-mint grid place-items-center text-2xl pick-card" data-avatar-all="🐢">🐢</button>
+        <button type="button" class="aspect-square rounded-2xl tile-coral grid place-items-center text-2xl pick-card" data-avatar-all="🦀">🦀</button>
+        <button type="button" class="aspect-square rounded-2xl tile-sky grid place-items-center text-2xl pick-card" data-avatar-all="🐬">🐬</button>
+        <button type="button" class="aspect-square rounded-2xl tile-violet grid place-items-center text-2xl pick-card" data-avatar-all="🦋">🦋</button>
+        <button type="button" class="aspect-square rounded-2xl tile-pink grid place-items-center text-2xl pick-card" data-avatar-all="🐞">🐞</button>
+        <button type="button" class="aspect-square rounded-2xl tile-sun grid place-items-center text-2xl pick-card" data-avatar-all="🦒">🦒</button>
+        <button type="button" class="aspect-square rounded-2xl tile-mint grid place-items-center text-2xl pick-card" data-avatar-all="🦥">🦥</button>
+        <button type="button" class="aspect-square rounded-2xl tile-coral grid place-items-center text-2xl pick-card" data-avatar-all="🐶">🐶</button>
+        <button type="button" class="aspect-square rounded-2xl tile-sky grid place-items-center text-2xl pick-card" data-avatar-all="🐱">🐱</button>
+        <button type="button" class="aspect-square rounded-2xl tile-violet grid place-items-center text-2xl pick-card" data-avatar-all="🐴">🐴</button>
+        <button type="button" class="aspect-square rounded-2xl tile-pink grid place-items-center text-2xl pick-card" data-avatar-all="🦩">🦩</button>
+      </div>
+      <button type="button" data-sheet="avatarSheet" class="btn btn-primary w-full mt-5">Done</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/edit-profile.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/edit-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:59 GMT -->
+</html>

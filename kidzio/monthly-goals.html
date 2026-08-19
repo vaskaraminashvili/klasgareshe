@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/monthly-goals.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:59 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Monthly goals · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+<script src="assets/js/charts.js"></script>
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="parent-controls.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Family progress</p>
+      <h1 class="h-display text-lg leading-tight">Monthly goals</h1>
+    </div>
+    <button type="button" id="monthBtn" class="chip chip-primary"><i class="ph-fill ph-calendar"></i> <span id="monthLabel">April</span></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-rewards text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-24 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-5xl">🎯</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <i class="ph-fill ph-sparkle"></i> APRIL SO FAR
+      </p>
+      <p class="relative h-display text-4xl mt-2 leading-none text-white"><span id="monthPct">0</span>%</p>
+      <p class="relative text-xs text-white/90 mt-1">of April's goals completed</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none text-white"><span id="xpVal">0</span></p>
+          <p class="text-[10px] text-white/85 mt-1">XP earned</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none text-white"><span id="doneVal">0</span>/4</p>
+          <p class="text-[10px] text-white/85 mt-1">Goals hit</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none text-white"><span id="rateVal">0</span></p>
+          <p class="text-[10px] text-white/85 mt-1">XP / day</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex items-center gap-2 flex-wrap">
+        <span class="chip bg-white/20 border-0 text-white"><i class="ph-fill ph-clock"></i> 13 days left</span>
+        <span class="chip bg-white/20 border-0 text-white ml-auto"><i class="ph-fill ph-trend-up"></i> +12% vs last</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== DONUT + INSIGHT =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">April progress</h2>
+      <span class="link cursor-default" id="insightChip">On track</span>
+    </div>
+    <div class="k-card p-4 mt-3 flex items-center gap-4">
+      <div id="donut" class="shrink-0"></div>
+      <div class="grow min-w-0">
+        <p class="font-extrabold text-sm text-ink" id="insightTitle">You're ahead of pace</p>
+        <p class="text-xs text-muted mt-1" id="insightBody">At this rate, Luna hits 1,860 XP — 360 above the 1,500 goal.</p>
+        <div class="mt-2 flex items-center gap-2 flex-wrap">
+          <span class="chip chip-mint">+12% ↑</span>
+          <span class="chip">vs March</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== WEEKLY XP =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Weekly XP</h2>
+      <span class="link cursor-default" id="weeklyTotal">1,030 XP</span>
+    </div>
+    <div class="k-card p-4">
+      <div id="bars"></div>
+      <div class="mt-3 grid grid-cols-4 gap-2" id="weekRail">
+        <button type="button" class="chip" data-week="W1">W1</button>
+        <button type="button" class="chip" data-week="W2">W2</button>
+        <button type="button" class="chip" data-week="W3">W3</button>
+        <button type="button" class="chip" data-week="W4">W4</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== GOALS =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Goals this month</h2>
+      <button type="button" id="addGoalBtn" class="link">+ Add</button>
+    </div>
+    <div class="space-y-3 mt-3" id="goalList">
+      <button type="button" class="k-card flex items-center gap-3 w-full text-left" data-goal data-name="Finish 12 lessons" data-now="9" data-target="12" data-unit="lessons" data-tile="tile-mint" data-progress="progress-mint" data-emoji="📚">
+        <div class="size-11 rounded-2xl tile-mint grid place-items-center text-xl shrink-0">📚</div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Finish 12 lessons</p>
+            <span class="chip chip-mint">75%</span>
+          </div>
+          <p class="text-[11px] text-muted">9 / 12 · on track</p>
+          <div class="progress progress-mint mt-1"><span class="w-75"></span></div>
+        </div>
+        <i class="ph ph-caret-right text-muted shrink-0"></i>
+      </button>
+      <button type="button" class="k-card flex items-center gap-3 w-full text-left" data-goal data-name="Earn 1,500 XP" data-now="930" data-target="1500" data-unit="XP" data-tile="tile-sun" data-progress="progress-sun" data-emoji="⭐">
+        <div class="size-11 rounded-2xl tile-sun grid place-items-center text-xl shrink-0">⭐</div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Earn 1,500 XP</p>
+            <span class="chip chip-sun">62%</span>
+          </div>
+          <p class="text-[11px] text-muted">930 / 1,500 · on pace</p>
+          <div class="progress progress-sun mt-1"><span class="w-62"></span></div>
+        </div>
+        <i class="ph ph-caret-right text-muted shrink-0"></i>
+      </button>
+      <button type="button" class="k-card flex items-center gap-3 w-full text-left" data-goal data-name="20-day streak" data-now="7" data-target="20" data-unit="days" data-tile="tile-coral" data-progress="progress-coral" data-emoji="🔥">
+        <div class="size-11 rounded-2xl tile-coral grid place-items-center text-xl shrink-0">🔥</div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">20-day streak</p>
+            <span class="chip chip-coral">35%</span>
+          </div>
+          <p class="text-[11px] text-muted">7 / 20 · needs 13 more days</p>
+          <div class="progress progress-coral mt-1"><span class="w-33"></span></div>
+        </div>
+        <i class="ph ph-caret-right text-muted shrink-0"></i>
+      </button>
+      <button type="button" class="k-card flex items-center gap-3 w-full text-left" data-goal data-name="Unlock 3 badges" data-now="2" data-target="3" data-unit="badges" data-tile="tile-sky" data-progress="" data-emoji="🏅">
+        <div class="size-11 rounded-2xl tile-sky grid place-items-center text-xl shrink-0">🏅</div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Unlock 3 badges</p>
+            <span class="chip chip-primary">66%</span>
+          </div>
+          <p class="text-[11px] text-muted">2 / 3 · one badge away</p>
+          <div class="progress mt-1"><span class="w-66"></span></div>
+        </div>
+        <i class="ph ph-caret-right text-muted shrink-0"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== REWARD CTA =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="k-card-lg hero-friends text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-20 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-4xl">🎁</div>
+      </div>
+      <p class="relative h-display text-xl mt-3 leading-tight">Finish all 4 to unlock</p>
+      <p class="relative text-xs text-white/90 mt-1">Golden badge + 200 XP bonus · 2 / 4 done</p>
+      <div class="relative mt-3 flex items-center gap-3">
+        <div class="progress on-gradient grow"><span id="rewardFill" class="w-50 transition-all duration-700"></span></div>
+        <span class="text-sm font-extrabold shrink-0">50%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab active" href="home.html"><span class="tab-ico"><i class="ph-fill ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab" href="learn-categories.html"><span class="tab-ico"><i class="ph ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+
+<!-- =============== GOAL DETAIL BOTTOM SHEET =============== -->
+<div id="goalSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="goalSheetTitle">
+  <button type="button" id="goalBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="goalPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div id="goalTile" class="size-14 rounded-2xl tile-mint grid place-items-center text-3xl shrink-0">📚</div>
+        <div class="grow min-w-0">
+          <p id="goalSheetTitle" class="h-display text-xl leading-tight text-ink">Finish 12 lessons</p>
+          <p id="goalSheetSub" class="text-xs text-muted mt-0.5">9 / 12 · on track</p>
+        </div>
+        <button type="button" id="goalSheetClose" class="icon-btn shrink-0" aria-label="Close"><i class="ph ph-x"></i></button>
+      </div>
+
+      <div class="mt-5 flex items-center gap-3">
+        <div id="goalRing" class="shrink-0"></div>
+        <div class="grow space-y-1">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-muted">Pace</span>
+            <span class="font-extrabold text-ink" id="goalPace">On track</span>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-muted">Projected</span>
+            <span class="font-extrabold text-ink" id="goalProj">—</span>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-muted">Time left</span>
+            <span class="font-extrabold text-ink">13 days</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="section-label mt-5">Adjust target</p>
+      <div class="mt-2 flex items-center justify-between gap-3">
+        <button type="button" id="targetMinus" class="size-12 rounded-2xl tile-sky grid place-items-center active:scale-95 transition" aria-label="Decrease"><i class="ph-fill ph-minus text-xl"></i></button>
+        <div class="grow text-center">
+          <p class="h-display text-3xl text-ink leading-none" id="targetVal">12</p>
+          <p class="text-[11px] text-muted mt-1" id="targetUnit">lessons</p>
+        </div>
+        <button type="button" id="targetPlus" class="size-12 rounded-2xl tile-mint grid place-items-center active:scale-95 transition" aria-label="Increase"><i class="ph-fill ph-plus text-xl"></i></button>
+      </div>
+
+      <p class="section-label mt-5">Reminders</p>
+      <div class="mt-2 space-y-2">
+        <label class="setting-row cursor-pointer">
+          <div class="setting-ico tile-sun"><i class="ph-fill ph-bell"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Daily nudge</p>
+            <p class="text-[11px] text-muted">6:30 PM — if not already played</p>
+          </div>
+          <span class="ks-switch"><input type="checkbox" checked/><span class="track"></span><span class="thumb"></span></span>
+        </label>
+        <label class="setting-row cursor-pointer">
+          <div class="setting-ico tile-coral"><i class="ph-fill ph-trend-up"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Pace alert</p>
+            <p class="text-[11px] text-muted">Email when this goal falls behind</p>
+          </div>
+          <span class="ks-switch"><input type="checkbox"/><span class="track"></span><span class="thumb"></span></span>
+        </label>
+      </div>
+
+      <div class="mt-5 grid grid-cols-2 gap-2">
+        <button type="button" id="goalReset" class="btn btn-ghost"><i class="ph ph-arrow-counter-clockwise"></i> Reset</button>
+        <button type="button" id="goalSave" class="btn btn-primary"><i class="ph-fill ph-check"></i> Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== MONTH PICKER SHEET =============== -->
+<div id="monthSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="monthTitle">
+  <button type="button" id="monthBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="monthPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div class="size-12 rounded-2xl tile-violet grid place-items-center text-2xl shrink-0">📅</div>
+        <div class="grow min-w-0">
+          <p id="monthTitle" class="h-display text-xl leading-tight text-ink">Pick a month</p>
+          <p class="text-xs text-muted mt-1">Compare progress across months</p>
+        </div>
+        <button type="button" id="monthSheetClose" class="icon-btn shrink-0" aria-label="Close"><i class="ph ph-x"></i></button>
+      </div>
+      <div class="mt-4 space-y-2" id="monthRows">
+        <button type="button" class="setting-row w-full text-left" data-month="April" data-pct="62" data-xp="930" data-active>
+          <div class="setting-ico tile-sun"><i class="ph-fill ph-calendar-dots"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">April 2026</p>
+            <p class="text-[11px] text-muted">In progress · 62% · 930 XP</p>
+          </div>
+          <span class="chip chip-primary">Active</span>
+        </button>
+        <button type="button" class="setting-row w-full text-left" data-month="March" data-pct="100" data-xp="1620">
+          <div class="setting-ico tile-mint"><i class="ph-fill ph-calendar-check"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">March 2026</p>
+            <p class="text-[11px] text-muted">Done · 108% · 1,620 XP</p>
+          </div>
+          <span class="chip chip-mint">🏆</span>
+        </button>
+        <button type="button" class="setting-row w-full text-left" data-month="February" data-pct="86" data-xp="1290">
+          <div class="setting-ico tile-sky"><i class="ph-fill ph-calendar-check"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">February 2026</p>
+            <p class="text-[11px] text-muted">Done · 86% · 1,290 XP</p>
+          </div>
+          <span class="chip">✓</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== ADD GOAL SHEET =============== -->
+<div id="addSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="addTitle">
+  <button type="button" id="addBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="addPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl shrink-0">🎯</div>
+        <div class="grow min-w-0">
+          <p id="addTitle" class="h-display text-xl leading-tight text-ink">Add a goal</p>
+          <p class="text-xs text-muted mt-1">Pick a preset or build your own.</p>
+        </div>
+        <button type="button" id="addSheetClose" class="icon-btn shrink-0" aria-label="Close"><i class="ph ph-x"></i></button>
+      </div>
+      <p class="section-label mt-5">Presets</p>
+      <div class="mt-2 grid grid-cols-2 gap-2">
+        <button type="button" class="pick-card !p-3 flex-col text-left" data-preset="Read 30 min / day">
+          <span class="text-xl">📖</span>
+          <span class="pc-name mt-1">Read 30 min / day</span>
+          <span class="pc-sub">Habit · daily</span>
+        </button>
+        <button type="button" class="pick-card !p-3 flex-col text-left" data-preset="Spell 50 new words">
+          <span class="text-xl">✏️</span>
+          <span class="pc-name mt-1">Spell 50 new words</span>
+          <span class="pc-sub">Skill · monthly</span>
+        </button>
+        <button type="button" class="pick-card !p-3 flex-col text-left" data-preset="Finish Math chapter 2">
+          <span class="text-xl">➗</span>
+          <span class="pc-name mt-1">Finish Math ch. 2</span>
+          <span class="pc-sub">Milestone</span>
+        </button>
+        <button type="button" class="pick-card !p-3 flex-col text-left" data-preset="Keep a 30-day streak">
+          <span class="text-xl">🔥</span>
+          <span class="pc-name mt-1">30-day streak</span>
+          <span class="pc-sub">Consistency</span>
+        </button>
+      </div>
+      <button type="button" id="addCustomBtn" class="btn btn-ghost w-full mt-4"><i class="ph ph-pencil-simple"></i> Custom goal</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/monthly-goals.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/monthly-goals.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:59 GMT -->
+</html>

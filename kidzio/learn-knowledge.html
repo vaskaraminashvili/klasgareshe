@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-knowledge.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Knowledge · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="learn-categories.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Learn · Category</p>
+      <h1 class="h-display text-lg leading-tight">Knowledge</h1>
+    </div>
+    <button class="icon-btn" aria-label="Favourite"><i class="ph ph-heart text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-knowledge">
+      <span class="hero-knowledge-watermark" aria-hidden="true">🌍</span>
+
+      <div class="relative flex items-center gap-2">
+        <span class="chip bg-white/20 border-0 text-white">
+          <i class="ph-fill ph-globe-hemisphere-west"></i> WORLD &amp; SCIENCE
+        </span>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">Age 7+</span>
+      </div>
+
+      <p class="h-display text-2xl mt-2 relative leading-tight">Curious minds 🔭</p>
+      <p class="text-sm text-white/90 relative">Discover planets, plants, oceans and more.</p>
+
+      <div class="relative mt-4 flex items-center gap-3">
+        <div class="progress on-gradient grow"><span class="w-25"></span></div>
+        <span class="text-sm font-extrabold shrink-0">3 / 12</span>
+      </div>
+      <p class="relative text-[11px] text-white/85 mt-1">25% complete · 9 topics left to explore</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="count-pill">
+          <span class="count-value">12</span>
+          <span class="count-label">Topics</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">150</span>
+          <span class="count-label">Fun facts</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">5</span>
+          <span class="count-label">Badges</span>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex flex-wrap items-center gap-2">
+        <a href="game-knowledge.html" class="cta-soft">
+          Take the challenge <i class="ph-fill ph-arrow-right"></i>
+        </a>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">
+          <i class="ph-fill ph-lightning"></i> +150 XP
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== DID YOU KNOW =============== -->
+  <section class="px-5 mt-4">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="size-11 rounded-2xl tile-sky grid place-items-center text-xl shrink-0">💡</div>
+      <div class="grow">
+        <p class="text-[10px] font-extrabold uppercase tracking-wider text-muted">DID YOU KNOW?</p>
+        <p class="font-extrabold text-sm text-ink">A day on Venus is longer than its year!</p>
+        <p class="text-[11px] text-muted">It takes Venus 243 Earth days to spin once.</p>
+      </div>
+      <button class="icon-btn shrink-0" aria-label="Next fact"><i class="ph ph-arrows-clockwise"></i></button>
+    </div>
+  </section>
+
+  <!-- =============== TOPIC FILTERS =============== -->
+  <section class="px-5 mt-4">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" data-tabs role="tablist" aria-label="Filter topics">
+      <div class="swiper-wrapper">
+      <button class="swiper-slide chip chip-primary" data-tab="all" role="tab" aria-selected="true">✨ All topics</button>
+      <button class="swiper-slide chip" data-tab="space" role="tab">🪐 Space</button>
+      <button class="swiper-slide chip" data-tab="nature" role="tab">🌱 Nature</button>
+      <button class="swiper-slide chip" data-tab="body" role="tab">🧬 Human body</button>
+      <button class="swiper-slide chip" data-tab="history" role="tab">🏛️ History</button>
+      <button class="swiper-slide chip" data-tab="tech" role="tab">🧪 Science</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== EXPLORE TOPICS =============== -->
+  <section class="px-5 mt-4">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Explore topics</h2>
+      <span class="link cursor-default">12 topics</span>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <a href="lesson-details.html" class="explore-card">
+        <span class="ex-tag">NEW</span>
+        <div class="ex-emoji tile-violet">🪐</div>
+        <p class="ex-title">Space &amp; planets</p>
+        <p class="ex-sub">5 lessons · +150 XP</p>
+        <div class="progress mt-auto"><span class="w-40"></span></div>
+      </a>
+      <a href="lesson-details.html" class="explore-card">
+        <div class="ex-emoji tile-mint">🌱</div>
+        <p class="ex-title">How plants grow</p>
+        <p class="ex-sub">4 lessons · +120 XP</p>
+        <div class="progress progress-mint mt-auto"><span class="w-20"></span></div>
+      </a>
+      <a href="lesson-details.html" class="explore-card">
+        <div class="ex-emoji tile-sun">🌤️</div>
+        <p class="ex-title">Weather</p>
+        <p class="ex-sub">3 lessons · +90 XP</p>
+        <div class="progress progress-sun mt-auto"><span class="w-66"></span></div>
+      </a>
+      <a href="lesson-details.html" class="explore-card">
+        <div class="ex-emoji tile-sky">🌊</div>
+        <p class="ex-title">Oceans</p>
+        <p class="ex-sub">4 lessons · +120 XP</p>
+        <div class="progress progress-coral mt-auto"><span class="w-10"></span></div>
+      </a>
+      <a href="lesson-details.html" class="explore-card">
+        <div class="ex-emoji tile-coral">🧲</div>
+        <p class="ex-title">Magnets</p>
+        <p class="ex-sub">2 lessons · +60 XP</p>
+        <div class="progress mt-auto"><span class="w-0"></span></div>
+      </a>
+      <a href="lesson-locked.html" class="explore-card is-locked">
+        <div class="ex-emoji tile-sun">🦖</div>
+        <p class="ex-title">Dinosaurs</p>
+        <p class="ex-sub">Unlock at 1,500 XP</p>
+        <span class="chip mt-auto w-fit"><i class="ph-fill ph-lock text-xs"></i> Locked</span>
+      </a>
+      <a href="lesson-locked.html" class="explore-card is-locked">
+        <div class="ex-emoji tile-pink">🧬</div>
+        <p class="ex-title">Human body</p>
+        <p class="ex-sub">Unlock at 1,800 XP</p>
+        <span class="chip mt-auto w-fit"><i class="ph-fill ph-lock text-xs"></i> Locked</span>
+      </a>
+      <a href="lesson-locked.html" class="explore-card is-locked">
+        <div class="ex-emoji tile-violet">🏛️</div>
+        <p class="ex-title">History</p>
+        <p class="ex-sub">Unlock at 2,000 XP</p>
+        <span class="chip mt-auto w-fit"><i class="ph-fill ph-lock text-xs"></i> Locked</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== FUN FACTS CAROUSEL =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">🧠 Fun facts</h2>
+      <span class="link cursor-default">Swipe for more</span>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <div class="swiper-slide fact-card">
+        <div class="fact-emoji tile-violet">🪐</div>
+        <div>
+          <p class="fact-title">Saturn floats!</p>
+          <p class="fact-body">It's so light it would float in water — if you found a bathtub big enough.</p>
+        </div>
+      </div>
+      <div class="swiper-slide fact-card">
+        <div class="fact-emoji tile-mint">🌱</div>
+        <div>
+          <p class="fact-title">Plants breathe too</p>
+          <p class="fact-body">They take in CO₂ and release the oxygen we breathe.</p>
+        </div>
+      </div>
+      <div class="swiper-slide fact-card">
+        <div class="fact-emoji tile-sky">🌊</div>
+        <div>
+          <p class="fact-title">Ocean is deep</p>
+          <p class="fact-body">The deepest spot is 11 km down — taller than Mount Everest upside-down!</p>
+        </div>
+      </div>
+      <div class="swiper-slide fact-card">
+        <div class="fact-emoji tile-sun">🌤️</div>
+        <div>
+          <p class="fact-title">Rainbows are round</p>
+          <p class="fact-body">We only see an arc — from a plane you'd see a full circle.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== KNOWLEDGE CHALLENGE =============== -->
+  <section class="px-5 mt-5">
+    <a href="game-knowledge.html" class="k-card-lg quiz-cta relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">🧠</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">🧠</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">KNOWLEDGE CHALLENGE</p>
+          <p class="h-display text-lg leading-tight">10 questions · earn badge</p>
+          <p class="text-xs text-white/90">~3 min · test your science smarts</p>
+        </div>
+        <span class="cta-soft shrink-0">Start</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== KNOWLEDGE GAMES =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">🎮 Knowledge games</h2>
+      <a href="learn-categories.html" class="link">More</a>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <a href="game-knowledge.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-violet grid place-items-center text-2xl mx-auto mb-2">🧠</div>
+        <p class="font-extrabold text-sm">Science quiz</p>
+        <p class="text-[11px] text-muted">10 Q · +80 XP</p>
+      </a>
+      <a href="game-match-word.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-mint grid place-items-center text-2xl mx-auto mb-2">🧩</div>
+        <p class="font-extrabold text-sm">Match concept</p>
+        <p class="text-[11px] text-muted">Drag &amp; drop</p>
+      </a>
+      <a href="game-guess-animal.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-sky grid place-items-center text-2xl mx-auto mb-2">🔍</div>
+        <p class="font-extrabold text-sm">Guess it!</p>
+        <p class="text-[11px] text-muted">From clues</p>
+      </a>
+      <a href="game-multiple-choice.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl mx-auto mb-2">❓</div>
+        <p class="font-extrabold text-sm">Trivia</p>
+        <p class="text-[11px] text-muted">Quick round</p>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== KNOWLEDGE BADGES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🏅 Knowledge badges</h2>
+      <a href="badges.html" class="link">All 5</a>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal mx-auto">🌤️</div>
+        <p class="text-xs font-extrabold mt-2">Weather Wiz</p>
+        <p class="text-[10px] text-muted">Earned</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal silver mx-auto">🪐</div>
+        <p class="text-xs font-extrabold mt-2">Space Scout</p>
+        <p class="text-[10px] text-muted">40%</p>
+      </div>
+      <div class="k-card p-3 text-center locked">
+        <div class="badge-medal mx-auto">🦖</div>
+        <p class="text-xs font-extrabold mt-2">Dino Expert</p>
+        <p class="text-[10px] text-muted">Locked</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Curiosity leads</p>
+        <p class="text-xs text-muted">Let kids pick topics that excite them. One "why?" question can spark hours of learning.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Discover</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab active" href="learn-categories.html"><span class="tab-ico"><i class="ph-fill ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-knowledge.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:42 GMT -->
+</html>

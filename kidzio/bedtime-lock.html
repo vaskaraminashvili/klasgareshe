@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/bedtime-lock.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:15 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Bedtime lock · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="settings.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Parent zone</p>
+      <h1 class="h-display text-lg leading-tight">Bedtime lock</h1>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-xp text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-28 rounded-full bg-white/20 backdrop-blur-sm grid place-items-center text-6xl">🌙</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <i class="ph-fill ph-bed"></i> SLEEP HOURS
+      </p>
+      <p class="relative h-display text-4xl mt-2 leading-none">9 PM — 7 AM</p>
+      <p class="relative text-xs text-white/90 mt-1">App is hidden during sleep</p>
+    </div>
+  </section>
+
+  <!-- =============== ENABLE TOGGLE =============== -->
+  <section class="px-5 mt-5">
+    <label class="setting-row cursor-pointer">
+      <div class="setting-ico tile-violet"><i class="ph-fill ph-moon"></i></div>
+      <div class="grow min-w-0">
+        <p class="setting-text font-extrabold text-sm text-ink">Enable bedtime lock</p>
+        <p class="text-[11px] text-muted">App pauses during sleep hours</p>
+      </div>
+      <span class="ks-switch">
+        <input type="checkbox" checked/>
+        <span class="track"></span>
+        <span class="thumb"></span>
+      </span>
+    </label>
+  </section>
+
+  <!-- =============== TIME PICKERS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Sleep schedule</p>
+    <div class="mt-3 grid grid-cols-2 gap-3">
+      <div class="k-card p-4 text-center">
+        <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">BEDTIME</p>
+        <p class="h-display text-2xl mt-1 text-ink">9:00</p>
+        <p class="text-xs text-muted">PM · lock starts</p>
+        <button class="btn btn-soft h-9 min-h-0 w-full mt-2 text-xs">Change</button>
+      </div>
+      <div class="k-card p-4 text-center">
+        <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">WAKE UP</p>
+        <p class="h-display text-2xl mt-1 text-ink">7:00</p>
+        <p class="text-xs text-muted">AM · lock ends</p>
+        <button class="btn btn-soft h-9 min-h-0 w-full mt-2 text-xs">Change</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== DAYS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Active on these days</p>
+    <div class="mt-3 grid grid-cols-7 gap-2">
+      <button class="pick-card !p-2 !gap-1 flex-col items-center is-selected" data-day><span class="text-[10px] text-muted font-extrabold">M</span><span class="pc-check"></span></button>
+      <button class="pick-card !p-2 !gap-1 flex-col items-center is-selected" data-day><span class="text-[10px] text-muted font-extrabold">T</span><span class="pc-check"></span></button>
+      <button class="pick-card !p-2 !gap-1 flex-col items-center is-selected" data-day><span class="text-[10px] text-muted font-extrabold">W</span><span class="pc-check"></span></button>
+      <button class="pick-card !p-2 !gap-1 flex-col items-center is-selected" data-day><span class="text-[10px] text-muted font-extrabold">T</span><span class="pc-check"></span></button>
+      <button class="pick-card !p-2 !gap-1 flex-col items-center is-selected" data-day><span class="text-[10px] text-muted font-extrabold">F</span><span class="pc-check"></span></button>
+      <button class="pick-card !p-2 !gap-1 flex-col items-center" data-day><span class="text-[10px] text-muted font-extrabold">S</span><span class="pc-check"></span></button>
+      <button class="pick-card !p-2 !gap-1 flex-col items-center" data-day><span class="text-[10px] text-muted font-extrabold">S</span><span class="pc-check"></span></button>
+    </div>
+    <p class="text-[11px] text-muted text-center mt-2">Weekends have a later bedtime by default</p>
+  </section>
+
+  <!-- =============== OPTIONS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Options</p>
+    <div class="mt-3 space-y-2">
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-hourglass"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">15-min warning</p>
+          <p class="text-[11px] text-muted">Wind-down alert before lock</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-coral"><i class="ph-fill ph-bell-slash"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Silence notifications</p>
+          <p class="text-[11px] text-muted">No pings during sleep hours</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-lock-key"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Require PIN to override</p>
+          <p class="text-[11px] text-muted">Parent-only bypass</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+    </div>
+  </section>
+
+  <!-- =============== TIP =============== -->
+  <section class="px-5 mt-5 mb-10">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Healthy sleep</p>
+        <p class="text-xs text-muted">Screens before bed can disrupt melatonin. Kids ages 6–12 need 9–12 hours of sleep.</p>
+      </div>
+    </div>
+    <button class="btn btn-primary w-full mt-3" onclick="toast('Bedtime saved!');setTimeout(()=>location.href='settings.html',700)">Save changes</button>
+  </section>
+</main>
+
+<script src="assets/js/bedtime-lock.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/bedtime-lock.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:15 GMT -->
+</html>

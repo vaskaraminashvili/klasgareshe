@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Learn · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <div class="grow">
+      <p class="text-xs text-muted">Explore & play</p>
+      <h1 class="h-display text-2xl leading-tight">Learn Library</h1>
+    </div>
+    <button class="icon-btn" id="searchIconBtn" aria-label="Search"><i class="ph ph-magnifying-glass text-xl"></i></button>
+    <button class="icon-btn relative" id="filterIconBtn" aria-label="Filter">
+      <i class="ph ph-funnel text-xl"></i>
+      <span id="filterDot" class="hidden absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[var(--color-k-primary)] border-2 border-[var(--color-k-surface)]"></span>
+    </button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== ACTIVE QUERY STRIP (shows only when filtering) =============== -->
+  <section id="queryStrip" class="px-5 mt-3 hidden">
+    <div class="k-card p-2 flex items-center gap-2 flex-wrap">
+      <span class="text-xs text-muted shrink-0">Showing:</span>
+      <span id="queryChips" class="flex items-center gap-1 flex-wrap grow"></span>
+      <button type="button" id="clearAllBtn" class="chip chip-primary shrink-0"><i class="ph ph-x"></i> Clear</button>
+    </div>
+  </section>
+
+  <!-- =============== NO RESULTS (hidden by default) =============== -->
+  <section id="noResults" class="px-5 mt-4 hidden">
+    <div class="k-card text-center p-6">
+      <div class="size-16 mx-auto rounded-2xl tile-sky grid place-items-center text-3xl">🔍</div>
+      <p class="h-display text-lg mt-3 text-ink">Nothing found</p>
+      <p class="text-xs text-muted mt-1">Try a different word or clear the filter.</p>
+    </div>
+  </section>
+
+  <!-- =============== LEARN HERO =============== -->
+  <section class="px-5 mt-4">
+    <a href="daily-mission.html" class="k-card-lg hero-learn block relative overflow-hidden">
+      <div class="relative flex items-center gap-3">
+        <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl shrink-0">🎓</div>
+        <div class="grow">
+          <span class="chip bg-white/20 border-0 text-white">
+            <i class="ph-fill ph-sparkle"></i> TODAY'S SPOTLIGHT
+          </span>
+          <p class="h-display text-xl mt-1 leading-tight">Learn 5 new words</p>
+          <p class="text-xs text-white/90">Finish today's plan to grow your library</p>
+        </div>
+      </div>
+      <div class="relative mt-3 flex items-center gap-2">
+        <div class="progress on-gradient grow"><span class="w-40"></span></div>
+        <span class="text-sm font-extrabold">2 / 5</span>
+      </div>
+      <div class="relative mt-3 flex items-center gap-2">
+        <span class="cta-soft">Start now <i class="ph-fill ph-arrow-right"></i></span>
+        <span class="chip bg-white/20 border-0 text-white">+60 XP</span>
+        <span class="chip bg-white/20 border-0 text-white ml-auto"><i class="ph-fill ph-clock"></i> 3 min</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== SNAPSHOT STATS =============== -->
+  <section class="px-5 mt-4 grid grid-cols-3 gap-2">
+    <div class="stat items-start">
+      <span class="stat-label">Subjects</span>
+      <span class="stat-value">6</span>
+    </div>
+    <div class="stat items-start">
+      <span class="stat-label">Lessons</span>
+      <span class="stat-value">24 <span class="text-xs font-bold text-muted">/ 98</span></span>
+    </div>
+    <div class="stat items-start">
+      <span class="stat-label">Games</span>
+      <span class="stat-value">15</span>
+    </div>
+  </section>
+
+
+  <!-- =============== CATEGORIES GRID (enhanced) =============== -->
+  <section class="px-5 mt-4" data-search-section>
+    <div class="section-head">
+      <h2 class="h-display text-lg">All subjects</h2>
+      <span class="link cursor-default" data-section-count>6 total</span>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <!-- Math -->
+      <a href="learn-math.html" class="tile tile-violet" data-item data-name="Math" data-keywords="math numbers counting shapes addition subtract" data-tags="pop math" data-diff="easy" data-age="5" data-status="inprogress">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-violet-ink">24 lessons</span>
+          <span class="tile-ring tile-ring-violet" style="--pct: 35" aria-label="35% complete"><span>35%</span></span>
+        </div>
+        <h3 class="mt-4">Math</h3>
+        <p class="text-xs mt-1 text-violet-ink opacity-80">Numbers, counting, shapes</p>
+        <div class="mt-2 flex items-center gap-1">
+          <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold">Easy</span>
+          <span class="text-violet-ink text-[10px] font-extrabold opacity-80">Age 5–9</span>
+        </div>
+        <span class="tile-emoji">➗</span>
+      </a>
+
+      <!-- Alphabet -->
+      <a href="learn-alphabet.html" class="tile tile-sun" data-item data-name="Alphabet" data-keywords="alphabet abc letters phonics reading" data-tags="pop read" data-diff="easy" data-age="4" data-status="inprogress">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-sun-ink">18 lessons</span>
+          <span class="tile-ring tile-ring-sun" style="--pct: 62" aria-label="62% complete"><span>62%</span></span>
+        </div>
+        <h3 class="mt-4">Alphabet</h3>
+        <p class="text-xs mt-1 text-sun-ink opacity-80">A–Z letters &amp; sounds</p>
+        <div class="mt-2 flex items-center gap-1">
+          <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold">Easy</span>
+          <span class="text-sun-ink text-[10px] font-extrabold opacity-80">Age 4–7</span>
+        </div>
+        <span class="tile-emoji">🔤</span>
+      </a>
+
+      <!-- Animals -->
+      <a href="learn-animals.html" class="tile tile-mint" data-item data-name="Animals" data-keywords="animals wildlife habitats lion giraffe dog cat" data-tags="pop" data-diff="medium" data-age="6" data-status="inprogress">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-mint-ink">14 lessons</span>
+          <span class="tile-ring tile-ring-mint" style="--pct: 50" aria-label="50% complete"><span>50%</span></span>
+        </div>
+        <h3 class="mt-4">Animals</h3>
+        <p class="text-xs mt-1 text-mint-ink opacity-80">Wildlife &amp; habitats</p>
+        <div class="mt-2 flex items-center gap-1">
+          <span class="pill-medium rounded-full px-2 py-0.5 text-[10px] font-extrabold">Medium</span>
+          <span class="text-mint-ink text-[10px] font-extrabold opacity-80">Age 6+</span>
+        </div>
+        <span class="tile-emoji">🦁</span>
+      </a>
+
+      <!-- Words -->
+      <a href="learn-words.html" class="tile tile-coral" data-item data-name="Words" data-keywords="words sight spelling vocabulary reading" data-tags="read" data-diff="medium" data-age="5" data-status="inprogress">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-coral-ink">20 lessons</span>
+          <span class="tile-ring tile-ring-coral" style="--pct: 20" aria-label="20% complete"><span>20%</span></span>
+        </div>
+        <h3 class="mt-4">Words</h3>
+        <p class="text-xs mt-1 text-coral-ink opacity-80">Sight words &amp; spelling</p>
+        <div class="mt-2 flex items-center gap-1">
+          <span class="pill-medium rounded-full px-2 py-0.5 text-[10px] font-extrabold">Medium</span>
+          <span class="text-coral-ink text-[10px] font-extrabold opacity-80">Age 5–8</span>
+        </div>
+        <span class="tile-emoji">📚</span>
+      </a>
+
+      <!-- Knowledge -->
+      <a href="learn-knowledge.html" class="tile tile-sky" data-item data-name="Knowledge" data-keywords="knowledge world science space planets general" data-tags="new" data-diff="hard" data-age="8" data-status="new">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-sky-ink">12 lessons</span>
+          <span class="day-badge">NEW</span>
+        </div>
+        <h3 class="mt-4">Knowledge</h3>
+        <p class="text-xs mt-1 text-sky-ink opacity-80">World &amp; science</p>
+        <div class="mt-2 flex items-center gap-1">
+          <span class="pill-hard rounded-full px-2 py-0.5 text-[10px] font-extrabold">Challenge</span>
+          <span class="text-sky-ink text-[10px] font-extrabold opacity-80">Age 7+</span>
+        </div>
+        <span class="tile-emoji">🌍</span>
+      </a>
+
+      <!-- Opposites -->
+      <a href="learn-opposites.html" class="tile tile-pink" data-item data-name="Opposites" data-keywords="opposites big small hot cold up down" data-tags="new" data-diff="easy" data-age="4" data-status="new">
+        <div class="flex items-start justify-between">
+          <span class="tile-meta text-coral-ink">10 lessons</span>
+          <span class="tile-ring tile-ring-pink" style="--pct: 0" aria-label="Not started"><span>0%</span></span>
+        </div>
+        <h3 class="mt-4">Opposites</h3>
+        <p class="text-xs mt-1 text-coral-ink opacity-80">Big &amp; small, hot &amp; cold</p>
+        <div class="mt-2 flex items-center gap-1">
+          <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold">Easy</span>
+          <span class="text-coral-ink text-[10px] font-extrabold opacity-80">Age 4–6</span>
+        </div>
+        <span class="tile-emoji">⚖️</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== TRENDING NOW =============== -->
+  <section class="mt-6" data-search-section>
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">🔥 Trending now</h2>
+      <a href="rewards-dashboard.html" class="link">See all</a>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <a href="game-multiple-choice.html" class="swiper-slide trend-card" data-item data-name="Quick Quiz" data-keywords="quiz multiple choice questions" data-tags="pop games">
+        <div class="trend-ico tile-violet">❓</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Quick Quiz</p>
+          <p class="text-xs text-muted">Played 240× today</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="game-match-animal.html" class="swiper-slide trend-card" data-item data-name="Match animal" data-keywords="animals match giraffe zebra lion" data-tags="pop games">
+        <div class="trend-ico tile-mint">🦒</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Match animal</p>
+          <p class="text-xs text-muted">Played 180× today</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="game-spell-word.html" class="swiper-slide trend-card" data-item data-name="Spell the word" data-keywords="spell words letters apple" data-tags="pop games read">
+        <div class="trend-ico tile-sun">✏️</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Spell the word</p>
+          <p class="text-xs text-muted">Played 150× today</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== MINI-GAMES =============== -->
+  <section class="mt-5" data-search-section>
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">Mini-games</h2>
+      <a href="game-counting.html" class="link">Play &amp; learn</a>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <a href="game-multiple-choice.html" class="swiper-slide k-card w-40 text-center" data-item data-name="Quick Quiz" data-keywords="quiz questions multiple choice" data-tags="games pop">
+        <div class="size-12 rounded-2xl tile-violet grid place-items-center text-2xl mx-auto mb-2">❓</div>
+        <p class="font-extrabold text-sm text-ink">Quick Quiz</p>
+        <p class="text-xs text-muted">10 Q · 2 min</p>
+      </a>
+      <a href="game-match-word.html" class="swiper-slide k-card w-40 text-center" data-item data-name="Match Words" data-keywords="match drag drop words vocabulary" data-tags="games read">
+        <div class="size-12 rounded-2xl tile-mint grid place-items-center text-2xl mx-auto mb-2">🧩</div>
+        <p class="font-extrabold text-sm text-ink">Match Words</p>
+        <p class="text-xs text-muted">Drag &amp; drop</p>
+      </a>
+      <a href="game-word-search.html" class="swiper-slide k-card w-40 text-center" data-item data-name="Word Search" data-keywords="word search find letters" data-tags="games read">
+        <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl mx-auto mb-2">🔎</div>
+        <p class="font-extrabold text-sm text-ink">Word Search</p>
+        <p class="text-xs text-muted">Find 5 words</p>
+      </a>
+      <a href="game-counting.html" class="swiper-slide k-card w-40 text-center" data-item data-name="Counting" data-keywords="counting numbers math apples" data-tags="games math">
+        <div class="size-12 rounded-2xl tile-sky grid place-items-center text-2xl mx-auto mb-2">🔢</div>
+        <p class="font-extrabold text-sm text-ink">Counting</p>
+        <p class="text-xs text-muted">1–20</p>
+      </a>
+      <a href="game-trace-letter.html" class="swiper-slide k-card w-40 text-center" data-item data-name="Trace letter" data-keywords="trace letters handwriting alphabet" data-tags="games read">
+        <div class="size-12 rounded-2xl tile-sun grid place-items-center text-2xl mx-auto mb-2">✍️</div>
+        <p class="font-extrabold text-sm text-ink">Trace letter</p>
+        <p class="text-xs text-muted">Follow dots</p>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== NEW THIS WEEK =============== -->
+  <section class="px-5 mt-5" data-search-section>
+    <div class="section-head">
+      <h2 class="h-display text-lg">🆕 New this week</h2>
+      <span class="link cursor-default">Fresh</span>
+    </div>
+    <div class="grid grid-cols-1 gap-3">
+      <a href="learn-knowledge.html" class="k-card flex items-center gap-3" data-item data-name="Space & planets" data-keywords="space planets science knowledge jupiter mars" data-tags="new">
+        <div class="size-12 rounded-2xl tile-sky grid place-items-center text-2xl shrink-0">🪐</div>
+        <div class="grow">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Space &amp; planets</p>
+            <span class="day-badge">NEW</span>
+          </div>
+          <p class="text-xs text-muted">5 lessons · Knowledge · +150 XP</p>
+        </div>
+        <i class="ph ph-caret-right text-xl text-muted"></i>
+      </a>
+      <a href="game-word-search.html" class="k-card flex items-center gap-3" data-item data-name="Big word hunt" data-keywords="word search hunt letters find" data-tags="new games read">
+        <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl shrink-0">🔎</div>
+        <div class="grow">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Big word hunt</p>
+            <span class="chip chip-mint">Free</span>
+          </div>
+          <p class="text-xs text-muted">Word search · 3 min · earn 30 XP</p>
+        </div>
+        <i class="ph ph-caret-right text-xl text-muted"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Parent-friendly</p>
+        <p class="text-xs text-muted">Lessons are age-graded with 5-min sessions. Tap any subject to see progress, duration and recommended age.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Controls</a>
+    </div>
+  </section>
+
+  <!-- =============== SEARCH OVERLAY =============== -->
+  <div id="searchOverlay" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="searchTitle">
+    <button type="button" id="searchBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+    <div id="searchPanel" class="absolute inset-x-0 top-0 bottom-0 mx-auto max-w-[430px] bg-surface translate-y-full transition-transform duration-300 ease-out flex flex-col">
+      <header class="appbar safe-top">
+        <button type="button" id="searchClose" class="icon-btn" aria-label="Close"><i class="ph ph-caret-left text-xl"></i></button>
+        <div class="grow">
+          <p class="text-xs text-muted">Find anything</p>
+          <h2 id="searchTitle" class="h-display text-lg leading-tight">Search</h2>
+        </div>
+      </header>
+
+      <section class="px-5">
+        <div class="input-wrap">
+          <i class="ph ph-magnifying-glass i-left"></i>
+          <input id="libSearch" class="input has-left" placeholder="Search lessons, games, animals…" aria-label="Search" autocomplete="off"/>
+          <button id="clearBtn" type="button" class="i-right hidden" aria-label="Clear search"><i class="ph ph-x-circle text-muted text-xl"></i></button>
+          <button id="micBtn" type="button" class="i-right" aria-label="Voice search"><i class="ph ph-microphone text-xl text-muted"></i></button>
+        </div>
+      </section>
+
+      <section class="px-5 mt-4">
+        <p class="section-label">Recent</p>
+        <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
+          <button type="button" class="chip" data-recent>animals</button>
+          <button type="button" class="chip" data-recent>counting</button>
+          <button type="button" class="chip" data-recent>alphabet</button>
+        </div>
+      </section>
+
+      <section class="px-5 mt-4">
+        <p class="section-label">Popular searches</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <button type="button" class="chip" data-recent>quiz</button>
+          <button type="button" class="chip" data-recent>spell</button>
+          <button type="button" class="chip" data-recent>space</button>
+          <button type="button" class="chip" data-recent>shapes</button>
+        </div>
+      </section>
+
+      <section id="searchResults" class="px-5 mt-4 overflow-y-auto grow space-y-2"></section>
+
+      <div class="px-5 pb-6 safe-bottom">
+        <button type="button" id="applySearchBtn" class="btn btn-primary w-full" disabled>
+          <i class="ph-fill ph-check"></i> Apply to library
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============== FILTER OVERLAY =============== -->
+  <div id="filterOverlay" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="filterTitle">
+    <button type="button" id="filterBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+    <div id="filterPanel" class="absolute inset-x-0 top-0 bottom-0 mx-auto max-w-[430px] bg-surface translate-y-full transition-transform duration-300 ease-out flex flex-col">
+      <header class="appbar safe-top">
+        <button type="button" id="filterClose" class="icon-btn" aria-label="Close"><i class="ph ph-caret-left text-xl"></i></button>
+        <div class="grow">
+          <p class="text-xs text-muted">Narrow the list</p>
+          <h2 id="filterTitle" class="h-display text-lg leading-tight">Filter</h2>
+        </div>
+        <button type="button" id="filterReset" class="chip">Reset</button>
+      </header>
+
+      <div class="overflow-y-auto grow">
+        <section class="px-5 mt-2">
+          <p class="section-label">Category</p>
+          <div class="mt-2 flex flex-wrap gap-2" id="catChips">
+            <button type="button" class="chip chip-primary" data-filter="all" aria-selected="true">✨ All</button>
+            <button type="button" class="chip" data-filter="pop" aria-selected="false">🔥 Popular</button>
+            <button type="button" class="chip" data-filter="new" aria-selected="false">🆕 New</button>
+            <button type="button" class="chip" data-filter="games" aria-selected="false">🎮 Games</button>
+            <button type="button" class="chip" data-filter="read" aria-selected="false">📖 Reading</button>
+            <button type="button" class="chip" data-filter="math" aria-selected="false">➗ Math</button>
+          </div>
+        </section>
+
+        <section class="px-5 mt-5">
+          <p class="section-label">Difficulty</p>
+          <div class="mt-2 flex flex-wrap gap-2" id="diffChips">
+            <button type="button" class="chip chip-primary" data-diff="all" aria-selected="true">Any</button>
+            <button type="button" class="chip" data-diff="easy" aria-selected="false">🌱 Easy</button>
+            <button type="button" class="chip" data-diff="medium" aria-selected="false">🌿 Medium</button>
+            <button type="button" class="chip" data-diff="hard" aria-selected="false">🌳 Challenge</button>
+          </div>
+        </section>
+
+        <section class="px-5 mt-5">
+          <p class="section-label">Age</p>
+          <div class="mt-2 flex flex-wrap gap-2" id="ageChips">
+            <button type="button" class="chip chip-primary" data-age="all" aria-selected="true">Any</button>
+            <button type="button" class="chip" data-age="4" aria-selected="false">4–6</button>
+            <button type="button" class="chip" data-age="6" aria-selected="false">6–8</button>
+            <button type="button" class="chip" data-age="8" aria-selected="false">8+</button>
+          </div>
+        </section>
+
+        <section class="px-5 mt-5 mb-5">
+          <p class="section-label">Status</p>
+          <div class="mt-2 flex flex-wrap gap-2" id="statusChips">
+            <button type="button" class="chip chip-primary" data-status="all" aria-selected="true">All</button>
+            <button type="button" class="chip" data-status="inprogress" aria-selected="false">⏳ In progress</button>
+            <button type="button" class="chip" data-status="new" aria-selected="false">🆕 Not started</button>
+          </div>
+        </section>
+
+        <div class="px-5 mt-5 pb-24">
+          <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+            <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+            <div class="grow">
+              <p class="font-extrabold text-sm text-ink">Tip</p>
+              <p class="text-xs text-muted">Combine category + age for the best match to your kid's level.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-5 pb-6 pt-3 safe-bottom border-t border-token bg-surface">
+        <button type="button" id="applyFilterBtn" class="btn btn-primary w-full">
+          <i class="ph-fill ph-check"></i> Show <span id="applyCount">6</span> results
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab active" href="learn-categories.html"><span class="tab-ico"><i class="ph-fill ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+
+<script src="assets/js/learn-categories.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:37 GMT -->
+</html>

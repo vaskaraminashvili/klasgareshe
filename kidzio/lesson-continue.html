@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/lesson-continue.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Continue · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar">
+    <a href="lesson-details.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <h1 class="h-display text-lg grow">Welcome back!</h1>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+    <a href="home.html" class="icon-btn" aria-label="Close"><i class="ph ph-x text-xl"></i></a>
+  </header>
+
+  <!-- =============== GREETING =============== -->
+  <section class="px-6 pt-2 text-center">
+    <div class="mascot mx-auto">🦉</div>
+    <h2 class="h-display text-2xl mt-4">Welcome back, Luna!</h2>
+    <p class="text-sm mt-1 text-muted">You're just <span class="text-ink font-extrabold">2 activities</span> away from finishing this lesson 🎉</p>
+  </section>
+
+  <!-- =============== LESSON HERO =============== -->
+  <section class="px-5 mt-5">
+    <div class="k-card-lg hero-lesson">
+      <span class="hero-big" aria-hidden="true">20</span>
+
+      <div class="relative flex items-center gap-3">
+        <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl">🔟</div>
+        <div class="grow">
+          <div class="flex items-center gap-2">
+            <span class="chip bg-white/20 border-0 text-white">Math · Lesson 3</span>
+            <span class="chip bg-white/20 border-0 text-white">Easy</span>
+          </div>
+          <p class="h-display text-xl mt-1">Counting to 20</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4">
+        <div class="flex items-center gap-2">
+          <div class="progress on-gradient grow"><span class="w-60"></span></div>
+          <span class="text-sm font-extrabold">60%</span>
+        </div>
+        <p class="text-xs text-white/90 mt-1">3 of 5 activities complete</p>
+      </div>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2 text-center">
+        <div class="encourage flex-col">
+          <span class="text-[10px] uppercase tracking-wide opacity-90">Time left</span>
+          <span class="h-display text-lg leading-tight">~3 min</span>
+        </div>
+        <div class="encourage flex-col">
+          <span class="text-[10px] uppercase tracking-wide opacity-90">XP to earn</span>
+          <span class="h-display text-lg leading-tight">+50</span>
+        </div>
+        <div class="encourage flex-col">
+          <span class="text-[10px] uppercase tracking-wide opacity-90">Accuracy</span>
+          <span class="h-display text-lg leading-tight">92%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== REWARD BANNER =============== -->
+  <section class="px-5 mt-4">
+    <div class="k-card-lg card-reward-amber relative overflow-hidden">
+      <span class="watermark-emoji" aria-hidden="true">🎁</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">🎁</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider">Finish to earn</p>
+          <p class="h-display text-lg leading-tight">+50 XP · ⭐ star · bonus badge</p>
+        </div>
+        <span class="chip chip-on-tile shrink-0">3 items</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== UP NEXT STEPS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Up next</p>
+    <div class="mt-3 space-y-2">
+      <!-- Completed -->
+      <div class="step done">
+        <div class="step-num"><i class="ph-fill ph-check"></i></div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">Tap the number</p>
+          <p class="text-xs text-muted">Completed · +10 XP</p>
+        </div>
+        <span class="chip chip-mint">Done</span>
+      </div>
+      <div class="step done">
+        <div class="step-num"><i class="ph-fill ph-check"></i></div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">Count apples</p>
+          <p class="text-xs text-muted">Completed · +10 XP</p>
+        </div>
+        <span class="chip chip-mint">Done</span>
+      </div>
+
+      <!-- Current -->
+      <a href="game-multiple-choice.html" class="step current">
+        <div class="step-num">3</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">Match numbers to things</p>
+          <p class="text-xs text-muted">~1 min · earn up to 15 XP</p>
+          <div class="progress mt-1"><span class="w-40"></span></div>
+        </div>
+        <span class="chip chip-primary">Now</span>
+      </a>
+
+      <!-- Upcoming -->
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">Order the numbers</p>
+          <p class="text-xs text-muted">Drag &amp; drop · ~1 min</p>
+        </div>
+        <i class="ph ph-caret-right text-xl text-muted"></i>
+      </div>
+      <div class="step locked">
+        <div class="step-num"><i class="ph-fill ph-lock text-sm"></i></div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">Mini quiz</p>
+          <p class="text-xs text-muted">Unlocks after step 4</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== HINTS & PRACTICE (new informative block) =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Helpful stuff</p>
+    <div class="mt-3 grid grid-cols-2 gap-3">
+      <a href="game-spell-word.html" class="k-card p-3">
+        <div class="size-9 rounded-xl tile-sun grid place-items-center mb-2">📝</div>
+        <p class="font-extrabold text-sm">Practice numbers</p>
+        <p class="text-xs text-muted">Quick warm-up · 1 min</p>
+      </a>
+      <a href="lesson-details.html" class="k-card p-3">
+        <div class="size-9 rounded-xl tile-mint grid place-items-center mb-2">🎧</div>
+        <p class="font-extrabold text-sm">Listen again</p>
+        <p class="text-xs text-muted">Audio lesson · 30s</p>
+      </a>
+    </div>
+
+    <div class="tip-card rounded-2xl p-3 mt-3 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Kidzio tip</p>
+        <p class="text-xs text-muted">Numbers 11–20 always start with "1" — it shows there's already ten. Try counting by twos!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== STREAK REMINDER =============== -->
+  <section class="px-5 mt-5">
+    <a href="streak.html" class="k-card flex items-center gap-3 hover:ring-primary transition">
+      <div class="size-11 rounded-2xl tile-coral grid place-items-center text-xl">🔥</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm">Finish today to keep your streak</p>
+        <p class="text-xs text-muted">7-day flame · don't break the chain!</p>
+      </div>
+      <span class="chip chip-sun">🔥 7</span>
+    </a>
+  </section>
+
+  <!-- =============== STICKY CTA =============== -->
+  <div class="cta-dock">
+    <div class="flex items-center gap-2">
+      <button class="icon-btn shrink-0" aria-label="Pause lesson"><i class="ph ph-pause text-xl"></i></button>
+      <a href="game-multiple-choice.html" class="btn btn-primary grow">
+        <i class="ph-fill ph-play"></i> Continue lesson
+      </a>
+    </div>
+    <p class="text-center text-[11px] text-muted mt-2">
+      Your progress saves automatically.
+    </p>
+  </div>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/lesson-continue.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:35 GMT -->
+</html>

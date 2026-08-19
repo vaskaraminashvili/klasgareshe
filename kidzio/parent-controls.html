@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/parent-controls.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:10 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Parent controls · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <!-- =============== PIN GATE OVERLAY =============== -->
+  <div id="pinGate" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="pinTitle">
+    <div class="absolute inset-0 bg-[var(--color-k-bg)]"></div>
+    <div id="pinPanel" class="relative h-full flex flex-col overflow-y-auto opacity-0 translate-y-3 transition-all duration-400">
+      <header class="appbar safe-top">
+        <a href="settings.html" class="icon-btn" aria-label="Back"><i class="ph ph-caret-left text-xl"></i></a>
+        <div class="grow">
+          <p class="text-xs text-muted">Parents only</p>
+          <h1 id="pinTitle" class="h-display text-lg leading-tight">Enter parent PIN</h1>
+        </div>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+      </header>
+
+      <section class="px-5 mt-2 text-center">
+        <div class="mx-auto size-24 rounded-3xl tile-violet grid place-items-center text-5xl mb-3">🔐</div>
+        <h2 class="h-display text-2xl text-ink">Just you, parent</h2>
+        <p class="text-sm text-muted mt-1 max-w-[280px] mx-auto">Kids can't get past this screen — it protects reports &amp; settings.</p>
+      </section>
+
+      <section class="px-8 mt-6">
+        <div class="flex justify-center gap-3" id="pinGroup">
+          <input inputmode="numeric" maxlength="1" class="pin-box input text-center text-2xl font-extrabold h-16 w-14" aria-label="Digit 1"/>
+          <input inputmode="numeric" maxlength="1" class="pin-box input text-center text-2xl font-extrabold h-16 w-14" aria-label="Digit 2"/>
+          <input inputmode="numeric" maxlength="1" class="pin-box input text-center text-2xl font-extrabold h-16 w-14" aria-label="Digit 3"/>
+          <input inputmode="numeric" maxlength="1" class="pin-box input text-center text-2xl font-extrabold h-16 w-14" aria-label="Digit 4"/>
+        </div>
+        <p id="pinHint" class="text-center text-xs text-muted mt-4">Hint: PIN is <b class="text-ink">1234</b> in this demo.</p>
+      </section>
+
+      <section class="px-8 mt-6">
+        <div class="grid grid-cols-3 gap-2 max-w-[320px] mx-auto" id="pinPad">
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="1">1</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="2">2</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="3">3</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="4">4</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="5">5</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="6">6</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="7">7</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="8">8</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="9">9</button>
+          <button type="button" class="h-14 rounded-2xl opacity-0 pointer-events-none" aria-hidden="true">·</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="0">0</button>
+          <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="back" aria-label="Backspace"><i class="ph ph-backspace text-xl"></i></button>
+        </div>
+      </section>
+
+      <section class="px-8 mt-auto pb-8 safe-bottom text-center">
+        <a href="parent-verify.html" class="chip"><i class="ph ph-key"></i> Forgot PIN?</a>
+      </section>
+    </div>
+  </div>
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar">
+    <a href="settings.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Family &amp; safety</p>
+      <h1 class="h-display text-lg leading-tight">Parent controls</h1>
+    </div>
+    <button id="lockBtn" type="button" class="icon-btn" aria-label="Lock"><i class="ph ph-lock-simple-open text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-profile text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-24 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-5xl">🛡️</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <i class="ph-fill ph-users-three"></i> PARENT DASHBOARD
+      </p>
+      <p class="relative h-display text-2xl mt-2 leading-tight">Luna's week at a glance</p>
+      <p class="relative text-xs text-white/90 mt-1">Apr 11 – Apr 17 · 7 days active</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none"><span id="xpVal">0</span></p>
+          <p class="text-[10px] text-white/85 mt-1">XP earned</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none"><span id="minsVal">0</span>m</p>
+          <p class="text-[10px] text-white/85 mt-1">Time learning</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none"><span id="lessonsVal">0</span></p>
+          <p class="text-[10px] text-white/85 mt-1">Lessons done</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex items-center gap-2 flex-wrap">
+        <span class="chip bg-white/20 border-0 text-white"><span class="live-dot"></span> All healthy</span>
+        <a href="full-report.html" class="cta-soft ml-auto">Full report <i class="ph-fill ph-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== DAILY SNAPSHOT =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">This week</h2>
+      <a href="weekly-report.html" class="link">Details</a>
+    </div>
+    <div class="k-card p-4">
+      <div class="grid grid-cols-7 gap-2 items-end h-24" id="weekBars" aria-label="Daily minutes">
+        <div class="flex flex-col items-center gap-1 grow">
+          <span class="w-full rounded-t-md bg-[var(--color-k-primary)] opacity-80 transition-all duration-700" data-bar="60"></span>
+          <span class="text-[10px] text-muted font-extrabold">M</span>
+        </div>
+        <div class="flex flex-col items-center gap-1 grow">
+          <span class="w-full rounded-t-md bg-[var(--color-k-primary)] opacity-80 transition-all duration-700" data-bar="35"></span>
+          <span class="text-[10px] text-muted font-extrabold">T</span>
+        </div>
+        <div class="flex flex-col items-center gap-1 grow">
+          <span class="w-full rounded-t-md bg-[var(--color-k-primary)] opacity-80 transition-all duration-700" data-bar="80"></span>
+          <span class="text-[10px] text-muted font-extrabold">W</span>
+        </div>
+        <div class="flex flex-col items-center gap-1 grow">
+          <span class="w-full rounded-t-md bg-[var(--color-k-primary)] opacity-80 transition-all duration-700" data-bar="20"></span>
+          <span class="text-[10px] text-muted font-extrabold">T</span>
+        </div>
+        <div class="flex flex-col items-center gap-1 grow">
+          <span class="w-full rounded-t-md bg-[var(--color-k-primary)] opacity-80 transition-all duration-700" data-bar="55"></span>
+          <span class="text-[10px] text-muted font-extrabold">F</span>
+        </div>
+        <div class="flex flex-col items-center gap-1 grow">
+          <span class="w-full rounded-t-md bg-[var(--color-k-primary)] opacity-80 transition-all duration-700" data-bar="70"></span>
+          <span class="text-[10px] text-muted font-extrabold">S</span>
+        </div>
+        <div class="flex flex-col items-center gap-1 grow">
+          <span class="w-full rounded-t-md bg-[var(--color-k-primary)] transition-all duration-700" data-bar="45"></span>
+          <span class="text-[10px] text-primary-ink font-extrabold">S</span>
+        </div>
+      </div>
+      <div class="mt-3 flex items-center justify-between text-[11px]">
+        <span class="text-muted">Daily goal · <b class="text-ink">30 min</b></span>
+        <span class="chip chip-mint">5 / 7 days hit goal</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== TIME & LIMITS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Time &amp; limits</p>
+    <div class="mt-3 space-y-2">
+      <a href="screen-time.html" class="setting-row">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-clock"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Daily screen time</p>
+          <p class="text-[11px] text-muted">30 min limit · 22 min used today</p>
+          <div class="progress progress-sun mt-1"><span class="w-70"></span></div>
+        </div>
+        <span class="chip chip-sun">On</span>
+      </a>
+      <a href="bedtime-lock.html" class="setting-row">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-moon-stars"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Bedtime lock</p>
+          <p class="text-[11px] text-muted">Locked 8:30 PM → 6:30 AM</p>
+        </div>
+        <span class="chip chip-primary">On</span>
+      </a>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-coffee"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Break reminders</p>
+          <p class="text-[11px] text-muted">Every 15 min · stretch &amp; blink</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked data-toggle="breaks"/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+    </div>
+  </section>
+
+  <!-- =============== LEARNING =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Learning</p>
+    <div class="mt-3 space-y-2">
+      <a href="weekly-report.html" class="setting-row">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-chart-line-up"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Weekly report</p>
+          <p class="text-[11px] text-muted">PDF every Sunday · sent to your email</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="monthly-goals.html" class="setting-row">
+        <div class="setting-ico tile-coral"><i class="ph-fill ph-target"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Monthly goals</p>
+          <p class="text-[11px] text-muted">4 / 6 on track · finish 2 more</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="preferred-subjects.html" class="setting-row">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-books"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Preferred subjects</p>
+          <p class="text-[11px] text-muted">Math · Alphabet · Animals</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-pink"><i class="ph-fill ph-baby"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Age-appropriate content</p>
+          <p class="text-[11px] text-muted">Filter by Luna's age (6) automatically</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked data-toggle="age"/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+    </div>
+  </section>
+
+  <!-- =============== PRIVACY & SAFETY =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Privacy &amp; safety</p>
+    <div class="mt-3 space-y-2">
+      <a href="privacy-policy.html" class="setting-row">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-shield-check"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Privacy policy</p>
+          <p class="text-[11px] text-muted">COPPA · GDPR-K · kidSAFE certified</p>
+        </div>
+        <span class="chip chip-mint">Compliant</span>
+      </a>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-users-four"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Allow friend requests</p>
+          <p class="text-[11px] text-muted">Parent approval required for each request</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked data-toggle="friends"/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-coral"><i class="ph-fill ph-eye-slash"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Hide from global ranking</p>
+          <p class="text-[11px] text-muted">Keep Luna off the worldwide leaderboard</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" data-toggle="hide"/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      <a href="export-progress.html" class="setting-row">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-download-simple"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Export all data</p>
+          <p class="text-[11px] text-muted">Full PDF recap · kept local</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== ACCOUNT =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Account</p>
+    <div class="mt-3 space-y-2">
+      <a href="edit-profile.html" class="setting-row">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-user-circle"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Kid profile</p>
+          <p class="text-[11px] text-muted">Luna · age 6 · Kindergarten</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="parent-email.html" class="setting-row">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-envelope-simple"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Parent email</p>
+          <p class="text-[11px] text-muted">parent@example.com · verified</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="change-pin.html" class="setting-row">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-lock-key"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Change parent PIN</p>
+          <p class="text-[11px] text-muted">Last changed 2 months ago</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <button type="button" id="deleteBtn" class="setting-row danger w-full text-left">
+        <div class="setting-ico"><i class="ph-fill ph-trash"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm">Delete account</p>
+          <p class="text-[11px] text-muted">All data removed within 24h</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== TIP =============== -->
+  <section class="px-5 mt-5 mb-10">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Tip for parents</p>
+        <p class="text-xs text-muted">Short daily sessions (10–20 min) build stronger habits than long weekend blocks.</p>
+      </div>
+      <button type="button" id="lockNowBtn" class="chip chip-primary"><i class="ph ph-lock"></i> Lock</button>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/parent-controls.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/parent-controls.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:13 GMT -->
+</html>

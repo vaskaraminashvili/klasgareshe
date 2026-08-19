@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/parent-email.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Parent email · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="parent-controls.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Account</p>
+      <h1 class="h-display text-lg leading-tight">Parent email</h1>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-friends text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-24 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-5xl">✉️</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <i class="ph-fill ph-shield-check"></i> VERIFIED
+      </p>
+      <p class="relative h-display text-2xl mt-2 leading-tight" id="heroEmail">parent@example.com</p>
+      <p class="relative text-xs text-white/90 mt-1">Used for weekly reports &amp; password resets</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none" id="reportsVal">0</p>
+          <p class="text-[10px] text-white/85 mt-1">Reports sent</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none" id="opensVal">0</p>
+          <p class="text-[10px] text-white/85 mt-1">Opens</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none" id="daysVal">0</p>
+          <p class="text-[10px] text-white/85 mt-1">Day streak</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== CURRENT EMAIL =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Current email</p>
+    <div class="k-card p-4 mt-3 flex items-center gap-3">
+      <div class="size-11 rounded-2xl tile-mint grid place-items-center text-xl shrink-0">
+        <i class="ph-fill ph-check-circle text-mint-ink"></i>
+      </div>
+      <div class="grow min-w-0">
+        <p class="font-extrabold text-sm text-ink" id="currentEmail">parent@example.com</p>
+        <p class="text-[11px] text-muted">Verified Apr 10, 2026</p>
+      </div>
+      <button type="button" id="copyBtn" class="chip chip-primary" aria-label="Copy email"><i class="ph ph-copy"></i></button>
+    </div>
+  </section>
+
+  <!-- =============== CHANGE EMAIL =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Change email</p>
+    <form id="emailForm" class="mt-3 space-y-3" onsubmit="event.preventDefault();submitChange()">
+      <div>
+        <label for="newEmail" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">New email</label>
+        <div class="input-wrap mt-1">
+          <i class="ph ph-envelope-simple i-left"></i>
+          <input id="newEmail" type="email" class="input has-left" placeholder="name@example.com" autocomplete="email"/>
+          <span id="emailStatus" class="i-right hidden"><i class="ph-fill ph-check-circle text-mint-ink"></i></span>
+        </div>
+        <p id="emailHint" class="text-[10px] text-muted mt-1"><i class="ph ph-info"></i> Enter the parent's email — a verification link will be sent.</p>
+      </div>
+
+      <div>
+        <label for="confirmEmail" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Confirm email</label>
+        <div class="input-wrap mt-1">
+          <i class="ph ph-envelope-simple i-left"></i>
+          <input id="confirmEmail" type="email" class="input has-left" placeholder="Re-type new email" autocomplete="email"/>
+        </div>
+        <p id="confirmHint" class="text-[10px] text-muted mt-1"><i class="ph ph-info"></i> Must match the email above.</p>
+      </div>
+
+      <div>
+        <label for="currentPin" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Parent PIN</label>
+        <div class="input-wrap mt-1">
+          <i class="ph ph-lock-key i-left"></i>
+          <input id="currentPin" type="password" inputmode="numeric" maxlength="4" class="input has-left" placeholder="4-digit PIN"/>
+        </div>
+        <p class="text-[10px] text-muted mt-1"><i class="ph ph-lock"></i> Security confirmation · demo PIN is 1234</p>
+      </div>
+
+      <button type="submit" id="saveBtn" class="btn btn-primary w-full" disabled>
+        <i class="ph-fill ph-paper-plane-tilt"></i> Send verification link
+      </button>
+    </form>
+  </section>
+
+  <!-- =============== EMAIL PREFERENCES =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Email preferences</p>
+    <div class="mt-3 space-y-2">
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-chart-line-up"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Weekly report</p>
+          <p class="text-[11px] text-muted">Sunday morning · PDF attached</p>
+        </div>
+        <span class="ks-switch"><input type="checkbox" checked data-pref="weekly"/><span class="track"></span><span class="thumb"></span></span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-medal"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Badge unlocks</p>
+          <p class="text-[11px] text-muted">When Luna earns a new badge</p>
+        </div>
+        <span class="ks-switch"><input type="checkbox" checked data-pref="badges"/><span class="track"></span><span class="thumb"></span></span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-coral"><i class="ph-fill ph-fire"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Streak at risk</p>
+          <p class="text-[11px] text-muted">Gentle nudge when a streak needs saving</p>
+        </div>
+        <span class="ks-switch"><input type="checkbox" data-pref="streak"/><span class="track"></span><span class="thumb"></span></span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-megaphone"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Product updates</p>
+          <p class="text-[11px] text-muted">Max once a month · never for kids</p>
+        </div>
+        <span class="ks-switch"><input type="checkbox" data-pref="updates"/><span class="track"></span><span class="thumb"></span></span>
+      </label>
+    </div>
+  </section>
+
+  <!-- =============== TIP =============== -->
+  <section class="px-5 mt-5 mb-10">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Privacy first</p>
+        <p class="text-xs text-muted">Email is used only for verification &amp; reports. Never shared, never sold.</p>
+      </div>
+      <a href="privacy-policy.html" class="chip chip-primary">Policy</a>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/parent-email.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/parent-email.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:23 GMT -->
+</html>

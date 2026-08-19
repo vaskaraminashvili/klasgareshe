@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-words.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:40 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Words · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="learn-categories.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Learn · Category</p>
+      <h1 class="h-display text-lg leading-tight">Words &amp; Language</h1>
+    </div>
+    <button class="icon-btn" aria-label="Favourite"><i class="ph ph-heart text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-words">
+      <span class="hero-words-watermark" aria-hidden="true">📚</span>
+
+      <div class="relative flex items-center gap-2">
+        <span class="chip bg-white/20 border-0 text-white">
+          <i class="ph-fill ph-book-bookmark"></i> WORDS WORLD
+        </span>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">Age 5–8</span>
+      </div>
+
+      <p class="h-display text-2xl mt-2 relative leading-tight">Read &amp; spell 📖</p>
+      <p class="text-sm text-white/90 relative">Sight words, spelling, opposites and body parts.</p>
+
+      <div class="relative mt-4 flex items-center gap-3">
+        <div class="progress on-gradient grow"><span class="w-30"></span></div>
+        <span class="text-sm font-extrabold shrink-0">6 / 20</span>
+      </div>
+      <p class="relative text-[11px] text-white/85 mt-1">30% complete · 14 lessons ahead</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="count-pill">
+          <span class="count-value">32</span>
+          <span class="count-label">Words</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">12</span>
+          <span class="count-label">Opposites</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">3</span>
+          <span class="count-label">Badges</span>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex flex-wrap items-center gap-2">
+        <a href="game-spell-word.html" class="cta-soft">
+          Start spelling <i class="ph-fill ph-arrow-right"></i>
+        </a>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">
+          <i class="ph-fill ph-sparkle"></i> +50 XP
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== WORD OF THE DAY =============== -->
+  <section class="px-5 mt-4">
+    <div class="section-head">
+      <h2 class="h-display text-lg">⭐ Word of the day</h2>
+      <span class="day-badge">TODAY</span>
+    </div>
+    <a href="game-spell-word.html" class="k-card-lg flex items-center gap-4">
+      <div class="size-20 rounded-2xl tile-coral grid place-items-center text-4xl shrink-0">🍎</div>
+      <div class="grow min-w-0">
+        <p class="font-extrabold text-base text-ink">APPLE</p>
+        <p class="text-xs text-muted">/ˈæp.əl/ · a red or green fruit</p>
+        <div class="mt-2 flex flex-wrap gap-1">
+          <span class="chip chip-primary">+30 XP</span>
+          <span class="chip chip-mint">Spell</span>
+          <span class="chip chip-sun">Sound</span>
+        </div>
+      </div>
+      <i class="ph ph-caret-right text-muted shrink-0"></i>
+    </a>
+  </section>
+
+  <!-- =============== CONTINUE CTA =============== -->
+  <section class="px-5 mt-4">
+    <a href="game-spell-word.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">✏️</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">✏️</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">CONTINUE</p>
+          <p class="h-display text-lg leading-tight">Sight words · 7 of 10</p>
+          <p class="text-xs text-white/90">~2 min · spell three more to finish</p>
+        </div>
+        <span class="cta-soft shrink-0">Go</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== TOPIC FILTERS =============== -->
+  <section class="px-5 mt-5">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" data-tabs role="tablist" aria-label="Filter topics">
+      <div class="swiper-wrapper">
+      <button class="swiper-slide chip chip-primary" data-tab="all" role="tab" aria-selected="true">✨ All</button>
+      <button class="swiper-slide chip" data-tab="sight" role="tab">👀 Sight words</button>
+      <button class="swiper-slide chip" data-tab="spell" role="tab">✏️ Spelling</button>
+      <button class="swiper-slide chip" data-tab="opp" role="tab">⚖️ Opposites</button>
+      <button class="swiper-slide chip" data-tab="body" role="tab">👦 Body parts</button>
+      <button class="swiper-slide chip" data-tab="rhyme" role="tab">🎵 Rhymes</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== SIGHT WORDS GRID =============== -->
+  <section class="px-5 mt-4">
+    <div class="section-head">
+      <h2 class="h-display text-lg">👀 Sight words I know</h2>
+      <span class="link cursor-default">20 / 30</span>
+    </div>
+    <div class="grid grid-cols-4 gap-2">
+      <a href="game-spell-word.html" class="sight-tile is-done">the</a>
+      <a href="game-spell-word.html" class="sight-tile is-done">and</a>
+      <a href="game-spell-word.html" class="sight-tile is-done">you</a>
+      <a href="game-spell-word.html" class="sight-tile is-done">is</a>
+      <a href="game-spell-word.html" class="sight-tile is-done">to</a>
+      <a href="game-spell-word.html" class="sight-tile is-done">it</a>
+      <a href="game-spell-word.html" class="sight-tile is-done">in</a>
+      <a href="game-spell-word.html" class="sight-tile is-done">was</a>
+      <a href="game-spell-word.html" class="sight-tile is-new">play</a>
+      <a href="game-spell-word.html" class="sight-tile is-new">said</a>
+      <a href="game-spell-word.html" class="sight-tile">run</a>
+      <a href="game-spell-word.html" class="sight-tile">big</a>
+    </div>
+  </section>
+
+  <!-- =============== LESSONS =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Lessons</h2>
+      <span class="link cursor-default">6 active</span>
+    </div>
+    <div class="space-y-3">
+      <a href="game-spell-word.html" class="lesson-item is-current">
+        <div class="lesson-node"><i class="ph-fill ph-play"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Spell 10 sight words</p>
+          <p class="lesson-sub">In progress · 7 of 10</p>
+          <div class="chapter-bar mt-2"><span class="w-70"></span></div>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 3 min</span>
+            <span><i class="ph ph-sparkle"></i> +40 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-primary shrink-0">Now</span>
+      </a>
+      <a href="game-opposites.html" class="lesson-item">
+        <div class="lesson-node" aria-hidden="true">⚖️</div>
+        <div class="lesson-body">
+          <p class="lesson-title">Opposites</p>
+          <p class="lesson-sub">Big/small, hot/cold…</p>
+          <div class="chapter-bar mt-2"><span class="w-40"></span></div>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 4 min</span>
+            <span><i class="ph ph-sparkle"></i> +45 XP</span>
+          </div>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold shrink-0">Easy</span>
+      </a>
+      <a href="game-body-parts.html" class="lesson-item">
+        <div class="lesson-node" aria-hidden="true">👦</div>
+        <div class="lesson-body">
+          <p class="lesson-title">Body parts</p>
+          <p class="lesson-sub">Head, shoulders, knees…</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 3 min</span>
+            <span><i class="ph ph-sparkle"></i> +35 XP</span>
+          </div>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold shrink-0">Easy</span>
+      </a>
+      <a href="game-word-search.html" class="lesson-item">
+        <div class="lesson-node" aria-hidden="true">🔎</div>
+        <div class="lesson-body">
+          <p class="lesson-title">Word search</p>
+          <p class="lesson-sub">Find 5 hidden words</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 4 min</span>
+            <span><i class="ph ph-sparkle"></i> +40 XP</span>
+          </div>
+        </div>
+        <span class="pill-medium rounded-full px-2 py-0.5 text-[10px] font-extrabold shrink-0">Medium</span>
+      </a>
+      <a href="game-connect-pair.html" class="lesson-item">
+        <div class="lesson-node" aria-hidden="true">🔗</div>
+        <div class="lesson-body">
+          <p class="lesson-title">Connect pairs</p>
+          <p class="lesson-sub">Match word to picture</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 3 min</span>
+            <span><i class="ph ph-sparkle"></i> +35 XP</span>
+          </div>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold shrink-0">Easy</span>
+      </a>
+      <a href="lesson-locked.html" class="lesson-item is-locked">
+        <div class="lesson-node"><i class="ph-fill ph-lock"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Rhymes &amp; riddles</p>
+          <p class="lesson-sub">Reach 800 XP to unlock</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 5 min</span>
+            <span><i class="ph ph-sparkle"></i> +60 XP</span>
+          </div>
+        </div>
+        <span class="chip shrink-0">800 XP</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== OPPOSITE PAIRS RAIL =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">⚖️ Opposite pairs</h2>
+      <a href="game-opposites.html" class="link">Play game</a>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <div class="swiper-slide oppo-card">
+        <div class="oppo-side"><span class="oppo-emoji">🐘</span><span class="oppo-word">Big</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">🐁</span><span class="oppo-word">Small</span></div>
+      </div>
+      <div class="swiper-slide oppo-card">
+        <div class="oppo-side"><span class="oppo-emoji">☀️</span><span class="oppo-word">Hot</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">❄️</span><span class="oppo-word">Cold</span></div>
+      </div>
+      <div class="swiper-slide oppo-card">
+        <div class="oppo-side"><span class="oppo-emoji">⬆️</span><span class="oppo-word">Up</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">⬇️</span><span class="oppo-word">Down</span></div>
+      </div>
+      <div class="swiper-slide oppo-card">
+        <div class="oppo-side"><span class="oppo-emoji">🏎️</span><span class="oppo-word">Fast</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">🐢</span><span class="oppo-word">Slow</span></div>
+      </div>
+      <div class="swiper-slide oppo-card">
+        <div class="oppo-side"><span class="oppo-emoji">😊</span><span class="oppo-word">Happy</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">😢</span><span class="oppo-word">Sad</span></div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== READ-ALONG STORIES =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">📖 Read-along stories</h2>
+      <span class="link cursor-default">5 min each</span>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <a href="lesson-details.html" class="swiper-slide story-card">
+        <div class="story-cover tile-coral">🐰</div>
+        <div class="story-body">
+          <p class="story-title">The brave bunny</p>
+          <p class="story-sub">Level 1 · 48 words</p>
+        </div>
+      </a>
+      <a href="lesson-details.html" class="swiper-slide story-card">
+        <div class="story-cover tile-mint">🌱</div>
+        <div class="story-body">
+          <p class="story-title">Tiny seed, big tree</p>
+          <p class="story-sub">Level 1 · 52 words</p>
+        </div>
+      </a>
+      <a href="lesson-details.html" class="swiper-slide story-card">
+        <div class="story-cover tile-sky">🐠</div>
+        <div class="story-body">
+          <p class="story-title">Fish who lost a fin</p>
+          <p class="story-sub">Level 2 · 80 words</p>
+        </div>
+      </a>
+      <a href="lesson-details.html" class="swiper-slide story-card">
+        <div class="story-cover tile-sun">🌞</div>
+        <div class="story-body">
+          <p class="story-title">Why the sun smiles</p>
+          <p class="story-sub">Level 2 · 76 words</p>
+        </div>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== WORD GAMES RAIL =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">🎮 Word games</h2>
+      <a href="learn-categories.html" class="link">More</a>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <a href="game-word-search.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-mint grid place-items-center text-2xl mx-auto mb-2">🔎</div>
+        <p class="font-extrabold text-sm">Word search</p>
+        <p class="text-[11px] text-muted">Find 5 · +40 XP</p>
+      </a>
+      <a href="game-connect-pair.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-sky grid place-items-center text-2xl mx-auto mb-2">🔗</div>
+        <p class="font-extrabold text-sm">Connect pairs</p>
+        <p class="text-[11px] text-muted">Drag · +35 XP</p>
+      </a>
+      <a href="game-match-word.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-violet grid place-items-center text-2xl mx-auto mb-2">🧩</div>
+        <p class="font-extrabold text-sm">Match words</p>
+        <p class="text-[11px] text-muted">To pictures</p>
+      </a>
+      <a href="game-fill-letter.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl mx-auto mb-2">🧠</div>
+        <p class="font-extrabold text-sm">Fill letter</p>
+        <p class="text-[11px] text-muted">Complete word</p>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== WORD BADGES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🏅 Word badges</h2>
+      <a href="badges.html" class="link">All 5</a>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal bronze mx-auto">📚</div>
+        <p class="text-xs font-extrabold mt-2">Bookworm</p>
+        <p class="text-[10px] text-muted">Earned</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal silver mx-auto">✏️</div>
+        <p class="text-xs font-extrabold mt-2">Speller</p>
+        <p class="text-[10px] text-muted">Earned</p>
+      </div>
+      <div class="k-card p-3 text-center locked">
+        <div class="badge-medal mx-auto">🔤</div>
+        <p class="text-xs font-extrabold mt-2">Word Wizard</p>
+        <p class="text-[10px] text-muted">Learn 100</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Reading tip</p>
+        <p class="text-xs text-muted">Point to words as you read together — kids learn sight words 2× faster when they see and hear.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Audio</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab active" href="learn-categories.html"><span class="tab-ico"><i class="ph-fill ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-words.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:41 GMT -->
+</html>

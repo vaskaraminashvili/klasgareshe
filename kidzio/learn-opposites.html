@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-opposites.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:04 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Opposites · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="learn-categories.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Learn · Category</p>
+      <h1 class="h-display text-lg leading-tight">Opposites</h1>
+    </div>
+    <button class="icon-btn" aria-label="Favourite"><i class="ph ph-heart text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-words">
+      <span class="hero-words-watermark" aria-hidden="true">⚖️</span>
+
+      <div class="relative flex items-center gap-2">
+        <span class="chip bg-white/20 border-0 text-white">
+          <i class="ph-fill ph-arrows-left-right"></i> OPPOSITES WORLD
+        </span>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">Age 4–6</span>
+      </div>
+
+      <p class="h-display text-2xl mt-2 relative leading-tight">Big &amp; small, hot &amp; cold ⚖️</p>
+      <p class="text-sm text-white/90 relative">Learn opposite pairs through play and pictures.</p>
+
+      <div class="relative mt-4 flex items-center gap-3">
+        <div class="progress on-gradient grow"><span class="w-40"></span></div>
+        <span class="text-sm font-extrabold shrink-0">4 / 10</span>
+      </div>
+      <p class="relative text-[11px] text-white/85 mt-1">40% complete · 6 lessons left</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="count-pill">
+          <span class="count-value">10</span>
+          <span class="count-label">Lessons</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">24</span>
+          <span class="count-label">Pairs</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">2</span>
+          <span class="count-label">Badges</span>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex flex-wrap items-center gap-2">
+        <a href="game-opposites.html" class="cta-soft">
+          Play opposites <i class="ph-fill ph-arrow-right"></i>
+        </a>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">
+          <i class="ph-fill ph-sparkle"></i> +45 XP
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== PAIR OF THE DAY =============== -->
+  <section class="px-5 mt-4">
+    <div class="section-head">
+      <h2 class="h-display text-lg">⭐ Pair of the day</h2>
+      <span class="day-badge">TODAY</span>
+    </div>
+    <a href="game-opposites.html" class="oppo-card !min-w-0 !w-full !p-4">
+      <div class="oppo-side">
+        <span class="oppo-emoji text-5xl">🐘</span>
+        <span class="oppo-word text-sm">Big</span>
+      </div>
+      <div class="oppo-sep !size-10 !text-base">↔</div>
+      <div class="oppo-side">
+        <span class="oppo-emoji text-5xl">🐁</span>
+        <span class="oppo-word text-sm">Small</span>
+      </div>
+    </a>
+    <p class="text-xs text-muted text-center mt-2">Tap to play the matching game</p>
+  </section>
+
+  <!-- =============== CONTINUE CTA =============== -->
+  <section class="px-5 mt-4">
+    <a href="game-opposites.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">⚖️</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">⚖️</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">CONTINUE</p>
+          <p class="h-display text-lg leading-tight">Opposites · 4 of 10</p>
+          <p class="text-xs text-white/90">~3 min · match 3 more pairs</p>
+        </div>
+        <span class="cta-soft shrink-0">Go</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== TOPIC FILTERS =============== -->
+  <section class="px-5 mt-5">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" data-tabs role="tablist" aria-label="Filter opposites">
+      <div class="swiper-wrapper">
+      <button class="swiper-slide chip chip-primary" data-tab="all" role="tab" aria-selected="true">✨ All</button>
+      <button class="swiper-slide chip" data-tab="size" role="tab">📏 Size</button>
+      <button class="swiper-slide chip" data-tab="temp" role="tab">🌡️ Temperature</button>
+      <button class="swiper-slide chip" data-tab="dir" role="tab">⬆️ Direction</button>
+      <button class="swiper-slide chip" data-tab="speed" role="tab">🏎️ Speed</button>
+      <button class="swiper-slide chip" data-tab="feel" role="tab">😊 Feelings</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== OPPOSITE PAIRS GRID =============== -->
+  <section class="px-5 mt-4">
+    <div class="section-head">
+      <h2 class="h-display text-lg">⚖️ Opposite pairs</h2>
+      <span class="link cursor-default">8 pairs</span>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+      <a href="game-opposites.html" class="oppo-card !min-w-0">
+        <div class="oppo-side"><span class="oppo-emoji">🐘</span><span class="oppo-word">Big</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">🐁</span><span class="oppo-word">Small</span></div>
+      </a>
+      <a href="game-opposites.html" class="oppo-card !min-w-0">
+        <div class="oppo-side"><span class="oppo-emoji">☀️</span><span class="oppo-word">Hot</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">❄️</span><span class="oppo-word">Cold</span></div>
+      </a>
+      <a href="game-opposites.html" class="oppo-card !min-w-0">
+        <div class="oppo-side"><span class="oppo-emoji">⬆️</span><span class="oppo-word">Up</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">⬇️</span><span class="oppo-word">Down</span></div>
+      </a>
+      <a href="game-opposites.html" class="oppo-card !min-w-0">
+        <div class="oppo-side"><span class="oppo-emoji">🏎️</span><span class="oppo-word">Fast</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">🐢</span><span class="oppo-word">Slow</span></div>
+      </a>
+      <a href="game-opposites.html" class="oppo-card !min-w-0">
+        <div class="oppo-side"><span class="oppo-emoji">😊</span><span class="oppo-word">Happy</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">😢</span><span class="oppo-word">Sad</span></div>
+      </a>
+      <a href="game-opposites.html" class="oppo-card !min-w-0">
+        <div class="oppo-side"><span class="oppo-emoji">🌞</span><span class="oppo-word">Day</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">🌙</span><span class="oppo-word">Night</span></div>
+      </a>
+      <a href="lesson-locked.html" class="oppo-card !min-w-0 is-locked opacity-60">
+        <div class="oppo-side"><span class="oppo-emoji">🔇</span><span class="oppo-word">Quiet</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">🔊</span><span class="oppo-word">Loud</span></div>
+      </a>
+      <a href="lesson-locked.html" class="oppo-card !min-w-0 is-locked opacity-60">
+        <div class="oppo-side"><span class="oppo-emoji">💧</span><span class="oppo-word">Wet</span></div>
+        <div class="oppo-sep">↔</div>
+        <div class="oppo-side"><span class="oppo-emoji">🏜️</span><span class="oppo-word">Dry</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== LESSONS =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Lessons</h2>
+      <span class="link cursor-default">10 total · 4 done</span>
+    </div>
+    <div class="space-y-3">
+      <a href="game-opposites.html" class="lesson-item is-done">
+        <div class="lesson-node"><i class="ph-fill ph-check"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Size opposites</p>
+          <p class="lesson-sub">Completed · big &amp; small</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 3 min</span>
+            <span><i class="ph ph-star"></i> 3/3</span>
+            <span><i class="ph ph-sparkle"></i> +40 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-mint shrink-0">Done</span>
+      </a>
+      <a href="game-opposites.html" class="lesson-item is-done">
+        <div class="lesson-node"><i class="ph-fill ph-check"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Hot &amp; cold</p>
+          <p class="lesson-sub">Completed · temperature pairs</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 3 min</span>
+            <span><i class="ph ph-star"></i> 2/3</span>
+            <span><i class="ph ph-sparkle"></i> +40 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-mint shrink-0">Done</span>
+      </a>
+      <a href="game-opposites.html" class="lesson-item is-current">
+        <div class="lesson-node"><i class="ph-fill ph-play"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Up &amp; down</p>
+          <p class="lesson-sub">In progress · directions</p>
+          <div class="chapter-bar mt-2"><span class="w-40"></span></div>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> ~2 min</span>
+            <span><i class="ph ph-sparkle"></i> +40 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-primary shrink-0">Now</span>
+      </a>
+      <a href="game-opposites.html" class="lesson-item">
+        <div class="lesson-node" aria-hidden="true">🏎️</div>
+        <div class="lesson-body">
+          <p class="lesson-title">Fast &amp; slow</p>
+          <p class="lesson-sub">Speed pairs</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 3 min</span>
+            <span><i class="ph ph-sparkle"></i> +40 XP</span>
+          </div>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold shrink-0">Easy</span>
+      </a>
+      <a href="game-opposites.html" class="lesson-item">
+        <div class="lesson-node" aria-hidden="true">😊</div>
+        <div class="lesson-body">
+          <p class="lesson-title">Happy &amp; sad</p>
+          <p class="lesson-sub">Feeling pairs</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 3 min</span>
+            <span><i class="ph ph-sparkle"></i> +45 XP</span>
+          </div>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold shrink-0">Easy</span>
+      </a>
+      <a href="lesson-locked.html" class="lesson-item is-locked">
+        <div class="lesson-node"><i class="ph-fill ph-lock"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Quiet &amp; loud</p>
+          <p class="lesson-sub">Finish Up &amp; down to unlock</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 3 min</span>
+            <span><i class="ph ph-sparkle"></i> +45 XP</span>
+          </div>
+        </div>
+        <span class="chip shrink-0">Locked</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== GAMES =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">🎮 Opposite games</h2>
+      <a href="learn-categories.html" class="link">More</a>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <a href="game-opposites.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-pink grid place-items-center text-2xl mx-auto mb-2">⚖️</div>
+        <p class="font-extrabold text-sm">Opposites game</p>
+        <p class="text-[11px] text-muted">Tap pair · +45 XP</p>
+      </a>
+      <a href="game-connect-pair.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-sky grid place-items-center text-2xl mx-auto mb-2">🔗</div>
+        <p class="font-extrabold text-sm">Connect pairs</p>
+        <p class="text-[11px] text-muted">Drag &amp; drop</p>
+      </a>
+      <a href="game-match-word.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-violet grid place-items-center text-2xl mx-auto mb-2">🧩</div>
+        <p class="font-extrabold text-sm">Match words</p>
+        <p class="text-[11px] text-muted">Word to picture</p>
+      </a>
+      <a href="game-multiple-choice.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl mx-auto mb-2">❓</div>
+        <p class="font-extrabold text-sm">Opposite quiz</p>
+        <p class="text-[11px] text-muted">10 Q · +50 XP</p>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== BADGES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🏅 Opposite badges</h2>
+      <a href="badges.html" class="link">All</a>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal bronze mx-auto">⚖️</div>
+        <p class="text-xs font-extrabold mt-2">Pair Finder</p>
+        <p class="text-[10px] text-muted">Earned</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal silver mx-auto">🔄</div>
+        <p class="text-xs font-extrabold mt-2">Flip Master</p>
+        <p class="text-[10px] text-muted">60%</p>
+      </div>
+      <div class="k-card p-3 text-center locked">
+        <div class="badge-medal mx-auto">🏆</div>
+        <p class="text-xs font-extrabold mt-2">All Opposites</p>
+        <p class="text-[10px] text-muted">Locked</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Opposites tip</p>
+        <p class="text-xs text-muted">Ask "what's the opposite of…?" during walks. Real-world pairs stick twice as fast.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Ideas</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab active" href="learn-categories.html"><span class="tab-ico"><i class="ph-fill ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-opposites.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:04 GMT -->
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/change-pin.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Change PIN · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="parent-controls.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Parent security</p>
+      <h1 class="h-display text-lg leading-tight">Change PIN</h1>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== STEP PROGRESS =============== -->
+  <section class="px-5">
+    <div class="flex items-center gap-2">
+      <span class="h-1.5 rounded-full bg-[var(--color-k-primary)] grow transition-all" data-step="1"></span>
+      <span class="h-1.5 rounded-full bg-[var(--color-k-border)] grow transition-all" data-step="2"></span>
+      <span class="h-1.5 rounded-full bg-[var(--color-k-border)] grow transition-all" data-step="3"></span>
+    </div>
+    <p class="text-[11px] text-muted mt-2" id="stepLabel">Step 1 of 3 · Confirm current PIN</p>
+  </section>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5 mt-4">
+    <div class="k-card-lg hero-profile text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-24 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-5xl">🔐</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <i class="ph-fill ph-lock-key"></i> 4-DIGIT PARENT PIN
+      </p>
+      <p class="relative h-display text-2xl mt-2 leading-tight" id="heroTitle">Confirm current PIN</p>
+      <p class="relative text-xs text-white/90 mt-1 max-w-[280px] mx-auto" id="heroSub">Enter your current 4-digit PIN to continue.</p>
+    </div>
+  </section>
+
+  <!-- =============== PIN INPUT =============== -->
+  <section class="px-8 mt-6">
+    <div class="flex justify-center gap-3" id="pinGroup">
+      <input inputmode="numeric" maxlength="1" class="input text-center text-2xl font-extrabold h-16 w-14" aria-label="Digit 1"/>
+      <input inputmode="numeric" maxlength="1" class="input text-center text-2xl font-extrabold h-16 w-14" aria-label="Digit 2"/>
+      <input inputmode="numeric" maxlength="1" class="input text-center text-2xl font-extrabold h-16 w-14" aria-label="Digit 3"/>
+      <input inputmode="numeric" maxlength="1" class="input text-center text-2xl font-extrabold h-16 w-14" aria-label="Digit 4"/>
+    </div>
+    <p id="pinHint" class="text-center text-xs text-muted mt-4">Hint: current PIN is <b class="text-ink">1234</b> in this demo.</p>
+
+    <!-- Strength meter (shown only on steps 2 & 3) -->
+    <div id="strengthWrap" class="mt-4 hidden">
+      <div class="flex items-center gap-2">
+        <span class="text-[11px] text-muted shrink-0">Strength</span>
+        <div class="progress grow"><span id="strengthFill" class="w-0 transition-all duration-300"></span></div>
+        <span id="strengthLabel" class="text-[11px] font-extrabold text-muted shrink-0">Weak</span>
+      </div>
+      <div class="mt-2 flex flex-wrap gap-2 text-[10px]" id="strengthRules">
+        <span class="chip chip-coral" data-rule="unique"><i class="ph ph-x"></i> Avoid 1234</span>
+        <span class="chip chip-coral" data-rule="noseq"><i class="ph ph-x"></i> No simple pattern</span>
+        <span class="chip chip-coral" data-rule="norepeat"><i class="ph ph-x"></i> No repeats</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== NUMERIC KEYPAD =============== -->
+  <section class="px-8 mt-5">
+    <div class="grid grid-cols-3 gap-2 max-w-[320px] mx-auto" id="pinPad">
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="1">1</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="2">2</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="3">3</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="4">4</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="5">5</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="6">6</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="7">7</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="8">8</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="9">9</button>
+      <button type="button" class="h-14 rounded-2xl opacity-0 pointer-events-none" aria-hidden="true">·</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="0">0</button>
+      <button type="button" class="h-14 rounded-2xl bg-[var(--color-k-surface)] border border-token text-xl font-extrabold text-ink hover:bg-[var(--color-k-bg)] active:scale-95 transition-all" data-pin="back" aria-label="Backspace"><i class="ph ph-backspace text-xl"></i></button>
+    </div>
+  </section>
+
+  <!-- =============== ACTIONS =============== -->
+  <section class="px-5 mt-5 mb-10">
+    <div class="space-y-2">
+      <button type="button" id="nextBtn" class="btn btn-primary w-full" disabled>
+        <i class="ph-fill ph-arrow-right"></i> <span id="nextLabel">Continue</span>
+      </button>
+      <a href="parent-controls.html" class="btn btn-ghost w-full">Cancel</a>
+    </div>
+    <p class="text-center text-[11px] text-muted mt-3">
+      Forgot your PIN? <a href="parent-verify.html" class="text-primary-ink font-extrabold">Reset via email</a>
+    </p>
+  </section>
+</main>
+
+<script src="assets/js/change-pin.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/change-pin.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:24 GMT -->
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  
+<!-- Mirrored from kidzio-three.vercel.app/walkthrough-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:24 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Walkthrough · Kidzio</title>
+    <meta name="theme-color" content="#FFF8F1" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="assets/images/icon.png" />
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem("theme");
+        var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        if (theme === "dark") document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute("content", theme === "dark" ? "#0F0B22" : "#FFF8F1");
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+  <body>
+    <main class="device-frame min-h-screen flex flex-col safe-top">
+      <div class="flex items-center justify-between px-6 py-3">
+        <span class="flex items-center gap-2">
+          <img src="assets/images/logo.png" alt="" class="w-[100px] rounded-xl" aria-hidden="true" />
+        </span>
+        <a href="login.html" class="text-sm font-bold" style="color: var(--color-k-primary)">Skip</a>
+      </div>
+
+      <div class="flex-1 flex flex-col items-center justify-center px-6 text-center">
+        <div class="relative w-full max-w-[320px] aspect-square grid place-items-center">
+          <div class="absolute inset-8 rounded-[40px] tile-violet"></div>
+          <div class="absolute inset-16 rounded-[32px] tile-sun"></div>
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="mascot" style="width: 96px; height: 96px; font-size: 52px">🎮</div>
+            <div class="mt-3 flex gap-2">
+              <span class="chip chip-primary">A</span>
+              <span class="chip chip-mint">1+1</span>
+              <span class="chip chip-coral">🐶</span>
+            </div>
+          </div>
+        </div>
+
+        <h1 class="h-display text-3xl mt-8 leading-tight">Learn through<br />playful games</h1>
+        <p class="mt-3 text-sm max-w-[320px]" style="color: var(--color-k-muted)">Turn every lesson into an exciting mini-game. Tap, drag, spell and discover.</p>
+      </div>
+
+      <div class="px-6 pb-10 safe-bottom">
+        <div class="flex items-center justify-center gap-2 mb-6">
+          <span class="w-6 h-2 rounded-full" style="background: var(--color-k-primary)"></span>
+          <span class="size-2 rounded-full" style="background: var(--color-k-border)"></span>
+          <span class="size-2 rounded-full" style="background: var(--color-k-border)"></span>
+        </div>
+        <a href="walkthrough-2.html" class="btn btn-primary w-full">Next <i class="ph ph-arrow-right"></i></a>
+      </div>
+    </main>
+    <script src="assets/js/app.js"></script>
+  <script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/walkthrough-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:24 GMT -->
+</html>

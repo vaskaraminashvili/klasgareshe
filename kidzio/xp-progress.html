@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/xp-progress.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>XP progress · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+<script src="assets/js/charts.js"></script>
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="home.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Your growth</p>
+      <h1 class="h-display text-lg leading-tight">XP progress</h1>
+    </div>
+    <button class="icon-btn" aria-label="Share"><i class="ph ph-share-fat text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== XP HERO =============== -->
+  <section class="px-5">
+    <div class="hero-xp k-card-lg">
+      <div class="relative xp-ring" style="--pct: 62">
+        <div class="xp-ring-inner">
+          <div>
+            <p class="xp-level">Lv 7</p>
+            <p class="xp-label">Explorer</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <i class="ph-fill ph-sparkle"></i> TOTAL XP
+      </p>
+      <p class="relative h-display text-5xl mt-2 leading-none">1,240</p>
+      <p class="relative text-xs text-white/90 mt-1">260 XP to Level 8 · Master</p>
+
+      <div class="relative mt-4 flex items-center gap-3">
+        <div class="progress on-gradient grow"><span class="w-62"></span></div>
+        <span class="text-sm font-extrabold shrink-0">62%</span>
+      </div>
+
+      <div class="relative mt-4 grid grid-cols-4 gap-2">
+        <div class="hero-metric">
+          <p class="hm-v">+240</p>
+          <p class="hm-l">Today</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">+940</p>
+          <p class="hm-l">Week</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">#3</p>
+          <p class="hm-l">Friend rank</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">134</p>
+          <p class="hm-l">Avg/day</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== QUICK INSIGHTS =============== -->
+  <section class="px-5 mt-4 grid grid-cols-3 gap-3">
+    <div class="k-card p-3 text-center">
+      <div class="size-10 rounded-2xl tile-mint grid place-items-center text-xl mx-auto">📈</div>
+      <p class="h-display text-lg mt-1">+12%</p>
+      <p class="text-[11px] text-muted font-extrabold">vs last week</p>
+    </div>
+    <div class="k-card p-3 text-center">
+      <div class="size-10 rounded-2xl tile-sun grid place-items-center text-xl mx-auto">⚡</div>
+      <p class="h-display text-lg mt-1">+360</p>
+      <p class="text-[11px] text-muted font-extrabold">Best day</p>
+    </div>
+    <div class="k-card p-3 text-center">
+      <div class="size-10 rounded-2xl tile-coral grid place-items-center text-xl mx-auto">🎯</div>
+      <p class="h-display text-lg mt-1">6 / 7</p>
+      <p class="text-[11px] text-muted font-extrabold">Active days</p>
+    </div>
+  </section>
+
+  <!-- =============== WEEKLY XP CHART =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Last 7 days</h2>
+      <span class="trend-pill"><i class="ph-fill ph-trend-up"></i> +12%</span>
+    </div>
+    <div class="k-card text-ink">
+      <div id="line"></div>
+      <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+        <div class="p-2 rounded-xl bg-base">
+          <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">Total</p>
+          <p class="h-display text-base">+940 XP</p>
+        </div>
+        <div class="p-2 rounded-xl bg-base">
+          <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">Peak</p>
+          <p class="h-display text-base">Fri</p>
+        </div>
+        <div class="p-2 rounded-xl bg-base">
+          <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">Quiet</p>
+          <p class="h-display text-base">Sun</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== TIME RANGE (clean segmented) =============== -->
+  <section class="px-5 mt-4">
+    <div class="flex items-center justify-between">
+      <p class="section-label">Time range</p>
+      <div class="segmented">
+        <button>Today</button>
+        <button class="is-active">Week</button>
+        <button>Month</button>
+        <button>All</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== XP BY SUBJECT =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">XP by subject</h2>
+      <span class="link cursor-default">4 subjects</span>
+    </div>
+    <div class="space-y-2">
+      <a href="learn-math.html" class="subject-row">
+        <div class="sr-ico tile-violet">➗</div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Math</p>
+            <span class="text-[11px] text-muted font-extrabold ml-auto">920 XP</span>
+          </div>
+          <div class="progress mt-1"><span class="w-74"></span></div>
+          <p class="text-[11px] text-muted mt-1">74% of total · Lv 6 in Math</p>
+        </div>
+      </a>
+      <a href="learn-alphabet.html" class="subject-row">
+        <div class="sr-ico tile-sun">🔤</div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Alphabet</p>
+            <span class="text-[11px] text-muted font-extrabold ml-auto">680 XP</span>
+          </div>
+          <div class="progress progress-sun mt-1"><span class="w-55"></span></div>
+          <p class="text-[11px] text-muted mt-1">55% of total · Lv 5</p>
+        </div>
+      </a>
+      <a href="learn-animals.html" class="subject-row">
+        <div class="sr-ico tile-mint">🦁</div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Animals</p>
+            <span class="text-[11px] text-muted font-extrabold ml-auto">500 XP</span>
+          </div>
+          <div class="progress progress-mint mt-1"><span class="w-40"></span></div>
+          <p class="text-[11px] text-muted mt-1">40% of total · Lv 4</p>
+        </div>
+      </a>
+      <a href="learn-words.html" class="subject-row">
+        <div class="sr-ico tile-coral">📚</div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Words</p>
+            <span class="text-[11px] text-muted font-extrabold ml-auto">240 XP</span>
+          </div>
+          <div class="progress progress-coral mt-1"><span class="w-20"></span></div>
+          <p class="text-[11px] text-muted mt-1">20% of total · Lv 2</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== LEVEL ROADMAP =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Level roadmap</h2>
+      <span class="link cursor-default">You are Lv 7</span>
+    </div>
+    <div class="space-y-2">
+      <div class="reward-row">
+        <div class="rr-ico tile-mint">✓</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Level 7 · Explorer</p>
+          <p class="text-[11px] text-muted">Reached 2 days ago</p>
+        </div>
+        <span class="chip chip-mint">Current</span>
+      </div>
+      <div class="reward-row">
+        <div class="rr-ico tile-violet">8</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Level 8 · Master</p>
+          <p class="text-[11px] text-muted">Unlocks trophy room + avatar frame</p>
+          <div class="progress mt-1"><span class="w-62"></span></div>
+        </div>
+        <span class="chip chip-primary">260 XP</span>
+      </div>
+      <div class="reward-row">
+        <div class="rr-ico tile-sun">🏅</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Golden badge</p>
+          <p class="text-[11px] text-muted">At 1,500 XP</p>
+        </div>
+        <span class="chip chip-sun">260 XP</span>
+      </div>
+      <div class="reward-row">
+        <div class="rr-ico tile-coral">🎨</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">New avatar skin</p>
+          <p class="text-[11px] text-muted">At 2,000 XP</p>
+        </div>
+        <span class="chip chip-coral">760 XP</span>
+      </div>
+      <div class="reward-row">
+        <div class="rr-ico tile-sky">10</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Level 10 · Legend</p>
+          <p class="text-[11px] text-muted">Exclusive rainbow theme</p>
+        </div>
+        <span class="chip">1,760 XP</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== XP SOURCES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Where XP comes from</h2>
+      <span class="link cursor-default">This week</span>
+    </div>
+    <div class="k-card p-4 space-y-3">
+      <div class="flex items-center gap-2 text-sm">
+        <span class="size-9 rounded-xl tile-violet grid place-items-center text-lg shrink-0">📖</span>
+        <span class="grow font-extrabold text-ink">Lessons</span>
+        <span class="text-muted text-xs">520 XP</span>
+        <span class="trend-pill">55%</span>
+      </div>
+      <div class="flex items-center gap-2 text-sm">
+        <span class="size-9 rounded-xl tile-mint grid place-items-center text-lg shrink-0">🎮</span>
+        <span class="grow font-extrabold text-ink">Mini-games</span>
+        <span class="text-muted text-xs">240 XP</span>
+        <span class="trend-pill">26%</span>
+      </div>
+      <div class="flex items-center gap-2 text-sm">
+        <span class="size-9 rounded-xl tile-sun grid place-items-center text-lg shrink-0">🎯</span>
+        <span class="grow font-extrabold text-ink">Missions</span>
+        <span class="text-muted text-xs">120 XP</span>
+        <span class="trend-pill">13%</span>
+      </div>
+      <div class="flex items-center gap-2 text-sm">
+        <span class="size-9 rounded-xl tile-coral grid place-items-center text-lg shrink-0">🔥</span>
+        <span class="grow font-extrabold text-ink">Streak bonus</span>
+        <span class="text-muted text-xs">60 XP</span>
+        <span class="trend-pill">6%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== EARN MORE CTA =============== -->
+  <section class="px-5 mt-5">
+    <a href="daily-mission.html" class="k-card-lg card-hero-primary relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">⚡</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">⚡</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">LEVEL UP FASTER</p>
+          <p class="h-display text-lg leading-tight">Finish today's mission</p>
+          <p class="text-xs text-white/90">+120 XP waiting · reach Level 8 in 3 days</p>
+        </div>
+        <span class="cta-soft shrink-0">Start</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">What is XP?</p>
+        <p class="text-xs text-muted">XP = Experience Points. Every correct answer, lesson and streak earns XP to level up and unlock rewards.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Learn</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab active" href="home.html"><span class="tab-ico"><i class="ph-fill ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab" href="learn-categories.html"><span class="tab-ico"><i class="ph ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/xp-progress.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/xp-progress.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:33 GMT -->
+</html>

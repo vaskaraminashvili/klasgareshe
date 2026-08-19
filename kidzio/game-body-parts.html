@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/game-body-parts.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:07 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Body parts · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+  <header class="appbar">
+    <a href="game-opposites.html" class="icon-btn" data-back aria-label="Close"><i class="ph ph-x"></i></a>
+    <div class="grow"><div class="progress progress-sun"><span id="progressFill" class="w-50"></span></div></div>
+    <span class="chip chip-sun" id="scoreChip">⭐ 20</span>
+  </header>
+
+  <section class="px-6 mt-2 text-center">
+    <p class="text-xs font-extrabold text-muted tracking-wider">BODY PARTS</p>
+    <h1 class="h-display text-xl mt-1">Tap the <span class="text-primary-ink" id="promptLabel">elbow</span></h1>
+  </section>
+
+  <section class="px-5 mt-4">
+    <div class="k-card-lg tile-sun relative aspect-[4/5] grid place-items-center overflow-hidden">
+      <svg viewBox="0 0 200 280" class="w-3/4 h-full" aria-label="Body figure">
+        <!-- Head -->
+        <circle cx="100" cy="50" r="30" fill="#FFDFAD"/>
+        <!-- Body -->
+        <rect x="70" y="85" width="60" height="100" rx="20" fill="#7C5CFF"/>
+        <!-- Arms -->
+        <rect x="35" y="95" width="30" height="70" rx="15" fill="#FFDFAD"/>
+        <rect x="135" y="95" width="30" height="70" rx="15" fill="#FFDFAD"/>
+        <!-- Legs -->
+        <rect x="75" y="190" width="22" height="70" rx="10" fill="#2B3A67"/>
+        <rect x="103" y="190" width="22" height="70" rx="10" fill="#2B3A67"/>
+        <!-- Target pulse (moves with prompt) -->
+        <circle id="pulseRing" cx="50" cy="130" r="10" fill="#FF5B73" opacity=".35">
+          <animate attributeName="r" values="10;16;10" dur="1.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle id="pulseDot" cx="50" cy="130" r="6" fill="#FF5B73"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="px-6 mt-5 grid grid-cols-3 gap-3 text-center" id="partGrid">
+    <button type="button" class="k-card py-3 part-card" data-part="eye" data-x="90" data-y="45"><div class="text-2xl">👁️</div><p class="text-xs font-extrabold text-ink mt-1">Eye</p></button>
+    <button type="button" class="k-card py-3 part-card" data-part="elbow" data-x="50" data-y="130"><div class="text-2xl">💪</div><p class="text-xs font-extrabold text-ink mt-1">Elbow</p></button>
+    <button type="button" class="k-card py-3 part-card" data-part="foot" data-x="86" data-y="260"><div class="text-2xl">🦶</div><p class="text-xs font-extrabold text-ink mt-1">Foot</p></button>
+    <button type="button" class="k-card py-3 part-card" data-part="mouth" data-x="100" data-y="65"><div class="text-2xl">👄</div><p class="text-xs font-extrabold text-ink mt-1">Mouth</p></button>
+    <button type="button" class="k-card py-3 part-card" data-part="hand" data-x="150" data-y="170"><div class="text-2xl">✋</div><p class="text-xs font-extrabold text-ink mt-1">Hand</p></button>
+    <button type="button" class="k-card py-3 part-card" data-part="ear" data-x="125" data-y="50"><div class="text-2xl">👂</div><p class="text-xs font-extrabold text-ink mt-1">Ear</p></button>
+  </section>
+
+  <div class="mt-auto px-6 pb-6 pt-4 safe-bottom">
+    <button id="nextBtn" type="button" class="btn btn-primary w-full" disabled>
+      <i class="ph-fill ph-arrow-right"></i> Next
+    </button>
+  </div>
+</main>
+
+<script src="assets/js/game-body-parts.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/game-body-parts.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:07 GMT -->
+</html>

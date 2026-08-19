@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/weekly-report.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:13 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Weekly report · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+<script src="assets/js/charts.js"></script>
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="parent-controls.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted" id="weekRange">Apr 11 — 17 · parent@example.com</p>
+      <h1 class="h-display text-lg leading-tight">Weekly report</h1>
+    </div>
+    <button type="button" id="weekBtn" class="chip chip-primary"><i class="ph-fill ph-calendar"></i> <span id="weekLabel">Wk 16</span></button>
+    <button type="button" id="shareBtn" class="icon-btn" aria-label="Share"><i class="ph ph-share-fat text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-friends text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-24 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-5xl">📊</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">
+        <i class="ph-fill ph-sparkle"></i> THIS WEEK
+      </p>
+      <p class="relative h-display text-2xl mt-2 leading-tight">Luna had a great week!</p>
+      <p class="relative text-xs text-white/90 mt-1">+12% XP vs last week · 6 of 7 active days</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none text-white">+<span id="xpVal">0</span></p>
+          <p class="text-[10px] text-white/85 mt-1">XP earned</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none text-white" id="lessonsVal">0</p>
+          <p class="text-[10px] text-white/85 mt-1">Lessons</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none text-white"><span id="activeVal">0</span>/7</p>
+          <p class="text-[10px] text-white/85 mt-1">Active days</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex items-center gap-3">
+        <div class="progress on-gradient grow"><span id="weekFill" class="w-0 transition-all duration-700"></span></div>
+        <span class="text-sm font-extrabold shrink-0 text-white" id="goalPct">0%</span>
+      </div>
+      <p class="relative text-[11px] text-white/85 mt-1">Weekly goal · 800 XP</p>
+    </div>
+  </section>
+
+  <!-- =============== DAILY XP LINE =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <p class="section-label">Daily XP</p>
+      <span class="link cursor-default" id="dayHint">Tap a day for details</span>
+    </div>
+    <div class="k-card text-ink mt-3 p-3">
+      <div id="line"></div>
+      <div class="mt-3 grid grid-cols-7 gap-1" id="dayChips">
+        <button type="button" class="chip text-[11px] !py-1 text-center" data-day="Mon" data-xp="120" data-top="Math">M</button>
+        <button type="button" class="chip text-[11px] !py-1 text-center" data-day="Tue" data-xp="200" data-top="Alphabet">T</button>
+        <button type="button" class="chip text-[11px] !py-1 text-center" data-day="Wed" data-xp="170" data-top="Math">W</button>
+        <button type="button" class="chip text-[11px] !py-1 text-center" data-day="Thu" data-xp="240" data-top="Animals">T</button>
+        <button type="button" class="chip chip-primary text-[11px] !py-1 text-center" data-day="Fri" data-xp="360" data-top="Math">F</button>
+        <button type="button" class="chip text-[11px] !py-1 text-center" data-day="Sat" data-xp="210" data-top="Words">S</button>
+        <button type="button" class="chip text-[11px] !py-1 text-center" data-day="Sun" data-xp="80" data-top="Animals">S</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== HIGHLIGHTS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Highlights</p>
+    <div class="mt-3 space-y-2" id="highlightList">
+      <button type="button" class="setting-row w-full text-left" data-highlight data-title="7-day streak reached" data-emoji="🔥" data-tile="tile-sun" data-body="Luna opened Kidzio every day this week. First time this season — streak freeze item unlocked as a bonus." data-cta="View streak" data-href="streak.html">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-fire"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">7-day streak reached</p>
+          <p class="text-[11px] text-muted">First time this season 🎉</p>
+        </div>
+        <span class="chip chip-sun">NEW</span>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-highlight data-title="Gold League promotion" data-emoji="🏆" data-tile="tile-violet" data-body="Luna finished top 10 in the Silver league and moved up to Gold. Next season starts Monday." data-cta="Open league" data-href="league.html">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-trophy"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Gold League promotion</p>
+          <p class="text-[11px] text-muted">Moved up from Silver</p>
+        </div>
+        <span class="chip chip-primary">Lv 7</span>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-highlight data-title="2 new badges earned" data-emoji="🏅" data-tile="tile-mint" data-body="Counter Champ (rare) unlocked after 5 math lessons, and Week Warrior (common) for the streak. +100 XP total." data-cta="See badges" data-href="badges.html">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-star"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">2 new badges earned</p>
+          <p class="text-[11px] text-muted">Counter Champ · Week Warrior</p>
+        </div>
+        <span class="chip chip-mint">+100 XP</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== BY SUBJECT =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <p class="section-label">Where time went</p>
+      <span class="link cursor-default">100 min total</span>
+    </div>
+    <div class="k-card p-4 mt-3 space-y-3" id="subjectList">
+      <button type="button" class="flex items-center gap-2 w-full text-left" data-subj data-name="Math" data-mins="45" data-xp="520" data-href="learn-math.html" data-bar="w-90" data-progress="" data-tile="tile-violet" data-emoji="➗">
+        <span class="size-9 rounded-xl tile-violet grid place-items-center text-lg shrink-0">➗</span>
+        <span class="grow min-w-0">
+          <span class="flex items-center justify-between">
+            <span class="font-extrabold text-ink">Math</span>
+            <span class="text-muted text-xs">45 min · 520 XP</span>
+          </span>
+          <span class="progress mt-1 block"><span class="w-90"></span></span>
+        </span>
+      </button>
+      <button type="button" class="flex items-center gap-2 w-full text-left" data-subj data-name="Alphabet" data-mins="28" data-xp="240" data-href="learn-alphabet.html" data-tile="tile-sun" data-emoji="🔤">
+        <span class="size-9 rounded-xl tile-sun grid place-items-center text-lg shrink-0">🔤</span>
+        <span class="grow min-w-0">
+          <span class="flex items-center justify-between">
+            <span class="font-extrabold text-ink">Alphabet</span>
+            <span class="text-muted text-xs">28 min · 240 XP</span>
+          </span>
+          <span class="progress progress-sun mt-1 block"><span class="w-55"></span></span>
+        </span>
+      </button>
+      <button type="button" class="flex items-center gap-2 w-full text-left" data-subj data-name="Animals" data-mins="15" data-xp="120" data-href="learn-animals.html" data-tile="tile-mint" data-emoji="🦁">
+        <span class="size-9 rounded-xl tile-mint grid place-items-center text-lg shrink-0">🦁</span>
+        <span class="grow min-w-0">
+          <span class="flex items-center justify-between">
+            <span class="font-extrabold text-ink">Animals</span>
+            <span class="text-muted text-xs">15 min · 120 XP</span>
+          </span>
+          <span class="progress progress-mint mt-1 block"><span class="w-30"></span></span>
+        </span>
+      </button>
+      <button type="button" class="flex items-center gap-2 w-full text-left" data-subj data-name="Words" data-mins="12" data-xp="60" data-href="learn-words.html" data-tile="tile-coral" data-emoji="📚">
+        <span class="size-9 rounded-xl tile-coral grid place-items-center text-lg shrink-0">📚</span>
+        <span class="grow min-w-0">
+          <span class="flex items-center justify-between">
+            <span class="font-extrabold text-ink">Words</span>
+            <span class="text-muted text-xs">12 min · 60 XP</span>
+          </span>
+          <span class="progress progress-coral mt-1 block"><span class="w-25"></span></span>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== CONCERNS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Things to watch</p>
+    <div class="mt-3 space-y-2">
+      <div class="tip-card rounded-2xl p-3 flex items-start gap-3">
+        <div class="mascot shrink-0 size-10 text-base">🦉</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Sunday was light</p>
+          <p class="text-[11px] text-muted">Only 80 XP — consider a gentle reminder for weekends.</p>
+        </div>
+        <a href="screen-time.html" class="chip chip-primary shrink-0">Remind</a>
+      </div>
+      <div class="tip-card rounded-2xl p-3 flex items-start gap-3">
+        <div class="mascot shrink-0 size-10 text-base">💡</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Words could use love</p>
+          <p class="text-[11px] text-muted">Only 12 min this week — try suggesting a spelling game.</p>
+        </div>
+        <a href="game-spell-word.html" class="chip chip-primary shrink-0">Suggest</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== EMAIL SETTINGS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Email delivery</p>
+    <div class="mt-3 space-y-2">
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-envelope-simple"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Email weekly report</p>
+          <p class="text-[11px] text-muted">Sent every Monday 8 AM</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked data-pref="email"/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      <button type="button" id="emailEditBtn" class="setting-row w-full text-left">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-user"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Email address</p>
+          <p class="text-[11px] text-muted" id="emailCurrent">parent@example.com</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== CTA =============== -->
+  <div class="mt-auto px-5 pb-8 pt-6 safe-bottom space-y-2">
+    <button type="button" id="downloadBtn" class="btn btn-primary w-full">
+      <i class="ph-fill ph-download-simple"></i> Download as PDF
+    </button>
+    <p class="text-[11px] text-center text-muted">Reports include anonymized learning data only</p>
+  </div>
+</main>
+
+<!-- =============== WEEK PICKER SHEET =============== -->
+<div id="weekSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="weekSheetTitle">
+  <button type="button" id="weekBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="weekPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div class="size-12 rounded-2xl tile-violet grid place-items-center text-2xl shrink-0">📅</div>
+        <div class="grow min-w-0">
+          <p id="weekSheetTitle" class="h-display text-xl leading-tight text-ink">Pick a week</p>
+          <p class="text-xs text-muted mt-1">Compare recent weeks side by side</p>
+        </div>
+        <button type="button" id="weekSheetClose" class="icon-btn shrink-0" aria-label="Close"><i class="ph ph-x"></i></button>
+      </div>
+      <div class="mt-4 space-y-2">
+        <button type="button" class="setting-row w-full text-left" data-week-opt="Wk 16" data-range="Apr 11 — 17" data-xp="940" data-days="6" data-active>
+          <div class="setting-ico tile-sun"><i class="ph-fill ph-calendar-dots"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Wk 16 · Apr 11 — 17</p>
+            <p class="text-[11px] text-muted">+940 XP · 6 active days · +12%</p>
+          </div>
+          <span class="chip chip-primary">Active</span>
+        </button>
+        <button type="button" class="setting-row w-full text-left" data-week-opt="Wk 15" data-range="Apr 4 — 10" data-xp="840" data-days="5">
+          <div class="setting-ico tile-mint"><i class="ph-fill ph-calendar-check"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Wk 15 · Apr 4 — 10</p>
+            <p class="text-[11px] text-muted">+840 XP · 5 active days</p>
+          </div>
+          <span class="chip">Past</span>
+        </button>
+        <button type="button" class="setting-row w-full text-left" data-week-opt="Wk 14" data-range="Mar 28 — Apr 3" data-xp="730" data-days="6">
+          <div class="setting-ico tile-sky"><i class="ph-fill ph-calendar-check"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">Wk 14 · Mar 28 — Apr 3</p>
+            <p class="text-[11px] text-muted">+730 XP · 6 active days</p>
+          </div>
+          <span class="chip">Past</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== DAY DETAIL SHEET =============== -->
+<div id="daySheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="daySheetTitle">
+  <button type="button" id="dayBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="dayPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div id="dayTile" class="size-12 rounded-2xl tile-mint grid place-items-center text-2xl shrink-0">🗓️</div>
+        <div class="grow min-w-0">
+          <p id="daySheetTitle" class="h-display text-xl leading-tight text-ink">Friday</p>
+          <p id="daySheetSub" class="text-xs text-muted mt-0.5">+360 XP · top subject Math</p>
+        </div>
+        <button type="button" id="daySheetClose" class="icon-btn shrink-0" aria-label="Close"><i class="ph ph-x"></i></button>
+      </div>
+      <div class="mt-5 grid grid-cols-3 gap-2 text-center">
+        <div class="k-card p-3"><p class="h-display text-ink" id="dayXp">0</p><p class="text-[11px] text-muted mt-1">XP</p></div>
+        <div class="k-card p-3"><p class="h-display text-ink" id="dayMins">0</p><p class="text-[11px] text-muted mt-1">Min</p></div>
+        <div class="k-card p-3"><p class="h-display text-ink" id="dayLessons">0</p><p class="text-[11px] text-muted mt-1">Lessons</p></div>
+      </div>
+      <p class="section-label mt-5">Top activities</p>
+      <div class="mt-2 space-y-2" id="dayActivities"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== HIGHLIGHT SHEET =============== -->
+<div id="hlSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="hlSheetTitle">
+  <button type="button" id="hlBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="hlPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6 text-center">
+      <div id="hlTile" class="mx-auto size-20 rounded-2xl tile-sun grid place-items-center text-4xl">🔥</div>
+      <p id="hlSheetTitle" class="h-display text-2xl mt-3 text-ink">7-day streak reached</p>
+      <p id="hlSheetBody" class="text-sm text-muted mt-2 max-w-[300px] mx-auto">Luna kept the streak alive all week.</p>
+      <div class="mt-5 grid grid-cols-2 gap-2">
+        <button type="button" id="hlClose" class="btn btn-ghost">Close</button>
+        <a id="hlCta" href="#" class="btn btn-primary"><i class="ph-fill ph-arrow-right"></i> View</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============== SHARE SHEET =============== -->
+<div id="shareSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+  <button type="button" id="shareBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="sharePanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div class="size-12 rounded-2xl tile-violet grid place-items-center text-2xl shrink-0">💌</div>
+        <div class="grow min-w-0">
+          <p id="shareTitle" class="h-display text-xl leading-tight text-ink">Share Luna's week</p>
+          <p class="text-xs text-muted mt-1">Send a snapshot to family &amp; school.</p>
+        </div>
+        <button type="button" id="shareClose" class="icon-btn shrink-0" aria-label="Close"><i class="ph ph-x"></i></button>
+      </div>
+      <div class="mt-4 grid grid-cols-4 gap-3">
+        <button type="button" class="k-card p-3 text-center" data-share="email">
+          <div class="size-10 mx-auto rounded-2xl tile-coral grid place-items-center"><i class="ph-fill ph-envelope-simple text-xl"></i></div>
+          <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">Email</p>
+        </button>
+        <button type="button" class="k-card p-3 text-center" data-share="whatsapp">
+          <div class="size-10 mx-auto rounded-2xl tile-mint grid place-items-center"><i class="ph-fill ph-whatsapp-logo text-xl"></i></div>
+          <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">WhatsApp</p>
+        </button>
+        <button type="button" class="k-card p-3 text-center" data-share="messages">
+          <div class="size-10 mx-auto rounded-2xl tile-sky grid place-items-center"><i class="ph-fill ph-chat-circle text-xl"></i></div>
+          <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">Messages</p>
+        </button>
+        <button type="button" class="k-card p-3 text-center" data-share="copy">
+          <div class="size-10 mx-auto rounded-2xl tile-sun grid place-items-center"><i class="ph-fill ph-link text-xl"></i></div>
+          <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">Copy link</p>
+        </button>
+      </div>
+      <p class="text-[11px] text-center text-muted mt-4">Links only include anonymized stats.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =============== EMAIL EDIT SHEET =============== -->
+<div id="emailSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="emailSheetTitle">
+  <button type="button" id="emailBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+  <div id="emailPanel" class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom translate-y-full transition-transform duration-300 ease-out">
+    <div class="flex justify-center pt-3">
+      <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+    </div>
+    <div class="px-5 pt-4 pb-6">
+      <div class="flex items-start gap-3">
+        <div class="size-12 rounded-2xl tile-sky grid place-items-center text-2xl shrink-0">✉️</div>
+        <div class="grow min-w-0">
+          <p id="emailSheetTitle" class="h-display text-xl leading-tight text-ink">Edit email</p>
+          <p class="text-xs text-muted mt-1">We'll send a verification link to the new address.</p>
+        </div>
+        <button type="button" id="emailSheetClose" class="icon-btn shrink-0" aria-label="Close"><i class="ph ph-x"></i></button>
+      </div>
+      <div class="mt-4">
+        <label for="emailInput" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">Parent email</label>
+        <div class="input-wrap mt-1">
+          <i class="ph ph-envelope-simple i-left"></i>
+          <input id="emailInput" type="email" class="input has-left" value="parent@example.com" autocomplete="email"/>
+        </div>
+        <p id="emailSheetHint" class="text-[10px] text-muted mt-1"><i class="ph-fill ph-check-circle text-mint-ink"></i> Looks good.</p>
+      </div>
+      <div class="mt-5 grid grid-cols-2 gap-2">
+        <button type="button" id="emailCancelBtn" class="btn btn-ghost">Cancel</button>
+        <button type="button" id="emailSaveBtn" class="btn btn-primary"><i class="ph-fill ph-check"></i> Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/weekly-report.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/weekly-report.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:14 GMT -->
+</html>

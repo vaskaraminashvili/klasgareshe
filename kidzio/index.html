@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  
+<!-- Mirrored from kidzio-three.vercel.app/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:20 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Kidzio — Kids Learning Games &amp; Education</title>
+    <meta name="description" content="Kidzio — premium kids learning games, alphabet, math, animals, words, rewards, streaks, leaderboard. A PWA template." />
+    <meta name="theme-color" content="#7C5CFF" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/png" href="assets/images/icon.png" />
+    <link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/index.css" />
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem("theme");
+        var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        if (theme === "dark") document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute("content", theme === "dark" ? "#0F0B22" : "#FFF8F1");
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+  <body style="background: linear-gradient(180deg, #8e72ff 0%, #7c5cff 60%, #6a49f0 100%)">
+    <main class="device-frame min-h-screen flex flex-col items-center justify-center text-white text-center px-8 relative overflow-hidden">
+      <div class="absolute inset-0 confetti-bg opacity-30"></div>
+      <div class="absolute top-24 left-10 size-24 rounded-full bg-white/20 blur-2xl"></div>
+      <div class="absolute bottom-40 right-8 size-32 rounded-full bg-[#FFE27A]/40 blur-2xl"></div>
+      <div class="relative z-10 flex flex-col items-center">
+        <img src="assets/images/logo.png" alt="Kidzio" class="mb-6" style="width: 240px; height: auto; filter: drop-shadow(0 8px 24px rgba(0,0,0,.2))" />
+    
+        <p class="mt-2 max-w-[280px] text-k-primary/80" style="text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)">Learn through play. Every tap is an adventure.</p>
+      </div>
+      <div class="absolute bottom-20 flex items-center gap-2">
+        <span class="size-2 rounded-full bg-white/70 animate-pulse"></span>
+        <span class="size-2 rounded-full bg-white animate-pulse" style="animation-delay: 0.2s"></span>
+        <span class="size-2 rounded-full bg-white/70 animate-pulse" style="animation-delay: 0.4s"></span>
+      </div>
+      <p class="absolute bottom-8 text-xs text-k-primary/85" style="text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)">Powered by Kidzio Learning</p>
+    </main>
+    <script src="assets/js/splash.js"></script>
+    <script src="assets/js/app.js"></script>
+  <script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:21 GMT -->
+</html>

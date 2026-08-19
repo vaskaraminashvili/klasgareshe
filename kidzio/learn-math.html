@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-math.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:37 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Math · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="learn-categories.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Learn · Category</p>
+      <h1 class="h-display text-lg leading-tight">Math</h1>
+    </div>
+    <button class="icon-btn" aria-label="Favourite"><i class="ph ph-heart text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-math">
+      <span class="hero-math-watermark" aria-hidden="true">➗</span>
+
+      <div class="relative flex items-center gap-2">
+        <span class="chip bg-white/20 border-0 text-white">
+          <i class="ph-fill ph-calculator"></i> MATH WORLD
+        </span>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">Age 5–9</span>
+      </div>
+
+      <p class="h-display text-2xl mt-2 relative leading-tight">Let's count &amp; explore 🔢</p>
+      <p class="text-sm text-white/90 relative">Numbers, shapes, time and more through fun games.</p>
+
+      <div class="relative mt-4 flex items-center gap-3">
+        <div class="progress on-gradient grow"><span class="w-33"></span></div>
+        <span class="text-sm font-extrabold shrink-0">8 / 24</span>
+      </div>
+      <p class="relative text-[11px] text-white/85 mt-1">33% complete · 16 lessons remaining</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="count-pill">
+          <span class="count-value">920</span>
+          <span class="count-label">XP earned</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">2</span>
+          <span class="count-label">Badges</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">Easy</span>
+          <span class="count-label">Level</span>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex flex-wrap items-center gap-2">
+        <a href="lesson-continue.html" class="cta-soft">
+          Continue <i class="ph-fill ph-arrow-right"></i>
+        </a>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">
+          <i class="ph-fill ph-clock"></i> ~15 min left
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== CONTINUE CTA =============== -->
+  <section class="px-5 mt-4">
+    <a href="lesson-continue.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">▶️</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">🔟</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">CONTINUE</p>
+          <p class="h-display text-lg leading-tight">Counting to 20</p>
+          <p class="text-xs text-white/90">60% done · ~3 min · +50 XP</p>
+        </div>
+        <span class="cta-soft shrink-0">Play</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== NUMBER PRACTICE GRID =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🔢 Tap a number to practice</h2>
+      <span class="link cursor-default">1–10</span>
+    </div>
+    <div class="grid grid-cols-5 gap-2">
+      <a href="game-counting.html" class="num-tile is-done">1</a>
+      <a href="game-counting.html" class="num-tile is-done">2</a>
+      <a href="game-counting.html" class="num-tile is-done">3</a>
+      <a href="game-counting.html" class="num-tile is-done">4</a>
+      <a href="game-counting.html" class="num-tile">5</a>
+      <a href="game-counting.html" class="num-tile">6</a>
+      <a href="game-counting.html" class="num-tile">7</a>
+      <a href="game-counting.html" class="num-tile">8</a>
+      <a href="game-counting.html" class="num-tile">9</a>
+      <a href="game-counting.html" class="num-tile">10</a>
+    </div>
+  </section>
+
+  <!-- =============== TOPIC FILTERS =============== -->
+  <section class="px-5 mt-5">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" data-tabs role="tablist" aria-label="Filter topics">
+      <div class="swiper-wrapper">
+      <button data-tab="all" class="swiper-slide chip chip-primary" role="tab" aria-selected="true">✨ All topics</button>
+      <button data-tab="num" class="swiper-slide chip" role="tab">🔢 Numbers</button>
+      <button data-tab="add" class="swiper-slide chip" role="tab">➕ Add &amp; subtract</button>
+      <button data-tab="sha" class="swiper-slide chip" role="tab">🔷 Shapes</button>
+      <button data-tab="tim" class="swiper-slide chip" role="tab">⏰ Time</button>
+      <button data-tab="mea" class="swiper-slide chip" role="tab">📏 Measure</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== TOPIC OVERVIEW PILLS =============== -->
+  <section class="px-5 mt-4">
+    <div class="grid grid-cols-2 gap-2">
+      <div class="topic-pill">
+        <div class="tp-ico tile-violet">🔢</div>
+        <div>
+          <p class="tp-name">Numbers</p>
+          <p class="tp-sub">8 / 10 lessons</p>
+        </div>
+      </div>
+      <div class="topic-pill">
+        <div class="tp-ico tile-mint">➕</div>
+        <div>
+          <p class="tp-name">Add &amp; subtract</p>
+          <p class="tp-sub">0 / 6 lessons</p>
+        </div>
+      </div>
+      <div class="topic-pill">
+        <div class="tp-ico tile-sun">🔷</div>
+        <div>
+          <p class="tp-name">Shapes</p>
+          <p class="tp-sub">0 / 4 lessons</p>
+        </div>
+      </div>
+      <div class="topic-pill">
+        <div class="tp-ico tile-coral">⏰</div>
+        <div>
+          <p class="tp-name">Time</p>
+          <p class="tp-sub">0 / 4 lessons</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== LESSON LIST (flat, no connecting bar) =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Lessons</h2>
+      <span class="link cursor-default">24 total · 8 done</span>
+    </div>
+
+    <div class="space-y-3">
+      <!-- Completed -->
+      <a href="lesson-details.html" class="lesson-item is-done">
+        <div class="lesson-node"><i class="ph-fill ph-check"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Numbers 1–10</p>
+          <p class="lesson-sub">Completed · perfect score 🎉</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 4 min</span>
+            <span><i class="ph ph-star"></i> 3/3</span>
+            <span><i class="ph ph-sparkle"></i> +50 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-mint shrink-0">Done</span>
+      </a>
+
+      <a href="lesson-details.html" class="lesson-item is-done">
+        <div class="lesson-node"><i class="ph-fill ph-check"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Counting objects</p>
+          <p class="lesson-sub">Completed · apples &amp; stars</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 5 min</span>
+            <span><i class="ph ph-star"></i> 2/3</span>
+            <span><i class="ph ph-sparkle"></i> +50 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-mint shrink-0">Done</span>
+      </a>
+
+      <!-- Current -->
+      <a href="lesson-continue.html" class="lesson-item is-current">
+        <div class="lesson-node"><i class="ph-fill ph-play"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Counting to 20</p>
+          <p class="lesson-sub">In progress · 3 of 5 activities</p>
+          <div class="chapter-bar mt-2"><span class="w-60"></span></div>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> ~3 min</span>
+            <span><i class="ph ph-sparkle"></i> +50 XP</span>
+          </div>
+        </div>
+        <span class="chip chip-primary shrink-0">Now</span>
+      </a>
+
+      <!-- Locked -->
+      <a href="lesson-locked.html" class="lesson-item is-locked">
+        <div class="lesson-node"><i class="ph-fill ph-lock"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Simple addition</p>
+          <p class="lesson-sub">Finish Counting to 20 to unlock</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 6 min</span>
+            <span><i class="ph ph-sparkle"></i> +60 XP</span>
+          </div>
+        </div>
+        <span class="chip shrink-0">Locked</span>
+      </a>
+
+      <a href="lesson-locked.html" class="lesson-item is-locked">
+        <div class="lesson-node"><i class="ph-fill ph-lock"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Subtraction</p>
+          <p class="lesson-sub">Reach 500 XP to unlock</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 6 min</span>
+            <span><i class="ph ph-sparkle"></i> +60 XP</span>
+          </div>
+        </div>
+        <span class="chip shrink-0">500 XP</span>
+      </a>
+
+      <a href="lesson-locked.html" class="lesson-item is-locked">
+        <div class="lesson-node"><i class="ph-fill ph-lock"></i></div>
+        <div class="lesson-body">
+          <p class="lesson-title">Shapes around us</p>
+          <p class="lesson-sub">Reach 600 XP to unlock</p>
+          <div class="lesson-meta">
+            <span><i class="ph ph-clock"></i> 5 min</span>
+            <span><i class="ph ph-sparkle"></i> +55 XP</span>
+          </div>
+        </div>
+        <span class="chip shrink-0">600 XP</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== MATH MINI-GAMES =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">🎮 Math mini-games</h2>
+      <a href="learn-categories.html" class="link">More</a>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <a href="game-counting.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-violet grid place-items-center text-2xl mx-auto mb-2">🔢</div>
+        <p class="font-extrabold text-sm">Counting</p>
+        <p class="text-[11px] text-muted">~2 min · +30 XP</p>
+      </a>
+      <a href="game-multiple-choice.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-mint grid place-items-center text-2xl mx-auto mb-2">❓</div>
+        <p class="font-extrabold text-sm">Number quiz</p>
+        <p class="text-[11px] text-muted">~2 min · +40 XP</p>
+      </a>
+      <a href="game-tap-correct.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-sun grid place-items-center text-2xl mx-auto mb-2">👆</div>
+        <p class="font-extrabold text-sm">Tap the number</p>
+        <p class="text-[11px] text-muted">Quick · +20 XP</p>
+      </a>
+      <a href="game-match-word.html" class="swiper-slide k-card w-40 text-center">
+        <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl mx-auto mb-2">🧩</div>
+        <p class="font-extrabold text-sm">Match numbers</p>
+        <p class="text-[11px] text-muted">Drag &amp; drop</p>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== MATH BADGES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🏅 Math badges</h2>
+      <a href="badges.html" class="link">All 6</a>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal mx-auto">🏆</div>
+        <p class="text-xs font-extrabold mt-2">Counter Champ</p>
+        <p class="text-[10px] text-muted">Today</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="badge-medal silver mx-auto">🔢</div>
+        <p class="text-xs font-extrabold mt-2">Number Ninja</p>
+        <p class="text-[10px] text-muted">Week 2</p>
+      </div>
+      <div class="k-card p-3 text-center locked">
+        <div class="badge-medal mx-auto">➕</div>
+        <p class="text-xs font-extrabold mt-2">Add Master</p>
+        <p class="text-[10px] text-muted">Finish add ch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== WEEKLY CHALLENGE =============== -->
+  <section class="px-5 mt-5">
+    <a href="daily-mission.html" class="k-card-lg card-reward-amber relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">🧮</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">🧮</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider">WEEKLY MATH CHALLENGE</p>
+          <p class="h-display text-lg leading-tight">Solve 20 problems</p>
+          <p class="text-xs">12 / 20 done · 3 days left</p>
+        </div>
+        <span class="chip chip-on-tile">+150 XP</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Math tip</p>
+        <p class="text-xs text-muted">Kids learn math best with repetition. 5 min a day beats 30 min once a week!</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Goal</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab active" href="learn-categories.html"><span class="tab-ico"><i class="ph-fill ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-math.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:38 GMT -->
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/badges.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Badges · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="rewards-dashboard.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Your collection</p>
+      <h1 class="h-display text-lg leading-tight">Badges</h1>
+    </div>
+    <button class="icon-btn" aria-label="Share" id="shareBtn"><i class="ph ph-share-fat text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO COLLECTION =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-badges text-center">
+      <div class="relative inline-flex items-center justify-center">
+        <div class="badge-medal" aria-hidden="true">🏆</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-3">
+        <i class="ph-fill ph-sparkle"></i> YOUR COLLECTION
+      </p>
+      <p class="relative h-display text-3xl mt-2 leading-none">8 <span class="text-xl opacity-80">/ 24</span></p>
+      <p class="relative text-xs text-white/90">badges earned · Top 12% of learners</p>
+
+      <div class="relative mt-4">
+        <div class="coll-bar"><span class="w-33"></span></div>
+        <div class="flex items-center justify-between text-[11px] mt-2 text-white/85 font-extrabold">
+          <span>33% complete</span>
+          <span>16 to go</span>
+        </div>
+      </div>
+
+      <div class="relative mt-4 grid grid-cols-4 gap-2">
+        <div class="hero-metric">
+          <p class="hm-v">3</p>
+          <p class="hm-l">Rare</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">4</p>
+          <p class="hm-l">Common</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">1</p>
+          <p class="hm-l">Epic</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">0</p>
+          <p class="hm-l">Legend</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== FEATURED / LATEST =============== -->
+  <section class="px-5 mt-4">
+    <div class="badge-feature">
+      <div class="badge-medal shrink-0">🏆</div>
+      <div class="grow">
+        <p class="text-[10px] font-extrabold uppercase tracking-wider text-muted">JUST UNLOCKED</p>
+        <p class="font-extrabold text-base text-ink">Counter Champ</p>
+        <p class="text-[11px] text-muted">Today · +100 XP bonus</p>
+      </div>
+      <a href="badge-unlock.html" class="btn btn-primary h-9 min-h-0 px-3 text-xs shrink-0">View</a>
+    </div>
+  </section>
+
+  <!-- =============== FILTER CHIPS =============== -->
+  <section class="px-5 mt-4">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" role="tablist" aria-label="Filter badges">
+      <div class="swiper-wrapper">
+      <button type="button" class="swiper-slide chip chip-primary" data-status="all" aria-selected="true">✨ All · 24</button>
+      <button type="button" class="swiper-slide chip" data-status="got">🏆 Earned · 8</button>
+      <button type="button" class="swiper-slide chip" data-status="inprog">⏳ In progress · 4</button>
+      <button type="button" class="swiper-slide chip" data-status="lock">🔒 Locked · 12</button>
+      <button type="button" class="swiper-slide chip" data-status="rare">💎 Rare</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== CATEGORY FILTERS =============== -->
+  <section class="px-5 mt-3">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" role="tablist" aria-label="Filter by category">
+      <div class="swiper-wrapper">
+      <button type="button" class="swiper-slide chip chip-primary" data-cat="all" aria-selected="true">🌟 All categories</button>
+      <button type="button" class="swiper-slide chip" data-cat="milestone">🏁 Milestones</button>
+      <button type="button" class="swiper-slide chip" data-cat="math">➗ Math</button>
+      <button type="button" class="swiper-slide chip" data-cat="alphabet">🔤 Alphabet</button>
+      <button type="button" class="swiper-slide chip" data-cat="animals">🦁 Animals</button>
+      <button type="button" class="swiper-slide chip" data-cat="streak">🔥 Streak</button>
+      <button type="button" class="swiper-slide chip" data-cat="league">🏆 League</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== NO RESULTS =============== -->
+  <section id="noBadges" class="px-5 mt-6 hidden">
+    <div class="k-card text-center p-6">
+      <div class="size-16 mx-auto rounded-2xl tile-sky grid place-items-center text-3xl">🔍</div>
+      <p class="h-display text-lg mt-3 text-ink">Nothing here yet</p>
+      <p class="text-xs text-muted mt-1">Try a different filter combo above.</p>
+    </div>
+  </section>
+
+  <!-- =============== EARNED GRID =============== -->
+  <section class="px-5 mt-4" data-badge-section="got">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🏆 Earned</h2>
+      <span class="link cursor-default" data-count>8 badges</span>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3">
+      <a href="badge-unlock778b.html?b=first-win" class="badge-card" data-badge-item data-status="got" data-cat="milestone" data-rarity="common" data-name="First Win">
+        <span class="bc-flag">NEW</span>
+        <span class="badge-medal bc-medal">🏆</span>
+        <p class="bc-name">First Win</p>
+        <span class="rarity rarity-common">Common</span>
+        <p class="bc-meta">Today</p>
+      </a>
+      <a href="badge-unlock3770.html?b=bookworm" class="badge-card" data-badge-item data-status="got" data-cat="alphabet" data-rarity="rare" data-name="Bookworm">
+        <span class="badge-medal silver bc-medal">📚</span>
+        <p class="bc-name">Bookworm</p>
+        <span class="rarity rarity-rare">Rare</span>
+        <p class="bc-meta">2 days ago</p>
+      </a>
+      <a href="badge-unlock9651.html?b=on-fire" class="badge-card" data-badge-item data-status="got" data-cat="streak" data-rarity="common" data-name="On Fire">
+        <span class="badge-medal bronze bc-medal">🔥</span>
+        <p class="bc-name">On Fire</p>
+        <span class="rarity rarity-common">Common</span>
+        <p class="bc-meta">Week 2</p>
+      </a>
+      <a href="badge-unlock982e.html?b=target-pro" class="badge-card" data-badge-item data-status="got" data-cat="math" data-rarity="rare" data-name="Target Pro">
+        <span class="badge-medal bc-medal">🎯</span>
+        <p class="bc-name">Target Pro</p>
+        <span class="rarity rarity-rare">Rare</span>
+        <p class="bc-meta">Week 2</p>
+      </a>
+      <a href="badge-unlockb09a.html?b=puzzler" class="badge-card" data-badge-item data-status="got" data-cat="math" data-rarity="epic" data-name="Puzzler">
+        <span class="badge-medal silver bc-medal">🧩</span>
+        <p class="bc-name">Puzzler</p>
+        <span class="rarity rarity-epic">Epic</span>
+        <p class="bc-meta">Week 3</p>
+      </a>
+      <a href="badge-unlockf292.html?b=star-mini" class="badge-card" data-badge-item data-status="got" data-cat="milestone" data-rarity="common" data-name="Star Mini">
+        <span class="badge-medal bc-medal">⭐</span>
+        <p class="bc-name">Star Mini</p>
+        <span class="rarity rarity-common">Common</span>
+        <p class="bc-meta">Week 1</p>
+      </a>
+      <a href="badge-unlockcf0e.html?b=animal-pal" class="badge-card" data-badge-item data-status="got" data-cat="animals" data-rarity="common" data-name="Animal Pal">
+        <span class="badge-medal bronze bc-medal">🐾</span>
+        <p class="bc-name">Animal Pal</p>
+        <span class="rarity rarity-common">Common</span>
+        <p class="bc-meta">Week 2</p>
+      </a>
+      <a href="badge-unlockf223.html?b=letter-lord" class="badge-card" data-badge-item data-status="got" data-cat="alphabet" data-rarity="rare" data-name="Letter Lord">
+        <span class="badge-medal silver bc-medal">🔤</span>
+        <p class="bc-name">Letter Lord</p>
+        <span class="rarity rarity-rare">Rare</span>
+        <p class="bc-meta">Week 1</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== IN PROGRESS =============== -->
+  <section class="px-5 mt-6" data-badge-section="inprog">
+    <div class="section-head">
+      <h2 class="h-display text-lg">⏳ In progress</h2>
+      <span class="link cursor-default" data-count>4 close</span>
+    </div>
+    <div class="space-y-2">
+      <button type="button" class="setting-row w-full text-left" data-badge-item data-status="inprog" data-cat="math" data-rarity="rare" data-name="Math Pro" data-hint="Finish 20 Math lessons to unlock Math Pro.">
+        <div class="badge-locked shrink-0 p-0 border-0 bg-transparent">
+          <div class="bl-slot"><span>➗</span></div>
+        </div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Math Pro</p>
+            <span class="rarity rarity-rare">Rare</span>
+          </div>
+          <p class="text-[11px] text-muted">Finish 20 Math lessons · 14 / 20</p>
+          <div class="progress mt-1"><span class="w-70"></span></div>
+        </div>
+        <span class="chip chip-primary">70%</span>
+      </button>
+
+      <button type="button" class="setting-row w-full text-left" data-badge-item data-status="inprog" data-cat="milestone" data-rarity="epic" data-name="Quiz Master" data-hint="Win 50 quizzes to unlock Quiz Master.">
+        <div class="badge-locked shrink-0 p-0 border-0 bg-transparent">
+          <div class="bl-slot"><span>❓</span></div>
+        </div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Quiz Master</p>
+            <span class="rarity rarity-epic">Epic</span>
+          </div>
+          <p class="text-[11px] text-muted">Win 50 quizzes · 32 / 50</p>
+          <div class="progress mt-1"><span class="w-66"></span></div>
+        </div>
+        <span class="chip chip-primary">64%</span>
+      </button>
+
+      <button type="button" class="setting-row w-full text-left" data-badge-item data-status="inprog" data-cat="streak" data-rarity="legend" data-name="30-Day Flame" data-hint="Keep a 30-day streak alive. 23 days to go.">
+        <div class="badge-locked shrink-0 p-0 border-0 bg-transparent">
+          <div class="bl-slot"><span>🔥</span></div>
+        </div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">30-Day Flame</p>
+            <span class="rarity rarity-legend">Legend</span>
+          </div>
+          <p class="text-[11px] text-muted">30-day streak · 7 / 30</p>
+          <div class="progress mt-1"><span class="w-25"></span></div>
+        </div>
+        <span class="chip chip-sun">23%</span>
+      </button>
+
+      <button type="button" class="setting-row w-full text-left" data-badge-item data-status="inprog" data-cat="alphabet" data-rarity="rare" data-name="Word Wizard" data-hint="Learn 100 words to unlock Word Wizard.">
+        <div class="badge-locked shrink-0 p-0 border-0 bg-transparent">
+          <div class="bl-slot"><span>📚</span></div>
+        </div>
+        <div class="grow min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="font-extrabold text-sm text-ink">Word Wizard</p>
+            <span class="rarity rarity-rare">Rare</span>
+          </div>
+          <p class="text-[11px] text-muted">Learn 100 words · 38 / 100</p>
+          <div class="progress mt-1"><span class="w-40"></span></div>
+        </div>
+        <span class="chip">38%</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== LOCKED =============== -->
+  <section class="px-5 mt-6 mb-5" data-badge-section="lock">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🔒 Locked</h2>
+      <span class="link cursor-default" data-count>12 mystery</span>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3">
+      <button type="button" class="badge-locked" data-badge-item data-status="lock" data-cat="milestone" data-rarity="rare" data-name="Explorer" data-hint="Explore 10 different subjects to unlock Explorer.">
+        <div class="bl-slot"><i class="ph-fill ph-lock"></i></div>
+        <p class="bc-name text-ink font-extrabold text-xs mt-3">Explorer</p>
+        <span class="rarity rarity-rare">Rare</span>
+        <p class="bc-meta">10 subjects</p>
+      </button>
+      <button type="button" class="badge-locked" data-badge-item data-status="lock" data-cat="league" data-rarity="epic" data-name="Top 3 League" data-hint="Finish in the top 3 of any weekly league to unlock.">
+        <div class="bl-slot"><i class="ph-fill ph-lock"></i></div>
+        <p class="bc-name text-ink font-extrabold text-xs mt-3">Top 3 League</p>
+        <span class="rarity rarity-epic">Epic</span>
+        <p class="bc-meta">Finish top 3</p>
+      </button>
+      <button type="button" class="badge-locked" data-badge-item data-status="lock" data-cat="milestone" data-rarity="rare" data-name="Speed Runner" data-hint="Finish any lesson in under 2 minutes.">
+        <div class="bl-slot"><i class="ph-fill ph-lock"></i></div>
+        <p class="bc-name text-ink font-extrabold text-xs mt-3">Speed Runner</p>
+        <span class="rarity rarity-rare">Rare</span>
+        <p class="bc-meta">Finish lesson under 2m</p>
+      </button>
+      <button type="button" class="badge-locked" data-badge-item data-status="lock" data-cat="milestone" data-rarity="epic" data-name="Perfect 10" data-hint="Score 100% on 10 quizzes in a row.">
+        <div class="bl-slot"><i class="ph-fill ph-lock"></i></div>
+        <p class="bc-name text-ink font-extrabold text-xs mt-3">Perfect 10</p>
+        <span class="rarity rarity-epic">Epic</span>
+        <p class="bc-meta">10 quizzes 100%</p>
+      </button>
+      <button type="button" class="badge-locked" data-badge-item data-status="lock" data-cat="milestone" data-rarity="common" data-name="Night Owl" data-hint="Study after 7 PM 5 times to unlock.">
+        <div class="bl-slot"><i class="ph-fill ph-lock"></i></div>
+        <p class="bc-name text-ink font-extrabold text-xs mt-3">Night Owl</p>
+        <span class="rarity rarity-common">Common</span>
+        <p class="bc-meta">Study after 7 PM</p>
+      </button>
+      <button type="button" class="badge-locked" data-badge-item data-status="lock" data-cat="milestone" data-rarity="rare" data-name="Social Star" data-hint="Add 5 friends to unlock Social Star.">
+        <div class="bl-slot"><i class="ph-fill ph-lock"></i></div>
+        <p class="bc-name text-ink font-extrabold text-xs mt-3">Social Star</p>
+        <span class="rarity rarity-rare">Rare</span>
+        <p class="bc-meta">Add 5 friends</p>
+      </button>
+      <button type="button" class="badge-locked" data-badge-item data-status="lock" data-cat="milestone" data-rarity="legend" data-name="Secret Badge" data-hint="🤫 Keep playing to reveal this secret badge.">
+        <div class="bl-slot"><i class="ph-fill ph-question"></i></div>
+        <p class="bc-name text-ink font-extrabold text-xs mt-3">???</p>
+        <span class="rarity rarity-legend">Legend</span>
+        <p class="bc-meta">Secret badge</p>
+      </button>
+      <button type="button" class="badge-locked" data-badge-item data-status="lock" data-cat="milestone" data-rarity="legend" data-name="Secret Badge" data-hint="🤫 Keep playing to reveal this secret badge.">
+        <div class="bl-slot"><i class="ph-fill ph-question"></i></div>
+        <p class="bc-name text-ink font-extrabold text-xs mt-3">???</p>
+        <span class="rarity rarity-legend">Legend</span>
+        <p class="bc-meta">Secret badge</p>
+      </button>
+      <button type="button" class="badge-locked" data-badge-item data-status="lock" data-cat="milestone" data-rarity="legend" data-name="Secret Badge" data-hint="🤫 Keep playing to reveal this secret badge.">
+        <div class="bl-slot"><i class="ph-fill ph-question"></i></div>
+        <p class="bc-name text-ink font-extrabold text-xs mt-3">???</p>
+        <span class="rarity rarity-legend">Legend</span>
+        <p class="bc-meta">Secret badge</p>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mb-5 mt-4">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Did you know?</p>
+        <p class="text-xs text-muted">Badges are earned through real learning — not streaks alone. Each rare badge tells a story of effort.</p>
+      </div>
+      <a href="rewards-dashboard.html" class="chip chip-primary">Rewards</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab" href="learn-categories.html"><span class="tab-ico"><i class="ph ph-books text-xl"></i></span>Learn</a>
+      <a class="tab active" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph-fill ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+
+<script src="assets/js/badges.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/badges.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:47 GMT -->
+</html>

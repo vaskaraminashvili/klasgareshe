@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/contact-us.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:18 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Contact · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="settings.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">We'd love to hear from you</p>
+      <h1 class="h-display text-lg leading-tight">Contact us</h1>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-friends">
+      <div class="relative flex items-center gap-3">
+        <div class="text-5xl">✉️</div>
+        <div class="grow">
+          <span class="chip bg-white/20 border-0 text-white">
+            <span class="live-dot"></span> REPLY IN 24H
+          </span>
+          <p class="h-display text-xl mt-1 leading-tight">Get in touch</p>
+          <p class="text-xs text-white/90">Questions · feedback · partnerships</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== QUICK CONTACT OPTIONS =============== -->
+  <section class="px-5 mt-4 grid grid-cols-3 gap-3">
+    <a href="mailto:support@kidzio.app" class="k-card p-3 text-center">
+      <div class="size-10 rounded-2xl tile-violet grid place-items-center text-xl mx-auto">✉️</div>
+      <p class="font-extrabold text-sm mt-2">Email</p>
+      <p class="text-[10px] text-muted">24h reply</p>
+    </a>
+    <a href="#" class="k-card p-3 text-center">
+      <div class="size-10 rounded-2xl tile-mint grid place-items-center text-xl mx-auto">💬</div>
+      <p class="font-extrabold text-sm mt-2">Live chat</p>
+      <p class="text-[10px] text-muted">Mon–Fri</p>
+    </a>
+    <a href="help-faq.html" class="k-card p-3 text-center">
+      <div class="size-10 rounded-2xl tile-sun grid place-items-center text-xl mx-auto">📖</div>
+      <p class="font-extrabold text-sm mt-2">FAQ</p>
+      <p class="text-[10px] text-muted">Self-serve</p>
+    </a>
+  </section>
+
+  <!-- =============== CONTACT FORM =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Send a message</p>
+    <form class="mt-3 space-y-3" onsubmit="event.preventDefault();toast('Message sent! We\'ll reply within 24h.');setTimeout(()=>location.href='settings.html',1200)">
+
+      <div>
+        <label class="text-[11px] font-extrabold text-muted uppercase tracking-wide">YOUR NAME</label>
+        <div class="input-wrap mt-1">
+          <i class="ph ph-smiley i-left"></i>
+          <input class="input has-left" placeholder="Parent name" value="Parker Family" required/>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-[11px] font-extrabold text-muted uppercase tracking-wide">EMAIL</label>
+        <div class="input-wrap mt-1">
+          <i class="ph ph-envelope-simple i-left"></i>
+          <input type="email" class="input has-left" placeholder="you@example.com" value="parent@example.com" required/>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-[11px] font-extrabold text-muted uppercase tracking-wide">TOPIC</label>
+        <select class="input mt-1">
+          <option>💬 General question</option>
+          <option>🐛 Report a bug</option>
+          <option>💡 Feature request</option>
+          <option>👨‍👩‍👧 Parental controls</option>
+          <option>🛡️ Privacy &amp; safety</option>
+          <option>🤝 Partnership / press</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-[11px] font-extrabold text-muted uppercase tracking-wide">MESSAGE</label>
+        <textarea class="input mt-1 !h-32 py-3 leading-relaxed" placeholder="Tell us what's on your mind…" required></textarea>
+        <p class="text-[10px] text-muted mt-1 text-right">0 / 500</p>
+      </div>
+
+      <label class="flex items-start gap-2 pt-1 text-xs text-muted">
+        <input type="checkbox" class="mt-1 size-4 accent-[var(--color-k-primary)]" checked/>
+        <span>Attach app diagnostics (helps us debug faster)</span>
+      </label>
+
+      <button type="submit" class="btn btn-primary w-full mt-2">
+        <i class="ph-fill ph-paper-plane-right"></i> Send message
+      </button>
+    </form>
+  </section>
+
+  <!-- =============== OTHER CHANNELS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Other channels</p>
+    <div class="mt-3 space-y-2">
+      <a href="mailto:support@kidzio.app" class="setting-row">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-envelope-simple"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Support email</p>
+          <p class="text-[11px] text-muted">support@kidzio.app</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="mailto:privacy@kidzio.app" class="setting-row">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-shield-check"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Privacy &amp; data</p>
+          <p class="text-[11px] text-muted">privacy@kidzio.app</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="mailto:press@kidzio.app" class="setting-row">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-newspaper"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Press / partnerships</p>
+          <p class="text-[11px] text-muted">press@kidzio.app</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== SOCIAL =============== -->
+  <section class="px-5 mt-5 mb-10">
+    <p class="section-label">Follow us</p>
+    <div class="mt-3 grid grid-cols-3 gap-3">
+      <a href="#" class="k-card p-3 text-center">
+        <i class="ph-fill ph-instagram-logo text-2xl text-primary-ink"></i>
+        <p class="text-[11px] font-extrabold mt-1">Instagram</p>
+      </a>
+      <a href="#" class="k-card p-3 text-center">
+        <i class="ph-fill ph-youtube-logo text-2xl text-primary-ink"></i>
+        <p class="text-[11px] font-extrabold mt-1">YouTube</p>
+      </a>
+      <a href="#" class="k-card p-3 text-center">
+        <i class="ph-fill ph-tiktok-logo text-2xl text-primary-ink"></i>
+        <p class="text-[11px] font-extrabold mt-1">TikTok</p>
+      </a>
+    </div>
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3 mt-5">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">We read every message</p>
+        <p class="text-xs text-muted">Expect a friendly reply from a real human within 24h.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/contact-us.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:18 GMT -->
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/leaderboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:55 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Leaderboard · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <div class="grow">
+      <p class="text-xs text-muted">Compete with kids worldwide</p>
+      <h1 class="h-display text-2xl leading-tight">Ranking</h1>
+    </div>
+    <button id="searchIconBtn" type="button" class="icon-btn" aria-label="Search"><i class="ph ph-magnifying-glass text-xl"></i></button>
+    <a href="league.html" class="icon-btn" aria-label="Leagues"><i class="ph-fill ph-trophy text-xl"></i></a>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== TABS =============== -->
+  <section class="px-5">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" role="tablist" aria-label="Ranking views">
+      <div class="swiper-wrapper">
+      <a href="leaderboard.html" class="swiper-slide chip chip-primary" role="tab" aria-selected="true">🌍 Global</a>
+      <a href="ranking-weekly.html" class="swiper-slide chip" role="tab">📅 Weekly</a>
+      <a href="ranking-friends.html" class="swiper-slide chip" role="tab">👫 Friends</a>
+      <a href="league.html" class="swiper-slide chip" role="tab">🏆 League</a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== GLOBAL HERO =============== -->
+  <section class="px-5 mt-2">
+    <div class="k-card-lg hero-global">
+      <div class="relative flex items-center gap-3">
+        <div class="text-5xl">🌍</div>
+        <div class="grow">
+          <span class="chip bg-white/20 border-0 text-white">
+            <i class="ph-fill ph-globe-hemisphere-west"></i> GLOBAL
+          </span>
+          <p class="h-display text-2xl mt-1 leading-tight">All-time leaderboard</p>
+          <p class="text-xs text-white/90">Competing against 12,480 learners</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex gap-2">
+        <div class="mini-stat">
+          <p class="mini-v">#5</p>
+          <p class="mini-l">Your rank</p>
+        </div>
+        <div class="mini-stat">
+          <p class="mini-v">Top 1%</p>
+          <p class="mini-l">Percentile</p>
+        </div>
+        <div class="mini-stat">
+          <p class="mini-v">270</p>
+          <p class="mini-l">To #4</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex flex-wrap items-center gap-2">
+        <a href="game-multiple-choice.html" class="cta-soft">
+          Earn XP <i class="ph-fill ph-arrow-right"></i>
+        </a>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">
+          <span class="live-dot"></span> 842 online
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== PODIUM =============== -->
+  <section class="px-5 mt-4">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🏆 Top 3 worldwide</h2>
+      <span class="link cursor-default">All time</span>
+    </div>
+    <div class="podium-card">
+      <div class="relative grid grid-cols-3 items-end gap-3">
+        <!-- 2nd -->
+        <div class="podium-slot second">
+          <div class="podium-avatar">👧</div>
+          <p class="podium-name">Mia</p>
+          <p class="podium-xp">1,820 XP</p>
+          <div class="podium-base">🥈</div>
+        </div>
+        <!-- 1st -->
+        <div class="podium-slot first">
+          <span class="podium-crown" aria-hidden="true">👑</span>
+          <div class="podium-avatar">👦</div>
+          <p class="podium-name">Leo</p>
+          <p class="podium-xp">2,140 XP</p>
+          <div class="podium-base">🥇</div>
+        </div>
+        <!-- 3rd -->
+        <div class="podium-slot third">
+          <div class="podium-avatar">🧒</div>
+          <p class="podium-name">Sam</p>
+          <p class="podium-xp">1,630 XP</p>
+          <div class="podium-base">🥉</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== YOUR POSITION STRIP =============== -->
+  <section class="px-5 mt-4">
+    <div class="you-strip">
+      <div class="you-rank">#5</div>
+      <div class="grow min-w-0">
+        <p class="font-extrabold text-sm text-ink">You (Luna) · 1,240 XP</p>
+        <p class="text-[11px] text-muted">Level 7 · 🔥 7 days · just 270 XP to rank #4</p>
+      </div>
+      <a href="game-multiple-choice.html" class="btn btn-primary h-9 min-h-0 px-3 text-xs shrink-0">Climb</a>
+    </div>
+  </section>
+
+  <!-- =============== FILTERS =============== -->
+  <section class="px-5 mt-4">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" role="tablist" aria-label="Leaderboard filter">
+      <div class="swiper-wrapper">
+      <button type="button" class="swiper-slide chip chip-primary" data-filter="all" aria-selected="true">🌍 Worldwide</button>
+      <button type="button" class="swiper-slide chip" data-filter="country" aria-selected="false">🇺🇸 Country</button>
+      <button type="button" class="swiper-slide chip" data-filter="streak" aria-selected="false">🔥 On a streak</button>
+      <button type="button" class="swiper-slide chip" data-filter="online" aria-selected="false">🟢 Online now</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== ACTIVE QUERY STRIP =============== -->
+  <section id="queryStrip" class="px-5 mt-3 hidden">
+    <div class="k-card p-2 flex items-center gap-2">
+      <span class="text-xs text-muted shrink-0">Searching:</span>
+      <span id="queryLabel" class="chip chip-primary grow truncate"></span>
+      <button type="button" id="queryClear" class="icon-btn shrink-0" aria-label="Clear search"><i class="ph ph-x"></i></button>
+    </div>
+  </section>
+
+  <!-- =============== NO RESULTS =============== -->
+  <section id="noRank" class="px-5 mt-4 hidden">
+    <div class="k-card text-center p-6">
+      <div class="size-16 mx-auto rounded-2xl tile-sky grid place-items-center text-3xl">🔍</div>
+      <p class="h-display text-lg mt-3 text-ink">No learners match</p>
+      <p class="text-xs text-muted mt-1">Try a different name or reset the filter.</p>
+    </div>
+  </section>
+
+
+  <!-- =============== LEADER LIST =============== -->
+  <section class="px-5 mt-4">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Full ranking</h2>
+      <span class="link cursor-default">By total XP</span>
+    </div>
+
+    <div class="space-y-2">
+      <a href="profile.html" class="rank-row" data-row data-name="Leo" data-streak="1" data-online="1" data-country="france fr">
+        <span class="rank-num medal-gold">1</span>
+        <div class="rank-av tile-sun">👦<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Leo</p>
+          <div class="rank-meta">
+            <span>Lv 9</span>·<span class="text-sun-ink">🔥 12d</span>·<span>🇫🇷 France</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip chip-sun">2,140</span>
+          <p class="text-[10px] text-muted mt-1">Total XP</p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="rank-row" data-row data-name="Mia" data-streak="1" data-online="0" data-country="brazil br">
+        <span class="rank-num medal-silver">2</span>
+        <div class="rank-av tile-mint">👧</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Mia</p>
+          <div class="rank-meta">
+            <span>Lv 8</span>·<span class="text-sun-ink">🔥 9d</span>·<span>🇧🇷 Brazil</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">1,820</span>
+          <p class="text-[10px] text-muted mt-1">Total XP</p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="rank-row" data-row data-name="Sam" data-streak="1" data-online="1" data-country="canada ca">
+        <span class="rank-num medal-bronze">3</span>
+        <div class="rank-av tile-coral">🧒<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Sam</p>
+          <div class="rank-meta">
+            <span>Lv 8</span>·<span class="text-sun-ink">🔥 6d</span>·<span>🇨🇦 Canada</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">1,630</span>
+          <p class="text-[10px] text-muted mt-1">Total XP</p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="rank-row" data-row data-name="Ana" data-streak="1" data-online="1" data-country="spain es">
+        <span class="rank-num">4</span>
+        <div class="rank-av tile-sky">🐰<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Ana</p>
+          <div class="rank-meta">
+            <span>Lv 9</span>·<span class="text-sun-ink">🔥 3d</span>·<span>🇪🇸 Spain</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">1,510</span>
+          <p class="text-[10px] text-muted mt-1">Total XP</p>
+        </div>
+      </a>
+
+      <div class="rank-row you" data-row data-name="Luna You" data-streak="1" data-online="1" data-country="usa us united states" data-me>
+        <span class="rank-num">5</span>
+        <div class="rank-av tile-sun">🐻<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">You (Luna)</p>
+          <div class="rank-meta">
+            <span>Lv 7</span>·<span class="text-sun-ink">🔥 7d</span>·<span>🇺🇸 USA</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip chip-primary">1,240</span>
+          <p class="text-[10px] text-muted mt-1">270 to #4</p>
+        </div>
+      </div>
+
+      <a href="profile.html" class="rank-row" data-row data-name="Noah" data-streak="1" data-online="0" data-country="germany de">
+        <span class="rank-num">6</span>
+        <div class="rank-av tile-coral">🦊</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Noah</p>
+          <div class="rank-meta">
+            <span>Lv 7</span>·<span class="text-sun-ink">🔥 5d</span>·<span>🇩🇪 Germany</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">1,190</span>
+          <p class="text-[10px] text-muted mt-1">Total XP</p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="rank-row" data-row data-name="Ava" data-streak="0" data-online="1" data-country="australia au">
+        <span class="rank-num">7</span>
+        <div class="rank-av tile-sky">🐨<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Ava</p>
+          <div class="rank-meta">
+            <span>Lv 6</span>·<span>🇦🇺 Australia</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">1,080</span>
+          <p class="text-[10px] text-muted mt-1">Total XP</p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="rank-row" data-row data-name="Eli" data-streak="0" data-online="0" data-country="japan jp">
+        <span class="rank-num">8</span>
+        <div class="rank-av tile-violet">🐼</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Eli</p>
+          <div class="rank-meta">
+            <span>Lv 6</span>·<span>🇯🇵 Japan</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">980</span>
+          <p class="text-[10px] text-muted mt-1">Total XP</p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="rank-row" data-row data-name="Zoe" data-streak="1" data-online="1" data-country="india in">
+        <span class="rank-num">9</span>
+        <div class="rank-av tile-pink">🦄<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Zoe</p>
+          <div class="rank-meta">
+            <span>Lv 5</span>·<span class="text-sun-ink">🔥 2d</span>·<span>🇮🇳 India</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">910</span>
+          <p class="text-[10px] text-muted mt-1">Total XP</p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="rank-row" data-row data-name="Theo" data-streak="0" data-online="0" data-country="uk gb britain">
+        <span class="rank-num">10</span>
+        <div class="rank-av tile-mint">🐢</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Theo</p>
+          <div class="rank-meta">
+            <span>Lv 5</span>·<span>🇬🇧 UK</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">870</span>
+          <p class="text-[10px] text-muted mt-1">Total XP</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== CLIMB CTA =============== -->
+  <section class="px-5 mt-5">
+    <a href="game-multiple-choice.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">🚀</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">🚀</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">CLIMB THE RANK</p>
+          <p class="h-display text-lg leading-tight">Just 270 XP to reach #4</p>
+          <p class="text-xs text-white/90">Play 2 mini-games · ~4 min</p>
+        </div>
+        <span class="cta-soft shrink-0">Play</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== COUNTRIES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🌎 Top countries</h2>
+      <span class="link cursor-default">By learners</span>
+    </div>
+    <div class="k-card p-0 overflow-hidden">
+      <a href="country.html" class="flex items-center gap-3 p-3">
+        <span class="w-7 text-center font-extrabold text-ink">1</span>
+        <span class="text-2xl">🇺🇸</span>
+        <p class="font-extrabold text-sm grow text-ink">USA</p>
+        <span class="chip chip-primary">3,240</span>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="country.html" class="flex items-center gap-3 p-3 border-t border-token">
+        <span class="w-7 text-center font-extrabold text-ink">2</span>
+        <span class="text-2xl">🇧🇷</span>
+        <p class="font-extrabold text-sm grow text-ink">Brazil</p>
+        <span class="chip">2,180</span>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="country.html" class="flex items-center gap-3 p-3 border-t border-token">
+        <span class="w-7 text-center font-extrabold text-ink">3</span>
+        <span class="text-2xl">🇮🇳</span>
+        <p class="font-extrabold text-sm grow text-ink">India</p>
+        <span class="chip">1,920</span>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="country.html" class="flex items-center gap-3 p-3 border-t border-token">
+        <span class="w-7 text-center font-extrabold text-ink">4</span>
+        <span class="text-2xl">🇫🇷</span>
+        <p class="font-extrabold text-sm grow text-ink">France</p>
+        <span class="chip">1,560</span>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== SEASON COUNTDOWN =============== -->
+  <section class="px-5 mt-5">
+    <div class="deadline-box">
+      <div class="deadline-ico">🏁</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Season ends in <span id="seasonDays">14 days</span></p>
+        <p class="text-[11px] text-muted">Top 100 earn the Season Legend badge · <span id="seasonClock">00:00:00</span> left today</p>
+      </div>
+      <a href="league.html" class="btn btn-primary h-9 min-h-0 px-3 text-xs shrink-0">Prizes</a>
+    </div>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Fair & kid-safe</p>
+        <p class="text-xs text-muted">Global ranking shows random emoji names by default. Personal info is never shared.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Privacy</a>
+    </div>
+  </section>
+
+  <!-- =============== SEARCH OVERLAY =============== -->
+  <div id="searchOverlay" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="searchTitle">
+    <button type="button" id="searchBackdrop" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" aria-label="Close"></button>
+    <div id="searchPanel" class="absolute inset-x-0 top-0 bottom-0 mx-auto max-w-[430px] bg-surface translate-y-full transition-transform duration-300 ease-out flex flex-col">
+      <header class="appbar safe-top">
+        <button type="button" id="searchClose" class="icon-btn" aria-label="Close"><i class="ph ph-caret-left text-xl"></i></button>
+        <div class="grow">
+          <p class="text-xs text-muted">Find a learner</p>
+          <h2 id="searchTitle" class="h-display text-lg leading-tight">Search ranking</h2>
+        </div>
+      </header>
+
+      <section class="px-5">
+        <div class="input-wrap">
+          <i class="ph ph-magnifying-glass i-left"></i>
+          <input id="rankSearchInput" class="input has-left" placeholder="Name, country, league…" aria-label="Search ranking" autocomplete="off"/>
+          <button id="clearBtn" type="button" class="i-right hidden" aria-label="Clear search"><i class="ph ph-x-circle text-muted text-xl"></i></button>
+          <button id="micBtn" type="button" class="i-right" aria-label="Voice search"><i class="ph ph-microphone text-xl text-muted"></i></button>
+        </div>
+      </section>
+
+      <!-- Suggestions when empty -->
+      <div id="searchSuggest" class="overflow-y-auto grow">
+        <section class="px-5 mt-4">
+          <p class="section-label">Recent</p>
+          <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
+            <button type="button" class="chip" data-recent>Leo</button>
+            <button type="button" class="chip" data-recent>Brazil</button>
+            <button type="button" class="chip" data-recent>Gold</button>
+          </div>
+        </section>
+
+        <section class="px-5 mt-4">
+          <p class="section-label">Quick filters</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            <button type="button" class="chip" data-recent>France</button>
+            <button type="button" class="chip" data-recent>Japan</button>
+            <button type="button" class="chip" data-recent>India</button>
+            <button type="button" class="chip" data-recent>UK</button>
+          </div>
+        </section>
+
+        <section class="px-5 mt-5 mb-5">
+          <p class="section-label">Top 3 this week</p>
+          <div class="k-card p-0 overflow-hidden mt-2">
+            <button type="button" class="flex items-center gap-3 p-3 w-full text-left" data-suggest data-name="Leo">
+              <span class="w-7 text-center font-extrabold text-ink">1</span>
+              <div class="size-9 rounded-full tile-sun grid place-items-center text-lg">👦</div>
+              <p class="font-extrabold text-sm grow text-ink">Leo</p>
+              <span class="chip chip-sun">2,140 XP</span>
+            </button>
+            <button type="button" class="flex items-center gap-3 p-3 border-t border-token w-full text-left" data-suggest data-name="Mia">
+              <span class="w-7 text-center font-extrabold text-ink">2</span>
+              <div class="size-9 rounded-full tile-mint grid place-items-center text-lg">👧</div>
+              <p class="font-extrabold text-sm grow text-ink">Mia</p>
+              <span class="chip">1,820 XP</span>
+            </button>
+            <button type="button" class="flex items-center gap-3 p-3 border-t border-token w-full text-left" data-suggest data-name="Sam">
+              <span class="w-7 text-center font-extrabold text-ink">3</span>
+              <div class="size-9 rounded-full tile-coral grid place-items-center text-lg">🧒</div>
+              <p class="font-extrabold text-sm grow text-ink">Sam</p>
+              <span class="chip">1,630 XP</span>
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <!-- Results -->
+      <div id="searchResults" class="overflow-y-auto grow px-5 mt-4 space-y-2 hidden"></div>
+
+      <div class="px-5 pb-6 pt-3 safe-bottom">
+        <button type="button" id="applySearchBtn" class="btn btn-primary w-full" disabled>
+          <i class="ph-fill ph-check"></i> Apply to ranking
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab" href="learn-categories.html"><span class="tab-ico"><i class="ph ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab active" href="leaderboard.html"><span class="tab-ico"><i class="ph-fill ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+
+<script src="assets/js/leaderboard.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/leaderboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:56 GMT -->
+</html>

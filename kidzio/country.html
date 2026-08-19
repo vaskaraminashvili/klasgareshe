@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/country.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:17 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Country · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="settings.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Language &amp; region</p>
+      <h1 class="h-display text-lg leading-tight">Country</h1>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-knowledge text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-24 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-5xl">🌎</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">RANKING REGION</p>
+      <p class="relative h-display text-2xl mt-2 leading-tight">🇺🇸 United States</p>
+      <p class="relative text-xs text-white/90 mt-1">Compete with 3,240 learners nearby</p>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none">#5</p>
+          <p class="text-[10px] text-white/85 mt-1">Your rank</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none">3,240</p>
+          <p class="text-[10px] text-white/85 mt-1">Learners</p>
+        </div>
+        <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
+          <p class="h-display text-xl leading-none">42</p>
+          <p class="text-[10px] text-white/85 mt-1">Countries</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== SEARCH =============== -->
+  <section class="px-5 mt-4">
+    <div class="input-wrap">
+      <i class="ph ph-magnifying-glass i-left"></i>
+      <input id="countrySearch" class="input has-left" placeholder="Search 42 countries…" aria-label="Search countries" autocomplete="off"/>
+      <button type="button" id="countryClear" class="i-right hidden" aria-label="Clear search">
+        <i class="ph ph-x-circle text-muted"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== CONTINENT FILTER =============== -->
+  <section class="px-5 mt-3">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" role="tablist" aria-label="Filter by continent">
+      <div class="swiper-wrapper">
+      <button type="button" class="swiper-slide chip chip-primary" data-continent="all" aria-selected="true">🌍 All</button>
+      <button type="button" class="swiper-slide chip" data-continent="americas">🌎 Americas</button>
+      <button type="button" class="swiper-slide chip" data-continent="europe">🇪🇺 Europe</button>
+      <button type="button" class="swiper-slide chip" data-continent="asia">🌏 Asia</button>
+      <button type="button" class="swiper-slide chip" data-continent="oceania">🏝️ Oceania</button>
+      <button type="button" class="swiper-slide chip" data-continent="africa">🦁 Africa</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== NO RESULTS =============== -->
+  <section id="noResults" class="px-5 mt-6 hidden">
+    <div class="k-card text-center p-6">
+      <div class="size-16 mx-auto rounded-2xl tile-sky grid place-items-center text-3xl">🔍</div>
+      <p class="h-display text-lg mt-3 text-ink">No matches</p>
+      <p class="text-xs text-muted mt-1">Try a different spelling, or change the continent filter.</p>
+    </div>
+  </section>
+
+  <!-- =============== TOP CLIMBERS =============== -->
+  <section data-search-section data-continent-wrap="all" class="px-5 mt-4">
+    <div class="flex items-end justify-between">
+      <p class="section-label" data-section-label><span data-label-text>Top climbers this week</span></p>
+      <span class="text-[11px] text-muted">Fastest growing</span>
+    </div>
+    <div class="mt-3 grid grid-cols-3 gap-2">
+      <button type="button" class="k-card p-3 text-center" data-country data-keywords="brazil brasil" data-continent="americas">
+        <div class="text-3xl">🇧🇷</div>
+        <p class="font-extrabold text-xs text-ink mt-2 leading-tight">Brazil</p>
+        <p class="text-[10px] text-mint-ink font-extrabold mt-0.5">↑ +420</p>
+      </button>
+      <button type="button" class="k-card p-3 text-center" data-country data-keywords="india indian" data-continent="asia">
+        <div class="text-3xl">🇮🇳</div>
+        <p class="font-extrabold text-xs text-ink mt-2 leading-tight">India</p>
+        <p class="text-[10px] text-mint-ink font-extrabold mt-0.5">↑ +310</p>
+      </button>
+      <button type="button" class="k-card p-3 text-center" data-country data-keywords="france french" data-continent="europe">
+        <div class="text-3xl">🇫🇷</div>
+        <p class="font-extrabold text-xs text-ink mt-2 leading-tight">France</p>
+        <p class="text-[10px] text-mint-ink font-extrabold mt-0.5">↑ +240</p>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== CURRENT =============== -->
+  <section data-search-section data-continent-wrap="all" class="px-5 mt-5">
+    <p class="section-label" data-section-label><span data-label-text>Current</span></p>
+    <button type="button" class="setting-row w-full text-left mt-3" data-country data-keywords="united states usa america american us" data-continent="americas">
+      <div class="setting-ico tile-sky text-2xl">🇺🇸</div>
+      <div class="grow min-w-0">
+        <p class="setting-text font-extrabold text-sm text-ink">United States</p>
+        <p class="text-[11px] text-muted">3,240 learners · Rank #5</p>
+      </div>
+      <span class="chip chip-mint">✓ Active</span>
+    </button>
+  </section>
+
+  <!-- =============== POPULAR =============== -->
+  <section data-search-section class="px-5 mt-5">
+    <p class="section-label" data-section-label><span data-label-text>Popular regions</span></p>
+    <div class="mt-3 space-y-2">
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="united kingdom uk britain england british gb" data-continent="europe">
+        <div class="setting-ico tile-mint text-2xl">🇬🇧</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">United Kingdom</p>
+          <p class="text-[11px] text-muted">1,840 learners · English</p>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <span class="text-[10px] text-mint-ink font-extrabold">↑12</span>
+          <i class="ph ph-caret-right text-muted"></i>
+        </div>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="canada canadian ca" data-continent="americas">
+        <div class="setting-ico tile-coral text-2xl">🇨🇦</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Canada</p>
+          <p class="text-[11px] text-muted">1,320 learners · English/French</p>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <span class="text-[10px] text-mint-ink font-extrabold">↑8</span>
+          <i class="ph ph-caret-right text-muted"></i>
+        </div>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="australia australian aussie au oz" data-continent="oceania">
+        <div class="setting-ico tile-sun text-2xl">🇦🇺</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Australia</p>
+          <p class="text-[11px] text-muted">980 learners · English</p>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <span class="text-[10px] text-muted font-extrabold">±0</span>
+          <i class="ph ph-caret-right text-muted"></i>
+        </div>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="france french fr" data-continent="europe">
+        <div class="setting-ico tile-violet text-2xl">🇫🇷</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">France</p>
+          <p class="text-[11px] text-muted">1,560 learners · Français</p>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <span class="text-[10px] text-mint-ink font-extrabold">↑24</span>
+          <i class="ph ph-caret-right text-muted"></i>
+        </div>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="germany german deutschland de" data-continent="europe">
+        <div class="setting-ico tile-pink text-2xl">🇩🇪</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Germany</p>
+          <p class="text-[11px] text-muted">1,210 learners · Deutsch</p>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <span class="text-[10px] text-mint-ink font-extrabold">↑6</span>
+          <i class="ph ph-caret-right text-muted"></i>
+        </div>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="brazil brasil brazilian br" data-continent="americas">
+        <div class="setting-ico tile-sky text-2xl">🇧🇷</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Brazil</p>
+          <p class="text-[11px] text-muted">2,180 learners · Português</p>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <span class="text-[10px] text-mint-ink font-extrabold">↑42</span>
+          <i class="ph ph-caret-right text-muted"></i>
+        </div>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="india indian bharat in" data-continent="asia">
+        <div class="setting-ico tile-coral text-2xl">🇮🇳</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">India</p>
+          <p class="text-[11px] text-muted">1,920 learners · हिन्दी + English</p>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <span class="text-[10px] text-mint-ink font-extrabold">↑31</span>
+          <i class="ph ph-caret-right text-muted"></i>
+        </div>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="spain spanish espana es" data-continent="europe">
+        <div class="setting-ico tile-mint text-2xl">🇪🇸</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Spain</p>
+          <p class="text-[11px] text-muted">870 learners · Español</p>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <span class="text-[10px] text-coral-ink font-extrabold">↓3</span>
+          <i class="ph ph-caret-right text-muted"></i>
+        </div>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="japan japanese nippon jp" data-continent="asia">
+        <div class="setting-ico tile-violet text-2xl">🇯🇵</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Japan</p>
+          <p class="text-[11px] text-muted">740 learners · 日本語</p>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <span class="text-[10px] text-mint-ink font-extrabold">↑4</span>
+          <i class="ph ph-caret-right text-muted"></i>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== MORE COUNTRIES =============== -->
+  <section data-search-section class="px-5 mt-5">
+    <p class="section-label" data-section-label><span data-label-text>More countries</span></p>
+    <div class="mt-3 space-y-2">
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="mexico mexican mx" data-continent="americas">
+        <div class="setting-ico tile-coral text-2xl">🇲🇽</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Mexico</p>
+          <p class="text-[11px] text-muted">1,420 learners · Español</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="italy italian italia it" data-continent="europe">
+        <div class="setting-ico tile-pink text-2xl">🇮🇹</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Italy</p>
+          <p class="text-[11px] text-muted">680 learners · Italiano</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="netherlands dutch holland nl" data-continent="europe">
+        <div class="setting-ico tile-sun text-2xl">🇳🇱</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Netherlands</p>
+          <p class="text-[11px] text-muted">520 learners · Nederlands</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="south korea korean kr" data-continent="asia">
+        <div class="setting-ico tile-sky text-2xl">🇰🇷</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">South Korea</p>
+          <p class="text-[11px] text-muted">610 learners · 한국어</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="china chinese zhongguo cn" data-continent="asia">
+        <div class="setting-ico tile-coral text-2xl">🇨🇳</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">China</p>
+          <p class="text-[11px] text-muted">2,040 learners · 中文</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="nigeria nigerian ng" data-continent="africa">
+        <div class="setting-ico tile-mint text-2xl">🇳🇬</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Nigeria</p>
+          <p class="text-[11px] text-muted">430 learners · English</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="south africa za" data-continent="africa">
+        <div class="setting-ico tile-sun text-2xl">🇿🇦</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">South Africa</p>
+          <p class="text-[11px] text-muted">380 learners · English</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+      <button type="button" class="setting-row w-full text-left" data-country data-keywords="new zealand kiwi nz" data-continent="oceania">
+        <div class="setting-ico tile-violet text-2xl">🇳🇿</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">New Zealand</p>
+          <p class="text-[11px] text-muted">210 learners · English</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== WORLDWIDE =============== -->
+  <section data-search-section data-continent-wrap="all" class="px-5 mt-5">
+    <p class="section-label" data-section-label><span data-label-text>Or compete everywhere</span></p>
+    <button type="button" class="setting-row w-full text-left mt-3" data-country data-keywords="worldwide global world earth international everywhere" data-continent="all">
+      <div class="setting-ico tile-violet text-2xl">🌍</div>
+      <div class="grow min-w-0">
+        <p class="setting-text font-extrabold text-sm text-ink">Worldwide</p>
+        <p class="text-[11px] text-muted">12,480 learners · global ranking</p>
+      </div>
+      <span class="chip chip-primary">Global</span>
+    </button>
+  </section>
+
+  <!-- =============== WHY IT MATTERS =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Why region matters</p>
+    <div class="mt-3 grid grid-cols-3 gap-2">
+      <div class="k-card p-3 text-center">
+        <div class="size-10 mx-auto rounded-xl tile-mint grid place-items-center text-base">🏆</div>
+        <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">Local rank</p>
+        <p class="text-[10px] text-muted leading-tight">Kids nearby</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="size-10 mx-auto rounded-xl tile-sky grid place-items-center text-base">⏰</div>
+        <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">Time zone</p>
+        <p class="text-[10px] text-muted leading-tight">Daily goals</p>
+      </div>
+      <div class="k-card p-3 text-center">
+        <div class="size-10 mx-auto rounded-xl tile-violet grid place-items-center text-base">🎉</div>
+        <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">Holidays</p>
+        <p class="text-[10px] text-muted leading-tight">Fun events</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== NOTE =============== -->
+  <section class="px-5 mt-5 mb-10">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Privacy first</p>
+        <p class="text-xs text-muted">Country only affects ranking. Kids are never shown with real names — only emoji avatars.</p>
+      </div>
+    </div>
+    <p class="text-[11px] text-center text-muted mt-4">
+      Don't see your country? <a href="contact-us.html" class="text-primary-ink font-extrabold">Request it</a>
+    </p>
+  </section>
+</main>
+<script src="assets/js/country.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/country.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:18 GMT -->
+</html>

@@ -1,0 +1,12 @@
+---
+description: Kidzio project brain — stack, architecture, and product rules for every conversation
+alwaysApply: true
+---
+
+Follow `CLAUDE.md` at the repo root on every task. It is the source of truth for this project.
+
+- Product: kids learning app (parent account + kid profile). Backlog: `KIDZIO-FEATURES.md`.
+- Stack: Laravel 13, Livewire 4 (single-file `⚡*.blade.php`). Not Vue.
+- Architecture: repositories for all Eloquent, services for business logic, thin Livewire components.
+- Parent-gated features stay behind PIN / parent verification.
+- UI is a port of `kidzio/`, not a redesign. Copy HTML and CSS from that folder into Blade.

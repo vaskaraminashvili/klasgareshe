@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/daily-mission.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:33 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Daily mission · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="home.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Today · April 17</p>
+      <h1 class="h-display text-lg leading-tight">Daily mission</h1>
+    </div>
+    <button class="icon-btn" id="shareBtn" aria-label="Share"><i class="ph ph-share-fat text-xl"></i></button>
+    <a class="icon-btn" href="settings.html" aria-label="Mission settings"><i class="ph ph-gear text-xl"></i></a>
+  </header>
+
+  <!-- =============== MISSION HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-mission">
+      <span class="hero-mission-watermark" aria-hidden="true">🎯</span>
+
+      <div class="relative flex items-center gap-2">
+        <span class="chip bg-white/20 border-0 text-white">
+          <i class="ph-fill ph-sparkle"></i> DAILY MISSION
+        </span>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">
+          <span class="live-dot"></span> Active
+        </span>
+      </div>
+
+      <p class="h-display text-2xl mt-2 relative">Mission: Explorer 🚀</p>
+      <p class="text-sm text-white/90 relative">Finish all 3 tasks to open the <b>surprise gift box</b>.</p>
+
+      <div class="mt-4 flex items-center gap-3 relative">
+        <div class="progress on-gradient grow"><span class="w-66"></span></div>
+        <span class="text-sm font-extrabold">2 / 3</span>
+      </div>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2" id="missionCountdown" aria-live="polite">
+        <div class="count-pill">
+          <span class="count-value" data-cd="h">06</span>
+          <span class="count-label">Hours</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value" data-cd="m">42</span>
+          <span class="count-label">Minutes</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value" data-cd="s">18</span>
+          <span class="count-label">Seconds</span>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex flex-wrap items-center gap-2">
+        <span class="chip bg-white/20 border-0 text-white">+120 XP</span>
+        <span class="chip bg-white/20 border-0 text-white">🎁 Gift</span>
+        <span class="chip bg-white/20 border-0 text-white">🏅 Badge</span>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">
+          <i class="ph-fill ph-users-three"></i> 1,240 playing
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== TASK LIST =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Your tasks</p>
+
+    <div class="mt-3 space-y-3">
+      <!-- Task 1 -->
+      <button type="button" class="task done w-full text-left" data-task-review="Finish 1 lesson · Counting to 20 · 09:12 AM">
+        <div class="task-ico"><i class="ph-fill ph-check-circle text-2xl"></i></div>
+        <div class="task-body grow">
+          <p class="task-title">Finish 1 lesson <i class="ph-fill ph-seal-check text-[#29C598]"></i></p>
+          <p class="task-sub">Completed · 09:12 AM · Counting to 20</p>
+        </div>
+        <span class="task-xp">+40 XP</span>
+      </button>
+
+      <!-- Task 2 -->
+      <button type="button" class="task done w-full text-left" data-task-review="Play 1 mini-game · Quick Quiz · 10:48 AM">
+        <div class="task-ico"><i class="ph-fill ph-check-circle text-2xl"></i></div>
+        <div class="task-body grow">
+          <p class="task-title">Play 1 mini-game <i class="ph-fill ph-seal-check text-[#29C598]"></i></p>
+          <p class="task-sub">Completed · 10:48 AM · Quick Quiz</p>
+        </div>
+        <span class="task-xp">+40 XP</span>
+      </button>
+
+      <!-- Task 3 (current) -->
+      <a href="game-multiple-choice.html" class="task current">
+        <span class="ribbon">NOW</span>
+        <div class="task-ico">🎯</div>
+        <div class="task-body grow">
+          <p class="task-title">Get 5 answers right</p>
+          <p class="task-sub">3 / 5 · 2 more to go!</p>
+          <div class="progress mt-1"><span class="w-60"></span></div>
+        </div>
+        <span class="btn btn-primary h-9 min-h-0 px-4 text-sm shrink-0">Play</span>
+      </a>
+    </div>
+
+    <!-- Locked tasks hint -->
+    <div class="mt-3">
+      <button type="button" class="task locked w-full text-left" data-task-lock="Finish task 3 first to unlock the Speed bonus (+20 XP).">
+        <div class="task-ico"><i class="ph-fill ph-lock text-xl"></i></div>
+        <div class="task-body grow">
+          <p class="task-title">Speed bonus · 5-in-a-row</p>
+          <p class="task-sub">Unlocks after current task</p>
+        </div>
+        <span class="task-xp bg-[color:var(--color-k-border)] text-muted">+20 XP</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== REWARD SPOTLIGHT =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Today's reward</p>
+    <div class="k-card-lg reward-spotlight mt-3">
+      <span class="spot-glow" aria-hidden="true"></span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-5xl">🎁</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider">Surprise gift box</p>
+          <p class="h-display text-xl leading-tight">+120 XP · badge · bonus</p>
+          <p class="text-xs opacity-90">Complete all 3 tasks to unlock</p>
+        </div>
+        <span class="chip chip-on-tile">1 / 3</span>
+      </div>
+      <div class="relative mt-3 grid grid-cols-3 gap-2">
+        <div class="bg-white/50 rounded-xl p-2 text-center">
+          <p class="text-lg">⭐</p>
+          <p class="text-[10px] font-extrabold">+120 XP</p>
+        </div>
+        <div class="bg-white/50 rounded-xl p-2 text-center">
+          <p class="text-lg">🏅</p>
+          <p class="text-[10px] font-extrabold">Explorer Badge</p>
+        </div>
+        <div class="bg-white/50 rounded-xl p-2 text-center">
+          <p class="text-lg">🛡️</p>
+          <p class="text-[10px] font-extrabold">Streak Freeze</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== BONUS MISSIONS =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Bonus missions</h2>
+      <span class="link cursor-default">+35 XP bonus</span>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+      <a href="lesson-details.html" class="k-card p-4 relative">
+        <div class="size-10 rounded-xl tile-coral grid place-items-center text-xl mb-2">📚</div>
+        <p class="font-extrabold text-sm">Read a story</p>
+        <p class="text-xs text-muted">3 min · optional</p>
+        <span class="chip chip-coral mt-2">+20 XP</span>
+      </a>
+      <a href="game-spell-word.html" class="k-card p-4 relative">
+        <div class="size-10 rounded-xl tile-sky grid place-items-center text-xl mb-2">🎧</div>
+        <p class="font-extrabold text-sm">Listen &amp; learn</p>
+        <p class="text-xs text-muted">2 min · audio</p>
+        <span class="chip chip-sky mt-2">+15 XP</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== STREAK KEEPER =============== -->
+  <section class="px-5 mt-5">
+    <a href="streak.html" class="k-card-lg streak-strip block">
+      <div class="flex items-center gap-3">
+        <div class="text-4xl">🔥</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">Streak keeper</p>
+          <p class="h-display text-xl leading-tight">Day 7 of 7 — on fire!</p>
+          <p class="text-xs opacity-90">Finish today to start your 8-day chain</p>
+        </div>
+        <span class="chip chip-on-tile text-sun-ink">🔥 7</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== MISSION HISTORY =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">This week</h2>
+      <span class="link cursor-default">5 / 7 hit</span>
+    </div>
+    <div class="k-card p-4">
+      <div class="flex items-center justify-between">
+        <div class="grid grid-cols-7 gap-2" aria-label="Weekly mission history">
+          <span class="history-dot hit">M</span>
+          <span class="history-dot hit">T</span>
+          <span class="history-dot hit">W</span>
+          <span class="history-dot miss">T</span>
+          <span class="history-dot hit">F</span>
+          <span class="history-dot today">S</span>
+          <span class="history-dot">S</span>
+        </div>
+        <div class="spark" aria-hidden="true">
+          <span class="h-6p"></span>
+          <span class="h-7p"></span>
+          <span class="h-9p"></span>
+          <span class="h-5p"></span>
+          <span class="h-8p"></span>
+          <span class="h-10p"></span>
+          <span class="h-4p"></span>
+        </div>
+      </div>
+      <div class="mt-3 flex items-center gap-2 text-xs">
+        <span class="inline-flex items-center gap-1 text-muted"><span class="size-2 rounded-full bg-[#29C598]"></span> Hit</span>
+        <span class="inline-flex items-center gap-1 text-muted"><span class="size-2 rounded-full bg-[#FF5B73]"></span> Miss</span>
+        <span class="chip chip-primary ml-auto">Best: 6 days</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== LEADERBOARD STRIP =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Mission leaders</h2>
+      <a href="leaderboard.html" class="link">See ranking</a>
+    </div>
+    <div class="k-card p-0 overflow-hidden">
+      <div class="flex items-center gap-3 p-3">
+        <span class="w-7 text-center font-extrabold">1</span>
+        <div class="size-9 rounded-full tile-sun grid place-items-center text-lg">👦</div>
+        <p class="font-extrabold text-sm grow">Leo</p>
+        <span class="chip chip-sun">3 / 3 ✓</span>
+      </div>
+      <div class="flex items-center gap-3 p-3 border-t border-token">
+        <span class="w-7 text-center font-extrabold">2</span>
+        <div class="size-9 rounded-full tile-mint grid place-items-center text-lg">👧</div>
+        <p class="font-extrabold text-sm grow">Mia</p>
+        <span class="chip chip-mint">3 / 3 ✓</span>
+      </div>
+      <div class="flex items-center gap-3 p-3 border-t border-token bg-[rgba(124,92,255,.06)] dark:bg-[rgba(124,92,255,.14)]">
+        <span class="w-7 text-center font-extrabold">3</span>
+        <div class="size-9 rounded-full tile-coral grid place-items-center text-lg">🐻</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">You (Luna)</p>
+          <p class="text-[11px] text-muted">Finish 1 more task to reach the top</p>
+        </div>
+        <span class="chip chip-primary">2 / 3</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Kidzio tip</p>
+        <p class="text-xs text-muted">Daily missions refresh at midnight. New Explorer missions land every day — keep your streak to unlock rare badges!</p>
+      </div>
+      <button type="button" class="chip chip-primary" id="remindMe">Remind me</button>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab active" href="home.html"><span class="tab-ico"><i class="ph-fill ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab" href="learn-categories.html"><span class="tab-ico"><i class="ph ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+
+<script src="assets/js/daily-mission.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/daily-mission.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:34 GMT -->
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/rewards-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:55 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Rewards · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <div class="grow">
+      <p class="text-xs text-muted">Your treasures</p>
+      <h1 class="h-display text-2xl leading-tight">Rewards</h1>
+    </div>
+    <button class="icon-btn" aria-label="History"><i class="ph ph-clock-counter-clockwise text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== WALLET HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-rewards">
+      <div class="relative flex items-center gap-3">
+        <div class="text-5xl">⭐</div>
+        <div class="grow">
+          <span class="chip bg-white/20 border-0 text-white">
+            <i class="ph-fill ph-wallet"></i> YOUR BALANCE
+          </span>
+          <p class="h-display text-4xl mt-1 leading-none">1,240 <span class="text-xl opacity-80">XP</span></p>
+          <p class="text-xs text-white/90 mt-1"><i class="ph-fill ph-trend-up"></i> +240 today · keep learning!</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="hero-metric">
+          <p class="hm-v">3</p>
+          <p class="hm-l">To claim</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">8</p>
+          <p class="hm-l">Badges</p>
+        </div>
+        <div class="hero-metric">
+          <p class="hm-v">Gold</p>
+          <p class="hm-l">League</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex items-center gap-2">
+        <a href="xp-progress.html" class="cta-soft">View XP <i class="ph-fill ph-arrow-right"></i></a>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">
+          Lv 7 · 760 to Lv 8
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== QUICK SHORTCUTS =============== -->
+  <section class="px-5 mt-4 grid grid-cols-3 gap-3 text-center">
+    <a href="badges.html" class="k-card p-3">
+      <div class="size-10 rounded-2xl tile-sun grid place-items-center text-xl mx-auto">🏅</div>
+      <p class="h-display text-lg mt-1">8 / 24</p>
+      <p class="text-[11px] text-muted font-extrabold">Badges</p>
+    </a>
+    <a href="xp-progress.html" class="k-card p-3">
+      <div class="size-10 rounded-2xl tile-violet grid place-items-center text-xl mx-auto">📈</div>
+      <p class="h-display text-lg mt-1">+940</p>
+      <p class="text-[11px] text-muted font-extrabold">This week</p>
+    </a>
+    <a href="league.html" class="k-card p-3">
+      <div class="size-10 rounded-2xl tile-mint grid place-items-center text-xl mx-auto">🏆</div>
+      <p class="h-display text-lg mt-1">Gold</p>
+      <p class="text-[11px] text-muted font-extrabold">League</p>
+    </a>
+  </section>
+
+  <!-- =============== READY TO CLAIM =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">🎁 Ready to claim</h2>
+      <span class="chip chip-coral">3 new</span>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <a href="badge-unlock.html" class="swiper-slide claim-card">
+        <span class="claim-gift">🎁</span>
+        <p class="font-extrabold text-sm mt-2">Daily box</p>
+        <p class="text-[11px] text-muted">Surprise gift · +120 XP</p>
+        <button class="btn btn-primary h-9 min-h-0 w-full mt-3 text-xs">Open now</button>
+      </a>
+      <a href="badge-unlock.html" class="swiper-slide claim-card">
+        <span class="claim-gift">🏅</span>
+        <p class="font-extrabold text-sm mt-2">Counter Champ</p>
+        <p class="text-[11px] text-muted">Badge · just earned!</p>
+        <button class="btn btn-secondary h-9 min-h-0 w-full mt-3 text-xs">Claim</button>
+      </a>
+      <a href="badge-unlock.html" class="swiper-slide claim-card">
+        <span class="claim-gift">👑</span>
+        <p class="font-extrabold text-sm mt-2">Royal crown</p>
+        <p class="text-[11px] text-muted">Avatar · streak reward</p>
+        <button class="btn btn-secondary h-9 min-h-0 w-full mt-3 text-xs">Claim</button>
+      </a>
+      <a href="badge-unlock.html" class="swiper-slide claim-card">
+        <span class="claim-gift">🛡️</span>
+        <p class="font-extrabold text-sm mt-2">Streak freeze</p>
+        <p class="text-[11px] text-muted">Power-up · +1 freeze</p>
+        <button class="btn btn-secondary h-9 min-h-0 w-full mt-3 text-xs">Claim</button>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== DAILY REWARD CALENDAR =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">📅 Daily login rewards</h2>
+      <span class="chip chip-sun">Day 5 / 7</span>
+    </div>
+    <div class="grid grid-cols-7 gap-2">
+      <div class="reward-day collected">
+        <span class="rd-day">M</span>
+        <span class="rd-emoji">✓</span>
+        <span class="rd-xp">+10</span>
+      </div>
+      <div class="reward-day collected">
+        <span class="rd-day">T</span>
+        <span class="rd-emoji">✓</span>
+        <span class="rd-xp">+15</span>
+      </div>
+      <div class="reward-day collected">
+        <span class="rd-day">W</span>
+        <span class="rd-emoji">✓</span>
+        <span class="rd-xp">+20</span>
+      </div>
+      <div class="reward-day collected">
+        <span class="rd-day">T</span>
+        <span class="rd-emoji">✓</span>
+        <span class="rd-xp">+25</span>
+      </div>
+      <div class="reward-day today">
+        <span class="rd-day">F</span>
+        <span class="rd-emoji">🎁</span>
+        <span class="rd-xp">+40</span>
+      </div>
+      <div class="reward-day">
+        <span class="rd-day">S</span>
+        <span class="rd-emoji">🎁</span>
+        <span class="rd-xp">+50</span>
+      </div>
+      <div class="reward-day">
+        <span class="rd-day">S</span>
+        <span class="rd-emoji">🏆</span>
+        <span class="rd-xp">+100</span>
+      </div>
+    </div>
+    <a href="daily-mission.html" class="btn btn-primary w-full mt-3 h-11 min-h-0 text-sm">Collect today's 🎁</a>
+  </section>
+
+  <!-- =============== SHOP FILTERS =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🛍️ Reward shop</h2>
+      <a href="#" class="link">All 24 items</a>
+    </div>
+    <div class="swiper rail-swiper" data-swiper-rail-tabs data-tabs>
+      <div class="swiper-wrapper">
+        <button class="swiper-slide chip chip-primary" data-tab="all">✨ All</button>
+        <button class="swiper-slide chip" data-tab="av">🎨 Avatars</button>
+        <button class="swiper-slide chip" data-tab="hat">🎩 Hats</button>
+        <button class="swiper-slide chip" data-tab="bg">🏞️ Backgrounds</button>
+        <button class="swiper-slide chip" data-tab="boost">⚡ Boosts</button>
+        <button class="swiper-slide chip" data-tab="sale">🔖 Sale</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== SHOP GRID =============== -->
+  <section class="px-5 mt-3">
+    <div class="grid grid-cols-2 gap-3">
+      <div class="shop-card">
+        <span class="shop-tag hot">HOT</span>
+        <div class="shop-emoji tile-violet">🎨</div>
+        <p class="shop-name">Avatar pack</p>
+        <p class="shop-desc">6 new animals</p>
+        <p class="shop-price">⭐ 500 XP</p>
+        <button class="btn btn-soft h-9 min-h-0 w-full mt-3 text-xs">Buy</button>
+      </div>
+      <div class="shop-card">
+        <div class="shop-emoji tile-sky">🎧</div>
+        <p class="shop-name">Sound pack</p>
+        <p class="shop-desc">Fun effects</p>
+        <p class="shop-price">⭐ 300 XP</p>
+        <button class="btn btn-soft h-9 min-h-0 w-full mt-3 text-xs">Buy</button>
+      </div>
+      <div class="shop-card">
+        <span class="shop-tag sale">-50%</span>
+        <div class="shop-emoji tile-sun">🌟</div>
+        <p class="shop-name">Star boost</p>
+        <p class="shop-desc">2× XP for 1 day</p>
+        <p class="shop-price">⭐ 100 XP <span class="text-muted line-through font-normal">200</span></p>
+        <button class="btn btn-soft h-9 min-h-0 w-full mt-3 text-xs">Buy</button>
+      </div>
+      <div class="shop-card">
+        <span class="shop-tag new">NEW</span>
+        <div class="shop-emoji tile-coral">🎩</div>
+        <p class="shop-name">Hat pack</p>
+        <p class="shop-desc">4 cute hats</p>
+        <p class="shop-price">⭐ 400 XP</p>
+        <button class="btn btn-soft h-9 min-h-0 w-full mt-3 text-xs">Buy</button>
+      </div>
+      <div class="shop-card">
+        <div class="shop-emoji tile-mint">🌈</div>
+        <p class="shop-name">Rainbow theme</p>
+        <p class="shop-desc">Background skin</p>
+        <p class="shop-price">⭐ 250 XP</p>
+        <button class="btn btn-soft h-9 min-h-0 w-full mt-3 text-xs">Buy</button>
+      </div>
+      <div class="shop-card">
+        <div class="shop-emoji tile-pink">🛡️</div>
+        <p class="shop-name">Streak shield</p>
+        <p class="shop-desc">Save flame 1×</p>
+        <p class="shop-price">⭐ 150 XP</p>
+        <button class="btn btn-soft h-9 min-h-0 w-full mt-3 text-xs">Buy</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== LIMITED-TIME BUNDLE =============== -->
+  <section class="px-5 mt-5">
+    <a href="#" class="k-card-lg card-hero-flame relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">🎟️</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">🎟️</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">LIMITED BUNDLE · 2D LEFT</p>
+          <p class="h-display text-lg leading-tight">Super Explorer pack</p>
+          <p class="text-xs text-white/90">Avatar + background + boost · save 30%</p>
+        </div>
+        <span class="cta-soft shrink-0">700 XP</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== RECENT ACTIVITY =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Recent activity</h2>
+      <a href="xp-progress.html" class="link">See all</a>
+    </div>
+    <div class="space-y-2">
+      <div class="activity-row">
+        <div class="act-ico tile-mint">+</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Earned 40 XP</p>
+          <p class="text-[11px] text-muted">Lesson · Counting to 20</p>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="xp-pill">+40</span>
+          <p class="text-[10px] text-muted mt-1">2h ago</p>
+        </div>
+      </div>
+      <div class="activity-row">
+        <div class="act-ico tile-sun">🏅</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Badge: Week Warrior</p>
+          <p class="text-[11px] text-muted">7-day streak milestone</p>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="xp-pill">+50</span>
+          <p class="text-[10px] text-muted mt-1">Today</p>
+        </div>
+      </div>
+      <div class="activity-row">
+        <div class="act-ico tile-coral">🎯</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Daily mission complete</p>
+          <p class="text-[11px] text-muted">All 3 tasks finished</p>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="xp-pill">+120</span>
+          <p class="text-[10px] text-muted mt-1">Yesterday</p>
+        </div>
+      </div>
+      <div class="activity-row">
+        <div class="act-ico tile-violet">🛒</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Bought Rainbow theme</p>
+          <p class="text-[11px] text-muted">Reward shop</p>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="xp-pill spend">-250</span>
+          <p class="text-[10px] text-muted mt-1">2d ago</p>
+        </div>
+      </div>
+      <div class="activity-row">
+        <div class="act-ico tile-mint">+</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Earned 60 XP</p>
+          <p class="text-[11px] text-muted">Quick quiz · 6/8 correct</p>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="xp-pill">+60</span>
+          <p class="text-[10px] text-muted mt-1">3d ago</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== EARN MORE CTA =============== -->
+  <section class="px-5 mt-5">
+    <a href="daily-mission.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+      <span class="watermark-emoji" aria-hidden="true">🚀</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">🚀</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">EARN MORE XP</p>
+          <p class="h-display text-lg leading-tight">Finish today's mission</p>
+          <p class="text-xs text-white/90">3 tasks · +120 XP reward</p>
+        </div>
+        <span class="cta-soft shrink-0">Start</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">No real money</p>
+        <p class="text-xs text-muted">Rewards are earned through learning — never bought. Every item uses XP your kid worked for.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Learn more</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab" href="learn-categories.html"><span class="tab-ico"><i class="ph ph-books text-xl"></i></span>Learn</a>
+      <a class="tab active" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph-fill ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/rewards-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:55 GMT -->
+</html>

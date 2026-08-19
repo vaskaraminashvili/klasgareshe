@@ -1,0 +1,24 @@
+---
+description: Copy Kidzio HTML and CSS into Blade — never redesign screens from scratch
+alwaysApply: true
+---
+
+# Copy `kidzio/` UI. Do not rebuild it.
+
+`kidzio/` is the design. Laravel/Livewire only adds data and behavior.
+
+When implementing any screen or component:
+
+1. Open the matching file in `kidzio/` (e.g. login → `kidzio/login.html`).
+2. Copy the markup into the Livewire Blade view **verbatim** (same tags, classes, copy, icons, structure).
+3. Use `kidzio/assets/css/index.css` as the stylesheet. Do not restyle in `resources/css/app.css`.
+4. Copy images from `kidzio/assets/images/`.
+5. Change only wiring: `route()`, `wire:navigate`, `wire:model`, `wire:submit`, `asset()`, Livewire variables in existing nodes.
+
+Never:
+
+- Invent a new layout or Tailwind class set
+- Replace a template screen with a simplified form
+- Skip blocks that exist in the HTML (headers, social buttons, chips, tab bars, sheets)
+
+If the Blade does not look like the `kidzio/` HTML, it is wrong. Fix it by copying the template, not by restyling.

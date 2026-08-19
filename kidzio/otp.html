@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/otp.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:19 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Verify code · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="forgot-password.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Password reset</p>
+      <h1 class="h-display text-lg leading-tight">Verify code</h1>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <section class="px-6 pt-2 text-center">
+    <div class="mx-auto size-24 rounded-3xl tile-violet grid place-items-center mb-4">
+      <i class="ph-fill ph-chat-circle-dots text-5xl"></i>
+    </div>
+    <h2 class="h-display text-2xl text-ink">Enter 4-digit code</h2>
+    <p class="text-sm mt-1 text-muted">We sent a code to <span class="font-extrabold text-ink">parent@example.com</span></p>
+  </section>
+
+  <form class="px-6 mt-6" id="otpForm" onsubmit="event.preventDefault();submitCode()">
+    <div class="flex justify-center gap-3" id="otp" role="group" aria-label="4-digit code">
+      <input inputmode="numeric" maxlength="1" class="input text-center h-16 w-14 text-2xl font-extrabold" autocomplete="one-time-code" aria-label="Digit 1"/>
+      <input inputmode="numeric" maxlength="1" class="input text-center h-16 w-14 text-2xl font-extrabold" aria-label="Digit 2"/>
+      <input inputmode="numeric" maxlength="1" class="input text-center h-16 w-14 text-2xl font-extrabold" aria-label="Digit 3"/>
+      <input inputmode="numeric" maxlength="1" class="input text-center h-16 w-14 text-2xl font-extrabold" aria-label="Digit 4"/>
+    </div>
+    <p id="hint" class="text-center text-xs mt-3 text-muted">Tip: paste the code and it auto-fills.</p>
+
+    <p class="text-center text-xs mt-4 text-muted">
+      <span id="resendLabel">Resend code in <span class="font-extrabold text-ink" id="t">00:42</span></span>
+    </p>
+
+    <button id="verifyBtn" class="btn btn-primary w-full mt-5" disabled>
+      <i class="ph-fill ph-check-circle"></i> Verify
+    </button>
+    <button type="button" id="resendBtn" class="btn btn-ghost w-full mt-2" disabled>
+      <i class="ph ph-arrow-clockwise"></i> Resend code
+    </button>
+
+    <p class="text-center text-[11px] text-muted mt-5">
+      Wrong email?
+      <a href="forgot-password.html" class="chip chip-primary"><i class="ph ph-pencil-simple"></i> Change it</a>
+    </p>
+  </form>
+</main>
+
+<script src="assets/js/otp.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/otp.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:20 GMT -->
+</html>

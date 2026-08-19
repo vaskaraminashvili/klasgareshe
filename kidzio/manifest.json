@@ -1,0 +1,84 @@
+{
+  "name": "Kidzio - Kids Learning Games & Education",
+  "short_name": "Kidzio",
+  "description": "Premium kids learning games and education super app. Learn alphabet, math, animals, words and more through playful interactive mini-games.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF8F1",
+  "theme_color": "#7C5CFF",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["education", "kids", "games"],
+  "icons": [
+    {
+      "src": "assets/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Continue Learning",
+      "short_name": "Learn",
+      "url": "/pages/home-continue.html",
+      "icons": [{ "src": "assets/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Daily Mission",
+      "short_name": "Mission",
+      "url": "/pages/daily-mission.html",
+      "icons": [{ "src": "assets/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Rewards",
+      "short_name": "Rewards",
+      "url": "/pages/rewards-dashboard.html",
+      "icons": [{ "src": "assets/icons/icon-96.png", "sizes": "96x96" }]
+    }
+  ]
+}

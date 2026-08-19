@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/ranking-friends.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Friends · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="leaderboard.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Ranking · Social</p>
+      <h1 class="h-display text-lg leading-tight">My friends</h1>
+    </div>
+    <button class="icon-btn" aria-label="Add friend"><i class="ph ph-user-plus text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== TABS =============== -->
+  <section class="px-5">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" role="tablist" aria-label="Ranking views">
+      <div class="swiper-wrapper">
+      <a href="leaderboard.html" class="swiper-slide chip" role="tab">🌍 Global</a>
+      <a href="ranking-weekly.html" class="swiper-slide chip" role="tab">📅 Weekly</a>
+      <a href="ranking-friends.html" class="swiper-slide chip chip-primary" role="tab" aria-selected="true">👫 Friends</a>
+      <a href="league.html" class="swiper-slide chip" role="tab">🏆 League</a>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5 mt-2">
+    <div class="k-card-lg hero-friends">
+      <div class="relative flex items-center gap-3">
+        <div class="text-5xl">🎉</div>
+        <div class="grow">
+          <span class="chip bg-white/20 border-0 text-white">
+            <i class="ph-fill ph-users-three"></i> 8 FRIENDS
+          </span>
+          <p class="h-display text-xl mt-1 leading-tight">You're beating 3 friends!</p>
+          <p class="text-xs text-white/90">Keep learning to climb higher</p>
+        </div>
+      </div>
+      <div class="relative mt-4 flex gap-2">
+        <div class="mini-stat">
+          <p class="mini-v">#2</p>
+          <p class="mini-l">Your rank</p>
+        </div>
+        <div class="mini-stat">
+          <p class="mini-v">900</p>
+          <p class="mini-l">XP behind Leo</p>
+        </div>
+        <div class="mini-stat">
+          <p class="mini-v">+160</p>
+          <p class="mini-l">Ahead of Ana</p>
+        </div>
+      </div>
+      <div class="relative mt-4 flex flex-wrap items-center gap-2">
+        <button class="cta-soft">
+          <i class="ph-fill ph-user-plus"></i> Invite friend
+        </button>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">
+          <span class="live-dot"></span> 5 online
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== PODIUM =============== -->
+  <section class="px-5 mt-4">
+    <div class="podium-card">
+      <div class="relative grid grid-cols-3 items-end gap-3">
+        <!-- 2nd -->
+        <div class="podium-slot second">
+          <div class="podium-avatar">🐻</div>
+          <p class="podium-name">You</p>
+          <p class="podium-xp">1,240 XP</p>
+          <div class="podium-base">🥈</div>
+        </div>
+        <!-- 1st -->
+        <div class="podium-slot first">
+          <span class="podium-crown" aria-hidden="true">👑</span>
+          <div class="podium-avatar">👦</div>
+          <p class="podium-name">Leo</p>
+          <p class="podium-xp">2,140 XP</p>
+          <div class="podium-base">🥇</div>
+        </div>
+        <!-- 3rd -->
+        <div class="podium-slot third">
+          <div class="podium-avatar">🐰</div>
+          <p class="podium-name">Ana</p>
+          <p class="podium-xp">1,080 XP</p>
+          <div class="podium-base">🥉</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== SEARCH + FILTERS =============== -->
+  <section class="px-5 mt-4">
+    <div class="input-wrap">
+      <i class="ph ph-magnifying-glass i-left"></i>
+      <input class="input has-left" placeholder="Search your friends…" aria-label="Search friends"/>
+      <button class="i-right" aria-label="Voice search"><i class="ph ph-microphone text-xl"></i></button>
+    </div>
+    <div data-swiper-rail-tabs class="swiper rail-swiper mt-3" data-tabs>
+      <div class="swiper-wrapper">
+      <button class="swiper-slide chip chip-primary" data-tab="all">All · 8</button>
+      <button class="swiper-slide chip" data-tab="online">🟢 Online · 5</button>
+      <button class="swiper-slide chip" data-tab="streak">🔥 On streak</button>
+      <button class="swiper-slide chip" data-tab="near">Near you</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== FRIEND LIST =============== -->
+  <section class="px-5 mt-4">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Friend ranking</h2>
+      <span class="link cursor-default">Total XP</span>
+    </div>
+
+    <div class="space-y-2">
+      <a href="profile.html" class="friend-row">
+        <span class="rank-num top-1">1</span>
+        <div class="friend-av tile-sun">👦<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Leo</p>
+          <div class="friend-meta">
+            <span>Lv 9</span>·<span class="text-sun-ink">🔥 12d</span>·<span>Math whiz</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip chip-sun">2,140 XP</span>
+          <p class="trend-up text-[11px] font-extrabold mt-1"><i class="ph-fill ph-caret-up"></i> +220 today</p>
+        </div>
+      </a>
+
+      <div class="friend-row you">
+        <span class="rank-num top-2">2</span>
+        <div class="friend-av tile-coral">🐻<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">You (Luna)</p>
+          <div class="friend-meta">
+            <span>Lv 7</span>·<span class="text-sun-ink">🔥 7d</span>·<span>Explorer</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip chip-primary">1,240 XP</span>
+          <p class="text-[11px] font-extrabold mt-1"><span class="delta-pill">900 behind</span></p>
+        </div>
+      </div>
+
+      <a href="profile.html" class="friend-row">
+        <span class="rank-num top-3">3</span>
+        <div class="friend-av tile-mint">🐰<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Ana</p>
+          <div class="friend-meta">
+            <span>Lv 6</span>·<span class="text-sun-ink">🔥 3d</span>·<span>Word wizard</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">1,080 XP</span>
+          <p class="trend-up text-[11px] font-extrabold mt-1"><span class="delta-pill ahead">+160 ahead</span></p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="friend-row">
+        <span class="rank-num">4</span>
+        <div class="friend-av tile-sky">🦊</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Noah</p>
+          <div class="friend-meta">
+            <span>Lv 5</span>·<span class="text-sun-ink">🔥 5d</span>·<span>Offline · 2h ago</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">920 XP</span>
+          <p class="trend-down text-[11px] font-extrabold mt-1"><i class="ph-fill ph-caret-down"></i> Ahead by 320</p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="friend-row">
+        <span class="rank-num">5</span>
+        <div class="friend-av tile-pink">🦄<span class="live"></span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Zoe</p>
+          <div class="friend-meta">
+            <span>Lv 4</span>·<span class="text-sun-ink">🔥 2d</span>·<span>New friend</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">740 XP</span>
+          <p class="trend-down text-[11px] font-extrabold mt-1">Ahead by 500</p>
+        </div>
+      </a>
+
+      <a href="profile.html" class="friend-row">
+        <span class="rank-num">6</span>
+        <div class="friend-av tile-violet">🐼</div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Eli</p>
+          <div class="friend-meta">
+            <span>Lv 3</span>·<span>Offline · yesterday</span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="chip">520 XP</span>
+          <p class="trend-down text-[11px] font-extrabold mt-1">Ahead by 720</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== FRIEND REQUESTS =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Friend requests</h2>
+      <span class="chip chip-coral">2 new</span>
+    </div>
+    <div class="space-y-2">
+      <div class="request-card">
+        <div class="avatar-ring"><span>🦖</span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Kai</p>
+          <p class="text-[11px] text-muted">Sent yesterday · from your school</p>
+        </div>
+        <button class="btn btn-secondary h-9 min-h-0 px-3 text-xs">Ignore</button>
+        <button class="btn btn-primary h-9 min-h-0 px-3 text-xs">Accept</button>
+      </div>
+      <div class="request-card">
+        <div class="avatar-ring"><span>🐢</span></div>
+        <div class="grow min-w-0">
+          <p class="font-extrabold text-sm text-ink">Sam</p>
+          <p class="text-[11px] text-muted">Sent 3h ago</p>
+        </div>
+        <button class="btn btn-secondary h-9 min-h-0 px-3 text-xs">Ignore</button>
+        <button class="btn btn-primary h-9 min-h-0 px-3 text-xs">Accept</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== SUGGESTED FRIENDS =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">✨ Suggested for you</h2>
+      <span class="link cursor-default">Based on your school</span>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <div class="swiper-slide k-card w-40 text-center">
+        <div class="avatar-ring mx-auto"><span>🐵</span></div>
+        <p class="font-extrabold text-sm mt-2">Ava</p>
+        <p class="text-[11px] text-muted">Lv 6 · 🔥 4d</p>
+        <button class="btn btn-primary h-9 min-h-0 px-3 text-xs w-full mt-2"><i class="ph-fill ph-user-plus"></i> Add</button>
+      </div>
+      <div class="swiper-slide k-card w-40 text-center">
+        <div class="avatar-ring mx-auto"><span>🦝</span></div>
+        <p class="font-extrabold text-sm mt-2">Ben</p>
+        <p class="text-[11px] text-muted">Lv 5 · 🔥 2d</p>
+        <button class="btn btn-primary h-9 min-h-0 px-3 text-xs w-full mt-2"><i class="ph-fill ph-user-plus"></i> Add</button>
+      </div>
+      <div class="swiper-slide k-card w-40 text-center">
+        <div class="avatar-ring mx-auto"><span>🦉</span></div>
+        <p class="font-extrabold text-sm mt-2">Isla</p>
+        <p class="text-[11px] text-muted">Lv 8 · 🔥 9d</p>
+        <button class="btn btn-primary h-9 min-h-0 px-3 text-xs w-full mt-2"><i class="ph-fill ph-user-plus"></i> Add</button>
+      </div>
+      <div class="swiper-slide k-card w-40 text-center">
+        <div class="avatar-ring mx-auto"><span>🐧</span></div>
+        <p class="font-extrabold text-sm mt-2">Ryan</p>
+        <p class="text-[11px] text-muted">Lv 4 · new</p>
+        <button class="btn btn-primary h-9 min-h-0 px-3 text-xs w-full mt-2"><i class="ph-fill ph-user-plus"></i> Add</button>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== INVITE BLOCK =============== -->
+  <section class="px-5 mt-5">
+    <div class="invite-card">
+      <div class="size-12 rounded-2xl tile-violet grid place-items-center text-xl shrink-0">📨</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Invite a friend, earn +50 XP</p>
+        <p class="text-xs text-muted">When they finish their first lesson</p>
+      </div>
+      <button class="btn btn-primary h-10 min-h-0 px-4 text-sm shrink-0">Invite</button>
+    </div>
+  </section>
+
+  <!-- =============== PARENT NOTE =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Safe & kid-friendly</p>
+        <p class="text-xs text-muted">Only parent-approved friends can connect. Usernames are randomized emoji names by default.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Privacy</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab" href="learn-categories.html"><span class="tab-ico"><i class="ph ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab active" href="leaderboard.html"><span class="tab-ico"><i class="ph-fill ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/ranking-friends.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:43 GMT -->
+</html>

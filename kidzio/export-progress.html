@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/export-progress.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:16 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Export progress · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col safe-top">
+
+  <header class="appbar">
+    <a href="settings.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Storage &amp; data</p>
+      <h1 class="h-display text-lg leading-tight">Export progress</h1>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-friends text-center">
+      <div class="relative inline-grid place-items-center">
+        <div class="size-24 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-5xl">📄</div>
+      </div>
+      <p class="relative chip bg-white/20 border-0 text-white mt-4">PDF · BEAUTIFUL RECAP</p>
+      <p class="relative h-display text-2xl mt-2 leading-tight">Luna's learning story</p>
+      <p class="relative text-xs text-white/90 mt-1">Share on the fridge, save for school</p>
+    </div>
+  </section>
+
+  <!-- =============== DATE RANGE =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Time range</p>
+    <div class="mt-3 grid grid-cols-4 gap-2">
+      <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-range><span class="h-display text-sm text-ink">Week</span></button>
+      <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center is-selected" data-range><span class="h-display text-sm text-ink">Month</span></button>
+      <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-range><span class="h-display text-sm text-ink">Season</span></button>
+      <button type="button" class="pick-card !p-2 !gap-0 flex-col text-center" data-range><span class="h-display text-sm text-ink">All time</span></button>
+    </div>
+    <p class="text-[11px] text-muted text-center mt-2">Apr 1 — Apr 17 · 17 days</p>
+  </section>
+
+  <!-- =============== WHAT'S INCLUDED =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">What to include</p>
+    <div class="mt-3 space-y-2">
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-chart-bar"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">XP &amp; level history</p>
+          <p class="text-[11px] text-muted">Daily, weekly &amp; monthly trends</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-fire"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Streak calendar</p>
+          <p class="text-[11px] text-muted">Visual day-by-day streak map</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-medal"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Badges earned</p>
+          <p class="text-[11px] text-muted">All 8 badges with unlock dates</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-coral"><i class="ph-fill ph-book-open"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">Lessons completed</p>
+          <p class="text-[11px] text-muted">By subject &amp; difficulty</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" checked/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      <label class="setting-row cursor-pointer">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-trophy"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">League history</p>
+          <p class="text-[11px] text-muted">Promotions &amp; rankings</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox"/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+    </div>
+  </section>
+
+  <!-- =============== FORMAT =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Export format</p>
+    <div class="mt-3 grid grid-cols-3 gap-3">
+      <button type="button" class="pick-card !p-3 flex-col text-center is-selected" data-fmt>
+        <span class="text-3xl">📄</span>
+        <span class="pc-name mt-1">PDF</span>
+        <span class="pc-sub">~2 MB</span>
+      </button>
+      <button type="button" class="pick-card !p-3 flex-col text-center" data-fmt>
+        <span class="text-3xl">📊</span>
+        <span class="pc-name mt-1">CSV</span>
+        <span class="pc-sub">Raw data</span>
+      </button>
+      <button type="button" class="pick-card !p-3 flex-col text-center" data-fmt>
+        <span class="text-3xl">🌐</span>
+        <span class="pc-name mt-1">JSON</span>
+        <span class="pc-sub">Dev-friendly</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- =============== PREVIEW =============== -->
+  <section class="px-5 mt-5">
+    <p class="section-label">Preview cover</p>
+    <div class="k-card p-0 overflow-hidden mt-3">
+      <div class="tile-violet p-5 text-center">
+        <p class="text-[10px] font-extrabold uppercase tracking-wider opacity-80">KIDZIO · APRIL 2026</p>
+        <p class="h-display text-2xl mt-1">Luna's learning story</p>
+        <p class="text-xs opacity-80 mt-0.5">17 days · +940 XP · 8 badges</p>
+      </div>
+      <div class="p-4 text-[12px] text-muted leading-relaxed">
+        <p>The PDF includes a beautiful cover page, charts, badge list and encouraging notes — perfect to share with grandparents or teachers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== TIP =============== -->
+  <section class="px-5 mt-5 mb-10">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Private to you</p>
+        <p class="text-xs text-muted">Exports are generated locally. Nothing is sent to our servers.</p>
+      </div>
+    </div>
+    <button class="btn btn-primary w-full mt-3" onclick="toast('Export ready! Check downloads.');setTimeout(()=>location.href='settings.html',900)">
+      <i class="ph-fill ph-download-simple"></i> Download PDF · ~2 MB
+    </button>
+  </section>
+</main>
+
+<script src="assets/js/export-progress.js"></script>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/export-progress.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:28:17 GMT -->
+</html>

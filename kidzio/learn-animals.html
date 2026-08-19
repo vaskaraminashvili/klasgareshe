@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-animals.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:39 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Animals · Kidzio</title>
+<meta name="theme-color" content="#FFF8F1"/>
+<link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/regular/style.css"/>
+<link rel="stylesheet" href="../unpkg.com/%40phosphor-icons/web%402.1.1/src/fill/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="assets/images/icon.png"/>
+
+    <!-- Pre-paint theme script (prevents FOUC). Matches crypto/ pattern. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme = saved ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+      })();
+    </script>
+  <link href="assets/css/index.css" rel="stylesheet"></head>
+<body>
+<main class="device-frame min-h-screen flex flex-col">
+
+  <!-- =============== APPBAR =============== -->
+  <header class="appbar safe-top">
+    <a href="learn-categories.html" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <div class="grow">
+      <p class="text-xs text-muted">Learn · Category</p>
+      <h1 class="h-display text-lg leading-tight">Animals</h1>
+    </div>
+    <button class="icon-btn" aria-label="Search"><i class="ph ph-magnifying-glass text-xl"></i></button>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i class="ph ph-moon text-xl"></i></button>
+  </header>
+
+  <!-- =============== HERO =============== -->
+  <section class="px-5">
+    <div class="k-card-lg hero-animals">
+      <span class="hero-animals-watermark" aria-hidden="true">🦁</span>
+
+      <div class="relative flex items-center gap-2">
+        <span class="chip bg-white/20 border-0 text-white">
+          <i class="ph-fill ph-paw-print"></i> ANIMAL KINGDOM
+        </span>
+        <span class="chip bg-white/20 border-0 text-white ml-auto">Age 4+</span>
+      </div>
+
+      <p class="h-display text-2xl mt-2 relative leading-tight">Meet the wild 🐾</p>
+      <p class="text-sm text-white/90 relative">Explore 6 habitats, hear sounds and spot fun facts.</p>
+
+      <div class="mt-4 flex items-center gap-3 relative">
+        <div class="progress on-gradient grow"><span class="w-50"></span></div>
+        <span class="text-sm font-extrabold">7 / 14</span>
+      </div>
+
+      <div class="relative mt-4 grid grid-cols-3 gap-2">
+        <div class="count-pill">
+          <span class="count-value">14</span>
+          <span class="count-label">Lessons</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">6</span>
+          <span class="count-label">Habitats</span>
+        </div>
+        <div class="count-pill">
+          <span class="count-value">32</span>
+          <span class="count-label">Animals</span>
+        </div>
+      </div>
+
+      <div class="relative mt-4 flex flex-wrap items-center gap-2">
+        <a href="game-guess-animal.html" class="cta-soft">Start exploring <i class="ph-fill ph-arrow-right"></i></a>
+        <span class="chip bg-white/20 border-0 text-white">+60 XP</span>
+        <span class="chip bg-white/20 border-0 text-white"><i class="ph-fill ph-speaker-high"></i> Sounds</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== HABITAT FILTERS =============== -->
+  <section class="px-5 mt-4">
+    <div data-swiper-rail-tabs class="swiper rail-swiper" data-tabs role="tablist" aria-label="Filter by habitat">
+      <div class="swiper-wrapper">
+      <button class="swiper-slide chip chip-primary" data-tab="all" role="tab" aria-selected="true">🌍 All habitats</button>
+      <button class="swiper-slide chip" data-tab="jun" role="tab">🌴 Jungle</button>
+      <button class="swiper-slide chip" data-tab="oce" role="tab">🌊 Ocean</button>
+      <button class="swiper-slide chip" data-tab="arc" role="tab">❄️ Arctic</button>
+      <button class="swiper-slide chip" data-tab="far" role="tab">🚜 Farm</button>
+      <button class="swiper-slide chip" data-tab="des" role="tab">🏜️ Desert</button>
+      <button class="swiper-slide chip" data-tab="for" role="tab">🌲 Forest</button>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== ANIMAL OF THE DAY =============== -->
+  <section class="px-5 mt-4">
+    <div class="section-head">
+      <h2 class="h-display text-lg">⭐ Animal of the day</h2>
+      <span class="day-badge">NEW</span>
+    </div>
+    <a href="game-guess-animal.html" class="k-card-lg block relative overflow-hidden habitat-jungle">
+      <div class="flex items-center gap-3 relative">
+        <div class="text-6xl">🦁</div>
+        <div class="grow">
+          <p class="font-extrabold text-base text-ink">Lion · The brave king</p>
+          <p class="text-xs text-muted mt-0.5">Lives in savannah · roars loud 🔊</p>
+          <div class="mt-2 flex flex-wrap gap-1">
+            <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold">Easy</span>
+            <span class="chip chip-mint">+20 XP</span>
+            <span class="chip chip-sun">🔥 Popular</span>
+          </div>
+        </div>
+        <i class="ph ph-caret-right text-xl text-muted shrink-0"></i>
+      </div>
+    </a>
+  </section>
+
+  <!-- =============== COLLECTION PROGRESS =============== -->
+  <section class="px-5 mt-4">
+    <div class="k-card p-4">
+      <div class="flex items-center gap-3">
+        <div class="collect-ring" style="--pct: 45" aria-label="45% collected">
+          <span>45%</span>
+        </div>
+        <div class="grow">
+          <p class="font-extrabold text-sm text-ink">Your animal collection</p>
+          <p class="text-xs text-muted">14 of 32 animals discovered</p>
+        </div>
+        <a href="badges.html" class="chip chip-primary">View badges</a>
+      </div>
+      <div class="mt-3 grid grid-cols-6 gap-1 text-center">
+        <span class="text-2xl">🦁</span>
+        <span class="text-2xl">🐘</span>
+        <span class="text-2xl">🐒</span>
+        <span class="text-2xl">🐬</span>
+        <span class="text-2xl">🐠</span>
+        <span class="text-2xl">🐙</span>
+      </div>
+      <p class="text-[11px] text-muted text-center mt-2">Recent discoveries</p>
+    </div>
+  </section>
+
+  <!-- =============== ANIMALS GRID =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">Explore animals</h2>
+      <span class="link cursor-default">14 found</span>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3">
+      <!-- Jungle -->
+      <a href="game-match-animal.html" class="animal-card habitat-jungle">
+        <span class="habitat-pill">Jungle</span>
+        <span class="animal-mark"><i class="ph-fill ph-check text-[10px]"></i></span>
+        <span class="animal-emoji">🦁</span>
+        <span class="animal-name">Lion</span>
+        <span class="animal-meta">Savannah</span>
+      </a>
+      <a href="game-match-animal.html" class="animal-card habitat-jungle">
+        <span class="habitat-pill">Jungle</span>
+        <span class="animal-mark"><i class="ph-fill ph-check text-[10px]"></i></span>
+        <span class="animal-emoji">🐘</span>
+        <span class="animal-name">Elephant</span>
+        <span class="animal-meta">Africa</span>
+      </a>
+      <a href="game-match-animal.html" class="animal-card habitat-jungle">
+        <span class="habitat-pill">Jungle</span>
+        <span class="animal-mark new">!</span>
+        <span class="animal-emoji">🐒</span>
+        <span class="animal-name">Monkey</span>
+        <span class="animal-meta">Tropical</span>
+      </a>
+
+      <!-- Ocean -->
+      <a href="game-match-animal.html" class="animal-card habitat-ocean">
+        <span class="habitat-pill">Ocean</span>
+        <span class="animal-mark"><i class="ph-fill ph-check text-[10px]"></i></span>
+        <span class="animal-emoji">🐬</span>
+        <span class="animal-name">Dolphin</span>
+        <span class="animal-meta">Sea</span>
+      </a>
+      <a href="game-match-animal.html" class="animal-card habitat-ocean">
+        <span class="habitat-pill">Ocean</span>
+        <span class="animal-mark"><i class="ph-fill ph-check text-[10px]"></i></span>
+        <span class="animal-emoji">🐠</span>
+        <span class="animal-name">Fish</span>
+        <span class="animal-meta">Reef</span>
+      </a>
+      <a href="game-match-animal.html" class="animal-card habitat-ocean">
+        <span class="habitat-pill">Ocean</span>
+        <span class="animal-mark"><i class="ph-fill ph-check text-[10px]"></i></span>
+        <span class="animal-emoji">🐙</span>
+        <span class="animal-name">Octopus</span>
+        <span class="animal-meta">Deep sea</span>
+      </a>
+
+      <!-- Arctic (locked) -->
+      <a href="lesson-locked.html" class="animal-card habitat-arctic locked">
+        <span class="habitat-pill">Arctic</span>
+        <span class="animal-mark lock"><i class="ph-fill ph-lock text-[10px]"></i></span>
+        <span class="animal-emoji">🐧</span>
+        <span class="animal-name">Penguin</span>
+        <span class="animal-meta">Antarctica</span>
+      </a>
+      <a href="lesson-locked.html" class="animal-card habitat-arctic locked">
+        <span class="habitat-pill">Arctic</span>
+        <span class="animal-mark lock"><i class="ph-fill ph-lock text-[10px]"></i></span>
+        <span class="animal-emoji">🐻‍❄️</span>
+        <span class="animal-name">Polar Bear</span>
+        <span class="animal-meta">Ice</span>
+      </a>
+
+      <!-- Forest (locked) -->
+      <a href="lesson-locked.html" class="animal-card habitat-forest locked">
+        <span class="habitat-pill">Forest</span>
+        <span class="animal-mark lock"><i class="ph-fill ph-lock text-[10px]"></i></span>
+        <span class="animal-emoji">🦊</span>
+        <span class="animal-name">Fox</span>
+        <span class="animal-meta">Woodland</span>
+      </a>
+
+      <!-- Farm (new) -->
+      <a href="game-match-animal.html" class="animal-card habitat-farm">
+        <span class="habitat-pill">Farm</span>
+        <span class="animal-mark new">!</span>
+        <span class="animal-emoji">🐄</span>
+        <span class="animal-name">Cow</span>
+        <span class="animal-meta">Pasture</span>
+      </a>
+      <a href="game-match-animal.html" class="animal-card habitat-farm">
+        <span class="habitat-pill">Farm</span>
+        <span class="animal-mark new">!</span>
+        <span class="animal-emoji">🐑</span>
+        <span class="animal-name">Sheep</span>
+        <span class="animal-meta">Meadow</span>
+      </a>
+
+      <!-- Desert (locked) -->
+      <a href="lesson-locked.html" class="animal-card habitat-desert locked">
+        <span class="habitat-pill">Desert</span>
+        <span class="animal-mark lock"><i class="ph-fill ph-lock text-[10px]"></i></span>
+        <span class="animal-emoji">🐪</span>
+        <span class="animal-name">Camel</span>
+        <span class="animal-meta">Sahara</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== SOUND LIBRARY =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🔊 Hear the sounds</h2>
+      <a href="game-match-animal.html" class="link">Play game</a>
+    </div>
+    <div class="sound-strip">
+      <div class="sound-ico">🦁</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Lion roars loud!</p>
+        <div class="sound-wave mt-1">
+          <span class="h-2"></span>
+          <span class="h-4"></span>
+          <span class="h-5"></span>
+          <span class="h-3"></span>
+          <span class="h-5"></span>
+          <span class="h-4"></span>
+          <span class="h-2"></span>
+          <span class="h-3"></span>
+          <span class="h-4"></span>
+          <span class="h-2"></span>
+        </div>
+      </div>
+      <button class="btn btn-primary h-10 min-h-0 px-4 text-sm shrink-0" aria-label="Play lion sound">
+        <i class="ph-fill ph-speaker-high"></i> Play
+      </button>
+    </div>
+    <div class="mt-3 grid grid-cols-4 gap-2 text-center">
+      <button class="k-card p-2 text-3xl" aria-label="Elephant sound">🐘</button>
+      <button class="k-card p-2 text-3xl" aria-label="Monkey sound">🐒</button>
+      <button class="k-card p-2 text-3xl" aria-label="Dolphin sound">🐬</button>
+      <button class="k-card p-2 text-3xl" aria-label="Cow sound">🐄</button>
+    </div>
+  </section>
+
+  <!-- =============== FUN FACTS =============== -->
+  <section class="mt-5">
+    <div class="section-head px-5">
+      <h2 class="h-display text-lg">🧠 Fun facts</h2>
+      <span class="link cursor-default">Did you know?</span>
+    </div>
+    <div data-swiper-rail class="swiper rail-swiper">
+      <div class="swiper-wrapper">
+      <div class="swiper-slide fact-card">
+        <div class="fact-emoji tile-sun">🦒</div>
+        <div>
+          <p class="fact-title">Giraffe's long neck</p>
+          <p class="fact-body">A giraffe's neck has the same number of bones as a human neck — just bigger!</p>
+        </div>
+      </div>
+      <div class="swiper-slide fact-card">
+        <div class="fact-emoji tile-sky">🐙</div>
+        <div>
+          <p class="fact-title">Three hearts!</p>
+          <p class="fact-body">An octopus has three hearts and blue blood.</p>
+        </div>
+      </div>
+      <div class="swiper-slide fact-card">
+        <div class="fact-emoji tile-mint">🐘</div>
+        <div>
+          <p class="fact-title">Super memory</p>
+          <p class="fact-body">Elephants never forget — they can recognize old friends!</p>
+        </div>
+      </div>
+      <div class="swiper-slide fact-card">
+        <div class="fact-emoji tile-coral">🐧</div>
+        <div>
+          <p class="fact-title">Penguin pair</p>
+          <p class="fact-body">Penguin couples stay together for many, many years.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- =============== GAMES =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">🎮 Animal games</h2>
+      <a href="learn-categories.html" class="link">More games</a>
+    </div>
+    <div class="space-y-3">
+      <a href="game-guess-animal.html" class="k-card flex items-center gap-3">
+        <div class="size-12 rounded-2xl tile-mint grid place-items-center text-xl shrink-0">🔍</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">Guess the animal</p>
+          <p class="text-xs text-muted">From clues · ~2 min · +30 XP</p>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold">Easy</span>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="game-where-live.html" class="k-card flex items-center gap-3">
+        <div class="size-12 rounded-2xl tile-sky grid place-items-center text-xl shrink-0">🏞️</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">Where do I live?</p>
+          <p class="text-xs text-muted">Match habitats · ~3 min · +40 XP</p>
+        </div>
+        <span class="pill-medium rounded-full px-2 py-0.5 text-[10px] font-extrabold">Medium</span>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      <a href="game-match-animal.html" class="k-card flex items-center gap-3">
+        <div class="size-12 rounded-2xl tile-coral grid place-items-center text-xl shrink-0">🐾</div>
+        <div class="grow">
+          <p class="font-extrabold text-sm">Match animal to name</p>
+          <p class="text-xs text-muted">Tap to match · ~2 min · +25 XP</p>
+        </div>
+        <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold">Easy</span>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============== PARENT TIP =============== -->
+  <section class="px-5 mt-5 mb-5">
+    <div class="tip-card rounded-2xl p-4 flex items-start gap-3">
+      <div class="mascot shrink-0 size-11 text-xl">🦉</div>
+      <div class="grow">
+        <p class="font-extrabold text-sm text-ink">Parent note</p>
+        <p class="text-xs text-muted">Kids learn animals faster when they hear the sound + see the picture. Tap 🔊 to play real animal sounds.</p>
+      </div>
+      <a href="settings.html" class="chip chip-primary">Audio</a>
+    </div>
+  </section>
+
+  <!-- =============== TAB BAR =============== -->
+  <nav class="tabbar mt-auto" aria-label="Primary">
+    <div class="tabbar-inner">
+      <a class="tab" href="home.html"><span class="tab-ico"><i class="ph ph-house-simple text-xl"></i></span>Home</a>
+      <a class="tab active" href="learn-categories.html"><span class="tab-ico"><i class="ph-fill ph-books text-xl"></i></span>Learn</a>
+      <a class="tab" href="rewards-dashboard.html"><span class="tab-ico"><i class="ph ph-gift text-xl"></i></span>Rewards</a>
+      <a class="tab" href="leaderboard.html"><span class="tab-ico"><i class="ph ph-trophy text-xl"></i></span>Ranking</a>
+      <a class="tab" href="profile.html"><span class="tab-ico"><i class="ph ph-user-circle text-xl"></i></span>Profile</a>
+    </div>
+  </nav>
+</main>
+<script src="assets/js/app.js"></script>
+<script defer src="index.js"></script></body>
+
+<!-- Mirrored from kidzio-three.vercel.app/learn-animals.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Aug 2026 11:27:40 GMT -->
+</html>
