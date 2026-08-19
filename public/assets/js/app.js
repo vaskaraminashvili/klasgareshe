@@ -55,8 +55,8 @@ function toggleTheme() {
   else html.classList.remove("dark");
 })();
 
-// Sync icon visibility after DOM ready.
-document.addEventListener("DOMContentLoaded", () => {
+// Sync icon visibility after DOM ready and after wire:navigate.
+function syncThemeIcons() {
   const isDark = document.documentElement.classList.contains("dark");
   document
     .querySelectorAll(".theme-icon-moon")
@@ -64,7 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .querySelectorAll(".theme-icon-sun")
     .forEach((el) => (el.style.display = isDark ? "block" : "none"));
-});
+}
+
+document.addEventListener("DOMContentLoaded", syncThemeIcons);
+document.addEventListener("livewire:navigated", syncThemeIcons);
 
 window.toggleTheme = toggleTheme;
 
