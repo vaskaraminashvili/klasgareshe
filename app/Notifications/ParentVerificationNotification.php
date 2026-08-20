@@ -26,11 +26,11 @@ class ParentVerificationNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Verify your Kidzio parent email')
-            ->greeting('Just to keep kids safe')
-            ->line('We need to verify this parent email before your kid can start learning.')
-            ->line('Your 6-digit code is: '.$this->code)
-            ->action('Verify email', $this->url)
-            ->line('This link and code expire in 10 minutes.');
+            ->subject(__('parent-verify.mail_subject'))
+            ->greeting(__('parent-verify.mail_greeting'))
+            ->line(__('parent-verify.mail_line_1'))
+            ->line(__('parent-verify.mail_code', ['code' => $this->code]))
+            ->action(__('parent-verify.mail_action'), $this->url)
+            ->line(__('parent-verify.mail_expires'));
     }
 }

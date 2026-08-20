@@ -11,22 +11,12 @@ enum AgeGroup: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Preschool => 'Preschool',
-            self::Kindergarten => 'Kindergarten',
-            self::Elementary => 'Elementary',
-            self::Explorer => 'Explorer',
-        };
+        return (string) __('onboarding.age.groups.'.$this->value);
     }
 
     public function range(): string
     {
-        return match ($this) {
-            self::Preschool => '4–5',
-            self::Kindergarten => '6–7',
-            self::Elementary => '8–9',
-            self::Explorer => '10+',
-        };
+        return (string) __('onboarding.age.ranges.'.$this->value);
     }
 
     public static function fromAge(int $age): self

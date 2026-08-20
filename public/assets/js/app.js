@@ -255,12 +255,14 @@ window.toggleTheme = toggleTheme;
       .map((b) => b.value)
       .join("");
     verifyBtn.disabled = code.length !== 6;
+    const empty = hint.dataset.hintEmpty || "Tip: paste the code and it auto-fills.";
+    const ready = hint.dataset.hintReady || "Looks good — tap verify!";
     if (code.length === 6) {
-      hint.textContent = "Looks good — tap verify!";
+      hint.textContent = ready;
       hint.classList.remove("text-muted");
       hint.classList.add("text-mint-ink");
     } else {
-      hint.textContent = "Tip: paste the code and it auto-fills.";
+      hint.textContent = empty;
       hint.classList.add("text-muted");
       hint.classList.remove("text-mint-ink");
     }

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'accepted' => 'The :attribute field must be accepted.',
+    'accepted' => ':attribute უნდა იყოს მიღებული.',
     'accepted_if' => 'The :attribute field must be accepted when :other is :value.',
     'active_url' => 'The :attribute field must be a valid URL.',
     'after' => 'The :attribute field must be a date after :date.',
@@ -53,7 +53,7 @@ return [
     'doesnt_contain' => 'The :attribute field must not contain any of the following: :values.',
     'doesnt_end_with' => 'The :attribute field must not end with one of the following: :values.',
     'doesnt_start_with' => 'The :attribute field must not start with one of the following: :values.',
-    'email' => 'The :attribute field must be a valid email address.',
+    'email' => ':attribute უნდა იყოს სწორი ელფოსტის მისამართი.',
     'encoding' => 'The :attribute field must be encoded in :encoding.',
     'ends_with' => 'The :attribute field must end with one of the following: :values.',
     'enum' => 'The selected :attribute is invalid.',
@@ -78,7 +78,7 @@ return [
     'in' => 'The selected :attribute is invalid.',
     'in_array' => 'The :attribute field must exist in :other.',
     'in_array_keys' => 'The :attribute field must contain at least one of the following keys: :values.',
-    'integer' => 'The :attribute field must be an integer.',
+    'integer' => ':attribute უნდა იყოს მთელი რიცხვი.',
     'ip' => 'The :attribute field must be a valid IP address.',
     'ipv4' => 'The :attribute field must be a valid IPv4 address.',
     'ipv6' => 'The :attribute field must be a valid IPv6 address.',
@@ -99,19 +99,19 @@ return [
     ],
     'mac_address' => 'The :attribute field must be a valid MAC address.',
     'max' => [
-        'array' => 'The :attribute field must not have more than :max items.',
-        'file' => 'The :attribute field must not be greater than :max kilobytes.',
-        'numeric' => 'The :attribute field must not be greater than :max.',
-        'string' => 'The :attribute field must not be greater than :max characters.',
+        'array' => ':attribute არ უნდა შეიცავდეს :max ელემენტზე მეტს.',
+        'file' => ':attribute არ უნდა იყოს :max კილობაიტზე მეტი.',
+        'numeric' => ':attribute არ უნდა იყოს :max-ზე მეტი.',
+        'string' => ':attribute არ უნდა იყოს :max სიმბოლოზე მეტი.',
     ],
     'max_digits' => 'The :attribute field must not have more than :max digits.',
     'mimes' => 'The :attribute field must be a file of type: :values.',
     'mimetypes' => 'The :attribute field must be a file of type: :values.',
     'min' => [
-        'array' => 'The :attribute field must have at least :min items.',
-        'file' => 'The :attribute field must be at least :min kilobytes.',
-        'numeric' => 'The :attribute field must be at least :min.',
-        'string' => 'The :attribute field must be at least :min characters.',
+        'array' => ':attribute უნდა შეიცავდეს მინიმუმ :min ელემენტს.',
+        'file' => ':attribute უნდა იყოს მინიმუმ :min კილობაიტი.',
+        'numeric' => ':attribute უნდა იყოს მინიმუმ :min.',
+        'string' => ':attribute უნდა შეიცავდეს მინიმუმ :min სიმბოლოს.',
     ],
     'min_digits' => 'The :attribute field must have at least :min digits.',
     'missing' => 'The :attribute field must be missing.',
@@ -142,7 +142,7 @@ return [
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
     'regex' => 'The :attribute field format is invalid.',
-    'required' => 'The :attribute field is required.',
+    'required' => ':attribute აუცილებელია.',
     'required_array_keys' => 'The :attribute field must contain entries for: :values.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_if_accepted' => 'The :attribute field is required when :other is accepted.',
@@ -162,7 +162,7 @@ return [
     'starts_with' => 'The :attribute field must start with one of the following: :values.',
     'string' => 'The :attribute field must be a string.',
     'timezone' => 'The :attribute field must be a valid timezone.',
-    'unique' => 'The :attribute has already been taken.',
+    'unique' => 'ეს :attribute უკვე გამოყენებულია.',
     'uploaded' => 'The :attribute failed to upload.',
     'uppercase' => 'The :attribute field must be uppercase.',
     'url' => 'The :attribute field must be a valid URL.',
@@ -197,6 +197,17 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'ბავშვის სახელი',
+        'age' => 'ასაკი',
+        'gender' => 'სქესი',
+        'email' => 'ელფოსტა',
+        'password' => 'პაროლი',
+        'agreed' => 'თანხმობა',
+        'ageGroup' => 'ასაკობრივი ჯგუფი',
+        'dailyGoal' => 'ყოველდღიური მიზანი',
+        'reminderTime' => 'შეხსენების დრო',
+        'code' => 'კოდი',
+    ],
 
 ];

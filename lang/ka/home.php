@@ -104,6 +104,12 @@ return [
     'voice_search' => 'ხმოვანი ძიება',
     'recent' => 'ბოლო',
     'popular_right_now' => 'პოპულარული ახლა',
+    'search_chip_alphabet' => 'ანბანი',
+    'search_chip_spell' => 'მართლწერა',
+    'search_chip_space' => 'კოსმოსი',
+    'search_chip_shapes' => 'ფიგურები',
+    'search_chip_match' => 'შესაბამისობა',
+    'unread' => 'წაუკითხავი',
     'jump_to' => 'გადასვლა',
     'browse_full_library' => 'მთლიანი ბიბლიოთეკის დათვალიერება',
 

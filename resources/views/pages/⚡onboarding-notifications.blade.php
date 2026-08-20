@@ -5,10 +5,9 @@ use App\Repositories\UserRepository;
 use App\Services\KidSetupService;
 use App\Services\ParentVerificationService;
 use Illuminate\Validation\Rule;
-use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Title('Notifications · Kidzio')] class extends Component
+new class extends Component
 {
     public bool $streak = true;
 
@@ -25,6 +24,16 @@ new #[Title('Notifications · Kidzio')] class extends Component
     public string $reminderTime = 'evening';
 
     public string $kidName = '';
+
+    public function title(): string
+    {
+        return __('onboarding.notifications.page_title');
+    }
+
+    public function rendering(\Illuminate\View\View $view): void
+    {
+        $view->title($this->title());
+    }
 
     public function mount(KidSetupService $setup, UserRepository $users): void
     {
@@ -93,25 +102,25 @@ new #[Title('Notifications · Kidzio')] class extends Component
 
   <!-- =============== APPBAR =============== -->
   <header class="appbar">
-    <a href="{{ route('onboarding-goals') }}" class="icon-btn" data-back aria-label="Back"><i class="ph ph-caret-left"></i></a>
+    <a href="{{ route('onboarding-goals') }}" class="icon-btn" data-back aria-label="{{ __('onboarding.back') }}"><i class="ph ph-caret-left"></i></a>
     <div class="grow">
       <div class="progress"><span class="w-100"></span></div>
     </div>
-    <span class="text-xs font-extrabold text-muted">4/4</span>
+    <span class="text-xs font-extrabold text-muted">{{ __('onboarding.progress', ['current' => 4, 'total' => 4]) }}</span>
   </header>
 
   <!-- =============== HEADING =============== -->
   <section class="px-6 pt-4">
     <div class="flex items-center gap-2 mb-3">
       <span class="chip chip-primary">
-        <i class="ph-fill ph-sparkle"></i> FINAL STEP
+        <i class="ph-fill ph-sparkle"></i> {{ __('onboarding.notifications.final_step') }}
       </span>
       <span class="chip chip-mint ml-auto">
-        <span class="live-dot"></span> Almost done!
+        <span class="live-dot"></span> {{ __('onboarding.notifications.almost_done') }}
       </span>
     </div>
-    <h1 class="h-display text-2xl leading-tight">Stay motivated</h1>
-    <p class="text-sm mt-1 text-muted">Gentle daily nudges keep learning on track. Change anytime in Settings.</p>
+    <h1 class="h-display text-2xl leading-tight">{{ __('onboarding.notifications.heading') }}</h1>
+    <p class="text-sm mt-1 text-muted">{{ __('onboarding.notifications.subtitle') }}</p>
   </section>
 
   <!-- =============== HERO BELL =============== -->
@@ -128,26 +137,26 @@ new #[Title('Notifications · Kidzio')] class extends Component
       <div class="relative mt-5 mx-auto max-w-[280px] rounded-2xl bg-white/95 px-3 py-2.5 text-left shadow-lg">
         <div class="flex items-center gap-2">
           <div class="size-7 rounded-lg tile-sun grid place-items-center text-xs">🔥</div>
-          <p class="text-[10px] font-extrabold text-[#5B5178] uppercase tracking-wide">KIDZIO · NOW</p>
+          <p class="text-[10px] font-extrabold text-[#5B5178] uppercase tracking-wide">{{ __('onboarding.notifications.kidzio_now') }}</p>
         </div>
-        <p class="text-[12px] font-extrabold text-[#1B1240] mt-1.5 leading-tight">{{ $kidName }}, keep your streak alive! 🔥</p>
-        <p class="text-[11px] text-[#5B5178] leading-snug mt-0.5">5 min of learning left today — you've got this!</p>
+        <p class="text-[12px] font-extrabold text-[#1B1240] mt-1.5 leading-tight">{{ __('onboarding.notifications.nudge_title', ['name' => $kidName]) }}</p>
+        <p class="text-[11px] text-[#5B5178] leading-snug mt-0.5">{{ __('onboarding.notifications.nudge_body') }}</p>
       </div>
 
-      <p class="relative text-xs text-white/90 mt-3">That's what a typical nudge looks like</p>
+      <p class="relative text-xs text-white/90 mt-3">{{ __('onboarding.notifications.nudge_caption') }}</p>
     </div>
   </section>
 
   <!-- =============== TOGGLES =============== -->
   <section class="px-6 mt-5">
-    <p class="section-label">Daily reminders</p>
+    <p class="section-label">{{ __('onboarding.notifications.daily_reminders') }}</p>
     <div class="mt-3 space-y-2">
 
       <label class="setting-row cursor-pointer">
         <div class="setting-ico tile-sun"><i class="ph-fill ph-fire"></i></div>
         <div class="grow min-w-0">
-          <p class="setting-text font-extrabold text-sm text-ink">Streak reminders</p>
-          <p class="text-[11px] text-muted">Gentle nudge if the flame is about to go out</p>
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('onboarding.notifications.streak_title') }}</p>
+          <p class="text-[11px] text-muted">{{ __('onboarding.notifications.streak_sub') }}</p>
         </div>
         <span class="ks-switch">
           <input type="checkbox" wire:model="streak"/>
@@ -159,8 +168,8 @@ new #[Title('Notifications · Kidzio')] class extends Component
       <label class="setting-row cursor-pointer">
         <div class="setting-ico tile-mint"><i class="ph-fill ph-book-open"></i></div>
         <div class="grow min-w-0">
-          <p class="setting-text font-extrabold text-sm text-ink">New lessons</p>
-          <p class="text-[11px] text-muted">Weekly content drops &amp; seasonal packs</p>
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('onboarding.notifications.lessons_title') }}</p>
+          <p class="text-[11px] text-muted">{{ __('onboarding.notifications.lessons_sub') }}</p>
         </div>
         <span class="ks-switch">
           <input type="checkbox" wire:model="newLessons"/>
@@ -172,8 +181,8 @@ new #[Title('Notifications · Kidzio')] class extends Component
       <label class="setting-row cursor-pointer">
         <div class="setting-ico tile-coral"><i class="ph-fill ph-trophy"></i></div>
         <div class="grow min-w-0">
-          <p class="setting-text font-extrabold text-sm text-ink">Rewards &amp; ranks</p>
-          <p class="text-[11px] text-muted">Celebrate wins &amp; league promotions</p>
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('onboarding.notifications.rewards_title') }}</p>
+          <p class="text-[11px] text-muted">{{ __('onboarding.notifications.rewards_sub') }}</p>
         </div>
         <span class="ks-switch">
           <input type="checkbox" wire:model="rewards"/>
@@ -185,8 +194,8 @@ new #[Title('Notifications · Kidzio')] class extends Component
       <label class="setting-row cursor-pointer">
         <div class="setting-ico tile-violet"><i class="ph-fill ph-target"></i></div>
         <div class="grow min-w-0">
-          <p class="setting-text font-extrabold text-sm text-ink">Daily mission</p>
-          <p class="text-[11px] text-muted">Quick reminder when today's mission is ready</p>
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('onboarding.notifications.mission_title') }}</p>
+          <p class="text-[11px] text-muted">{{ __('onboarding.notifications.mission_sub') }}</p>
         </div>
         <span class="ks-switch">
           <input type="checkbox" wire:model="dailyMission"/>
@@ -198,8 +207,8 @@ new #[Title('Notifications · Kidzio')] class extends Component
       <label class="setting-row cursor-pointer">
         <div class="setting-ico tile-sky"><i class="ph-fill ph-users-three"></i></div>
         <div class="grow min-w-0">
-          <p class="setting-text font-extrabold text-sm text-ink">Friend activity</p>
-          <p class="text-[11px] text-muted">When friends earn badges or pass your rank</p>
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('onboarding.notifications.friends_title') }}</p>
+          <p class="text-[11px] text-muted">{{ __('onboarding.notifications.friends_sub') }}</p>
         </div>
         <span class="ks-switch">
           <input type="checkbox" wire:model="friendActivity"/>
@@ -212,37 +221,37 @@ new #[Title('Notifications · Kidzio')] class extends Component
 
   <!-- =============== REMINDER TIME =============== -->
   <section class="px-6 mt-5">
-    <p class="section-label">Best time to remind</p>
+    <p class="section-label">{{ __('onboarding.notifications.best_time') }}</p>
     <div class="mt-3 grid grid-cols-2 gap-3">
       <button type="button" class="pick-card{{ $reminderTime === 'morning' ? ' is-selected' : '' }}" wire:click="selectTime('morning')" data-time>
         <span class="pc-emoji tile-sun">🌅</span>
         <span class="pc-body">
-          <span class="pc-name">Morning</span>
-          <span class="pc-sub">8:00 AM · before school</span>
+          <span class="pc-name">{{ __('onboarding.notifications.morning') }}</span>
+          <span class="pc-sub">{{ __('onboarding.notifications.morning_sub') }}</span>
         </span>
         <span class="pc-check"></span>
       </button>
       <button type="button" class="pick-card{{ $reminderTime === 'afternoon' ? ' is-selected' : '' }}" wire:click="selectTime('afternoon')" data-time>
         <span class="pc-emoji tile-mint">🏡</span>
         <span class="pc-body">
-          <span class="pc-name">Afternoon</span>
-          <span class="pc-sub">4:00 PM · after school</span>
+          <span class="pc-name">{{ __('onboarding.notifications.afternoon') }}</span>
+          <span class="pc-sub">{{ __('onboarding.notifications.afternoon_sub') }}</span>
         </span>
         <span class="pc-check"></span>
       </button>
       <button type="button" class="pick-card{{ $reminderTime === 'evening' ? ' is-selected' : '' }}" wire:click="selectTime('evening')" data-time>
         <span class="pc-emoji tile-coral">🌆</span>
         <span class="pc-body">
-          <span class="pc-name">Evening</span>
-          <span class="pc-sub">6:00 PM · after dinner</span>
+          <span class="pc-name">{{ __('onboarding.notifications.evening') }}</span>
+          <span class="pc-sub">{{ __('onboarding.notifications.evening_sub') }}</span>
         </span>
         <span class="pc-check"></span>
       </button>
       <button type="button" class="pick-card{{ $reminderTime === 'bedtime' ? ' is-selected' : '' }}" wire:click="selectTime('bedtime')" data-time>
         <span class="pc-emoji tile-violet">🌙</span>
         <span class="pc-body">
-          <span class="pc-name">Bedtime</span>
-          <span class="pc-sub">7:30 PM · wind-down</span>
+          <span class="pc-name">{{ __('onboarding.notifications.bedtime') }}</span>
+          <span class="pc-sub">{{ __('onboarding.notifications.bedtime_sub') }}</span>
         </span>
         <span class="pc-check"></span>
       </button>
@@ -251,13 +260,13 @@ new #[Title('Notifications · Kidzio')] class extends Component
 
   <!-- =============== QUIET HOURS =============== -->
   <section class="px-6 mt-5">
-    <p class="section-label">Quiet hours</p>
+    <p class="section-label">{{ __('onboarding.notifications.quiet_hours') }}</p>
     <div class="mt-3">
       <label class="setting-row cursor-pointer">
         <div class="setting-ico tile-sky"><i class="ph-fill ph-moon"></i></div>
         <div class="grow min-w-0">
-          <p class="setting-text font-extrabold text-sm text-ink">Silent at bedtime</p>
-          <p class="text-[11px] text-muted">No pings between 9 PM and 7 AM</p>
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('onboarding.notifications.silent_title') }}</p>
+          <p class="text-[11px] text-muted">{{ __('onboarding.notifications.silent_sub') }}</p>
         </div>
         <span class="ks-switch">
           <input type="checkbox" wire:model="quietHours"/>
@@ -273,8 +282,8 @@ new #[Title('Notifications · Kidzio')] class extends Component
     <div class="tip-card rounded-2xl p-3 flex items-start gap-3">
       <div class="mascot shrink-0 size-10 text-base">🦉</div>
       <div class="grow">
-        <p class="font-extrabold text-sm text-ink">Max 1 per day</p>
-        <p class="text-[11px] text-muted">We never spam. You'll get at most one gentle reminder daily.</p>
+        <p class="font-extrabold text-sm text-ink">{{ __('onboarding.notifications.tip_title') }}</p>
+        <p class="text-[11px] text-muted">{{ __('onboarding.notifications.tip_body') }}</p>
       </div>
     </div>
   </section>
@@ -282,9 +291,9 @@ new #[Title('Notifications · Kidzio')] class extends Component
   <!-- =============== CTA =============== -->
   <div class="mt-auto px-6 pb-8 pt-6 safe-bottom space-y-3">
     <button type="button" class="btn btn-primary w-full" wire:click="allow">
-      <i class="ph-fill ph-bell"></i> Allow notifications
+      <i class="ph-fill ph-bell"></i> {{ __('onboarding.notifications.allow') }}
     </button>
-    <button type="button" class="btn btn-ghost w-full" wire:click="skip">Maybe later</button>
-    <p class="text-[11px] text-center text-muted">Change any time in Settings → Notifications</p>
+    <button type="button" class="btn btn-ghost w-full" wire:click="skip">{{ __('onboarding.notifications.maybe_later') }}</button>
+    <p class="text-[11px] text-center text-muted">{{ __('onboarding.notifications.change_later') }}</p>
   </div>
 </main>

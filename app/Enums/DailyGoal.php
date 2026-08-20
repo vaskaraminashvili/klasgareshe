@@ -11,12 +11,7 @@ enum DailyGoal: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Casual => 'Casual',
-            self::Regular => 'Regular',
-            self::Serious => 'Serious',
-            self::Intense => 'Intense',
-        };
+        return (string) __('onboarding.goals.'.$this->value);
     }
 
     public function minutes(): int
@@ -31,6 +26,6 @@ enum DailyGoal: string
 
     public function timeLabel(): string
     {
-        return $this->minutes().' min';
+        return (string) __('onboarding.goals.minutes_short', ['minutes' => $this->minutes()]);
     }
 }
