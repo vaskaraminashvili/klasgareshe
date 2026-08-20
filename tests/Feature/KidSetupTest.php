@@ -46,6 +46,13 @@ class KidSetupTest extends TestCase
         $this->assertSame('Girl', $user->gender?->value);
         $this->assertSame(OnboardingStep::Age, $user->onboarding_step);
         $this->assertNull($user->email_verified_at);
+        $this->assertDatabaseHas('user_stats', [
+            'user_id' => $user->id,
+            'xp' => 0,
+            'current_streak' => 0,
+            'longest_streak' => 0,
+            'league' => 'bronze',
+        ]);
     }
 
     public function test_unfinished_users_cannot_open_home(): void

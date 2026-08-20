@@ -6,33 +6,21 @@
  * 
  *  TABLE OF CONTENTS
  *  ─────────────────
- *    Time-aware greeting subline ................. line   27
- *    Animated XP counter ......................... line   38
- *    Cascade streak dots in ...................... line   52
- *    Notifications bell → bottom sheet ........... line   61
- *    Mark all as read ............................ line  109
- *    Esc to close sheet .......................... line  123
- *    PWA install prompt — real wiring ............ line  130
- *    SEARCH OVERLAY .............................. line  156
- *    Full index of items searchable from home .... line  169
- *    Voice search ................................ line  272
- *    Esc close ................................... line  293
+ *    Animated XP counter ......................... line   25
+ *    Cascade streak dots in ...................... line   39
+ *    Notifications bell → bottom sheet ........... line   48
+ *    Mark all as read ............................ line   96
+ *    Esc to close sheet .......................... line  110
+ *    PWA install prompt — real wiring ............ line  117
+ *    SEARCH OVERLAY .............................. line  143
+ *    Full index of items searchable from home .... line  156
+ *    Voice search ................................ line  259
+ *    Esc close ................................... line  280
  * ═══════════════════════════════════════════════════════════════════ */
   (function () {
     // Horizontal rails (.subjects-swiper, .achievements-swiper) are
     // auto-initialised by the shared helper in app.js via the
     // `data-swiper-rail` attribute — no per-page setup needed here.
-
-    // Time-aware greeting subline
-    const greet = document.getElementById('greetLine');
-    if (greet) {
-      const h = new Date().getHours();
-      const msg = h < 12 ? 'Good morning · let\u2019s learn'
-                : h < 17 ? 'Good afternoon · let\u2019s play'
-                : h < 21 ? 'Good evening · keep your streak'
-                : 'Bedtime brain boost';
-      greet.textContent = msg;
-    }
 
     // Animated XP counter
     const xp = document.getElementById('xpStat');

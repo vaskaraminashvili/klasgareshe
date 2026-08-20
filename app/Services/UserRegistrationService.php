@@ -6,15 +6,19 @@ use App\Enums\Gender;
 use App\Enums\OnboardingStep;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Repositories\UserStatRepository;
 use Illuminate\Support\Str;
 
 class UserRegistrationService
 {
-    public function __construct(private UserRepository $users) {}
+    public function __construct(
+        private UserRepository $users,
+        private UserStatRepository $stats,
+    ) {}
 
     public function register(string $name, string $email, string $password, int $age, string $gender): User
     {
-        return $this->users->create([
+        $user = $this->users->create([
             'name' => $name,
             'surname' => '',
             'nickname' => $this->uniqueNickname($name),
@@ -24,6 +28,10 @@ class UserRegistrationService
             'gender' => Gender::from($gender),
             'onboarding_step' => OnboardingStep::Age,
         ]);
+
+        $this->stats->firstOrCreateFor($user);
+
+        return $user;
     }
 
     private function uniqueNickname(string $name): string

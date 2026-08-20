@@ -1,10 +1,32 @@
 <?php
 
+use App\Repositories\UserRepository;
+use App\Services\UserStatService;
 use Livewire\Component;
 
 new class extends Component
 {
-    //
+    public int $streak = 0;
+
+    public int $xp = 0;
+
+    public string $leagueLabel = '';
+
+    public int $weekActiveDays = 0;
+
+    /** @var list<array{letter: string, on: bool, today: bool}> */
+    public array $weekDays = [];
+
+    public function mount(UserStatService $stats, UserRepository $users): void
+    {
+        $home = $stats->homeSnapshot($users->authenticated());
+
+        $this->streak = $home->streak;
+        $this->xp = $home->xp;
+        $this->leagueLabel = $home->leagueLabel;
+        $this->weekActiveDays = $home->weekActiveDays;
+        $this->weekDays = $home->weekDays;
+    }
 };
 ?>
 
@@ -15,15 +37,15 @@ new class extends Component
     <section class="px-5 mt-5 grid grid-cols-3 gap-2">
         <a href="streak.html" class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">🔥 {{ __('home.streak') }}</span>
-            <span class="stat-value">7 <span class="text-xs font-bold text-muted">{{ __('home.days') }}</span></span>
+            <span class="stat-value">{{ $streak }} <span class="text-xs font-bold text-muted">{{ __('home.days') }}</span></span>
         </a>
         <a href="xp-progress.html" class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">⭐ {{ __('home.xp') }}</span>
-            <span class="stat-value" id="xpStat" data-target="1240">0</span>
+            <span class="stat-value" id="xpStat" data-target="{{ $xp }}">0</span>
         </a>
         <a href="league.html" class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">🏆 {{ __('home.league') }}</span>
-            <span class="stat-value">{{ __('home.gold_league') }}</span>
+            <span class="stat-value">{{ $leagueLabel }}</span>
         </a>
     </section>
 
@@ -69,15 +91,11 @@ new class extends Component
                 <div class="size-9 rounded-xl tile-sun grid place-items-center">🔥</div>
                 <span class="text-xs font-extrabold text-sun-ink">{{ __('home.this_week') }}</span>
             </div>
-            <p class="h-display mt-2">5 / 7 {{ __('home.days') }}</p>
+            <p class="h-display mt-2">{{ $weekActiveDays }} / 7 {{ __('home.days') }}</p>
             <div class="grid grid-cols-7 gap-1 mt-2" aria-label="Weekly streak" id="weekStreak">
-                <span class="streak-dot on opacity-0 transition-all duration-300">M</span>
-                <span class="streak-dot on opacity-0 transition-all duration-300">T</span>
-                <span class="streak-dot on opacity-0 transition-all duration-300">W</span>
-                <span class="streak-dot on opacity-0 transition-all duration-300">T</span>
-                <span class="streak-dot on today opacity-0 transition-all duration-300">F</span>
-                <span class="streak-dot opacity-0 transition-all duration-300">S</span>
-                <span class="streak-dot opacity-0 transition-all duration-300">S</span>
+                @foreach ($weekDays as $day)
+                    <span class="streak-dot{{ $day['on'] ? ' on' : '' }}{{ $day['today'] ? ' today' : '' }} opacity-0 transition-all duration-300">{{ $day['letter'] }}</span>
+                @endforeach
             </div>
         </a>
     </section>
