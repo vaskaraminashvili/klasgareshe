@@ -24,6 +24,8 @@
  *     · [data-swiper-rail]      — content row (free-mode)
  *     · [data-swiper-rail-tabs] — filter chip row (tap-preserving)
  *     · Re-init on livewire:navigated (wire:navigate)
+ *
+ *   Parent verify (method tabs, OTP, resend timer) . after rails
  * ═══════════════════════════════════════════════════════════════════ */
 
 "use strict";
@@ -237,4 +239,132 @@ window.toggleTheme = toggleTheme;
   document.addEventListener("livewire:navigated", () => {
     requestAnimationFrame(initRailSwipers);
   });
+})();
+
+// ── Parent verification (survives wire:navigate) ─────────────────
+(function () {
+  function otpBoxes() {
+    return Array.from(document.querySelectorAll(".otp-box"));
+  }
+
+  function syncOtpState() {
+    const verifyBtn = document.getElementById("verifyBtn");
+    const hint = document.getElementById("otpHint");
+    if (!verifyBtn || !hint) return;
+    const code = otpBoxes()
+      .map((b) => b.value)
+      .join("");
+    verifyBtn.disabled = code.length !== 6;
+    const empty = hint.dataset.hintEmpty || "Tip: paste the code and it auto-fills.";
+    const ready = hint.dataset.hintReady || "Looks good — tap verify!";
+    if (code.length === 6) {
+      hint.textContent = ready;
+      hint.classList.remove("text-muted");
+      hint.classList.add("text-mint-ink");
+    } else {
+      hint.textContent = empty;
+      hint.classList.add("text-muted");
+      hint.classList.remove("text-mint-ink");
+    }
+  }
+
+  function livewireFrom(el) {
+    const root = el.closest("[wire\\:id]");
+    if (!root || !window.Livewire) return null;
+    return window.Livewire.find(root.getAttribute("wire:id"));
+  }
+
+  document.addEventListener("click", (e) => {
+    const method = e.target.closest("#methodPicker [data-method]");
+    if (!method) return;
+    const key = method.getAttribute("data-method");
+    document.querySelectorAll("#methodPicker [data-method]").forEach((other) => {
+      other.classList.toggle("is-selected", other === method);
+    });
+    document.querySelectorAll("[data-panel='link'], [data-panel='code']").forEach((panel) => {
+      panel.classList.toggle("hidden", panel.getAttribute("data-panel") !== key);
+    });
+  });
+
+  document.addEventListener("input", (e) => {
+    const box = e.target;
+    if (!(box instanceof HTMLInputElement) || !box.classList.contains("otp-box")) return;
+    const boxes = otpBoxes();
+    const i = boxes.indexOf(box);
+    box.value = (box.value || "").replace(/\D/g, "").slice(0, 1);
+    if (box.value && i > -1 && i < boxes.length - 1) boxes[i + 1].focus();
+    syncOtpState();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    const box = e.target;
+    if (!(box instanceof HTMLInputElement) || !box.classList.contains("otp-box")) return;
+    if (e.key !== "Backspace" || box.value) return;
+    const boxes = otpBoxes();
+    const i = boxes.indexOf(box);
+    if (i > 0) boxes[i - 1].focus();
+  });
+
+  document.addEventListener("paste", (e) => {
+    const box = e.target;
+    if (!(box instanceof HTMLInputElement) || !box.classList.contains("otp-box")) return;
+    const text = (e.clipboardData || window.clipboardData).getData("text") || "";
+    const digits = text.replace(/\D/g, "").slice(0, 6).split("");
+    if (!digits.length) return;
+    e.preventDefault();
+    const boxes = otpBoxes();
+    digits.forEach((d, k) => {
+      if (boxes[k]) boxes[k].value = d;
+    });
+    boxes[Math.min(digits.length, boxes.length) - 1].focus();
+    syncOtpState();
+  });
+
+  document.addEventListener("click", (e) => {
+    const verifyBtn = e.target.closest("#verifyBtn");
+    if (!verifyBtn) return;
+    const code = otpBoxes()
+      .map((b) => b.value)
+      .join("");
+    if (code.length !== 6) return;
+    const component = livewireFrom(verifyBtn);
+    if (!component) return;
+    component.verifyCode(code);
+  });
+
+  let resendTimerId = null;
+  function startResendCountdown() {
+    if (resendTimerId) {
+      clearTimeout(resendTimerId);
+      resendTimerId = null;
+    }
+    const timerEl = document.getElementById("resendTimer");
+    const resendBtn = document.getElementById("resendLink");
+    if (!timerEl || !resendBtn) return;
+    let remaining = 30;
+    function tick() {
+      if (!document.getElementById("resendTimer") || !document.getElementById("resendLink")) {
+        return;
+      }
+      if (remaining > 0) {
+        timerEl.textContent = "(" + remaining + "s)";
+        resendBtn.disabled = true;
+        resendBtn.classList.add("opacity-60");
+        remaining--;
+        resendTimerId = setTimeout(tick, 1000);
+      } else {
+        timerEl.textContent = "";
+        resendBtn.disabled = false;
+        resendBtn.classList.remove("opacity-60");
+      }
+    }
+    tick();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startResendCountdown);
+  } else {
+    startResendCountdown();
+  }
+  document.addEventListener("livewire:navigated", startResendCountdown);
 })();

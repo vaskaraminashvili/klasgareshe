@@ -332,11 +332,11 @@ new class extends Component
                 <section class="px-5 mt-4">
                     <p class="section-label">{{ __('home.popular_right_now') }}</p>
                     <div class="mt-2 flex flex-wrap gap-2">
-                        <button type="button" class="chip" data-recent>alphabet</button>
-                        <button type="button" class="chip" data-recent>spell</button>
-                        <button type="button" class="chip" data-recent>space</button>
-                        <button type="button" class="chip" data-recent>shapes</button>
-                        <button type="button" class="chip" data-recent>match</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_alphabet') }}</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_spell') }}</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_space') }}</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_shapes') }}</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_match') }}</button>
                     </div>
                 </section>
 
@@ -413,7 +413,7 @@ new class extends Component
                             <p class="text-[10px] text-muted mt-0.5">{{ __('home.just_now') }}</p>
                         </div>
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
-                            aria-label="Unread"></span>
+                            aria-label="{{ __('home.unread') }}"></span>
                     </a>
                     <a href="badges.html" class="setting-row" data-notif>
                         <div class="setting-ico tile-mint"><i class="ph-fill ph-medal"></i></div>
@@ -424,7 +424,7 @@ new class extends Component
                             <p class="text-[10px] text-muted mt-0.5">{{ __('home.minutes_ago_5') }}</p>
                         </div>
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
-                            aria-label="Unread"></span>
+                            aria-label="{{ __('home.unread') }}"></span>
                     </a>
                     <a href="rewards-dashboard.html" class="setting-row" data-notif>
                         <div class="setting-ico tile-violet"><i class="ph-fill ph-gift"></i></div>
@@ -435,7 +435,7 @@ new class extends Component
                             <p class="text-[10px] text-muted mt-0.5">{{ __('home.hours_ago_1') }}</p>
                         </div>
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
-                            aria-label="Unread"></span>
+                            aria-label="{{ __('home.unread') }}"></span>
                     </a>
                     <a href="daily-mission.html" class="setting-row opacity-70" data-notif data-read>
                         <div class="setting-ico tile-sky"><i class="ph-fill ph-target"></i></div>

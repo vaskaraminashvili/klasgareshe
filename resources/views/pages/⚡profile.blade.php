@@ -47,13 +47,13 @@ new class extends Component
 
             <h2 class="h-display text-2xl mt-4 relative">Luna Parker</h2>
             <p class="text-xs text-white/90 relative">
-                {{ __('profile.age_grade_country', ['age' => 6, 'grade' => 'Kindergarten', 'country' => 'USA']) }}
+                {{ __('profile.age_grade_country', ['age' => 6, 'grade' => __('onboarding.age.groups.kindergarten'), 'country' => 'USA']) }}
             </p>
 
             <div class="relative mt-3 flex items-center justify-center gap-2">
                 <span class="chip bg-white/20 border-0 text-white">
                     <i class="ph-fill ph-crown-simple"></i>
-                    {{ __('profile.level_rank', ['level' => 7, 'rank' => 'Explorer']) }}
+                    {{ __('profile.level_rank', ['level' => 7, 'rank' => __('onboarding.age.groups.explorer')]) }}
                 </span>
                 <span class="chip bg-white/20 border-0 text-white">
                     <span class="live-dot"></span> {{ __('profile.online') }}

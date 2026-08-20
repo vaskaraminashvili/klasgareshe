@@ -36,12 +36,12 @@ Leagues: Bronze → Silver → Gold → Emerald → Sapphire → Diamond.
 
 Started, not product-ready.
 
-- Routes: `/login` (`pages::user-login`), `/register` (`pages::user-register`), `/` (`pages::home`)
-- Login **UI** is ported: `kidzio/login.html` → `resources/views/pages/⚡user-login.blade.php` (Auth::attempt + remember). Phone and social login are not wired.
-- Register still uses a placeholder form (not the Kidzio signup HTML). Home is a placeholder.
-- `User`: `name`, `surname`, `nickname`, `email`, `password`. Register still hits `User` directly (move behind a repository).
+- Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired.
+- After register: onboarding (age → subjects → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step.
+- One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
+- Home (`/`) is still a placeholder shell.
 
-Build next: register UI port → parent verification → kid profile → onboarding → home shell → XP.
+Build next: home shell (tabs, greeting from kid name, today’s plan) → XP.
 
 ---
 
