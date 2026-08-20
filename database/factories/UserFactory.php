@@ -8,6 +8,7 @@ use App\Enums\Gender;
 use App\Enums\OnboardingStep;
 use App\Enums\ReminderTime;
 use App\Models\User;
+use App\Models\UserStat;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -79,5 +80,18 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'onboarding_step' => OnboardingStep::Done,
         ]);
+    }
+
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
+    public function withStats(array $attributes = []): static
+    {
+        return $this->afterCreating(function (User $user) use ($attributes): void {
+            UserStat::query()->updateOrCreate(
+                ['user_id' => $user->id],
+                array_merge(UserStat::defaults(), $attributes),
+            );
+        });
     }
 }
