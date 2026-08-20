@@ -1,5 +1,7 @@
 <?php
 
+use App\Repositories\UserRepository;
+use App\Services\KidSetupService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -12,7 +14,7 @@ new #[Title('Login · Kidzio')] class extends Component
 
     public bool $remember = false;
 
-    public function login(): void
+    public function login(KidSetupService $setup, UserRepository $users): void
     {
         $this->validate([
             'email' => 'required|email',
@@ -27,7 +29,7 @@ new #[Title('Login · Kidzio')] class extends Component
 
         session()->regenerate();
 
-        $this->redirectRoute('home', navigate: true);
+        $this->redirectRoute($setup->nextRouteName($users->authenticated()), navigate: true);
     }
 };
 ?>

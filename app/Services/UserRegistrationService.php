@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\Gender;
+use App\Enums\OnboardingStep;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Str;
@@ -10,7 +12,7 @@ class UserRegistrationService
 {
     public function __construct(private UserRepository $users) {}
 
-    public function register(string $name, string $email, string $password): User
+    public function register(string $name, string $email, string $password, int $age, string $gender): User
     {
         return $this->users->create([
             'name' => $name,
@@ -18,6 +20,9 @@ class UserRegistrationService
             'nickname' => $this->uniqueNickname($name),
             'email' => $email,
             'password' => $password,
+            'age' => $age,
+            'gender' => Gender::from($gender),
+            'onboarding_step' => OnboardingStep::Age,
         ]);
     }
 

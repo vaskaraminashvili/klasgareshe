@@ -51,8 +51,8 @@ Parent owns the account. Kid is a profile on that account.
 - [x] Remember me
 - [x] Show / hide password
 - [ ] Social login: Google, Apple, Facebook
-- [ ] Sign up: kid name, age (3–14), gender, parent email, password
-- [ ] Parent/guardian consent checkbox (Terms + Privacy)
+- [x] Sign up: kid name, age (3–14), gender, parent email, password — `pages::user-register`
+- [x] Parent/guardian consent checkbox (Terms + Privacy)
 - [ ] Forgot password → send code to parent email only
 - [ ] OTP verify (4-digit, paste, resend countdown)
 - [ ] Log out
@@ -60,19 +60,19 @@ Parent owns the account. Kid is a profile on that account.
 
 ### Parent verification (COPPA-style)
 
-- [ ] After signup: verify parent via email magic link **or** 6-digit code
-- [ ] Parent email stored as verified
+- [x] After signup: verify parent via email magic link **or** 6-digit code — `pages::parent-verify`
+- [x] Parent email stored as verified
 - [ ] Change / update parent email (re-verify)
 
 ---
 
 ## 3. Onboarding (4 steps)
 
-- [ ] **Age group** — Preschool 4–5 · Kindergarten 6–7 · Elementary 8–9 · Explorer 10+
+- [x] **Age group** — Preschool 4–5 · Kindergarten 6–7 · Elementary 8–9 · Explorer 10+
 - [ ] Age drives lesson difficulty, word length, and pace
-- [ ] **Favourite subjects** — pick at least 3 (Alphabet, Math, Animals, Words, Knowledge, Opposites, …)
-- [ ] **Daily learning goal** — Casual 5 min · Regular 10 min · (and any extra paces in the UI)
-- [ ] **Notifications opt-in** — streak, new lessons, rewards/ranks, daily mission + reminder time
+- [x] **Favourite subjects** — pick at least 3 (Alphabet, Math, Animals, Words, Knowledge, Opposites, …); skip allowed for v1
+- [x] **Daily learning goal** — Casual 5 min · Regular 10 min · Serious 15 · Intense 20
+- [x] **Notifications opt-in** — streak, new lessons, rewards/ranks, daily mission + reminder time (“Maybe later” allowed)
 
 Reusable later from Settings.
 

@@ -30,12 +30,18 @@ new #[Title('Sign up · Kidzio')] class extends Component
             'agreed' => 'accepted',
         ]);
 
-        $user = $registration->register($this->name, $this->email, $this->password);
+        $user = $registration->register(
+            $this->name,
+            $this->email,
+            $this->password,
+            (int) $this->age,
+            $this->gender,
+        );
 
         Auth::login($user);
         session()->regenerate();
 
-        $this->redirectRoute('home', navigate: true);
+        $this->redirectRoute('onboarding-age', navigate: true);
     }
 };
 ?>
