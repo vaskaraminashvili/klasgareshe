@@ -161,7 +161,7 @@
       { name: 'Words',           keys: 'words sight spelling vocabulary reading',     href: 'learn-words.html',     ico: '📚', tile: 'tile-coral' },
       { name: 'Knowledge',       keys: 'knowledge world science space planets',       href: 'learn-knowledge.html', ico: '🌍', tile: 'tile-sky' },
       { name: 'Opposites',       keys: 'opposites big small hot cold up down',        href: 'learn-opposites.html', ico: '⚖️', tile: 'tile-pink' },
-      { name: 'Quick Quiz',      keys: 'quiz multiple choice questions game',         href: 'game-multiple-choice.html', ico: '❓', tile: 'tile-violet' },
+      { name: 'Quick Quiz',      keys: 'quiz multiple choice questions game',         href: '/game-multiple-choice', ico: '❓', tile: 'tile-violet' },
       { name: 'Match Words',     keys: 'match words drag drop vocabulary game',       href: 'game-match-word.html', ico: '🧩', tile: 'tile-mint' },
       { name: 'Word Search',     keys: 'word search find letters game',               href: 'game-word-search.html', ico: '🔎', tile: 'tile-coral' },
       { name: 'Counting game',   keys: 'counting numbers math apples game',           href: 'game-counting.html',   ico: '🔢', tile: 'tile-sky' },

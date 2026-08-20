@@ -8,21 +8,31 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ## How to use
 
-- `[ ]` not started · `[x]` done
+- `[ ]` not started · `[~]` UI ported or backend only · `[x]` done
 - Build in the **suggested order** below unless a later feature is needed earlier.
 - Parent-gated screens (PIN, reports, screen time) should never be reachable by the kid without verification.
 - **Porting a screen from `kidzio/*.html`:** follow `.cursor/rules/kidzio-screen-port.mdc` (also in `CLAUDE.md`). Copy `<main>` into `resources/views/pages/⚡{name}.blade.php`. Reference: login (`kidzio/login.html` → `pages::user-login`).
 
 ---
 
+## Where we are (2026-08-20)
+
+**Shipped:** login / register, 4-step onboarding, parent-verify, logout. Home + Profile screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. Quick Quiz plays from DB and awards XP via `recordPlay`.
+
+**Still dummy on Home / Profile:** daily mission, continue lesson, today's plan, subjects, featured games (link works), friends, badges, search catalog, notification list, profile hero stats.
+
+**Games bank:** `games` + `questions` with `QuestionFormat` payload JSON (choice, count, spell, pairs, grid, trace, hotspot). Choice rows are seeded from `kidzio/game-*.html`. Next: another game shell on the same bank, or filter by age group.
+
+---
+
 ## Suggested build order
 
-1. Auth + parent verification + kid profile
-2. Onboarding (age, subjects, daily goal, notifications)
-3. Home shell (tabs, search, theme, notifications)
-4. XP / levels / scoring
-5. Learn library + lessons + continue/lock
-6. Mini-games + game scoring
+1. ~~Auth + parent verification + kid profile~~ — auth + verify done; profile UI still dummy
+2. ~~Onboarding (age, subjects, daily goal, notifications)~~ — prefs saved; age does not drive content yet
+3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn / Rewards / Ranking tabs are dead links
+4. XP / levels / scoring — **storage + home display done; award-from-play is next**
+5. Learn library + lessons + continue/lock — skipped for now
+6. **Mini-games + game scoring ← current** (Quick Quiz done)
 7. Daily mission + streak
 8. Badges + rewards + shop
 9. Leaderboard + leagues + friends
@@ -35,10 +45,10 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 - [ ] Splash screen
 - [ ] PWA install (Add to Home Screen, standalone, offline cache)
-- [ ] Light / dark theme (system default + toggle, persist)
+- [x] Light / dark theme (system default + toggle, persist)
 - [ ] Theme accent colors (violet, pink, mint, sky, sun)
 - [ ] Text size (small / medium / large)
-- [ ] Bottom tab bar: Home · Learn · Rewards · Ranking · Profile
+- [~] Bottom tab bar: Home · Learn · Rewards · Ranking · Profile — Home + Profile routed; other tabs still `.html`
 - [ ] Walkthrough (3 slides): play, streak, rewards — with Skip
 
 ---
@@ -54,8 +64,8 @@ Parent owns the account. Kid is a profile on that account.
 - [x] Sign up: kid name, age (3–14), gender, parent email, password — `pages::user-register`
 - [x] Parent/guardian consent checkbox (Terms + Privacy)
 - [ ] Forgot password → send code to parent email only
-- [ ] OTP verify (4-digit, paste, resend countdown)
-- [ ] Log out
+- [ ] OTP verify (4-digit, paste, resend countdown) — parent-verify uses a 6-digit code, not this screen
+- [x] Log out — Profile
 - [ ] Delete account (parent-gated, data removed)
 
 ### Parent verification (COPPA-style)
@@ -72,7 +82,7 @@ Parent owns the account. Kid is a profile on that account.
 - [ ] Age drives lesson difficulty, word length, and pace
 - [x] **Favourite subjects** — pick at least 3 (Alphabet, Math, Animals, Words, Knowledge, Opposites, …); skip allowed for v1
 - [x] **Daily learning goal** — Casual 5 min · Regular 10 min · Serious 15 · Intense 20
-- [x] **Notifications opt-in** — streak, new lessons, rewards/ranks, daily mission + reminder time (“Maybe later” allowed)
+- [x] **Notifications opt-in** — streak, new lessons, rewards/ranks, daily mission + reminder time (“Maybe later” allowed); prefs stored, no push yet
 
 Reusable later from Settings.
 
@@ -80,13 +90,13 @@ Reusable later from Settings.
 
 ## 4. Kid profile
 
-- [ ] Kid display name + nickname
-- [ ] Age, age group, country
+- [~] Kid display name + nickname — stored (nickname auto from name); home greeting uses name; Profile still dummy “Luna”
+- [~] Age, age group stored; country not stored; Profile still dummy
 - [ ] Avatar picker (animal/emoji set)
 - [ ] Camera / change-avatar badge
 - [ ] Online status
 - [ ] Level title (e.g. Lv 7 Explorer)
-- [ ] Profile stats: XP, streak, badges, rank
+- [ ] Profile stats: XP, streak, badges, rank — Profile still hardcoded
 - [ ] Subject mastery bars (% complete per subject)
 - [ ] Weekly activity recap on profile
 - [ ] Achievements timeline
@@ -99,10 +109,11 @@ Reusable later from Settings.
 
 Core loop: play → earn XP → level up → climb ranks.
 
-- [ ] Award XP for lessons, games, missions, streaks, login calendar
-- [ ] Show XP on home, profile, rewards, leaderboard
-- [ ] Daily / weekly XP totals
+- [~] Award XP for lessons, games, missions, streaks, login calendar — Quick Quiz calls `recordPlay`; other actions do not yet
+- [~] Show XP on home, profile, rewards, leaderboard — home ribbon live; others dummy
+- [~] Daily / weekly XP totals — `user_activity_days.xp_earned` stored; not shown as totals
 - [ ] Level system (e.g. Lv 7 Explorer → Lv 8 Master) with XP-to-next
+- [~] League stored on `user_stats` (default Bronze); no weekly season yet
 - [ ] XP history (last 7 days chart + activity log)
 - [ ] Difficulty setting: Easy / Medium / Hard (affects questions and XP)
 - [ ] Kid ratings / score per quiz (correct answers, beat yesterday)
@@ -124,23 +135,25 @@ Suggested XP examples from the template (tune later):
 
 ## 6. Home
 
-- [ ] Greeting with kid name
-- [ ] Quick stats: streak, XP, league
+Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Most blocks are still template copy.
+
+- [x] Greeting with kid name
+- [x] Quick stats: streak, XP, league
 - [ ] Today's mission hero (progress, time left, XP reward)
 - [ ] Continue last lesson
-- [ ] Weekly streak dots (Mon–Sun)
+- [x] Weekly streak dots (Mon–Sun)
 - [ ] Today's plan task list
 - [ ] Explore subjects carousel
-- [ ] Featured games
+- [~] Featured games — Quick Quiz route wired; other tiles still `.html`
 - [ ] Friends activity feed
 - [ ] Recent achievements
 - [ ] Parent tip card
-- [ ] Install PWA prompt
-- [ ] Search overlay (subjects, games, lessons)
+- [ ] Install PWA prompt — `data-install` UI only
+- [~] Search overlay (subjects, games, lessons) — overlay + `home.js`; catalog is dummy, results still `.html`
   - [ ] Recent searches
   - [ ] Popular chips
   - [ ] Voice search (mic)
-- [ ] In-app notification sheet (bell + unread badge)
+- [~] In-app notification sheet (bell + unread badge) — sheet UI; dummy list, badge hardcoded “3”
 
 ---
 
@@ -182,7 +195,9 @@ Suggested XP examples from the template (tune later):
 
 Each game: progress bar, hear-aloud, check answer, XP on finish.
 
-- [ ] Quick Quiz (multiple choice)
+Quick Quiz is live. Other games reuse `questions.format` + `payload` / `answer` JSON.
+
+- [x] Quick Quiz (multiple choice) — `pages::game-multiple-choice`; DB questions; 3 lives; XP on finish
 - [ ] Tap the correct answer
 - [ ] Counting (count objects)
 - [ ] Trace letter (follow dots / handwriting)
@@ -200,10 +215,10 @@ Each game: progress bar, hear-aloud, check answer, XP on finish.
 
 Shared game rules:
 
-- [ ] Correct / incorrect feedback + sounds
-- [ ] Lives or retry (if you want it; template is mostly check-and-continue)
+- [~] Correct / incorrect feedback + sounds — visual correct/wrong on quiz; no sounds yet
+- [x] Lives or retry (if you want it; template is mostly check-and-continue) — 3 lives on Quick Quiz
 - [ ] Voice reader for questions
-- [ ] Age-appropriate question bank per subject
+- [~] Age-appropriate question bank per subject — `questions.age_group` exists; quiz does not filter yet
 
 ---
 
@@ -221,10 +236,10 @@ Shared game rules:
 
 ## 10. Streaks
 
-- [ ] Daily streak counter (keep flame by finishing a daily check-in)
-- [ ] Week view (days hit / missed)
+- [~] Daily streak counter (keep flame by finishing a daily check-in) — `current_streak` stored + shown on Home; `recordPlay` bumps it; no dedicated streak screen
+- [~] Week view (days hit / missed) — Home week dots live
 - [ ] Month calendar (streak map)
-- [ ] Best streak
+- [~] Best streak — `longest_streak` stored, not shown
 - [ ] Milestones: 3, 7, 14, 30, 100 days (XP + badges)
 - [ ] Streak freeze / streak shield (save flame 1×)
 - [ ] Streak reminder notification (default ~6 PM, configurable)
@@ -372,7 +387,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 ### Language & region
 
-- [ ] App language (UI + questions + audio)
+- [~] App language (UI + questions + audio) — `lang/en` + `lang/ka` for built screens; no picker (`APP_LOCALE`)
 - [ ] Country (ranking region)
 
 ### Support & about

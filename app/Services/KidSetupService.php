@@ -45,7 +45,7 @@ class KidSetupService
         $step = $this->currentStep($user);
 
         if ($step === OnboardingStep::Done) {
-            return ['home', 'profile'];
+            return ['home', 'profile', 'game-multiple-choice'];
         }
 
         $routes = [];
