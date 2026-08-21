@@ -1,0 +1,3938 @@
+[
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე დიდი ოკეანეში?",
+    "hint": "ის ჰგავს თევზს, მაგრამ სინამდვილეში ძუძუმწოვარია.",
+    "media": {
+      "emoji": "🐋",
+      "tile": "tile-ocean"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ზვიგენი",
+          "emoji": "🦈"
+        },
+        {
+          "key": "B",
+          "label": "ვეშაპი",
+          "emoji": "🐋"
+        },
+        {
+          "key": "C",
+          "label": "დელფინი",
+          "emoji": "🐬"
+        },
+        {
+          "key": "D",
+          "label": "კასატოკა",
+          "emoji": "🐳"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რამდენი ფეხი აქვს ობობას?",
+    "hint": "დათვალე მისი სახე? არა, ფეხები!",
+    "media": {
+      "emoji": "🕷️",
+      "tile": "tile-nature"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "4",
+          "emoji": "4️⃣"
+        },
+        {
+          "key": "B",
+          "label": "6",
+          "emoji": "6️⃣"
+        },
+        {
+          "key": "C",
+          "label": "8",
+          "emoji": "8️⃣"
+        },
+        {
+          "key": "D",
+          "label": "10",
+          "emoji": "🔟"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელია ჩვენი მზის სისტემაში ყველაზე დიდი პლანეტა?",
+    "hint": "მას ძალიან ბევრი მთვარე ჰყავს.",
+    "media": {
+      "emoji": "🪐",
+      "tile": "tile-space"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "იუპიტერი",
+          "emoji": "🟠"
+        },
+        {
+          "key": "B",
+          "label": "მარსი",
+          "emoji": "🔴"
+        },
+        {
+          "key": "C",
+          "label": "ვენერა",
+          "emoji": "🟡"
+        },
+        {
+          "key": "D",
+          "label": "ნეპტუნი",
+          "emoji": "🔵"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა ფერისაა ბანანი?",
+    "hint": "ეს ნაყოფი მზესავით ყვითელია.",
+    "media": {
+      "emoji": "🍌",
+      "tile": "tile-fruit"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წითელი",
+          "emoji": "🔴"
+        },
+        {
+          "key": "B",
+          "label": "მწვანე",
+          "emoji": "🟢"
+        },
+        {
+          "key": "C",
+          "label": "ყვითელი",
+          "emoji": "🟡"
+        },
+        {
+          "key": "D",
+          "label": "ნარინჯისფერი",
+          "emoji": "🟠"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელ ქალაქშია კოშკი 'პიზის დახრილი კოშკი'?",
+    "hint": "ეს იტალიის ქალაქია, სახელი იწყება 'პ'-თი.",
+    "media": {
+      "emoji": "🗼",
+      "tile": "tile-city"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "რომი",
+          "emoji": "🏛️"
+        },
+        {
+          "key": "B",
+          "label": "მილანი",
+          "emoji": "🏙️"
+        },
+        {
+          "key": "C",
+          "label": "პიზა",
+          "emoji": "🗼"
+        },
+        {
+          "key": "D",
+          "label": "ვენეცია",
+          "emoji": "🌊"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველი დადის მაღლა-დაბლა?",
+    "hint": "ის ძალიან მოქნილია და კენკრას ჭამს.",
+    "media": {
+      "emoji": "🐿️",
+      "tile": "tile-forest"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "კურდღელი",
+          "emoji": "🐰"
+        },
+        {
+          "key": "B",
+          "label": "ციყვი",
+          "emoji": "🐿️"
+        },
+        {
+          "key": "C",
+          "label": "ზღარბი",
+          "emoji": "🦔"
+        },
+        {
+          "key": "D",
+          "label": "მელა",
+          "emoji": "🦊"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რამდენი კვირაა ერთ წელიწადში?",
+    "hint": "წელიწადში 365 დღეა, გაყავი 7-ზე.",
+    "media": {
+      "emoji": "📅",
+      "tile": "tile-time"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "48",
+          "emoji": "4️⃣8️⃣"
+        },
+        {
+          "key": "B",
+          "label": "50",
+          "emoji": "5️⃣0️⃣"
+        },
+        {
+          "key": "C",
+          "label": "52",
+          "emoji": "5️⃣2️⃣"
+        },
+        {
+          "key": "D",
+          "label": "54",
+          "emoji": "5️⃣4️⃣"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელია ყველაზე მაღალი ცხოველი?",
+    "hint": "მას ძალიან გრძელი კისერი აქვს.",
+    "media": {
+      "emoji": "🦒",
+      "tile": "tile-safari"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "სპილო",
+          "emoji": "🐘"
+        },
+        {
+          "key": "B",
+          "label": "ჟირაფი",
+          "emoji": "🦒"
+        },
+        {
+          "key": "C",
+          "label": "მარტორქა",
+          "emoji": "🦏"
+        },
+        {
+          "key": "D",
+          "label": "ლომი",
+          "emoji": "🦁"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა ჰქვია დედამიწის თანამგზავრს?",
+    "hint": "ღამით ცაზე ანათებს.",
+    "media": {
+      "emoji": "🌙",
+      "tile": "tile-sky"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მზე",
+          "emoji": "☀️"
+        },
+        {
+          "key": "B",
+          "label": "მთვარე",
+          "emoji": "🌙"
+        },
+        {
+          "key": "C",
+          "label": "ვენერა",
+          "emoji": "🟡"
+        },
+        {
+          "key": "D",
+          "label": "მარსი",
+          "emoji": "🔴"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელ ცხოველს შეუძლია ფრენა?",
+    "hint": "მას ფრთები აქვს და ცაზე დაფრინავს.",
+    "media": {
+      "emoji": "🦅",
+      "tile": "tile-sky"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "სპილო",
+          "emoji": "🐘"
+        },
+        {
+          "key": "B",
+          "label": "თევზი",
+          "emoji": "🐟"
+        },
+        {
+          "key": "C",
+          "label": "არწივი",
+          "emoji": "🦅"
+        },
+        {
+          "key": "D",
+          "label": "ზვიგენი",
+          "emoji": "🦈"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა ფერია ვაშლი?",
+    "hint": "შეიძლება იყოს მწვანე, წითელი ან ყვითელი, მაგრამ ყველაზე გავრცელებულია...",
+    "media": {
+      "emoji": "🍎",
+      "tile": "tile-fruit"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წითელი",
+          "emoji": "🔴"
+        },
+        {
+          "key": "B",
+          "label": "ლურჯი",
+          "emoji": "🔵"
+        },
+        {
+          "key": "C",
+          "label": "იისფერი",
+          "emoji": "🟣"
+        },
+        {
+          "key": "D",
+          "label": "შავი",
+          "emoji": "⚫"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელია ყველაზე პატარა ფრინველი?",
+    "hint": "ის ძალიან სწრაფად აფრიალებს ფრთებს.",
+    "media": {
+      "emoji": "🐦",
+      "tile": "tile-nature"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ბეღურა",
+          "emoji": "🐦"
+        },
+        {
+          "key": "B",
+          "label": "არწივი",
+          "emoji": "🦅"
+        },
+        {
+          "key": "C",
+          "label": "კოლიბრი",
+          "emoji": "🐦"
+        },
+        {
+          "key": "D",
+          "label": "ყვავი",
+          "emoji": "🐦"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა ჰქვია ჩვენი პლანეტის გაზის გარსს?",
+    "hint": "მის გარეშე სიცოცხლე ვერ იარსებებდა.",
+    "media": {
+      "emoji": "🌍",
+      "tile": "tile-earth"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წყალი",
+          "emoji": "💧"
+        },
+        {
+          "key": "B",
+          "label": "ატმოსფერო",
+          "emoji": "🌫️"
+        },
+        {
+          "key": "C",
+          "label": "მაგნიტოსფერო",
+          "emoji": "🧲"
+        },
+        {
+          "key": "D",
+          "label": "გრავიტაცია",
+          "emoji": "⚡"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ხილია ყვითელი და გრძელი?",
+    "hint": "მას აცლიან კანს და რბილობს ჭამენ.",
+    "media": {
+      "emoji": "🍌",
+      "tile": "tile-fruit"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ვაშლი",
+          "emoji": "🍎"
+        },
+        {
+          "key": "B",
+          "label": "ფორთოხალი",
+          "emoji": "🍊"
+        },
+        {
+          "key": "C",
+          "label": "ბანანი",
+          "emoji": "🍌"
+        },
+        {
+          "key": "D",
+          "label": "ყურძენი",
+          "emoji": "🍇"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ზოლიანი?",
+    "hint": "ის ცხოვრობს აფრიკაში და ჰგავს ცხენს.",
+    "media": {
+      "emoji": "🦓",
+      "tile": "tile-safari"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ზებრა",
+          "emoji": "🦓"
+        },
+        {
+          "key": "B",
+          "label": "ჟირაფი",
+          "emoji": "🦒"
+        },
+        {
+          "key": "C",
+          "label": "ვეფხვი",
+          "emoji": "🐯"
+        },
+        {
+          "key": "D",
+          "label": "ლომი",
+          "emoji": "🦁"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის ყველაზე ცხელი პლანეტა?",
+    "hint": "ის დაფარულია სქელი ღრუბლებით.",
+    "media": {
+      "emoji": "🟡",
+      "tile": "tile-space"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მერკური",
+          "emoji": "⚪"
+        },
+        {
+          "key": "B",
+          "label": "ვენერა",
+          "emoji": "🟡"
+        },
+        {
+          "key": "C",
+          "label": "მარსი",
+          "emoji": "🔴"
+        },
+        {
+          "key": "D",
+          "label": "იუპიტერი",
+          "emoji": "🟠"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელ ქვეყანაშია პირამიდები?",
+    "hint": "იქ მდინარე ნილოსი მიედინება.",
+    "media": {
+      "emoji": "🗺️",
+      "tile": "tile-landmark"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "საბერძნეთი",
+          "emoji": "🏛️"
+        },
+        {
+          "key": "B",
+          "label": "ეგვიპტე",
+          "emoji": "🇪🇬"
+        },
+        {
+          "key": "C",
+          "label": "იტალია",
+          "emoji": "🇮🇹"
+        },
+        {
+          "key": "D",
+          "label": "ინდოეთი",
+          "emoji": "🇮🇳"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელ ცხოველს აქვს ხორთუმი?",
+    "hint": "ის ყველაზე დიდი სახმელეთო ცხოველია.",
+    "media": {
+      "emoji": "🐘",
+      "tile": "tile-safari"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "სპილო",
+          "emoji": "🐘"
+        },
+        {
+          "key": "B",
+          "label": "მარტორქა",
+          "emoji": "🦏"
+        },
+        {
+          "key": "C",
+          "label": "ჰიპოპოტამი",
+          "emoji": "🦛"
+        },
+        {
+          "key": "D",
+          "label": "კროკოდილი",
+          "emoji": "🐊"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რამდენი მატჩია ფეხბურთის გუნდში?",
+    "hint": "ექვსი კაციანი? არა, მეტია.",
+    "media": {
+      "emoji": "⚽",
+      "tile": "tile-sport"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "5",
+          "emoji": "5️⃣"
+        },
+        {
+          "key": "B",
+          "label": "7",
+          "emoji": "7️⃣"
+        },
+        {
+          "key": "C",
+          "label": "11",
+          "emoji": "1️⃣1️⃣"
+        },
+        {
+          "key": "D",
+          "label": "15",
+          "emoji": "1️⃣5️⃣"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელია ყველაზე სწრაფი ცხოველი?",
+    "hint": "მას შეუძლია საათში 100 კმ-ზე მეტი სიჩქარით გარბოდეს.",
+    "media": {
+      "emoji": "🐆",
+      "tile": "tile-safari"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ლომი",
+          "emoji": "🦁"
+        },
+        {
+          "key": "B",
+          "label": "აფთარი",
+          "emoji": "🐆"
+        },
+        {
+          "key": "C",
+          "label": "ზებრა",
+          "emoji": "🦓"
+        },
+        {
+          "key": "D",
+          "label": "სპილო",
+          "emoji": "🐘"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა გემო აქვს ლიმონს?",
+    "hint": "მას მჟავე გემო აქვს.",
+    "media": {
+      "emoji": "🍋",
+      "tile": "tile-fruit"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ტკბილი",
+          "emoji": "🍬"
+        },
+        {
+          "key": "B",
+          "label": "მარილიანი",
+          "emoji": "🧂"
+        },
+        {
+          "key": "C",
+          "label": "მჟავე",
+          "emoji": "🍋"
+        },
+        {
+          "key": "D",
+          "label": "მწარე",
+          "emoji": "☕"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი პლანეტაა ყველაზე ახლოს მზესთან?",
+    "hint": "ძალიან პატარაა და ცხელი.",
+    "media": {
+      "emoji": "☀️",
+      "tile": "tile-space"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მერკური",
+          "emoji": "⚪"
+        },
+        {
+          "key": "B",
+          "label": "ვენერა",
+          "emoji": "🟡"
+        },
+        {
+          "key": "C",
+          "label": "დედამიწა",
+          "emoji": "🌍"
+        },
+        {
+          "key": "D",
+          "label": "მარსი",
+          "emoji": "🔴"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა ჰქვია წიგნის ნაწილს, რომელშიც ტექსტი იწერება?",
+    "hint": "მას ფურცლები აქვს.",
+    "media": {
+      "emoji": "📖",
+      "tile": "tile-school"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "გვერდი",
+          "emoji": "📄"
+        },
+        {
+          "key": "B",
+          "label": "ყდა",
+          "emoji": "📘"
+        },
+        {
+          "key": "C",
+          "label": "სათაური",
+          "emoji": "🔖"
+        },
+        {
+          "key": "D",
+          "label": "ილუსტრაცია",
+          "emoji": "🖼️"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ფერი მიიღება წითელისა და ლურჯის შერევით?",
+    "hint": "ეს არის ყურძნის ფერი.",
+    "media": {
+      "emoji": "🎨",
+      "tile": "tile-art"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მწვანე",
+          "emoji": "🟢"
+        },
+        {
+          "key": "B",
+          "label": "ნარინჯისფერი",
+          "emoji": "🟠"
+        },
+        {
+          "key": "C",
+          "label": "იისფერი",
+          "emoji": "🟣"
+        },
+        {
+          "key": "D",
+          "label": "ყავისფერი",
+          "emoji": "🟤"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველი ატარებს ნიჟარას?",
+    "hint": "მას ნელა მოძრაობს და სახლი ზურგზე აქვს.",
+    "media": {
+      "emoji": "🐚",
+      "tile": "tile-beach"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ზღვის ვარსკვლავი",
+          "emoji": "⭐"
+        },
+        {
+          "key": "B",
+          "label": "ლოკოკინა",
+          "emoji": "🐌"
+        },
+        {
+          "key": "C",
+          "label": "კიბო",
+          "emoji": "🦀"
+        },
+        {
+          "key": "D",
+          "label": "რვაფეხა",
+          "emoji": "🐙"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა ჰქვია ყველაზე გრძელ მდინარეს?",
+    "hint": "ის აფრიკაში მიედინება.",
+    "media": {
+      "emoji": "🌊",
+      "tile": "tile-water"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ნილოსი",
+          "emoji": "🇪🇬"
+        },
+        {
+          "key": "B",
+          "label": "ამაზონი",
+          "emoji": "🌳"
+        },
+        {
+          "key": "C",
+          "label": "მისისიპი",
+          "emoji": "🇺🇸"
+        },
+        {
+          "key": "D",
+          "label": "ვოლგა",
+          "emoji": "🇷🇺"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ხე იზრდება ნაძვის გირჩებით?",
+    "hint": "ეს ხე მწვანეა ზამთარშიც.",
+    "media": {
+      "emoji": "🎄",
+      "tile": "tile-forest"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მუხა",
+          "emoji": "🌳"
+        },
+        {
+          "key": "B",
+          "label": "ფიჭვი",
+          "emoji": "🌲"
+        },
+        {
+          "key": "C",
+          "label": "არყი",
+          "emoji": "🌳"
+        },
+        {
+          "key": "D",
+          "label": "წიფელი",
+          "emoji": "🌳"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი მანქანა მოძრაობს რელსებზე?",
+    "hint": "მას მატარებელი ჰქვია.",
+    "media": {
+      "emoji": "🚂",
+      "tile": "tile-transport"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ავტობუსი",
+          "emoji": "🚌"
+        },
+        {
+          "key": "B",
+          "label": "მატარებელი",
+          "emoji": "🚂"
+        },
+        {
+          "key": "C",
+          "label": "მანქანა",
+          "emoji": "🚗"
+        },
+        {
+          "key": "D",
+          "label": "თვითმფრინავი",
+          "emoji": "✈️"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის საათი?",
+    "hint": "ის გვიჩვენებს დროს.",
+    "media": {
+      "emoji": "🕒",
+      "tile": "tile-time"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "საზომი ხელსაწყო",
+          "emoji": "📏"
+        },
+        {
+          "key": "B",
+          "label": "დროის მჩვენებელი",
+          "emoji": "⏰"
+        },
+        {
+          "key": "C",
+          "label": "კალენდარი",
+          "emoji": "📅"
+        },
+        {
+          "key": "D",
+          "label": "ტელეფონი",
+          "emoji": "📱"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელ ცხოველს აქვს წვეტიანი ნემსები?",
+    "hint": "საფრთხის დროს იჭმუხნება და იცავს თავს.",
+    "media": {
+      "emoji": "🦔",
+      "tile": "tile-forest"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ზღარბი",
+          "emoji": "🦔"
+        },
+        {
+          "key": "B",
+          "label": "კურდღელი",
+          "emoji": "🐰"
+        },
+        {
+          "key": "C",
+          "label": "ციყვი",
+          "emoji": "🐿️"
+        },
+        {
+          "key": "D",
+          "label": "მაჩვი",
+          "emoji": "🦡"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელია ყველაზე პოპულარული სასმელი?",
+    "hint": "ის მიედინება მდინარეებში, ტბებში.",
+    "media": {
+      "emoji": "💧",
+      "tile": "tile-water"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წვენი",
+          "emoji": "🧃"
+        },
+        {
+          "key": "B",
+          "label": "რძე",
+          "emoji": "🥛"
+        },
+        {
+          "key": "C",
+          "label": "წყალი",
+          "emoji": "💧"
+        },
+        {
+          "key": "D",
+          "label": "ლიმონათი",
+          "emoji": "🍋"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ფრინველი დადის, მაგრამ არ დაფრინავს?",
+    "hint": "ის ცივ კლიმატში ცხოვრობს.",
+    "media": {
+      "emoji": "🐧",
+      "tile": "tile-ice"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "არწივი",
+          "emoji": "🦅"
+        },
+        {
+          "key": "B",
+          "label": "პინგვინი",
+          "emoji": "🐧"
+        },
+        {
+          "key": "C",
+          "label": "თოლია",
+          "emoji": "🐦"
+        },
+        {
+          "key": "D",
+          "label": "სვიფი",
+          "emoji": "🐦"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელია ყველაზე ცივი კონტინენტი?",
+    "hint": "ის დაფარულია ყინულით.",
+    "media": {
+      "emoji": "🧊",
+      "tile": "tile-ice"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ევროპა",
+          "emoji": "🇪🇺"
+        },
+        {
+          "key": "B",
+          "label": "აფრიკა",
+          "emoji": "🇿🇦"
+        },
+        {
+          "key": "C",
+          "label": "ანტარქტიდა",
+          "emoji": "🧊"
+        },
+        {
+          "key": "D",
+          "label": "ავსტრალია",
+          "emoji": "🇦🇺"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის ყველაზე მაღალი მთა?",
+    "hint": "ის მდებარეობს ჰიმალაის მთებში.",
+    "media": {
+      "emoji": "🏔️",
+      "tile": "tile-mountain"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მონბლანი",
+          "emoji": "🏔️"
+        },
+        {
+          "key": "B",
+          "label": "ელბრუსი",
+          "emoji": "🏔️"
+        },
+        {
+          "key": "C",
+          "label": "ევერესტი",
+          "emoji": "🏔️"
+        },
+        {
+          "key": "D",
+          "label": "აკონკაგუა",
+          "emoji": "🏔️"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ბოსტნეულია ნარინჯისფერი?",
+    "hint": "მას კურდღლები ჭამენ.",
+    "media": {
+      "emoji": "🥕",
+      "tile": "tile-garden"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "კიტრი",
+          "emoji": "🥒"
+        },
+        {
+          "key": "B",
+          "label": "სტაფილო",
+          "emoji": "🥕"
+        },
+        {
+          "key": "C",
+          "label": "ბადრიჯანი",
+          "emoji": "🍆"
+        },
+        {
+          "key": "D",
+          "label": "კარტოფილი",
+          "emoji": "🥔"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია მგელი?",
+    "hint": "ის ძაღლის მსგავსია.",
+    "media": {
+      "emoji": "🐺",
+      "tile": "tile-forest"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ძაღლი",
+          "emoji": "🐕"
+        },
+        {
+          "key": "B",
+          "label": "მგელი",
+          "emoji": "🐺"
+        },
+        {
+          "key": "C",
+          "label": "მელა",
+          "emoji": "🦊"
+        },
+        {
+          "key": "D",
+          "label": "ფოცხვერი",
+          "emoji": "🐱"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა ჰქვია ტკბილ სასმელს?",
+    "hint": "ის ხშირად ყავისფერი ფერისაა.",
+    "media": {
+      "emoji": "🥤",
+      "tile": "tile-drink"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წყალი",
+          "emoji": "💧"
+        },
+        {
+          "key": "B",
+          "label": "რძე",
+          "emoji": "🥛"
+        },
+        {
+          "key": "C",
+          "label": "ლიმონათი",
+          "emoji": "🍋"
+        },
+        {
+          "key": "D",
+          "label": "კოკა-კოლა",
+          "emoji": "🥤"
+        }
+      ]
+    },
+    "answer": {
+      "key": "D"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელია ყველაზე პატარა ქვეყანა?",
+    "hint": "ის ევროპაშია.",
+    "media": {
+      "emoji": "🇻🇦",
+      "tile": "tile-city"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მონაკო",
+          "emoji": "🇲🇨"
+        },
+        {
+          "key": "B",
+          "label": "ვატიკანი",
+          "emoji": "🇻🇦"
+        },
+        {
+          "key": "C",
+          "label": "ლიხტენშტეინი",
+          "emoji": "🇱🇮"
+        },
+        {
+          "key": "D",
+          "label": "სან მარინო",
+          "emoji": "🇸🇲"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის ნამი?",
+    "hint": "ის დილით ბალახზე ჩნდება.",
+    "media": {
+      "emoji": "💧",
+      "tile": "tile-nature"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წვიმა",
+          "emoji": "🌧️"
+        },
+        {
+          "key": "B",
+          "label": "თოვლი",
+          "emoji": "❄️"
+        },
+        {
+          "key": "C",
+          "label": "ნამი",
+          "emoji": "💧"
+        },
+        {
+          "key": "D",
+          "label": "სეტყვა",
+          "emoji": "🌨️"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველი ცხოვრობს უდაბნოში?",
+    "hint": "მას ბორცვები აქვს ზურგზე.",
+    "media": {
+      "emoji": "🐫",
+      "tile": "tile-desert"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "აქლემი",
+          "emoji": "🐫"
+        },
+        {
+          "key": "B",
+          "label": "სპილო",
+          "emoji": "🐘"
+        },
+        {
+          "key": "C",
+          "label": "ჟირაფი",
+          "emoji": "🦒"
+        },
+        {
+          "key": "D",
+          "label": "ლომი",
+          "emoji": "🦁"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ცისარტყელა'?",
+    "hint": "ის ჩნდება წვიმის შემდეგ.",
+    "media": {
+      "emoji": "🌈",
+      "tile": "tile-sky"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წვიმა",
+          "emoji": "🌧️"
+        },
+        {
+          "key": "B",
+          "label": "ცისარტყელა",
+          "emoji": "🌈"
+        },
+        {
+          "key": "C",
+          "label": "თოვლი",
+          "emoji": "❄️"
+        },
+        {
+          "key": "D",
+          "label": "ქარი",
+          "emoji": "💨"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ძალიან ჭკვიანი?",
+    "hint": "ის ოკეანეში ცხოვრობს.",
+    "media": {
+      "emoji": "🐬",
+      "tile": "tile-ocean"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ვეშაპი",
+          "emoji": "🐋"
+        },
+        {
+          "key": "B",
+          "label": "დელფინი",
+          "emoji": "🐬"
+        },
+        {
+          "key": "C",
+          "label": "ზვიგენი",
+          "emoji": "🦈"
+        },
+        {
+          "key": "D",
+          "label": "კასატოკა",
+          "emoji": "🐳"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რამდენი ბორბალი აქვს ველოსიპედს?",
+    "hint": "ორი ბორბალი.",
+    "media": {
+      "emoji": "🚲",
+      "tile": "tile-transport"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "1",
+          "emoji": "1️⃣"
+        },
+        {
+          "key": "B",
+          "label": "2",
+          "emoji": "2️⃣"
+        },
+        {
+          "key": "C",
+          "label": "3",
+          "emoji": "3️⃣"
+        },
+        {
+          "key": "D",
+          "label": "4",
+          "emoji": "4️⃣"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ყვავილი'?",
+    "hint": "ის იზრდება ბაღში.",
+    "media": {
+      "emoji": "🌹",
+      "tile": "tile-garden"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მცენარე",
+          "emoji": "🌱"
+        },
+        {
+          "key": "B",
+          "label": "ყვავილი",
+          "emoji": "🌹"
+        },
+        {
+          "key": "C",
+          "label": "ხე",
+          "emoji": "🌳"
+        },
+        {
+          "key": "D",
+          "label": "ბალახი",
+          "emoji": "🌿"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი პლანეტაა ყველაზე ნაკლებად ცნობილი?",
+    "hint": "მას ყველაზე გრძელი ორბიტა აქვს.",
+    "media": {
+      "emoji": "🌌",
+      "tile": "tile-space"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ნეპტუნი",
+          "emoji": "🔵"
+        },
+        {
+          "key": "B",
+          "label": "ურანი",
+          "emoji": "🟢"
+        },
+        {
+          "key": "C",
+          "label": "პლუტონი",
+          "emoji": "⚪"
+        },
+        {
+          "key": "D",
+          "label": "მერკური",
+          "emoji": "⚪"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ცნობილი თავისი მუსიკით?",
+    "hint": "ის ღამით მღერის.",
+    "media": {
+      "emoji": "🦉",
+      "tile": "tile-forest"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ბუ",
+          "emoji": "🦉"
+        },
+        {
+          "key": "B",
+          "label": "კაკაბუ",
+          "emoji": "🦜"
+        },
+        {
+          "key": "C",
+          "label": "რობინი",
+          "emoji": "🐦"
+        },
+        {
+          "key": "D",
+          "label": "ფრინველი",
+          "emoji": "🐦"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'შოკოლადი'?",
+    "hint": "ის ტკბილია.",
+    "media": {
+      "emoji": "🍫",
+      "tile": "tile-food"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ტკბილეული",
+          "emoji": "🍬"
+        },
+        {
+          "key": "B",
+          "label": "შოკოლადი",
+          "emoji": "🍫"
+        },
+        {
+          "key": "C",
+          "label": "ნამცხვარი",
+          "emoji": "🍰"
+        },
+        {
+          "key": "D",
+          "label": "კანფეტი",
+          "emoji": "🍭"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელია ყველაზე დიდი ოკეანე?",
+    "hint": "ის მდებარეობს აზიასა და ამერიკას შორის.",
+    "media": {
+      "emoji": "🌊",
+      "tile": "tile-ocean"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ატლანტის",
+          "emoji": "🌊"
+        },
+        {
+          "key": "B",
+          "label": "წყნარი",
+          "emoji": "🌊"
+        },
+        {
+          "key": "C",
+          "label": "ინდოეთის",
+          "emoji": "🌊"
+        },
+        {
+          "key": "D",
+          "label": "არქტიკის",
+          "emoji": "🌊"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე პატარა?",
+    "hint": "ის ძალიან პატარაა.",
+    "media": {
+      "emoji": "🐭",
+      "tile": "tile-animal"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "თაგვი",
+          "emoji": "🐭"
+        },
+        {
+          "key": "B",
+          "label": "კურდღელი",
+          "emoji": "🐰"
+        },
+        {
+          "key": "C",
+          "label": "ზღარბი",
+          "emoji": "🦔"
+        },
+        {
+          "key": "D",
+          "label": "ციყვი",
+          "emoji": "🐿️"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'თაფლი'?",
+    "hint": "მას ფუტკრები ამზადებენ.",
+    "media": {
+      "emoji": "🍯",
+      "tile": "tile-food"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "თაფლი",
+          "emoji": "🍯"
+        },
+        {
+          "key": "B",
+          "label": "ჯემი",
+          "emoji": "🍓"
+        },
+        {
+          "key": "C",
+          "label": "შოკოლადი",
+          "emoji": "🍫"
+        },
+        {
+          "key": "D",
+          "label": "კარაქი",
+          "emoji": "🧈"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი პროფესია კურნავს ადამიანებს?",
+    "hint": "ის მუშაობს საავადმყოფოში.",
+    "media": {
+      "emoji": "👨‍⚕️",
+      "tile": "tile-people"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მასწავლებელი",
+          "emoji": "👩‍🏫"
+        },
+        {
+          "key": "B",
+          "label": "ექიმი",
+          "emoji": "👨‍⚕️"
+        },
+        {
+          "key": "C",
+          "label": "პოლიციელი",
+          "emoji": "👮‍♂️"
+        },
+        {
+          "key": "D",
+          "label": "მეხანძრე",
+          "emoji": "👨‍🚒"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'წიგნი'?",
+    "hint": "მასში ბევრი ამბავია.",
+    "media": {
+      "emoji": "📚",
+      "tile": "tile-school"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წიგნი",
+          "emoji": "📚"
+        },
+        {
+          "key": "B",
+          "label": "რვეული",
+          "emoji": "📓"
+        },
+        {
+          "key": "C",
+          "label": "გაზეთი",
+          "emoji": "📰"
+        },
+        {
+          "key": "D",
+          "label": "ჟურნალი",
+          "emoji": "📓"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ფერი არის ცა?",
+    "hint": "ცა ჩვეულებრივ ლურჯია.",
+    "media": {
+      "emoji": "☀️",
+      "tile": "tile-sky"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ლურჯი",
+          "emoji": "🔵"
+        },
+        {
+          "key": "B",
+          "label": "მწვანე",
+          "emoji": "🟢"
+        },
+        {
+          "key": "C",
+          "label": "წითელი",
+          "emoji": "🔴"
+        },
+        {
+          "key": "D",
+          "label": "ყვითელი",
+          "emoji": "🟡"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე ლამაზი?",
+    "hint": "მას ლამაზი ფრთები აქვს.",
+    "media": {
+      "emoji": "🦋",
+      "tile": "tile-nature"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "პეპელა",
+          "emoji": "🦋"
+        },
+        {
+          "key": "B",
+          "label": "ფრინველი",
+          "emoji": "🐦"
+        },
+        {
+          "key": "C",
+          "label": "ყვავილი",
+          "emoji": "🌹"
+        },
+        {
+          "key": "D",
+          "label": "არწივი",
+          "emoji": "🦅"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'მზე'?",
+    "hint": "ის ცაზე ანათებს.",
+    "media": {
+      "emoji": "☀️",
+      "tile": "tile-sky"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ვარსკვლავი",
+          "emoji": "⭐"
+        },
+        {
+          "key": "B",
+          "label": "პლანეტა",
+          "emoji": "🪐"
+        },
+        {
+          "key": "C",
+          "label": "მთვარე",
+          "emoji": "🌙"
+        },
+        {
+          "key": "D",
+          "label": "კომეტა",
+          "emoji": "☄️"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე საინტერესო?",
+    "hint": "მას ცხვირი აქვს.",
+    "media": {
+      "emoji": "🐘",
+      "tile": "tile-safari"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "სპილო",
+          "emoji": "🐘"
+        },
+        {
+          "key": "B",
+          "label": "ჟირაფი",
+          "emoji": "🦒"
+        },
+        {
+          "key": "C",
+          "label": "ლომი",
+          "emoji": "🦁"
+        },
+        {
+          "key": "D",
+          "label": "მარტორქა",
+          "emoji": "🦏"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ცისი'?",
+    "hint": "ის ჰგავს ქვას, მაგრამ ანათებს.",
+    "media": {
+      "emoji": "💎",
+      "tile": "tile-nature"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ალმასი",
+          "emoji": "💎"
+        },
+        {
+          "key": "B",
+          "label": "ქვა",
+          "emoji": "🪨"
+        },
+        {
+          "key": "C",
+          "label": "მინერალი",
+          "emoji": "🪨"
+        },
+        {
+          "key": "D",
+          "label": "კრისტალი",
+          "emoji": "💎"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე ძლიერი?",
+    "hint": "ის დიდი და ძლიერია.",
+    "media": {
+      "emoji": "🐻",
+      "tile": "tile-forest"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "დათვი",
+          "emoji": "🐻"
+        },
+        {
+          "key": "B",
+          "label": "ლომი",
+          "emoji": "🦁"
+        },
+        {
+          "key": "C",
+          "label": "სპილო",
+          "emoji": "🐘"
+        },
+        {
+          "key": "D",
+          "label": "ვეფხვი",
+          "emoji": "🐯"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ნიჟარა'?",
+    "hint": "მასში ცხოვრობს ლოკოკინა.",
+    "media": {
+      "emoji": "🐚",
+      "tile": "tile-beach"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ნიჟარა",
+          "emoji": "🐚"
+        },
+        {
+          "key": "B",
+          "label": "ქვა",
+          "emoji": "🪨"
+        },
+        {
+          "key": "C",
+          "label": "ჭურვი",
+          "emoji": "🐚"
+        },
+        {
+          "key": "D",
+          "label": "მარგალიტი",
+          "emoji": "🪸"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველი ცხოვრობს ხეზე?",
+    "hint": "ის ხტება ხიდან ხეზე.",
+    "media": {
+      "emoji": "🐒",
+      "tile": "tile-forest"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მაიმუნი",
+          "emoji": "🐒"
+        },
+        {
+          "key": "B",
+          "label": "ციყვი",
+          "emoji": "🐿️"
+        },
+        {
+          "key": "C",
+          "label": "ფრინველი",
+          "emoji": "🐦"
+        },
+        {
+          "key": "D",
+          "label": "ხვლიკი",
+          "emoji": "🦎"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'კომპიუტერი'?",
+    "hint": "მასზე ვმუშაობთ.",
+    "media": {
+      "emoji": "💻",
+      "tile": "tile-tech"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "კომპიუტერი",
+          "emoji": "💻"
+        },
+        {
+          "key": "B",
+          "label": "ტელეფონი",
+          "emoji": "📱"
+        },
+        {
+          "key": "C",
+          "label": "ტელევიზორი",
+          "emoji": "📺"
+        },
+        {
+          "key": "D",
+          "label": "რადიო",
+          "emoji": "📻"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე მშვიდი?",
+    "hint": "ის ნელა მოძრაობს.",
+    "media": {
+      "emoji": "🐢",
+      "tile": "tile-animal"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "კუ",
+          "emoji": "🐢"
+        },
+        {
+          "key": "B",
+          "label": "ლოკოკინა",
+          "emoji": "🐌"
+        },
+        {
+          "key": "C",
+          "label": "ზღარბი",
+          "emoji": "🦔"
+        },
+        {
+          "key": "D",
+          "label": "თაგვი",
+          "emoji": "🐭"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'სანთელი'?",
+    "hint": "ის ანათებს.",
+    "media": {
+      "emoji": "🕯️",
+      "tile": "tile-home"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "სანთელი",
+          "emoji": "🕯️"
+        },
+        {
+          "key": "B",
+          "label": "ნათურა",
+          "emoji": "💡"
+        },
+        {
+          "key": "C",
+          "label": "ფარანი",
+          "emoji": "🔦"
+        },
+        {
+          "key": "D",
+          "label": "მზე",
+          "emoji": "☀️"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე სწრაფი?",
+    "hint": "ის დაფრინავს.",
+    "media": {
+      "emoji": "🐦",
+      "tile": "tile-sky"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "არწივი",
+          "emoji": "🦅"
+        },
+        {
+          "key": "B",
+          "label": "პინგვინი",
+          "emoji": "🐧"
+        },
+        {
+          "key": "C",
+          "label": "სვიფი",
+          "emoji": "🐦"
+        },
+        {
+          "key": "D",
+          "label": "რობინი",
+          "emoji": "🐦"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ყავა'?",
+    "hint": "ის ყავისფერია.",
+    "media": {
+      "emoji": "☕",
+      "tile": "tile-drink"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ყავა",
+          "emoji": "☕"
+        },
+        {
+          "key": "B",
+          "label": "ჩაი",
+          "emoji": "🍵"
+        },
+        {
+          "key": "C",
+          "label": "კაკაო",
+          "emoji": "🍫"
+        },
+        {
+          "key": "D",
+          "label": "რძე",
+          "emoji": "🥛"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე მომხიბვლელი?",
+    "hint": "მას ფუმფულა კუდი აქვს.",
+    "media": {
+      "emoji": "🦊",
+      "tile": "tile-forest"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მელა",
+          "emoji": "🦊"
+        },
+        {
+          "key": "B",
+          "label": "ციყვი",
+          "emoji": "🐿️"
+        },
+        {
+          "key": "C",
+          "label": "კურდღელი",
+          "emoji": "🐰"
+        },
+        {
+          "key": "D",
+          "label": "მგელი",
+          "emoji": "🐺"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ცხენი'?",
+    "hint": "ის დადის და გადაჰყავს ადამიანები.",
+    "media": {
+      "emoji": "🐴",
+      "tile": "tile-animal"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ცხენი",
+          "emoji": "🐴"
+        },
+        {
+          "key": "B",
+          "label": "ვირი",
+          "emoji": "🐴"
+        },
+        {
+          "key": "C",
+          "label": "ზებრა",
+          "emoji": "🦓"
+        },
+        {
+          "key": "D",
+          "label": "ლომი",
+          "emoji": "🦁"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი პლანეტაა ყველაზე ცნობილი?",
+    "hint": "მას ბეჭედი აქვს.",
+    "media": {
+      "emoji": "🪐",
+      "tile": "tile-space"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მარსი",
+          "emoji": "🔴"
+        },
+        {
+          "key": "B",
+          "label": "იუპიტერი",
+          "emoji": "🟠"
+        },
+        {
+          "key": "C",
+          "label": "სატურნი",
+          "emoji": "🪐"
+        },
+        {
+          "key": "D",
+          "label": "დედამიწა",
+          "emoji": "🌍"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ნავი'?",
+    "hint": "ის ცურავს წყალზე.",
+    "media": {
+      "emoji": "⛵",
+      "tile": "tile-water"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ნავი",
+          "emoji": "⛵"
+        },
+        {
+          "key": "B",
+          "label": "გემი",
+          "emoji": "🚢"
+        },
+        {
+          "key": "C",
+          "label": "კატერი",
+          "emoji": "🛥️"
+        },
+        {
+          "key": "D",
+          "label": "იახტა",
+          "emoji": "⛵"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე ნაცნობი?",
+    "hint": "ის ცხოვრობს სახლში.",
+    "media": {
+      "emoji": "🐱",
+      "tile": "tile-home"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "კატა",
+          "emoji": "🐱"
+        },
+        {
+          "key": "B",
+          "label": "ძაღლი",
+          "emoji": "🐕"
+        },
+        {
+          "key": "C",
+          "label": "თაგვი",
+          "emoji": "🐭"
+        },
+        {
+          "key": "D",
+          "label": "ფრინველი",
+          "emoji": "🐦"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'პური'?",
+    "hint": "მას აცხობენ.",
+    "media": {
+      "emoji": "🍞",
+      "tile": "tile-food"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "პური",
+          "emoji": "🍞"
+        },
+        {
+          "key": "B",
+          "label": "კარაქი",
+          "emoji": "🧈"
+        },
+        {
+          "key": "C",
+          "label": "ტოსტი",
+          "emoji": "🍞"
+        },
+        {
+          "key": "D",
+          "label": "ფუნთუშა",
+          "emoji": "🥐"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე საინტერესო?",
+    "hint": "მას ფერადი ფრთები აქვს.",
+    "media": {
+      "emoji": "🦜",
+      "tile": "tile-nature"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "თუთიყუში",
+          "emoji": "🦜"
+        },
+        {
+          "key": "B",
+          "label": "არწივი",
+          "emoji": "🦅"
+        },
+        {
+          "key": "C",
+          "label": "ბუ",
+          "emoji": "🦉"
+        },
+        {
+          "key": "D",
+          "label": "პეპელა",
+          "emoji": "🦋"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ყველი'?",
+    "hint": "მას რძისგან აკეთებენ.",
+    "media": {
+      "emoji": "🧀",
+      "tile": "tile-food"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ყველი",
+          "emoji": "🧀"
+        },
+        {
+          "key": "B",
+          "label": "კარაქი",
+          "emoji": "🧈"
+        },
+        {
+          "key": "C",
+          "label": "იოგურტი",
+          "emoji": "🥛"
+        },
+        {
+          "key": "D",
+          "label": "რძე",
+          "emoji": "🥛"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე ჭკვიანი?",
+    "hint": "მას შეუძლია იარაღები გააკეთოს.",
+    "media": {
+      "emoji": "🐒",
+      "tile": "tile-forest"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მაიმუნი",
+          "emoji": "🐒"
+        },
+        {
+          "key": "B",
+          "label": "დელფინი",
+          "emoji": "🐬"
+        },
+        {
+          "key": "C",
+          "label": "სპილო",
+          "emoji": "🐘"
+        },
+        {
+          "key": "D",
+          "label": "ვეშაპი",
+          "emoji": "🐋"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ფანქარი'?",
+    "hint": "მასთან ერთად ვწერთ.",
+    "media": {
+      "emoji": "✏️",
+      "tile": "tile-school"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ფანქარი",
+          "emoji": "✏️"
+        },
+        {
+          "key": "B",
+          "label": "კალამი",
+          "emoji": "🖊️"
+        },
+        {
+          "key": "C",
+          "label": "საშლელი",
+          "emoji": "🧹"
+        },
+        {
+          "key": "D",
+          "label": "მაკრატელი",
+          "emoji": "✂️"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე მომხიბვლელი?",
+    "hint": "მას ბეწვი აქვს.",
+    "media": {
+      "emoji": "🐇",
+      "tile": "tile-animal"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "კურდღელი",
+          "emoji": "🐰"
+        },
+        {
+          "key": "B",
+          "label": "ციყვი",
+          "emoji": "🐿️"
+        },
+        {
+          "key": "C",
+          "label": "ზღარბი",
+          "emoji": "🦔"
+        },
+        {
+          "key": "D",
+          "label": "მელა",
+          "emoji": "🦊"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'წვიმა'?",
+    "hint": "ის წვეთებს.",
+    "media": {
+      "emoji": "🌧️",
+      "tile": "tile-weather"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წვიმა",
+          "emoji": "🌧️"
+        },
+        {
+          "key": "B",
+          "label": "თოვლი",
+          "emoji": "❄️"
+        },
+        {
+          "key": "C",
+          "label": "სეტყვა",
+          "emoji": "🌨️"
+        },
+        {
+          "key": "D",
+          "label": "ნამი",
+          "emoji": "💧"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი პროფესია იცავს კანონს?",
+    "hint": "ის ხშირად ატარებს ფორმას.",
+    "media": {
+      "emoji": "👮‍♂️",
+      "tile": "tile-people"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "პოლიციელი",
+          "emoji": "👮‍♂️"
+        },
+        {
+          "key": "B",
+          "label": "ექიმი",
+          "emoji": "👨‍⚕️"
+        },
+        {
+          "key": "C",
+          "label": "მასწავლებელი",
+          "emoji": "👩‍🏫"
+        },
+        {
+          "key": "D",
+          "label": "მეხანძრე",
+          "emoji": "👨‍🚒"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'მუსიკა'?",
+    "hint": "ის ჰანგებს.",
+    "media": {
+      "emoji": "🎵",
+      "tile": "tile-music"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მუსიკა",
+          "emoji": "🎵"
+        },
+        {
+          "key": "B",
+          "label": "სიმღერა",
+          "emoji": "🎤"
+        },
+        {
+          "key": "C",
+          "label": "ჰანგი",
+          "emoji": "🎶"
+        },
+        {
+          "key": "D",
+          "label": "რიტმი",
+          "emoji": "🥁"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე დიდი?",
+    "hint": "ის ზღვაში ცხოვრობს.",
+    "media": {
+      "emoji": "🐋",
+      "tile": "tile-ocean"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ვეშაპი",
+          "emoji": "🐋"
+        },
+        {
+          "key": "B",
+          "label": "სპილო",
+          "emoji": "🐘"
+        },
+        {
+          "key": "C",
+          "label": "ზვიგენი",
+          "emoji": "🦈"
+        },
+        {
+          "key": "D",
+          "label": "კასატოკა",
+          "emoji": "🐳"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ფეხბურთი'?",
+    "hint": "ბურთი გამოიყენება.",
+    "media": {
+      "emoji": "⚽",
+      "tile": "tile-sport"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ფეხბურთი",
+          "emoji": "⚽"
+        },
+        {
+          "key": "B",
+          "label": "კალათბურთი",
+          "emoji": "🏀"
+        },
+        {
+          "key": "C",
+          "label": "ჩოგბურთი",
+          "emoji": "🎾"
+        },
+        {
+          "key": "D",
+          "label": "რაგბი",
+          "emoji": "🏈"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე სწრაფი?",
+    "hint": "ის დაფრინავს.",
+    "media": {
+      "emoji": "🐦",
+      "tile": "tile-sky"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "არწივი",
+          "emoji": "🦅"
+        },
+        {
+          "key": "B",
+          "label": "პინგვინი",
+          "emoji": "🐧"
+        },
+        {
+          "key": "C",
+          "label": "სვიფი",
+          "emoji": "🐦"
+        },
+        {
+          "key": "D",
+          "label": "რობინი",
+          "emoji": "🐦"
+        }
+      ]
+    },
+    "answer": {
+      "key": "C"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'წიგნი'?",
+    "hint": "მასში ბევრი ამბავია.",
+    "media": {
+      "emoji": "📚",
+      "tile": "tile-school"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წიგნი",
+          "emoji": "📚"
+        },
+        {
+          "key": "B",
+          "label": "რვეული",
+          "emoji": "📓"
+        },
+        {
+          "key": "C",
+          "label": "გაზეთი",
+          "emoji": "📰"
+        },
+        {
+          "key": "D",
+          "label": "ჟურნალი",
+          "emoji": "📓"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ფერია მზე?",
+    "hint": "ის ყვითელია.",
+    "media": {
+      "emoji": "☀️",
+      "tile": "tile-sky"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ყვითელი",
+          "emoji": "🟡"
+        },
+        {
+          "key": "B",
+          "label": "ლურჯი",
+          "emoji": "🔵"
+        },
+        {
+          "key": "C",
+          "label": "წითელი",
+          "emoji": "🔴"
+        },
+        {
+          "key": "D",
+          "label": "მწვანე",
+          "emoji": "🟢"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე პატარა?",
+    "hint": "ის ძალიან პატარაა.",
+    "media": {
+      "emoji": "🐭",
+      "tile": "tile-animal"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "თაგვი",
+          "emoji": "🐭"
+        },
+        {
+          "key": "B",
+          "label": "კურდღელი",
+          "emoji": "🐰"
+        },
+        {
+          "key": "C",
+          "label": "ზღარბი",
+          "emoji": "🦔"
+        },
+        {
+          "key": "D",
+          "label": "ციყვი",
+          "emoji": "🐿️"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'თოვლი'?",
+    "hint": "ის თეთრია.",
+    "media": {
+      "emoji": "❄️",
+      "tile": "tile-weather"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "თოვლი",
+          "emoji": "❄️"
+        },
+        {
+          "key": "B",
+          "label": "წვიმა",
+          "emoji": "🌧️"
+        },
+        {
+          "key": "C",
+          "label": "სეტყვა",
+          "emoji": "🌨️"
+        },
+        {
+          "key": "D",
+          "label": "ყინული",
+          "emoji": "🧊"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე ლამაზი?",
+    "hint": "მას ფერადი ფრთები აქვს.",
+    "media": {
+      "emoji": "🦋",
+      "tile": "tile-nature"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "პეპელა",
+          "emoji": "🦋"
+        },
+        {
+          "key": "B",
+          "label": "ფრინველი",
+          "emoji": "🐦"
+        },
+        {
+          "key": "C",
+          "label": "ყვავილი",
+          "emoji": "🌹"
+        },
+        {
+          "key": "D",
+          "label": "არწივი",
+          "emoji": "🦅"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'კომპიუტერი'?",
+    "hint": "მასზე ვმუშაობთ.",
+    "media": {
+      "emoji": "💻",
+      "tile": "tile-tech"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "კომპიუტერი",
+          "emoji": "💻"
+        },
+        {
+          "key": "B",
+          "label": "ტელეფონი",
+          "emoji": "📱"
+        },
+        {
+          "key": "C",
+          "label": "ტელევიზორი",
+          "emoji": "📺"
+        },
+        {
+          "key": "D",
+          "label": "რადიო",
+          "emoji": "📻"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი პროფესია კურნავს ადამიანებს?",
+    "hint": "ის მუშაობს საავადმყოფოში.",
+    "media": {
+      "emoji": "👨‍⚕️",
+      "tile": "tile-people"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "მასწავლებელი",
+          "emoji": "👩‍🏫"
+        },
+        {
+          "key": "B",
+          "label": "ექიმი",
+          "emoji": "👨‍⚕️"
+        },
+        {
+          "key": "C",
+          "label": "პოლიციელი",
+          "emoji": "👮‍♂️"
+        },
+        {
+          "key": "D",
+          "label": "მეხანძრე",
+          "emoji": "👨‍🚒"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელია ყველაზე დიდი ოკეანე?",
+    "hint": "ის მდებარეობს აზიასა და ამერიკას შორის.",
+    "media": {
+      "emoji": "🌊",
+      "tile": "tile-ocean"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ატლანტის",
+          "emoji": "🌊"
+        },
+        {
+          "key": "B",
+          "label": "წყნარი",
+          "emoji": "🌊"
+        },
+        {
+          "key": "C",
+          "label": "ინდოეთის",
+          "emoji": "🌊"
+        },
+        {
+          "key": "D",
+          "label": "არქტიკის",
+          "emoji": "🌊"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ყველაზე მშვიდი?",
+    "hint": "ის ნელა მოძრაობს.",
+    "media": {
+      "emoji": "🐢",
+      "tile": "tile-animal"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "კუ",
+          "emoji": "🐢"
+        },
+        {
+          "key": "B",
+          "label": "ლოკოკინა",
+          "emoji": "🐌"
+        },
+        {
+          "key": "C",
+          "label": "ზღარბი",
+          "emoji": "🦔"
+        },
+        {
+          "key": "D",
+          "label": "თაგვი",
+          "emoji": "🐭"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ნიჟარა'?",
+    "hint": "მასში ცხოვრობს ლოკოკინა.",
+    "media": {
+      "emoji": "🐚",
+      "tile": "tile-beach"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ნიჟარა",
+          "emoji": "🐚"
+        },
+        {
+          "key": "B",
+          "label": "ქვა",
+          "emoji": "🪨"
+        },
+        {
+          "key": "C",
+          "label": "ჭურვი",
+          "emoji": "🐚"
+        },
+        {
+          "key": "D",
+          "label": "მარგალიტი",
+          "emoji": "🪸"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველი ცხოვრობს უდაბნოში?",
+    "hint": "მას ბორცვები აქვს ზურგზე.",
+    "media": {
+      "emoji": "🐫",
+      "tile": "tile-desert"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "აქლემი",
+          "emoji": "🐫"
+        },
+        {
+          "key": "B",
+          "label": "სპილო",
+          "emoji": "🐘"
+        },
+        {
+          "key": "C",
+          "label": "ჟირაფი",
+          "emoji": "🦒"
+        },
+        {
+          "key": "D",
+          "label": "ლომი",
+          "emoji": "🦁"
+        }
+      ]
+    },
+    "answer": {
+      "key": "A"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რა არის 'ცისარტყელა'?",
+    "hint": "ის ჩნდება წვიმის შემდეგ.",
+    "media": {
+      "emoji": "🌈",
+      "tile": "tile-sky"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "წვიმა",
+          "emoji": "🌧️"
+        },
+        {
+          "key": "B",
+          "label": "ცისარტყელა",
+          "emoji": "🌈"
+        },
+        {
+          "key": "C",
+          "label": "თოვლი",
+          "emoji": "❄️"
+        },
+        {
+          "key": "D",
+          "label": "ქარი",
+          "emoji": "💨"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რომელი ცხოველია ძალიან ჭკვიანი?",
+    "hint": "ის ოკეანეში ცხოვრობს.",
+    "media": {
+      "emoji": "🐬",
+      "tile": "tile-ocean"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "ვეშაპი",
+          "emoji": "🐋"
+        },
+        {
+          "key": "B",
+          "label": "დელფინი",
+          "emoji": "🐬"
+        },
+        {
+          "key": "C",
+          "label": "ზვიგენი",
+          "emoji": "🦈"
+        },
+        {
+          "key": "D",
+          "label": "კასატოკა",
+          "emoji": "🐳"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  },
+  {
+    "format": "choice",
+    "source": "multiple-choice",
+    "subject": "knowledge",
+    "age_group": "elementary",
+    "locale": "ka",
+    "prompt": "რამდენი ბორბალი აქვს ველოსიპედს?",
+    "hint": "ორი ბორბალი.",
+    "media": {
+      "emoji": "🚲",
+      "tile": "tile-transport"
+    },
+    "payload": {
+      "choices": [
+        {
+          "key": "A",
+          "label": "1",
+          "emoji": "1️⃣"
+        },
+        {
+          "key": "B",
+          "label": "2",
+          "emoji": "2️⃣"
+        },
+        {
+          "key": "C",
+          "label": "3",
+          "emoji": "3️⃣"
+        },
+        {
+          "key": "D",
+          "label": "4",
+          "emoji": "4️⃣"
+        }
+      ]
+    },
+    "answer": {
+      "key": "B"
+    },
+    "is_active": true
+  }
+]
