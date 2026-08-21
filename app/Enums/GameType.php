@@ -41,6 +41,27 @@ enum GameType: string
         };
     }
 
+    public function title(): string
+    {
+        return match ($this) {
+            self::MultipleChoice => __('games.multiple_choice'),
+            self::TapCorrect => __('games.tap_correct'),
+            self::Counting => __('games.counting'),
+            self::TraceLetter => __('games.trace_letter'),
+            self::FillLetter => __('games.fill_letter'),
+            self::SpellWord => __('games.spell_word'),
+            self::MatchWord => __('games.match_word'),
+            self::MatchAnimal => __('games.match_animal'),
+            self::GuessAnimal => __('games.guess_animal'),
+            self::WordSearch => __('games.word_search'),
+            self::ConnectPair => __('games.connect_pair'),
+            self::Opposites => __('games.opposites'),
+            self::BodyParts => __('games.body_parts'),
+            self::WhereLive => __('games.where_live'),
+            self::Knowledge => __('games.knowledge'),
+        };
+    }
+
     public function routeName(): string
     {
         return 'game-'.$this->value;

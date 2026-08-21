@@ -22,8 +22,10 @@ class GamePlayService
         private UserStatService $stats,
     ) {}
 
-    public function startRound(GameType $type, string $locale = 'en'): GameRound
+    public function startRound(GameType $type, ?string $locale = null): GameRound
     {
+        $locale ??= app()->getLocale();
+
         $game = $this->games->findBySlug($type);
 
         if ($game === null || ! $game->is_active) {
@@ -36,10 +38,10 @@ class GamePlayService
             $game->questions_per_round,
         );
 
-        if ($picked === [] && $locale !== 'en') {
+        if ($picked === [] && $locale !== 'ka') {
             $picked = $this->questions->randomForGame(
                 $game->id,
-                'en',
+                'ka',
                 $game->questions_per_round,
             );
         }

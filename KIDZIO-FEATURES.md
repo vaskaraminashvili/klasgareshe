@@ -21,7 +21,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 **Still dummy on Home / Profile:** daily mission, continue lesson, today's plan, subjects, featured games (link works), friends, badges, search catalog, notification list, profile hero stats.
 
-**Games bank:** `games` + `questions` linked by `game_question` (many-to-many). Play picks active questions attached to that game. Payload still uses `QuestionFormat` JSON (choice, count, spell, pairs, grid, trace, hotspot). Choice rows are seeded from `kidzio/game-*.html` (source game + Quick Quiz). Admin assign UI still TODO; next: another game shell, or filter by age group.
+**Games bank:** `games` + `questions` linked by `game_question` (many-to-many). Play picks active questions attached to that game for `APP_LOCALE` (default `ka`). Payload uses `QuestionFormat` JSON. Seeded content is Georgian (`locale=ka`), adapted from `kidzio/game-*.html`. Admin assign UI still TODO; next: another game shell, or filter by age group.
 
 ---
 
@@ -387,7 +387,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 ### Language & region
 
-- [~] App language (UI + questions + audio) — `lang/en` + `lang/ka` for built screens; no picker (`APP_LOCALE`)
+- [~] App language (UI + questions + audio) — product default Georgian (`APP_LOCALE=ka`, `lang/ka`); questions seeded `locale=ka`; `lang/en` kept for future; no language picker yet
 - [ ] Country (ranking region)
 
 ### Support & about
