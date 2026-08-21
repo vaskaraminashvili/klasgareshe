@@ -17,7 +17,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ## Where we are (2026-08-20)
 
-**Shipped:** login / register, 4-step onboarding, parent-verify, logout. Home + Profile screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. Quick Quiz plays from DB and awards XP via `recordPlay`.
+**Shipped:** login / register, 4-step onboarding, parent-verify, logout. Home + Profile screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. Quick Quiz plays from DB and awards XP via `recordPlay`. Levels derived from XP; Ranking hub live (Global / Weekly / League) with Monday cohort promote/relegate.
 
 **Still dummy on Home / Profile:** daily mission, continue lesson, today's plan, subjects, featured games (link works), friends, badges, search catalog, notification list, profile hero stats.
 
@@ -29,13 +29,13 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 1. ~~Auth + parent verification + kid profile~~ — auth + verify done; profile UI still dummy
 2. ~~Onboarding (age, subjects, daily goal, notifications)~~ — prefs saved; age does not drive content yet
-3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn / Rewards / Ranking tabs are dead links
-4. XP / levels / scoring — **storage + home display done; award-from-play is next**
+3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn / Rewards tabs still dead; Ranking wired
+4. ~~XP / levels / scoring~~ — levels + xp-progress + award-from-play done
 5. Learn library + lessons + continue/lock — skipped for now
 6. **Mini-games + game scoring ← current** (Quick Quiz done)
 7. Daily mission + streak
 8. Badges + rewards + shop
-9. Leaderboard + leagues + friends
+9. ~~Leaderboard + leagues~~ — Global / Weekly / League live; Friends deferred
 10. Parent zone (PIN, screen time, bedtime, reports)
 11. Settings, PWA, offline, legal, support
 
@@ -48,7 +48,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 - [x] Light / dark theme (system default + toggle, persist)
 - [ ] Theme accent colors (violet, pink, mint, sky, sun)
 - [ ] Text size (small / medium / large)
-- [~] Bottom tab bar: Home · Learn · Rewards · Ranking · Profile — Home + Profile routed; other tabs still `.html`
+- [~] Bottom tab bar: Home · Learn · Rewards · Ranking · Profile — Home + Profile + Ranking routed; Learn / Rewards still `.html`
 - [ ] Walkthrough (3 slides): play, streak, rewards — with Skip
 
 ---
@@ -110,11 +110,11 @@ Reusable later from Settings.
 Core loop: play → earn XP → level up → climb ranks.
 
 - [~] Award XP for lessons, games, missions, streaks, login calendar — Quick Quiz calls `recordPlay`; other actions do not yet
-- [~] Show XP on home, profile, rewards, leaderboard — home ribbon live; others dummy
-- [~] Daily / weekly XP totals — `user_activity_days.xp_earned` stored; not shown as totals
-- [ ] Level system (e.g. Lv 7 Explorer → Lv 8 Master) with XP-to-next
-- [~] League stored on `user_stats` (default Bronze); no weekly season yet
-- [ ] XP history (last 7 days chart + activity log)
+- [~] Show XP on home, profile, rewards, leaderboard — home + leaderboard + xp-progress live; profile/rewards still partly dummy
+- [x] Daily / weekly XP totals — stored and shown on xp-progress / weekly ranking
+- [x] Level system (e.g. Lv 7 Explorer → Lv 8 Master) with XP-to-next
+- [x] League stored on `user_stats`; weekly seasons with promote/relegate
+- [~] XP history (last 7 days chart live; activity log still TODO)
 - [ ] Difficulty setting: Easy / Medium / Hard (affects questions and XP)
 - [ ] Kid ratings / score per quiz (correct answers, beat yesterday)
 - [ ] Combo / speed bonus (e.g. 5-in-a-row extra XP)
@@ -272,11 +272,11 @@ Shared game rules:
 
 ### Rankings
 
-- [ ] Global all-time leaderboard
-- [ ] Weekly ranking + week prizes
+- [x] Global all-time leaderboard
+- [x] Weekly ranking + week prizes — ranking live; prize claiming deferred
 - [ ] Friends ranking
-- [ ] Podium (top 3)
-- [ ] “You are here” strip
+- [x] Podium (top 3)
+- [x] “You are here” strip
 - [ ] Filters: worldwide, country, on a streak, online now
 - [ ] Search players
 - [ ] Top countries
@@ -287,12 +287,12 @@ Shared game rules:
 
 Tiers: **Bronze → Silver → Gold → Emerald → Sapphire → Diamond**
 
-- [ ] Assign kid to a league group (~12 players)
-- [ ] Weekly XP in that group
-- [ ] Top 3 promote, bottom 3 relegate, rest stay
-- [ ] Season timer
+- [x] Assign kid to a league group (~12 players)
+- [x] Weekly XP in that group
+- [x] Top 3 promote, bottom 3 relegate, rest stay (tiny groups hold all)
+- [x] Season timer
 - [ ] League rewards (weekly stay bonus, champion badge, avatar frame)
-- [ ] Season journey history
+- [~] Season journey history — closed weeks listed on League screen
 
 ### Friends
 

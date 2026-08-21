@@ -39,11 +39,11 @@ new class extends Component
             <span class="stat-label flex items-center gap-1">🔥 {{ __('home.streak') }}</span>
             <span class="stat-value">{{ $streak }} <span class="text-xs font-bold text-muted">{{ __('home.days') }}</span></span>
         </a>
-        <a href="xp-progress.html" class="stat items-start hover:ring-primary transition">
+        <a href="{{ route('xp-progress') }}" wire:navigate class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">⭐ {{ __('home.xp') }}</span>
             <span class="stat-value" id="xpStat" data-target="{{ $xp }}">0</span>
         </a>
-        <a href="league.html" class="stat items-start hover:ring-primary transition">
+        <a href="{{ route('league') }}" wire:navigate class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">🏆 {{ __('home.league') }}</span>
             <span class="stat-value">{{ $leagueLabel }}</span>
         </a>
@@ -464,7 +464,7 @@ new class extends Component
                             <p class="text-[10px] text-muted mt-0.5">{{ __('home.this_morning') }}</p>
                         </div>
                     </a>
-                    <a href="league.html" class="setting-row opacity-70" data-notif data-read>
+                    <a href="{{ route('league') }}" wire:navigate class="setting-row opacity-70" data-notif data-read>
                         <div class="setting-ico tile-pink"><i class="ph-fill ph-trophy"></i></div>
                         <div class="grow min-w-0">
                             <p class="setting-text font-extrabold text-sm text-ink">{{ __('home.promoted_to_gold') }}

@@ -105,12 +105,12 @@ new class extends Component
             <p class="h-display text-lg mt-1">7</p>
             <p class="text-[11px] text-muted font-extrabold">{{ __('profile.day_streak') }}</p>
         </a>
-        <a href="xp-progress.html" class="k-card p-3 text-center">
+        <a href="{{ route('xp-progress') }}" wire:navigate class="k-card p-3 text-center">
             <div class="size-10 rounded-2xl tile-violet grid place-items-center text-xl mx-auto">⭐</div>
             <p class="h-display text-lg mt-1">1,240</p>
             <p class="text-[11px] text-muted font-extrabold">{{ __('profile.total_xp') }}</p>
         </a>
-        <a href="league.html" class="k-card p-3 text-center">
+        <a href="{{ route('league') }}" wire:navigate class="k-card p-3 text-center">
             <div class="size-10 rounded-2xl tile-mint grid place-items-center text-xl mx-auto">🏆</div>
             <p class="h-display text-lg mt-1">{{ __('profile.gold') }}</p>
             <p class="text-[11px] text-muted font-extrabold">{{ __('profile.league') }}</p>
@@ -308,7 +308,7 @@ new class extends Component
                 <span class="chip chip-sun">🔥 7</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
-            <a href="xp-progress.html" class="menu-row">
+            <a href="{{ route('xp-progress') }}" wire:navigate class="menu-row">
                 <div class="menu-ico tile-violet">📈</div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.xp_progress') }}</p>
                 <span class="chip chip-primary">{{ __('profile.level', ['level' => 7]) }}</span>

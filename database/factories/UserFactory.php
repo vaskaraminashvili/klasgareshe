@@ -8,7 +8,10 @@ use App\Enums\Gender;
 use App\Enums\OnboardingStep;
 use App\Enums\ReminderTime;
 use App\Models\User;
+use App\Models\UserActivityDay;
 use App\Models\UserStat;
+use App\Services\LeagueSeasonService;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -93,5 +96,99 @@ class UserFactory extends Factory
                 array_merge(UserStat::defaults(), $attributes),
             );
         });
+    }
+
+    /**
+     * Fully set up kid with veteran XP, streak, recent activity days, and league membership.
+     *
+     * @param  array<string, mixed>  $statAttributes
+     */
+    public function veteran(array $statAttributes = []): static
+    {
+        return $this->fullySetUp()->afterCreating(function (User $user) use ($statAttributes): void {
+            $defaults = UserStat::factory()->veteran()->make()->only([
+                'xp',
+                'current_streak',
+                'longest_streak',
+                'last_played_on',
+                'league',
+            ]);
+
+            $stats = array_merge($defaults, $statAttributes);
+
+            UserStat::query()->updateOrCreate(
+                ['user_id' => $user->id],
+                array_merge(UserStat::defaults(), $stats),
+            );
+
+            $this->seedRecentActivity($user, (int) $stats['xp'], (int) $stats['current_streak']);
+            $this->seedLeagueWeekXp($user, fake()->numberBetween(40, 280));
+        });
+    }
+
+    /**
+     * High-XP kid for the top of the global leaderboard.
+     *
+     * @param  array<string, mixed>  $statAttributes
+     */
+    public function leaderboardTop(array $statAttributes = []): static
+    {
+        return $this->fullySetUp()->afterCreating(function (User $user) use ($statAttributes): void {
+            $defaults = UserStat::factory()->leaderboardTop()->make()->only([
+                'xp',
+                'current_streak',
+                'longest_streak',
+                'last_played_on',
+                'league',
+            ]);
+
+            $stats = array_merge($defaults, $statAttributes);
+
+            UserStat::query()->updateOrCreate(
+                ['user_id' => $user->id],
+                array_merge(UserStat::defaults(), $stats),
+            );
+
+            $this->seedRecentActivity($user, (int) $stats['xp'], (int) $stats['current_streak']);
+            $this->seedLeagueWeekXp($user, fake()->numberBetween(180, 420));
+        });
+    }
+
+    private function seedRecentActivity(User $user, int $lifetimeXp, int $streak): void
+    {
+        $days = max(3, min(14, $streak > 0 ? $streak : fake()->numberBetween(4, 7)));
+        $pool = min(
+            $lifetimeXp,
+            fake()->numberBetween(60, max(60, (int) round($lifetimeXp * 0.4))),
+        );
+        $today = CarbonImmutable::now()->startOfDay();
+
+        for ($i = 0; $i < $days; $i++) {
+            $date = $today->subDays($i)->toDateString();
+            $isLast = $i === $days - 1;
+            $left = $days - $i;
+            $chunk = $isLast
+                ? max(8, $pool)
+                : fake()->numberBetween(8, max(8, intdiv($pool, $left)));
+            $chunk = min($chunk, max(8, $pool));
+            $pool = max(0, $pool - $chunk);
+
+            UserActivityDay::query()->updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'played_on' => $date,
+                ],
+                ['xp_earned' => $chunk],
+            );
+        }
+    }
+
+    private function seedLeagueWeekXp(User $user, int $weekXp): void
+    {
+        $member = app(LeagueSeasonService::class)->ensureMembership($user);
+
+        if ($weekXp > 0) {
+            $member->update(['week_xp' => $weekXp]);
+        }
     }
 }
