@@ -1,10 +1,32 @@
 <?php
 
+use App\Repositories\UserRepository;
+use App\Services\UserStatService;
 use Livewire\Component;
 
 new class extends Component
 {
-    //
+    public int $streak = 0;
+
+    public int $xp = 0;
+
+    public string $leagueLabel = '';
+
+    public int $weekActiveDays = 0;
+
+    /** @var list<array{letter: string, on: bool, today: bool}> */
+    public array $weekDays = [];
+
+    public function mount(UserStatService $stats, UserRepository $users): void
+    {
+        $home = $stats->homeSnapshot($users->authenticated());
+
+        $this->streak = $home->streak;
+        $this->xp = $home->xp;
+        $this->leagueLabel = $home->leagueLabel;
+        $this->weekActiveDays = $home->weekActiveDays;
+        $this->weekDays = $home->weekDays;
+    }
 };
 ?>
 
@@ -15,15 +37,15 @@ new class extends Component
     <section class="px-5 mt-5 grid grid-cols-3 gap-2">
         <a href="streak.html" class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">🔥 {{ __('home.streak') }}</span>
-            <span class="stat-value">7 <span class="text-xs font-bold text-muted">{{ __('home.days') }}</span></span>
+            <span class="stat-value">{{ $streak }} <span class="text-xs font-bold text-muted">{{ __('home.days') }}</span></span>
         </a>
         <a href="xp-progress.html" class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">⭐ {{ __('home.xp') }}</span>
-            <span class="stat-value" id="xpStat" data-target="1240">0</span>
+            <span class="stat-value" id="xpStat" data-target="{{ $xp }}">0</span>
         </a>
         <a href="league.html" class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">🏆 {{ __('home.league') }}</span>
-            <span class="stat-value">{{ __('home.gold_league') }}</span>
+            <span class="stat-value">{{ $leagueLabel }}</span>
         </a>
     </section>
 
@@ -69,15 +91,11 @@ new class extends Component
                 <div class="size-9 rounded-xl tile-sun grid place-items-center">🔥</div>
                 <span class="text-xs font-extrabold text-sun-ink">{{ __('home.this_week') }}</span>
             </div>
-            <p class="h-display mt-2">5 / 7 {{ __('home.days') }}</p>
+            <p class="h-display mt-2">{{ $weekActiveDays }} / 7 {{ __('home.days') }}</p>
             <div class="grid grid-cols-7 gap-1 mt-2" aria-label="Weekly streak" id="weekStreak">
-                <span class="streak-dot on opacity-0 transition-all duration-300">M</span>
-                <span class="streak-dot on opacity-0 transition-all duration-300">T</span>
-                <span class="streak-dot on opacity-0 transition-all duration-300">W</span>
-                <span class="streak-dot on opacity-0 transition-all duration-300">T</span>
-                <span class="streak-dot on today opacity-0 transition-all duration-300">F</span>
-                <span class="streak-dot opacity-0 transition-all duration-300">S</span>
-                <span class="streak-dot opacity-0 transition-all duration-300">S</span>
+                @foreach ($weekDays as $day)
+                    <span class="streak-dot{{ $day['on'] ? ' on' : '' }}{{ $day['today'] ? ' today' : '' }} opacity-0 transition-all duration-300">{{ $day['letter'] }}</span>
+                @endforeach
             </div>
         </a>
     </section>
@@ -107,7 +125,7 @@ new class extends Component
                 </div>
                 <span class="chip chip-mint">{{ __('home.plus_40_xp') }}</span>
             </div>
-            <a href="game-multiple-choice.html" class="flex items-center gap-3 p-3 border-t border-token">
+            <a href="{{ route('game-multiple-choice') }}" wire:navigate class="flex items-center gap-3 p-3 border-t border-token">
                 <div class="size-10 rounded-xl tile-violet grid place-items-center">🎯</div>
                 <div class="grow">
                     <p class="font-extrabold text-sm">{{ __('home.get_5_answers_right') }}</p>
@@ -168,7 +186,7 @@ new class extends Component
             <a href="learn-categories.html" class="link">{{ __('home.more') }}</a>
         </div>
 
-        <a href="game-multiple-choice.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+        <a href="{{ route('game-multiple-choice') }}" wire:navigate class="k-card-lg card-hero-success relative overflow-hidden block">
             <span class="watermark-emoji" aria-hidden="true">❓</span>
             <div class="relative flex items-center gap-3">
                 <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl">❓</div>
@@ -208,7 +226,9 @@ new class extends Component
                     <p class="font-extrabold text-sm">{{ __('home.leo_finished_math') }}</p>
                     <p class="text-xs text-muted">{{ __('home.minutes_ago_5') }} · {{ __('home.plus_80_xp') }}</p>
                 </div>
-                <span class="chip chip-sun">{{ __('home.streak_count_12') }}</span>
+                <span class="chip chip-sun">
+                    <i class="ph-fill ph-fire"></i> {{ __('home.streak_count_12') }}
+                </span>
             </div>
             <div class="flex items-center gap-3 p-3 border-t border-token">
                 <div class="size-10 rounded-full tile-mint grid place-items-center text-xl">🐰</div>
@@ -330,11 +350,11 @@ new class extends Component
                 <section class="px-5 mt-4">
                     <p class="section-label">{{ __('home.popular_right_now') }}</p>
                     <div class="mt-2 flex flex-wrap gap-2">
-                        <button type="button" class="chip" data-recent>alphabet</button>
-                        <button type="button" class="chip" data-recent>spell</button>
-                        <button type="button" class="chip" data-recent>space</button>
-                        <button type="button" class="chip" data-recent>shapes</button>
-                        <button type="button" class="chip" data-recent>match</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_alphabet') }}</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_spell') }}</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_space') }}</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_shapes') }}</button>
+                        <button type="button" class="chip" data-recent>{{ __('home.search_chip_match') }}</button>
                     </div>
                 </section>
 
@@ -411,7 +431,7 @@ new class extends Component
                             <p class="text-[10px] text-muted mt-0.5">{{ __('home.just_now') }}</p>
                         </div>
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
-                            aria-label="Unread"></span>
+                            aria-label="{{ __('home.unread') }}"></span>
                     </a>
                     <a href="badges.html" class="setting-row" data-notif>
                         <div class="setting-ico tile-mint"><i class="ph-fill ph-medal"></i></div>
@@ -422,7 +442,7 @@ new class extends Component
                             <p class="text-[10px] text-muted mt-0.5">{{ __('home.minutes_ago_5') }}</p>
                         </div>
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
-                            aria-label="Unread"></span>
+                            aria-label="{{ __('home.unread') }}"></span>
                     </a>
                     <a href="rewards-dashboard.html" class="setting-row" data-notif>
                         <div class="setting-ico tile-violet"><i class="ph-fill ph-gift"></i></div>
@@ -433,7 +453,7 @@ new class extends Component
                             <p class="text-[10px] text-muted mt-0.5">{{ __('home.hours_ago_1') }}</p>
                         </div>
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
-                            aria-label="Unread"></span>
+                            aria-label="{{ __('home.unread') }}"></span>
                     </a>
                     <a href="daily-mission.html" class="setting-row opacity-70" data-notif data-read>
                         <div class="setting-ico tile-sky"><i class="ph-fill ph-target"></i></div>
