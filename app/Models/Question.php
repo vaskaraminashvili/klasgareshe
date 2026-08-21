@@ -10,6 +10,7 @@ use Database\Factories\QuestionFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 
@@ -62,6 +63,14 @@ class Question extends Model
             'answer' => 'array',
             'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * @return BelongsToMany<Game, $this>
+     */
+    public function games(): BelongsToMany
+    {
+        return $this->belongsToMany(Game::class)->withTimestamps();
     }
 
     /**

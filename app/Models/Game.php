@@ -8,6 +8,7 @@ use Database\Factories\GameFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -47,5 +48,13 @@ class Game extends Model
             'xp_per_correct' => 'integer',
             'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * @return BelongsToMany<Question, $this>
+     */
+    public function questions(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class)->withTimestamps();
     }
 }

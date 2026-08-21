@@ -106,8 +106,10 @@ class QuickQuizTest extends TestCase
 
     private function seedQuiz(int $count = 1): void
     {
-        Game::factory()->create();
+        $game = Game::factory()->create();
 
-        Question::factory()->count($count)->create();
+        $questions = Question::factory()->count($count)->create();
+
+        $game->questions()->sync($questions->pluck('id')->all());
     }
 }

@@ -21,7 +21,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 **Still dummy on Home / Profile:** daily mission, continue lesson, today's plan, subjects, featured games (link works), friends, badges, search catalog, notification list, profile hero stats.
 
-**Games bank:** `games` + `questions` with `QuestionFormat` payload JSON (choice, count, spell, pairs, grid, trace, hotspot). Choice rows are seeded from `kidzio/game-*.html`. Next: another game shell on the same bank, or filter by age group.
+**Games bank:** `games` + `questions` linked by `game_question` (many-to-many). Play picks active questions attached to that game. Payload still uses `QuestionFormat` JSON (choice, count, spell, pairs, grid, trace, hotspot). Choice rows are seeded from `kidzio/game-*.html` (source game + Quick Quiz). Admin assign UI still TODO; next: another game shell, or filter by age group.
 
 ---
 
@@ -195,7 +195,7 @@ Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Most blocks are stil
 
 Each game: progress bar, hear-aloud, check answer, XP on finish.
 
-Quick Quiz is live. Other games reuse `questions.format` + `payload` / `answer` JSON.
+Quick Quiz is live. Other games will reuse attached `questions` via `game_question` (`format` + `payload` / `answer` JSON).
 
 - [x] Quick Quiz (multiple choice) — `pages::game-multiple-choice`; DB questions; 3 lives; XP on finish
 - [ ] Tap the correct answer

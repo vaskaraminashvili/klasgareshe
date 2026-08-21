@@ -32,7 +32,7 @@ class GameSeeder extends Seeder
         }
 
         foreach ($this->questions() as $question) {
-            Question::query()->updateOrCreate(
+            $model = Question::query()->updateOrCreate(
                 [
                     'source' => $question['source'],
                     'locale' => $question['locale'],
@@ -40,6 +40,24 @@ class GameSeeder extends Seeder
                 ],
                 $question,
             );
+
+            $gameIds = [];
+
+            $sourceGame = Game::query()->where('slug', $question['source'])->first();
+
+            if ($sourceGame !== null) {
+                $gameIds[] = $sourceGame->id;
+            }
+
+            if ($question['format'] === QuestionFormat::Choice) {
+                $quickQuiz = Game::query()->where('slug', GameType::MultipleChoice)->first();
+
+                if ($quickQuiz !== null) {
+                    $gameIds[] = $quickQuiz->id;
+                }
+            }
+
+            $model->games()->sync(array_values(array_unique($gameIds)));
         }
     }
 

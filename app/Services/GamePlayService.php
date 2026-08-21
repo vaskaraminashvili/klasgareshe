@@ -30,15 +30,15 @@ class GamePlayService
             throw new RuntimeException('Game is not available.');
         }
 
-        $picked = $this->questions->randomForFormat(
-            $game->format,
+        $picked = $this->questions->randomForGame(
+            $game->id,
             $locale,
             $game->questions_per_round,
         );
 
         if ($picked === [] && $locale !== 'en') {
-            $picked = $this->questions->randomForFormat(
-                $game->format,
+            $picked = $this->questions->randomForGame(
+                $game->id,
                 'en',
                 $game->questions_per_round,
             );
