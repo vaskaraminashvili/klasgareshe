@@ -110,6 +110,18 @@ class RankingAndLeagueTest extends TestCase
         Livewire::actingAs($user)->test('pages::league')->assertSuccessful();
     }
 
+    public function test_fully_set_up_kids_can_open_ranking_routes_without_home_redirect(): void
+    {
+        $this->withoutVite();
+
+        $user = User::factory()->fullySetUp()->create();
+
+        $this->actingAs($user)->get(route('xp-progress'))->assertOk();
+        $this->actingAs($user)->get(route('leaderboard'))->assertOk();
+        $this->actingAs($user)->get(route('ranking-weekly'))->assertOk();
+        $this->actingAs($user)->get(route('league'))->assertOk();
+    }
+
     public function test_close_week_holds_everyone_in_tiny_groups(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-08-17 10:00:00'));

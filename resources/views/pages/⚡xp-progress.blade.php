@@ -2,6 +2,7 @@
 
 use App\Repositories\UserRepository;
 use App\Services\UserStatService;
+use Illuminate\View\View;
 use Livewire\Component;
 
 new class extends Component
@@ -43,7 +44,7 @@ new class extends Component
         return __('ranking.xp_page_title');
     }
 
-    public function rendering(\Illuminate\View\View $view): void
+    public function rendering(View $view): void
     {
         $view->title($this->title());
     }
@@ -51,7 +52,6 @@ new class extends Component
     public function mount(UserStatService $stats, UserRepository $users): void
     {
         $snap = $stats->xpProgressSnapshot($users->authenticated());
-
         $this->xp = $snap->level->xp;
         $this->level = $snap->level->level;
         $this->levelTitle = $snap->level->title;
@@ -159,17 +159,20 @@ new class extends Component
             <div id="line" data-points='@json(json_decode($chartJson, true))'></div>
             <div class="mt-3 grid grid-cols-3 gap-2 text-center">
                 <div class="p-2 rounded-xl bg-base">
-                    <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">{{ __('ranking.chart_total') }}
+                    <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">
+                        {{ __('ranking.chart_total') }}
                     </p>
                     <p class="h-display text-base">+{{ number_format($weekXp) }} XP</p>
                 </div>
                 <div class="p-2 rounded-xl bg-base">
-                    <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">{{ __('ranking.chart_peak') }}
+                    <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">
+                        {{ __('ranking.chart_peak') }}
                     </p>
                     <p class="h-display text-base">{{ $bestDayLabel }}</p>
                 </div>
                 <div class="p-2 rounded-xl bg-base">
-                    <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">{{ __('ranking.chart_quiet') }}
+                    <p class="text-[10px] font-extrabold uppercase tracking-wide text-muted">
+                        {{ __('ranking.chart_quiet') }}
                     </p>
                     <p class="h-display text-base">{{ $quietDayLabel }}</p>
                 </div>
@@ -237,7 +240,8 @@ new class extends Component
             <div class="relative flex items-center gap-3">
                 <div class="text-4xl">⚡</div>
                 <div class="grow">
-                    <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">{{ __('ranking.level_up_faster') }}
+                    <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">
+                        {{ __('ranking.level_up_faster') }}
                     </p>
                     <p class="h-display text-lg leading-tight">{{ __('ranking.finish_mission') }}</p>
                 </div>
