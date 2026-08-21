@@ -19,6 +19,7 @@ This is **Livewire, not Vue**. Do not add Vue, Nuxt, Vuex, or Inertia.
 
 ## Product rules
 
+- **Language:** the product ships in Georgian (`ka` / ქართული). UI strings live in `lang/ka`; game questions and other user-facing DB content are seeded with `locale = ka`. Keep `__()` / `lang` files for every screen copy — do not hardcode English in Blade. English (`lang/en`) and other locales are for future localization only (`APP_FALLBACK_LOCALE=en`); do not make English the default content.
 - Parent-gated screens (PIN, reports, screen time, bedtime, delete account) must never be reachable by the kid without verification.
 - Password reset and parent verification go to the **parent email only**.
 - Age group drives lesson difficulty, word length, and pace.
@@ -41,7 +42,7 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
 - Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots. Mission, lessons, friends, badges are still dummy. Profile is ported; logout works; stats on that screen are dummy.
 - XP / streak storage: `user_stats` + `user_activity_days`. Quick Quiz calls `UserStatService::recordPlay()`.
-- Quick Quiz (`/game-multiple-choice`): questions from DB, 3 lives, XP on finish. Shared `questions` bank is seeded from the Kidzio HTML games.
+- Quick Quiz (`/game-multiple-choice`): Georgian questions from DB (`locale=ka`), 3 lives, XP on finish. Shared bank via `game_question`; seeded from Kidzio HTML games (translated).
 
 Build next: another mini-game on the same question bank, then Learn library.
 

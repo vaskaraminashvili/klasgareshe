@@ -6,9 +6,9 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public $email = '';
+    public $email = 'john.doe@example.com';
 
-    public $password = '';
+    public $password = 'password';
 
     public function login()
     {
