@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\FavouriteSubject;
 use App\Enums\GameType;
+use App\Enums\GameVisibility;
 use App\Enums\QuestionFormat;
 use App\Models\Game;
 use App\Models\Question;
@@ -20,13 +21,17 @@ class GameSeeder extends Seeder
             $defaults = $type->playDefaults();
 
             Game::query()->updateOrCreate(
-                ['slug' => $type],
+                [
+                    'slug' => $type,
+                    'user_id' => null,
+                ],
                 [
                     'format' => $type->format(),
                     'lives' => $defaults['lives'],
                     'questions_per_round' => $defaults['questions_per_round'],
                     'xp_per_correct' => $defaults['xp_per_correct'],
                     'is_active' => true,
+                    'visibility' => GameVisibility::Public,
                 ],
             );
         }
@@ -42,14 +47,20 @@ class GameSeeder extends Seeder
 
             $gameIds = [];
 
-            $sourceGame = Game::query()->where('slug', $question['source'])->first();
+            $sourceGame = Game::query()
+                ->where('slug', $question['source'])
+                ->whereNull('user_id')
+                ->first();
 
             if ($sourceGame !== null) {
                 $gameIds[] = $sourceGame->id;
             }
 
             if ($question['format'] === QuestionFormat::Choice) {
-                $quickQuiz = Game::query()->where('slug', GameType::MultipleChoice)->first();
+                $quickQuiz = Game::query()
+                    ->where('slug', GameType::MultipleChoice)
+                    ->whereNull('user_id')
+                    ->first();
 
                 if ($quickQuiz !== null) {
                     $gameIds[] = $quickQuiz->id;
