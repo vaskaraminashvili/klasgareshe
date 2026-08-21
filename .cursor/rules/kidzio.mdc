@@ -6,6 +6,7 @@ alwaysApply: true
 Follow `CLAUDE.md` at the repo root on every task. It is the source of truth for this project.
 
 - Product: kids learning app (parent account + kid profile). Backlog: `KIDZIO-FEATURES.md`.
+- Language: ship in Georgian (`ka`). Use `lang/ka` + `__()` for UI; DB content (questions, etc.) uses `locale=ka`. Keep structure ready for other locales later — do not default new copy to English.
 - Stack: Laravel 13, Livewire 4 (single-file `⚡*.blade.php`). Not Vue.
 - Architecture: repositories for all Eloquent, services for business logic, thin Livewire components.
 - Parent-gated features stay behind PIN / parent verification.

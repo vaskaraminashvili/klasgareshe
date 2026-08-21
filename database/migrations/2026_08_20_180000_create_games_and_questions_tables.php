@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 128)->nullable();
             $table->string('slug', 32)->unique();
             $table->string('format', 32);
             $table->unsignedTinyInteger('lives')->default(3);
@@ -28,7 +29,7 @@ return new class extends Migration
             $table->string('source', 32)->nullable();
             $table->string('subject', 32);
             $table->string('age_group', 32)->nullable();
-            $table->string('locale', 8)->default('en');
+            $table->string('locale', 8)->default('ka');
             $table->text('prompt')->nullable();
             $table->text('hint')->nullable();
             $table->json('media')->nullable();
