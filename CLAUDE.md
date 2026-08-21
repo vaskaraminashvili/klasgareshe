@@ -34,14 +34,16 @@ Leagues: Bronze → Silver → Gold → Emerald → Sapphire → Diamond.
 
 ## Current status
 
-Started, not product-ready.
+Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 
 - Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired.
 - After register: onboarding (age → subjects → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
-- Home (`/`) is still a placeholder shell.
+- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots. Mission, lessons, friends, badges are still dummy. Profile is ported; logout works; stats on that screen are dummy.
+- XP / streak storage: `user_stats` + `user_activity_days`. Quick Quiz calls `UserStatService::recordPlay()`.
+- Quick Quiz (`/game-multiple-choice`): questions from DB, 3 lives, XP on finish. Shared `questions` bank is seeded from the Kidzio HTML games.
 
-Build next: home shell (tabs, greeting from kid name, today’s plan) → XP.
+Build next: another mini-game on the same question bank, then Learn library.
 
 ---
 

@@ -125,7 +125,7 @@ new class extends Component
                 </div>
                 <span class="chip chip-mint">{{ __('home.plus_40_xp') }}</span>
             </div>
-            <a href="game-multiple-choice.html" class="flex items-center gap-3 p-3 border-t border-token">
+            <a href="{{ route('game-multiple-choice') }}" wire:navigate class="flex items-center gap-3 p-3 border-t border-token">
                 <div class="size-10 rounded-xl tile-violet grid place-items-center">🎯</div>
                 <div class="grow">
                     <p class="font-extrabold text-sm">{{ __('home.get_5_answers_right') }}</p>
@@ -186,7 +186,7 @@ new class extends Component
             <a href="learn-categories.html" class="link">{{ __('home.more') }}</a>
         </div>
 
-        <a href="game-multiple-choice.html" class="k-card-lg card-hero-success relative overflow-hidden block">
+        <a href="{{ route('game-multiple-choice') }}" wire:navigate class="k-card-lg card-hero-success relative overflow-hidden block">
             <span class="watermark-emoji" aria-hidden="true">❓</span>
             <div class="relative flex items-center gap-3">
                 <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl">❓</div>
