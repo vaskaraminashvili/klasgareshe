@@ -23,7 +23,8 @@ new class extends Component
             <span class="tab-ico">
                 <i class="ph ph-gift text-xl"></i>
             </span>{{ __('nav.rewards') }}</a>
-        <a class="tab" href="leaderboard.html">
+        <a class="tab {{ request()->routeIs('leaderboard', 'ranking-weekly', 'league') ? 'active' : '' }}"
+            href="{{ route('leaderboard') }}" wire:navigate>
             <span class="tab-ico">
                 <i class="ph ph-trophy text-xl"></i>
             </span>{{ __('nav.ranking') }}</a>

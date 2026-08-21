@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Database\Factories\UserActivityDayFactory;
+use App\Enums\LeagueOutcome;
+use Database\Factories\LeagueGroupMemberFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,20 +12,24 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int $league_group_id
  * @property int $user_id
- * @property Carbon $played_on
- * @property int $xp_earned
+ * @property int $week_xp
+ * @property int|null $finish_rank
+ * @property LeagueOutcome|null $outcome
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
 #[Fillable([
+    'league_group_id',
     'user_id',
-    'played_on',
-    'xp_earned',
+    'week_xp',
+    'finish_rank',
+    'outcome',
 ])]
-class UserActivityDay extends Model
+class LeagueGroupMember extends Model
 {
-    /** @use HasFactory<UserActivityDayFactory> */
+    /** @use HasFactory<LeagueGroupMemberFactory> */
     use HasFactory;
 
     /**
@@ -33,9 +38,18 @@ class UserActivityDay extends Model
     protected function casts(): array
     {
         return [
-            'played_on' => 'date',
-            'xp_earned' => 'integer',
+            'week_xp' => 'integer',
+            'finish_rank' => 'integer',
+            'outcome' => LeagueOutcome::class,
         ];
+    }
+
+    /**
+     * @return BelongsTo<LeagueGroup, $this>
+     */
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(LeagueGroup::class, 'league_group_id');
     }
 
     /**

@@ -1,12 +1,23 @@
-// Page script for ranking-weekly.html — extracted from inline <script>.
-// Loaded via <script src="./assets/js/ranking-weekly.js"></script>.
-
-  KCharts.line(document.getElementById('line'), [
-    { label: 'Mon', value: 120 },
-    { label: 'Tue', value: 150 },
-    { label: 'Wed', value: 130 },
-    { label: 'Thu', value: 170 },
-    { label: 'Fri', value: 200 },
-    { label: 'Sat', value: 90 },
-    { label: 'Sun', value: 80 }
-  ]);
+// Page script for ranking-weekly — reads live series from #line[data-points].
+(function () {
+  var el = document.getElementById('line');
+  if (!el || typeof KCharts === 'undefined') return;
+  var points = [];
+  try {
+    points = JSON.parse(el.getAttribute('data-points') || '[]');
+  } catch (e) {
+    points = [];
+  }
+  if (!points.length) {
+    points = [
+      { label: 'M', value: 0 },
+      { label: 'T', value: 0 },
+      { label: 'W', value: 0 },
+      { label: 'T', value: 0 },
+      { label: 'F', value: 0 },
+      { label: 'S', value: 0 },
+      { label: 'S', value: 0 }
+    ];
+  }
+  KCharts.line(el, points);
+})();
