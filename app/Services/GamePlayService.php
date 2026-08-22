@@ -20,7 +20,38 @@ class GamePlayService
         private GameRepository $games,
         private QuestionRepository $questions,
         private UserStatService $stats,
+        private WeekPlanService $weekPlan,
+        private BadgeService $badges,
     ) {}
+
+    public function startPlanItem(User $user, int $itemId): GameRound
+    {
+        try {
+            $item = $this->weekPlan->findPlayable($user, $itemId);
+        } catch (InvalidArgumentException $e) {
+            throw new RuntimeException($e->getMessage(), 0, $e);
+        }
+
+        $game = $this->games->findBySlug($item->game_slug);
+
+        if ($game === null || ! $game->is_active) {
+            throw new RuntimeException('Game is not available.');
+        }
+
+        $ids = $this->weekPlan->questionIds($item);
+
+        if ($ids === []) {
+            throw new RuntimeException('No questions are available for this game.');
+        }
+
+        return new GameRound(
+            game: $item->game_slug,
+            lives: $game->lives,
+            xpPerCorrect: $game->xp_per_correct,
+            questionIds: $ids,
+            weekPlanItemId: $item->id,
+        );
+    }
 
     public function startRound(GameType $type, ?string $locale = null): GameRound
     {
@@ -88,7 +119,7 @@ class GamePlayService
         );
     }
 
-    public function award(User $user, GameType $type, int $correctCount): int
+    public function award(User $user, GameType $type, int $correctCount, ?int $weekPlanItemId = null): int
     {
         $game = $this->games->findBySlug($type);
 
@@ -98,7 +129,13 @@ class GamePlayService
 
         $xp = max(0, $correctCount) * $game->xp_per_correct;
 
-        $this->stats->recordPlay($user, $xp);
+        $this->stats->recordPlay($user, $xp, skipEvaluate: true);
+
+        if ($weekPlanItemId !== null) {
+            $this->weekPlan->completeItem($user, $weekPlanItemId, $correctCount);
+        }
+
+        $this->badges->evaluate($user);
 
         return $xp;
     }

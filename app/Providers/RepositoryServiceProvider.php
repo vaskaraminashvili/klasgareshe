@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Repositories\BadgeRepository;
 use App\Repositories\GameRepository;
 use App\Repositories\LeagueRepository;
 use App\Repositories\QuestionRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserStatRepository;
+use App\Repositories\WeekPlanRepository;
+use App\Services\BadgeService;
 use App\Services\GamePlayService;
 use App\Services\KidSetupService;
 use App\Services\LeagueSeasonService;
@@ -14,6 +17,7 @@ use App\Services\LevelCalculator;
 use App\Services\ParentVerificationService;
 use App\Services\UserRegistrationService;
 use App\Services\UserStatService;
+use App\Services\WeekPlanService;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -35,5 +39,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(GamePlayService::class);
         $this->app->singleton(KidSetupService::class);
         $this->app->singleton(ParentVerificationService::class);
+        $this->app->singleton(WeekPlanRepository::class);
+        $this->app->singleton(WeekPlanService::class);
+        $this->app->singleton(BadgeRepository::class);
+        $this->app->singleton(BadgeService::class);
     }
 }

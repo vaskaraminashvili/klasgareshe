@@ -21,8 +21,10 @@ class QuestionFactory extends Factory
         return [
             'format' => QuestionFormat::Choice,
             'source' => GameType::MultipleChoice,
-            'subject' => FavouriteSubject::Animals,
+            'subject' => FavouriteSubject::Math,
             'age_group' => null,
+            'grade' => 1,
+            'code' => fake()->unique()->bothify('test-####-????'),
             'locale' => 'ka',
             'prompt' => 'რა ცხოველი ამბობს „მუ“?',
             'hint' => null,

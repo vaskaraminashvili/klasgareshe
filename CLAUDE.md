@@ -22,12 +22,12 @@ This is **Livewire, not Vue**. Do not add Vue, Nuxt, Vuex, or Inertia.
 - **Language:** the product ships in Georgian (`ka` / ქართული). UI strings live in `lang/ka`; game questions and other user-facing DB content are seeded with `locale = ka`. Keep `__()` / `lang` files for every screen copy — do not hardcode English in Blade. English (`lang/en`) and other locales are for future localization only (`APP_FALLBACK_LOCALE=en`); do not make English the default content.
 - Parent-gated screens (PIN, reports, screen time, bedtime, delete account) must never be reachable by the kid without verification.
 - Password reset and parent verification go to the **parent email only**.
-- Age group drives lesson difficulty, word length, and pace.
-- Scoring loop: play → XP → level up → ranks / leagues / badges.
+- **Class (`users.grade` 1–3)** drives week-plan packs (difficulty and question bank). Signup still stores `age`; `age_group` is set in the background and is not the content filter.
+- Scoring loop: play week pack → XP → level up → ranks / leagues / badges.
 
 Tabs: Home · Learn · Rewards · Ranking · Profile.
 
-Subjects: Math, Alphabet, Animals, Words, Knowledge, Opposites.
+School subjects (v1): ქართული, მათემატიკა, ისტორია (საქართველო for this age). Kidzio extras (animals, A–Z, opposites) are not on Home.
 
 Leagues: Bronze → Silver → Gold → Emerald → Sapphire → Diamond.
 
@@ -38,13 +38,15 @@ Leagues: Bronze → Silver → Gold → Emerald → Sapphire → Diamond.
 Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 
 - Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired.
-- After register: onboarding (age → subjects → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step.
+- After register: onboarding (**კლასი 1 / 2 / 3** → ქართული / მათემატიკა / ისტორია → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step. Kids without `grade` play class 1 packs.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
-- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots. Mission, lessons, friends, badges are still dummy. Profile is ported; logout works; stats on that screen are dummy.
-- XP / streak storage: `user_stats` + `user_activity_days`. Quick Quiz calls `UserStatService::recordPlay()`.
-- Quick Quiz (`/game-multiple-choice`): Georgian questions from DB (`locale=ka`), 3 lives, XP on finish. Shared bank via `game_question`; seeded from Kidzio HTML games (translated).
+- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (`/game-multiple-choice/{item}`) or `daily-mission`. Friends, search, and most profile stats are still dummy. Recent badges on Home and Profile are live. Logout works.
+- Daily mission (`/daily-mission`, `pages::daily-mission`): week checklist of 21 packs (done / next / locked). Gift box / share / bonus markup only.
+- Week plan: `week_plan_items` + `user_plan_progress`. Curriculum week 1 seeded for grades 1–3 (`WeekPlanSeeder`, `locale=ka`). Catch-up: first incomplete weekday per subject; progress is not wiped on Monday. Completing a pack calls `UserStatService::recordPlay()`.
+- Quick Quiz (`/game-multiple-choice/{item}`): that pack’s 5 Georgian questions, 3 lives, XP on finish. Bare `/game-multiple-choice` redirects to the next incomplete item. Finishing a pack evaluates badges and may redirect to `/badge-unlock/{slug}`.
+- Badges (`/badges`, `pages::badges`) + unlock (`/badge-unlock/{slug}`): 21 Kidzio badges, Georgian names, immediate unlock + one-time celebration. Speed Runner and Social Star stay locked. Rewards tab opens the collection. Shop / claim queue / Rewards dashboard are later.
 
-Build next: another mini-game on the same question bank, then Learn library.
+Build next: week 2+ packs in the same tables, then another mini-game shell or Learn tab. Review seeded ისტორია facts.
 
 ---
 
@@ -75,6 +77,10 @@ Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/
 | `login.html` | `pages::user-login` | `user-login` | `/login` |
 | `signup.html` | `pages::user-register` | `user-register` | `/register` |
 | `home.html` | `pages::home` | `home` | `/` |
+| `daily-mission.html` | `pages::daily-mission` | `daily-mission` | `/daily-mission` |
+| `game-multiple-choice.html` | `pages::game-multiple-choice` | `game-multiple-choice` | `/game-multiple-choice/{item?}` |
+| `badges.html` | `pages::badges` | `badges` | `/badges` |
+| `badge-unlock.html` | `pages::badge-unlock` | `badge-unlock` | `/badge-unlock/{slug}` |
 | `index.html` (splash) | not built yet; back buttons use `home` | `home` | `/` |
 | any other `{name}.html` | `pages::{name}` (kebab-case) | `{name}` | `/{name}` unless a name already exists |
 

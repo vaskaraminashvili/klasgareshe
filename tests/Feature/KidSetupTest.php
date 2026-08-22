@@ -6,6 +6,7 @@ use App\Enums\AgeGroup;
 use App\Enums\DailyGoal;
 use App\Enums\OnboardingStep;
 use App\Enums\ReminderTime;
+use App\Enums\SchoolGrade;
 use App\Models\User;
 use App\Notifications\ParentVerificationNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -64,23 +65,24 @@ class KidSetupTest extends TestCase
             ->assertRedirect(route('onboarding-age'));
     }
 
-    public function test_onboarding_age_is_preselected_from_signup_age_and_advances(): void
+    public function test_onboarding_grade_is_preselected_from_signup_age_and_advances(): void
     {
         $user = User::factory()->create(['age' => 11]);
 
         Livewire::actingAs($user)
             ->test('pages::onboarding-age')
-            ->assertSet('ageGroup', AgeGroup::Explorer->value)
+            ->assertSet('grade', SchoolGrade::Third->value)
             ->call('save')
             ->assertRedirect(route('onboarding-categories'));
 
         $user->refresh();
 
+        $this->assertSame(SchoolGrade::Third, $user->grade);
         $this->assertSame(AgeGroup::Explorer, $user->age_group);
         $this->assertSame(OnboardingStep::Categories, $user->onboarding_step);
     }
 
-    public function test_subjects_can_be_skipped_and_extras_map_to_core_topics(): void
+    public function test_subjects_can_be_skipped_and_extras_map_to_school_topics(): void
     {
         $user = User::factory()->create([
             'onboarding_step' => OnboardingStep::Categories,
@@ -94,7 +96,7 @@ class KidSetupTest extends TestCase
 
         $user->refresh();
 
-        $this->assertSame(['knowledge'], $user->favourite_subjects);
+        $this->assertSame(['history'], $user->favourite_subjects);
         $this->assertSame(OnboardingStep::Goals, $user->onboarding_step);
     }
 

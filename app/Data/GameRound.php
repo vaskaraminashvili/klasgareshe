@@ -14,5 +14,6 @@ final readonly class GameRound
         public int $lives,
         public int $xpPerCorrect,
         public array $questionIds,
+        public ?int $weekPlanItemId = null,
     ) {}
 }

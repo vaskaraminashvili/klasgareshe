@@ -86,12 +86,12 @@ new class extends Component
 
   <!-- =============== CATEGORY GRID =============== -->
   <section class="px-6 mt-3 grid grid-cols-2 gap-3">
-    <button type="button" class="pick-card{{ $this->isPicked('alphabet') ? ' is-selected' : '' }}" wire:click="toggle('alphabet')" data-pick>
+    <button type="button" class="pick-card{{ $this->isPicked('georgian') ? ' is-selected' : '' }}" wire:click="toggle('georgian')" data-pick>
       <span class="pc-popular">{{ __('onboarding.categories.hot') }}</span>
       <span class="pc-emoji tile-sun">🔤</span>
       <span class="pc-body">
-        <span class="pc-name">{{ __('onboarding.categories.topics.alphabet') }}</span>
-        <span class="pc-sub">{{ __('onboarding.categories.topics.alphabet_sub') }}</span>
+        <span class="pc-name">{{ __('onboarding.categories.topics.georgian') }}</span>
+        <span class="pc-sub">{{ __('onboarding.categories.topics.georgian_sub') }}</span>
       </span>
       <span class="pc-check"></span>
     </button>
@@ -104,75 +104,11 @@ new class extends Component
       </span>
       <span class="pc-check"></span>
     </button>
-    <button type="button" class="pick-card{{ $this->isPicked('animals') ? ' is-selected' : '' }}" wire:click="toggle('animals')" data-pick>
-      <span class="pc-emoji tile-mint">🦁</span>
+    <button type="button" class="pick-card{{ $this->isPicked('history') ? ' is-selected' : '' }}" wire:click="toggle('history')" data-pick>
+      <span class="pc-emoji tile-sky">🏛️</span>
       <span class="pc-body">
-        <span class="pc-name">{{ __('onboarding.categories.topics.animals') }}</span>
-        <span class="pc-sub">{{ __('onboarding.categories.topics.animals_sub') }}</span>
-      </span>
-      <span class="pc-check"></span>
-    </button>
-    <button type="button" class="pick-card{{ $this->isPicked('words') ? ' is-selected' : '' }}" wire:click="toggle('words')" data-pick>
-      <span class="pc-emoji tile-coral">📚</span>
-      <span class="pc-body">
-        <span class="pc-name">{{ __('onboarding.categories.topics.words') }}</span>
-        <span class="pc-sub">{{ __('onboarding.categories.topics.words_sub') }}</span>
-      </span>
-      <span class="pc-check"></span>
-    </button>
-  </section>
-
-  <!-- =============== MORE SECTION =============== -->
-  <section class="px-6 mt-5">
-    <p class="section-label">{{ __('onboarding.categories.more_topics') }}</p>
-  </section>
-
-  <section class="px-6 mt-3 grid grid-cols-2 gap-3">
-    <button type="button" class="pick-card{{ $this->isPicked('world') ? ' is-selected' : '' }}" wire:click="toggle('world')" data-pick>
-      <span class="pc-emoji tile-sky">🌍</span>
-      <span class="pc-body">
-        <span class="pc-name">{{ __('onboarding.categories.topics.world') }}</span>
-        <span class="pc-sub">{{ __('onboarding.categories.topics.world_sub') }}</span>
-      </span>
-      <span class="pc-check"></span>
-    </button>
-    <button type="button" class="pick-card{{ $this->isPicked('colors') ? ' is-selected' : '' }}" wire:click="toggle('colors')" data-pick>
-      <span class="pc-emoji tile-pink">🎨</span>
-      <span class="pc-body">
-        <span class="pc-name">{{ __('onboarding.categories.topics.colors') }}</span>
-        <span class="pc-sub">{{ __('onboarding.categories.topics.colors_sub') }}</span>
-      </span>
-      <span class="pc-check"></span>
-    </button>
-    <button type="button" class="pick-card{{ $this->isPicked('logic') ? ' is-selected' : '' }}" wire:click="toggle('logic')" data-pick>
-      <span class="pc-emoji tile-violet">🧩</span>
-      <span class="pc-body">
-        <span class="pc-name">{{ __('onboarding.categories.topics.logic') }}</span>
-        <span class="pc-sub">{{ __('onboarding.categories.topics.logic_sub') }}</span>
-      </span>
-      <span class="pc-check"></span>
-    </button>
-    <button type="button" class="pick-card{{ $this->isPicked('music') ? ' is-selected' : '' }}" wire:click="toggle('music')" data-pick>
-      <span class="pc-emoji tile-sun">🎵</span>
-      <span class="pc-body">
-        <span class="pc-name">{{ __('onboarding.categories.topics.music') }}</span>
-        <span class="pc-sub">{{ __('onboarding.categories.topics.music_sub') }}</span>
-      </span>
-      <span class="pc-check"></span>
-    </button>
-    <button type="button" class="pick-card{{ $this->isPicked('opposites') ? ' is-selected' : '' }}" wire:click="toggle('opposites')" data-pick>
-      <span class="pc-emoji tile-mint">⚖️</span>
-      <span class="pc-body">
-        <span class="pc-name">{{ __('onboarding.categories.topics.opposites') }}</span>
-        <span class="pc-sub">{{ __('onboarding.categories.topics.opposites_sub') }}</span>
-      </span>
-      <span class="pc-check"></span>
-    </button>
-    <button type="button" class="pick-card{{ $this->isPicked('science') ? ' is-selected' : '' }}" wire:click="toggle('science')" data-pick>
-      <span class="pc-emoji tile-coral">🧪</span>
-      <span class="pc-body">
-        <span class="pc-name">{{ __('onboarding.categories.topics.science') }}</span>
-        <span class="pc-sub">{{ __('onboarding.categories.topics.science_sub') }}</span>
+        <span class="pc-name">{{ __('onboarding.categories.topics.history') }}</span>
+        <span class="pc-sub">{{ __('onboarding.categories.topics.history_sub') }}</span>
       </span>
       <span class="pc-check"></span>
     </button>

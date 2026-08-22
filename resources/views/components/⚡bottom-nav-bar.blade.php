@@ -11,7 +11,7 @@ new class extends Component
 <!-- =============== TAB BAR =============== -->
 <nav class="tabbar mt-auto" aria-label="{{ __('nav.primary') }}">
     <div class="tabbar-inner">
-        <a class="tab {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}" wire:navigate>
+        <a class="tab {{ request()->routeIs('home', 'daily-mission') ? 'active' : '' }}" href="{{ route('home') }}" wire:navigate>
             <span class="tab-ico">
                 <i class="ph-fill ph-house-simple text-xl"></i>
             </span>{{ __('nav.home') }}</a>
@@ -19,9 +19,10 @@ new class extends Component
             <span class="tab-ico">
                 <i class="ph ph-books text-xl"></i>
             </span>{{ __('nav.learn') }}</a>
-        <a class="tab" href="rewards-dashboard.html">
+        <a class="tab {{ request()->routeIs('badges', 'badge-unlock') ? 'active' : '' }}" href="{{ route('badges') }}"
+            wire:navigate>
             <span class="tab-ico">
-                <i class="ph ph-gift text-xl"></i>
+                <i class="{{ request()->routeIs('badges', 'badge-unlock') ? 'ph-fill' : 'ph' }} ph-gift text-xl"></i>
             </span>{{ __('nav.rewards') }}</a>
         <a class="tab {{ request()->routeIs('leaderboard', 'ranking-weekly', 'league') ? 'active' : '' }}"
             href="{{ route('leaderboard') }}" wire:navigate>

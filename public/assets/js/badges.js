@@ -70,14 +70,15 @@
     // Share button
     if (shareBtn) {
       shareBtn.addEventListener('click', function () {
-        const shareText = 'Luna has earned 8 Kidzio badges! 🏆 Check it out:';
-        const url = 'https://kidzio.app/u/luna/badges';
+        const shareText = shareBtn.getAttribute('data-share-text') || '';
+        const copied = shareBtn.getAttribute('data-share-copied') || '';
+        const url = window.location.href;
         if (navigator.share) {
-          navigator.share({ title: 'My Kidzio badges', text: shareText, url: url }).catch(function () {});
+          navigator.share({ title: shareText, text: shareText, url: url }).catch(function () {});
         } else if (navigator.clipboard) {
-          navigator.clipboard.writeText(url).then(function () { toast('Link copied'); });
+          navigator.clipboard.writeText(url).then(function () { toast(copied); });
         } else {
-          toast('Share link: ' + url);
+          toast(url);
         }
       });
     }

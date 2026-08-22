@@ -82,10 +82,7 @@ class UserStatRepository
             ->whereDate('played_on', '>=', $from)
             ->whereDate('played_on', '<=', $to)
             ->get(['played_on', 'xp_earned']) as $day) {
-            $date = $day->played_on instanceof CarbonInterface
-                ? $day->played_on->toDateString()
-                : CarbonImmutable::parse((string) $day->played_on)->toDateString();
-            $map[$date] = (int) $day->xp_earned;
+            $map[$day->played_on->toDateString()] = (int) $day->xp_earned;
         }
 
         return $map;

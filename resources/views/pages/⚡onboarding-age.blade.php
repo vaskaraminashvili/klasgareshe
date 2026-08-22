@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\AgeGroup;
+use App\Enums\SchoolGrade;
 use App\Repositories\UserRepository;
 use App\Services\KidSetupService;
 use Illuminate\Validation\Rule;
@@ -8,7 +8,7 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public string $ageGroup = 'kindergarten';
+    public int $grade = 1;
 
     public function title(): string
     {
@@ -22,28 +22,28 @@ new class extends Component
 
     public function mount(KidSetupService $setup, UserRepository $users): void
     {
-        $this->ageGroup = $setup->defaultAgeGroup($users->authenticated())->value;
+        $this->grade = $setup->defaultGrade($users->authenticated())->value;
     }
 
-    public function select(string $ageGroup): void
+    public function select(int $grade): void
     {
-        $this->ageGroup = $ageGroup;
+        $this->grade = $grade;
     }
 
     public function save(KidSetupService $setup, UserRepository $users): void
     {
         $this->validate([
-            'ageGroup' => ['required', Rule::enum(AgeGroup::class)],
+            'grade' => ['required', Rule::enum(SchoolGrade::class)],
         ]);
 
-        $setup->saveAgeGroup($users->authenticated(), AgeGroup::from($this->ageGroup));
+        $setup->saveGrade($users->authenticated(), SchoolGrade::from($this->grade));
 
         $this->redirectRoute('onboarding-categories', navigate: true);
     }
 
-    public function selected(): AgeGroup
+    public function selected(): SchoolGrade
     {
-        return AgeGroup::from($this->ageGroup);
+        return SchoolGrade::from($this->grade);
     }
 };
 ?>
@@ -78,32 +78,25 @@ new class extends Component
     <p class="section-label">{{ __('onboarding.age.pick_range') }}</p>
     <div class="mt-3 grid grid-cols-2 gap-3" id="ageGroup">
 
-      <button type="button" class="age-card{{ $ageGroup === 'preschool' ? ' is-selected' : '' }}" wire:click="select('preschool')" data-age data-name="Preschool" data-range="4–5">
-        <div class="age-emoji tile-mint">🧸</div>
-        <p class="age-range">{{ __('onboarding.age.ranges.preschool') }}</p>
-        <p class="age-label">{{ __('onboarding.age.groups.preschool') }}</p>
-        <span class="age-check"></span>
-      </button>
-
-      <button type="button" class="age-card{{ $ageGroup === 'kindergarten' ? ' is-selected' : '' }}" wire:click="select('kindergarten')" data-age data-name="Kindergarten" data-range="6–7">
+      <button type="button" class="age-card{{ $grade === 1 ? ' is-selected' : '' }}" wire:click="select(1)" data-age data-name="Grade 1" data-range="6–7">
         <span class="age-tag">{{ __('onboarding.age.popular') }}</span>
-        <div class="age-emoji tile-sun">🦄</div>
-        <p class="age-range">{{ __('onboarding.age.ranges.kindergarten') }}</p>
-        <p class="age-label">{{ __('onboarding.age.groups.kindergarten') }}</p>
+        <div class="age-emoji tile-sun">1️⃣</div>
+        <p class="age-range">{{ __('onboarding.age.grade_ranges.1') }}</p>
+        <p class="age-label">{{ __('onboarding.age.grades.1') }}</p>
         <span class="age-check"></span>
       </button>
 
-      <button type="button" class="age-card{{ $ageGroup === 'elementary' ? ' is-selected' : '' }}" wire:click="select('elementary')" data-age data-name="Elementary" data-range="8–9">
-        <div class="age-emoji tile-coral">🚀</div>
-        <p class="age-range">{{ __('onboarding.age.ranges.elementary') }}</p>
-        <p class="age-label">{{ __('onboarding.age.groups.elementary') }}</p>
+      <button type="button" class="age-card{{ $grade === 2 ? ' is-selected' : '' }}" wire:click="select(2)" data-age data-name="Grade 2" data-range="7–8">
+        <div class="age-emoji tile-mint">2️⃣</div>
+        <p class="age-range">{{ __('onboarding.age.grade_ranges.2') }}</p>
+        <p class="age-label">{{ __('onboarding.age.grades.2') }}</p>
         <span class="age-check"></span>
       </button>
 
-      <button type="button" class="age-card{{ $ageGroup === 'explorer' ? ' is-selected' : '' }}" wire:click="select('explorer')" data-age data-name="Explorer" data-range="10+">
-        <div class="age-emoji tile-violet">🧪</div>
-        <p class="age-range">{{ __('onboarding.age.ranges.explorer') }}</p>
-        <p class="age-label">{{ __('onboarding.age.groups.explorer') }}</p>
+      <button type="button" class="age-card{{ $grade === 3 ? ' is-selected' : '' }}" wire:click="select(3)" data-age data-name="Grade 3" data-range="8–9">
+        <div class="age-emoji tile-coral">3️⃣</div>
+        <p class="age-range">{{ __('onboarding.age.grade_ranges.3') }}</p>
+        <p class="age-label">{{ __('onboarding.age.grades.3') }}</p>
         <span class="age-check"></span>
       </button>
     </div>
@@ -124,7 +117,7 @@ new class extends Component
         <p class="text-[10px] text-muted">{{ __('onboarding.age.counting_sub') }}</p>
       </div>
       <div class="k-card p-3">
-        <div class="size-9 rounded-xl tile-mint grid place-items-center text-lg mx-auto">🦁</div>
+        <div class="size-9 rounded-xl tile-sky grid place-items-center text-lg mx-auto">🏛️</div>
         <p class="text-[11px] font-extrabold mt-1 text-ink">{{ __('onboarding.age.animals') }}</p>
         <p class="text-[10px] text-muted">{{ __('onboarding.age.animals_sub') }}</p>
       </div>
@@ -134,12 +127,12 @@ new class extends Component
         <p class="text-[10px] text-muted">{{ __('onboarding.age.words_sub') }}</p>
       </div>
       <div class="k-card p-3">
-        <div class="size-9 rounded-xl tile-sky grid place-items-center text-lg mx-auto">🎨</div>
+        <div class="size-9 rounded-xl tile-mint grid place-items-center text-lg mx-auto">🔢</div>
         <p class="text-[11px] font-extrabold mt-1 text-ink">{{ __('onboarding.age.colors') }}</p>
         <p class="text-[10px] text-muted">{{ __('onboarding.age.colors_sub') }}</p>
       </div>
       <div class="k-card p-3">
-        <div class="size-9 rounded-xl tile-pink grid place-items-center text-lg mx-auto">⚖️</div>
+        <div class="size-9 rounded-xl tile-pink grid place-items-center text-lg mx-auto">🚩</div>
         <p class="text-[11px] font-extrabold mt-1 text-ink">{{ __('onboarding.age.opposites') }}</p>
         <p class="text-[10px] text-muted">{{ __('onboarding.age.opposites_sub') }}</p>
       </div>

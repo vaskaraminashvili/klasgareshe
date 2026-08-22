@@ -15,26 +15,26 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ---
 
-## Where we are (2026-08-20)
+## Where we are (2026-08-22)
 
-**Shipped:** login / register, 4-step onboarding, parent-verify, logout. Home + Profile screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. Quick Quiz plays from DB and awards XP via `recordPlay`. Levels derived from XP; Ranking hub live (Global / Weekly / League) with Monday cohort promote/relegate.
+**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3, then ქართული · მათემატიკა · ისტორია), parent-verify, logout. Home + Profile + Daily mission screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. **Week 1 plan** (grades 1–3, Mon–Sun × 3 subjects) is seeded in Georgian; Home mission / continue / today’s plan / 3 subject tiles / featured Quick Quiz all link to the next incomplete pack. Completing a pack awards XP via `recordPlay` and does not repeat that pack (catch-up stays). Ranking hub live (Global / Weekly / League) with Monday cohort promote/relegate. **Badges:** 21-badge catalog, collection + one unlock celebration; awarded on pack finish (and league week close); Home/Profile recent badges are live. Rewards tab goes to `/badges`.
 
-**Still dummy on Home / Profile:** daily mission, continue lesson, today's plan, subjects, featured games (link works), friends, badges, search catalog, notification list, profile hero stats.
+**Still dummy on Home / Profile:** friends, search catalog, notification list, profile hero stats (except badge count), word-search / counting tiles. Daily-mission gift box / share / bonus cards are markup only. Shop / Rewards dashboard / claim queue are not built.
 
-**Games bank:** `games` + `questions` linked by `game_question` (many-to-many). Play picks active questions attached to that game for `APP_LOCALE` (default `ka`). Payload uses `QuestionFormat` JSON. Seeded content is Georgian (`locale=ka`), adapted from `kidzio/game-*.html`. Admin assign UI still TODO; next: another game shell, or filter by age group.
+**Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress`. Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped. Admin assign UI still TODO.
 
 ---
 
 ## Suggested build order
 
 1. ~~Auth + parent verification + kid profile~~ — auth + verify done; profile UI still dummy
-2. ~~Onboarding (age, subjects, daily goal, notifications)~~ — prefs saved; age does not drive content yet
+2. ~~Onboarding (class, school subjects, daily goal, notifications)~~ — კლასი 1–3 + ქართული / მათემატიკა / ისტორია; class drives week packs
 3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn / Rewards tabs still dead; Ranking wired
 4. ~~XP / levels / scoring~~ — levels + xp-progress + award-from-play done
-5. Learn library + lessons + continue/lock — skipped for now
-6. **Mini-games + game scoring ← current** (Quick Quiz done)
-7. Daily mission + streak
-8. Badges + rewards + shop
+5. Learn library + lessons + continue/lock — skipped; week plan stands in for “what next”
+6. ~~Mini-games + game scoring~~ — Quick Quiz plays the week pack (`startPlanItem`); other shells later
+7. **Daily mission + week plan** — checklist + catch-up live; gift box / extra tasks dummy
+8. ~~Badges + rewards + shop~~ — collection + unlock live; shop / dashboard / claim queue later
 9. ~~Leaderboard + leagues~~ — Global / Weekly / League live; Friends deferred
 10. Parent zone (PIN, screen time, bedtime, reports)
 11. Settings, PWA, offline, legal, support
@@ -78,9 +78,10 @@ Parent owns the account. Kid is a profile on that account.
 
 ## 3. Onboarding (4 steps)
 
-- [x] **Age group** — Preschool 4–5 · Kindergarten 6–7 · Elementary 8–9 · Explorer 10+
-- [ ] Age drives lesson difficulty, word length, and pace
-- [x] **Favourite subjects** — pick at least 3 (Alphabet, Math, Animals, Words, Knowledge, Opposites, …); skip allowed for v1
+- [x] **Class (კლასი 1 / 2 / 3)** — `pages::onboarding-age`; signup `age` still stored; `age_group` set in the background
+- [x] Class drives week-plan packs (grade 1–3 question banks; no fallback across grades)
+- [ ] Age group (preschool / kindergarten / …) no longer shown; leftover `users.age_group` unused for content
+- [x] **School subjects** — ქართული, მათემატიკა, ისტორია only (`pages::onboarding-categories`); extras (animals, A–Z, opposites) not offered
 - [x] **Daily learning goal** — Casual 5 min · Regular 10 min · Serious 15 · Intense 20
 - [x] **Notifications opt-in** — streak, new lessons, rewards/ranks, daily mission + reminder time (“Maybe later” allowed); prefs stored, no push yet
 
@@ -91,7 +92,7 @@ Reusable later from Settings.
 ## 4. Kid profile
 
 - [~] Kid display name + nickname — stored (nickname auto from name); home greeting uses name; Profile still dummy “Luna”
-- [~] Age, age group stored; country not stored; Profile still dummy
+- [~] Age, class (`users.grade` 1–3), age group stored; country not stored; Profile still dummy
 - [ ] Avatar picker (animal/emoji set)
 - [ ] Camera / change-avatar badge
 - [ ] Online status
@@ -135,16 +136,16 @@ Suggested XP examples from the template (tune later):
 
 ## 6. Home
 
-Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Most blocks are still template copy.
+Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Week-plan blocks are live; social/rewards still template copy.
 
 - [x] Greeting with kid name
 - [x] Quick stats: streak, XP, league
-- [ ] Today's mission hero (progress, time left, XP reward)
-- [ ] Continue last lesson
+- [x] Today's mission hero — real `0/3` (packs finished today), hours left until Sunday, CTA → `daily-mission` / next pack
+- [x] Continue — first incomplete week-plan pack (not `lesson-continue.html`)
 - [x] Weekly streak dots (Mon–Sun)
-- [ ] Today's plan task list
-- [ ] Explore subjects carousel
-- [~] Featured games — Quick Quiz route wired; other tiles still `.html`
+- [x] Today's plan — next incomplete pack per subject; Play → `/game-multiple-choice/{item}`; “ყველას ნახვა” → `daily-mission`
+- [x] Explore subjects — three tiles only: ქართული, მათემატიკა, ისტორია → that subject’s next pack
+- [~] Featured games — Quick Quiz → next incomplete pack; word-search / counting tiles still `.html`
 - [ ] Friends activity feed
 - [ ] Recent achievements
 - [ ] Parent tip card
@@ -159,14 +160,14 @@ Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Most blocks are stil
 
 ## 7. Learn library
 
-### Subjects (6)
+### School subjects (v1, grades 1–3)
 
-- [ ] Math — numbers, counting, shapes, addition
-- [ ] Alphabet — A–Z, phonics, letter sounds
-- [ ] Animals — wildlife, habitats, sounds, facts
-- [ ] Words — sight words, spelling, read-along stories
-- [ ] Knowledge — world, science, space
-- [ ] Opposites — pair matching (big/small, hot/cold)
+Home week plan — not the Learn tab yet.
+
+- [x] ქართული — letters, syllables, simple words (`locale=ka`; no Latin A–Z)
+- [x] მათემატიკა — numbers, count, +1 / −1 (harder in grades 2–3)
+- [x] ისტორია — საქართველო (flag, თბილისი, holidays, regions); not world history
+- [ ] Learn tab library (Kidzio Math / Alphabet / Animals / Words / Knowledge / Opposites screens)
 
 ### Library UX
 
@@ -195,9 +196,9 @@ Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Most blocks are stil
 
 Each game: progress bar, hear-aloud, check answer, XP on finish.
 
-Quick Quiz is live. Other games will reuse attached `questions` via `game_question` (`format` + `payload` / `answer` JSON).
+Quick Quiz is live as the **week-plan player**. Other games will reuse attached `questions` via `game_question` (`format` + `payload` / `answer` JSON).
 
-- [x] Quick Quiz (multiple choice) — `pages::game-multiple-choice`; DB questions; 3 lives; XP on finish
+- [x] Quick Quiz (multiple choice) — `pages::game-multiple-choice`; `/game-multiple-choice/{item}` plays that pack (5 questions, fixed order); bare URL redirects to the next incomplete item; 3 lives; XP + pack complete on finish
 - [ ] Tap the correct answer
 - [ ] Counting (count objects)
 - [ ] Trace letter (follow dots / handwriting)
@@ -218,19 +219,17 @@ Shared game rules:
 - [~] Correct / incorrect feedback + sounds — visual correct/wrong on quiz; no sounds yet
 - [x] Lives or retry (if you want it; template is mostly check-and-continue) — 3 lives on Quick Quiz
 - [ ] Voice reader for questions
-- [~] Age-appropriate question bank per subject — `questions.age_group` exists; quiz does not filter yet
+- [x] Grade-appropriate week bank — `users.grade` + `week_plan_items`; quiz cannot load another class’s pack; catch-up is first incomplete weekday per subject
 
 ---
 
 ## 9. Daily mission
 
-- [ ] One mission per day with countdown to reset
-- [ ] 3 tasks (example: finish 1 lesson, play 1 game, get 5 answers right)
-- [ ] Task progress + completed timestamps
-- [ ] Locked bonus task after main tasks (speed bonus)
-- [ ] Reward: XP + gift box + badge
-- [ ] Share mission
-- [ ] “X kids playing” social proof (optional)
+- [x] Week checklist — `pages::daily-mission` (`kidzio/daily-mission.html`); 21 packs (7 days × 3 subjects), done / next / locked
+- [x] 3 Home tasks = next incomplete pack per subject; mission `n/3` = packs completed today
+- [x] Hours left until Sunday 23:59 on Home + mission hero
+- [x] Catch-up: missed weekday packs stay until finished (progress not wiped Monday)
+- [~] Locked bonus / gift box / share / “kids playing” — markup only, no backend
 
 ---
 
@@ -251,12 +250,12 @@ Shared game rules:
 - [ ] Rewards dashboard: XP wallet, to-claim count, badges, league
 - [ ] Claim queue: daily box, new badges, avatar items, streak freeze
 - [ ] 7-day daily login calendar (increasing XP, bigger prize on day 7)
-- [ ] Badge collection (24 in the template)
-  - [ ] Earned / in progress / locked
-  - [ ] Rarity: Common · Rare · Epic · Legend
-  - [ ] Gold / silver / bronze medal styles
-  - [ ] Badge unlock celebration screen
-  - [ ] Share badge
+- [x] Badge collection (21 from the template grid; hero dummy said 24)
+  - [x] Earned / in progress / locked
+  - [x] Rarity: Common · Rare · Epic · Legend
+  - [x] Gold / silver / bronze medal styles
+  - [x] Badge unlock celebration screen
+  - [~] Share badge — markup + toast only; no backend
 - [ ] Reward shop (spend XP)
   - [ ] Avatars
   - [ ] Hats
@@ -446,10 +445,10 @@ Use this when matching a feature to a UI screen.
 | First run | `index` splash, `walkthrough-1/2/3` |
 | Auth | `login`, `signup`, `forgot-password`, `otp`, `parent-verify` |
 | Onboarding | `onboarding-age`, `onboarding-categories`, `onboarding-goals`, `onboarding-notifications` |
-| Main | `home`, `learn-categories`, `rewards-dashboard`, `leaderboard`, `profile` |
+| Main | `home`, `daily-mission`, `learn-categories`, `rewards-dashboard`, `leaderboard`, `profile` |
 | Learn | `learn-math`, `learn-alphabet`, `learn-animals`, `learn-words`, `learn-knowledge`, `learn-opposites`, `section-list`, `lesson-details`, `lesson-continue`, `lesson-locked` |
 | Games | `game-multiple-choice`, `game-tap-correct`, `game-counting`, `game-trace-letter`, `game-fill-letter`, `game-spell-word`, `game-match-word`, `game-match-animal`, `game-guess-animal`, `game-word-search`, `game-connect-pair`, `game-opposites`, `game-body-parts`, `game-where-live`, `game-knowledge` |
-| Progress | `daily-mission`, `streak`, `xp-progress`, `badges`, `badge-unlock*` |
+| Progress | `daily-mission` (ported + week checklist), `streak`, `xp-progress`, `badges` (ported + live catalog), `badge-unlock` (one celebration screen) |
 | Rank | `leaderboard`, `ranking-weekly`, `ranking-friends`, `league` |
 | Parent | `parent-controls`, `parent-email`, `change-pin`, `screen-time`, `bedtime-lock`, `weekly-report`, `full-report`, `monthly-goals`, `preferred-subjects`, `export-progress` |
 | Settings | `settings`, `edit-profile`, `app-language`, `country`, `clear-cache`, `help-faq`, `contact-us`, `about`, `privacy-policy`, `terms-privacy` |

@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RankingSeeder::class,
             GameSeeder::class,
+            WeekPlanSeeder::class,
+            BadgeSeeder::class,
         ]);
     }
 }

@@ -181,11 +181,13 @@ class UserStatService
         );
     }
 
-    public function recordPlay(User $user, int $xp = 0, ?CarbonInterface $playedOn = null): UserStat
+    public function recordPlay(User $user, int $xp = 0, ?CarbonInterface $playedOn = null, bool $skipEvaluate = false): UserStat
     {
         if ($xp < 0) {
             throw new InvalidArgumentException('XP cannot be negative.');
         }
+
+        unset($skipEvaluate);
 
         $on = CarbonImmutable::parse($playedOn ?? now())->startOfDay();
         $onDate = $on->toDateString();

@@ -16,10 +16,12 @@ use InvalidArgumentException;
 
 /**
  * @property int $id
+ * @property string|null $code
  * @property QuestionFormat $format
  * @property GameType|null $source
  * @property FavouriteSubject $subject
  * @property AgeGroup|null $age_group
+ * @property int|null $grade
  * @property string $locale
  * @property string|null $prompt
  * @property string|null $hint
@@ -31,10 +33,12 @@ use InvalidArgumentException;
  * @property Carbon|null $updated_at
  */
 #[Fillable([
+    'code',
     'format',
     'source',
     'subject',
     'age_group',
+    'grade',
     'locale',
     'prompt',
     'hint',
@@ -58,6 +62,7 @@ class Question extends Model
             'source' => GameType::class,
             'subject' => FavouriteSubject::class,
             'age_group' => AgeGroup::class,
+            'grade' => 'integer',
             'media' => 'array',
             'payload' => 'array',
             'answer' => 'array',
