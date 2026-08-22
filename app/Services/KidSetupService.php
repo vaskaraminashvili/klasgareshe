@@ -7,6 +7,7 @@ use App\Enums\DailyGoal;
 use App\Enums\FavouriteSubject;
 use App\Enums\OnboardingStep;
 use App\Enums\ReminderTime;
+use App\Enums\SchoolGrade;
 use App\Models\User;
 use App\Repositories\UserRepository;
 
@@ -49,6 +50,7 @@ class KidSetupService
                 'home',
                 'profile',
                 'game-multiple-choice',
+                'daily-mission',
                 'xp-progress',
                 'leaderboard',
                 'ranking-weekly',
@@ -71,9 +73,14 @@ class KidSetupService
         return $routes;
     }
 
-    public function saveAgeGroup(User $user, AgeGroup $ageGroup): void
+    public function saveGrade(User $user, SchoolGrade $grade): void
     {
+        $ageGroup = is_int($user->age)
+            ? AgeGroup::fromAge($user->age)
+            : $this->defaultAgeGroup($user);
+
         $this->users->update($user, [
+            'grade' => $grade,
             'age_group' => $ageGroup,
             'onboarding_step' => $this->advance($user, OnboardingStep::Categories),
         ]);
@@ -123,12 +130,25 @@ class KidSetupService
             $key = FavouriteSubject::ALIASES[strtolower($value)] ?? strtolower($value);
             $subject = FavouriteSubject::tryFrom($key);
 
-            if ($subject instanceof FavouriteSubject) {
+            if ($subject instanceof FavouriteSubject && in_array($subject, FavouriteSubject::schoolSubjects(), true)) {
                 $subjects[$subject->value] = $subject->value;
             }
         }
 
         return array_values($subjects);
+    }
+
+    public function defaultGrade(User $user): SchoolGrade
+    {
+        if ($user->grade instanceof SchoolGrade) {
+            return $user->grade;
+        }
+
+        if (is_int($user->age)) {
+            return SchoolGrade::fromAge($user->age);
+        }
+
+        return SchoolGrade::First;
     }
 
     public function defaultAgeGroup(User $user): AgeGroup
@@ -220,11 +240,11 @@ class KidSetupService
      */
     public function selectedSubjects(User $user): array
     {
-        if (is_array($user->favourite_subjects)) {
+        if (is_array($user->favourite_subjects) && $user->favourite_subjects !== []) {
             return $user->favourite_subjects;
         }
 
-        return ['alphabet', 'math', 'animals'];
+        return ['georgian', 'math', 'history'];
     }
 
     private function advance(User $user, OnboardingStep $next): OnboardingStep

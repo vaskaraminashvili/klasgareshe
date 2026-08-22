@@ -16,7 +16,8 @@ Route::get('/parent-verify/confirm/{user}', [ParentVerificationController::class
 Route::middleware(['auth:web', RedirectToKidSetup::class])->group(function () {
     Route::livewire('/', 'pages::home')->name('home');
     Route::livewire('/profile', 'pages::profile')->name('profile');
-    Route::livewire('/game-multiple-choice', 'pages::game-multiple-choice')->name('game-multiple-choice');
+    Route::livewire('/game-multiple-choice/{item?}', 'pages::game-multiple-choice')->name('game-multiple-choice');
+    Route::livewire('/daily-mission', 'pages::daily-mission')->name('daily-mission');
     Route::livewire('/xp-progress', 'pages::xp-progress')->name('xp-progress');
     Route::livewire('/leaderboard', 'pages::leaderboard')->name('leaderboard');
     Route::livewire('/ranking-weekly', 'pages::ranking-weekly')->name('ranking-weekly');

@@ -3,6 +3,7 @@
 use App\Enums\GameType;
 use App\Repositories\UserRepository;
 use App\Services\GamePlayService;
+use App\Services\WeekPlanService;
 use Illuminate\View\View;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -21,6 +22,11 @@ new class extends Component
 
     #[Locked]
     public bool $settled = false;
+
+    #[Locked]
+    public ?int $planItemId = null;
+
+    public ?int $item = null;
 
     public int $index = 0;
 
@@ -49,16 +55,35 @@ new class extends Component
         $view->title($this->title());
     }
 
-    public function mount(GamePlayService $play): void
+    public function mount(GamePlayService $play, UserRepository $users, WeekPlanService $week, ?int $item = null): void
     {
+        $user = $users->authenticated();
+
+        $itemId = $item ?? $this->item;
+
+        if ($itemId === null) {
+            $next = $week->firstIncomplete($user);
+
+            if ($next === null) {
+                $this->redirectRoute('home', navigate: true);
+
+                return;
+            }
+
+            $this->redirectRoute('game-multiple-choice', ['item' => $next->id], navigate: true);
+
+            return;
+        }
+
         try {
-            $round = $play->startRound(GameType::MultipleChoice, app()->getLocale());
+            $round = $play->startPlanItem($user, $itemId);
         } catch (\RuntimeException) {
             $this->redirectRoute('home', navigate: true);
 
             return;
         }
 
+        $this->planItemId = $round->weekPlanItemId;
         $this->questionIds = $round->questionIds;
         $this->lives = $round->lives;
         $this->showCurrent($play);
@@ -66,7 +91,7 @@ new class extends Component
 
     public function pick(string $key, GamePlayService $play): void
     {
-        if ($this->answered || $this->settled) {
+        if ($this->answered || $this->settled || $this->questionIds === []) {
             return;
         }
 
@@ -99,7 +124,12 @@ new class extends Component
 
         if ($last || $this->lives === 0) {
             $this->settled = true;
-            $play->award($users->authenticated(), GameType::MultipleChoice, $this->correctCount);
+            $play->award(
+                $users->authenticated(),
+                GameType::MultipleChoice,
+                $this->correctCount,
+                $this->planItemId,
+            );
             $this->redirectRoute('home', navigate: true);
 
             return;

@@ -4,7 +4,9 @@ namespace App\Enums;
 
 enum FavouriteSubject: string
 {
+    case Georgian = 'georgian';
     case Math = 'math';
+    case History = 'history';
     case Alphabet = 'alphabet';
     case Animals = 'animals';
     case Words = 'words';
@@ -17,7 +19,22 @@ enum FavouriteSubject: string
      * @var array<string, string>
      */
     public const ALIASES = [
-        'world' => 'knowledge',
-        'science' => 'knowledge',
+        'world' => 'history',
+        'science' => 'history',
+        'alphabet' => 'georgian',
+        'words' => 'georgian',
+        'knowledge' => 'history',
     ];
+
+    /**
+     * @return list<self>
+     */
+    public static function schoolSubjects(): array
+    {
+        return [
+            self::Georgian,
+            self::Math,
+            self::History,
+        ];
+    }
 }

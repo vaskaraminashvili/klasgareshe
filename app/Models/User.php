@@ -7,6 +7,7 @@ use App\Enums\DailyGoal;
 use App\Enums\Gender;
 use App\Enums\OnboardingStep;
 use App\Enums\ReminderTime;
+use App\Enums\SchoolGrade;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -25,6 +26,7 @@ use Illuminate\Support\Str;
  * @property int|null $age
  * @property Gender|null $gender
  * @property AgeGroup|null $age_group
+ * @property SchoolGrade|null $grade
  * @property list<string>|null $favourite_subjects
  * @property DailyGoal|null $daily_goal
  * @property OnboardingStep|null $onboarding_step
@@ -46,6 +48,7 @@ use Illuminate\Support\Str;
     'age',
     'gender',
     'age_group',
+    'grade',
     'favourite_subjects',
     'daily_goal',
     'onboarding_step',
@@ -73,6 +76,7 @@ class User extends Authenticatable
             'age' => 'integer',
             'gender' => Gender::class,
             'age_group' => AgeGroup::class,
+            'grade' => SchoolGrade::class,
             'favourite_subjects' => 'array',
             'daily_goal' => DailyGoal::class,
             'onboarding_step' => OnboardingStep::class,

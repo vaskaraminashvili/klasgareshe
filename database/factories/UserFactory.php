@@ -7,6 +7,7 @@ use App\Enums\DailyGoal;
 use App\Enums\Gender;
 use App\Enums\OnboardingStep;
 use App\Enums\ReminderTime;
+use App\Enums\SchoolGrade;
 use App\Models\User;
 use App\Models\UserActivityDay;
 use App\Models\UserStat;
@@ -61,7 +62,8 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'age_group' => AgeGroup::Kindergarten,
-            'favourite_subjects' => ['alphabet', 'math', 'animals'],
+            'grade' => SchoolGrade::First,
+            'favourite_subjects' => ['georgian', 'math', 'history'],
             'daily_goal' => DailyGoal::Regular,
             'onboarding_step' => OnboardingStep::Verify,
             'onboarding_completed_at' => now(),

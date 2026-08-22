@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Enums\GameType;
+use App\Enums\SchoolSubject;
 use App\Models\Game;
 use App\Models\Question;
 use App\Models\User;
 use App\Models\UserStat;
-use Database\Seeders\GameSeeder;
+use App\Models\WeekPlanItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -33,23 +35,24 @@ class QuickQuizTest extends TestCase
     public function test_home_links_to_the_quiz(): void
     {
         $this->withoutVite();
+        $item = $this->seedQuiz(1);
 
         $user = User::factory()->fullySetUp()->withStats()->create();
 
         Livewire::actingAs($user)
             ->test('pages::home')
-            ->assertSee(route('game-multiple-choice'), false);
+            ->assertSee(route('game-multiple-choice', ['item' => $item->id]), false);
     }
 
-    public function test_quiz_loads_choice_questions_from_the_html_bank_without_leaking_answers(): void
+    public function test_quiz_loads_choice_questions_from_the_pack_without_leaking_answers(): void
     {
         $this->withoutVite();
-        $this->seed(GameSeeder::class);
+        $item = $this->seedQuiz(1);
 
         $user = User::factory()->fullySetUp()->withStats()->create();
 
         $component = Livewire::actingAs($user)
-            ->test('pages::game-multiple-choice')
+            ->test('pages::game-multiple-choice', ['item' => $item->id])
             ->assertSet('lives', 3)
             ->assertDontSee('data-ans="correct"', false);
 
@@ -63,12 +66,12 @@ class QuickQuizTest extends TestCase
     public function test_a_wrong_pick_costs_a_life_and_then_reveals_the_answer(): void
     {
         $this->withoutVite();
-        $this->seedQuiz(1);
+        $item = $this->seedQuiz(1);
 
         $user = User::factory()->fullySetUp()->withStats()->create();
 
         $component = Livewire::actingAs($user)
-            ->test('pages::game-multiple-choice');
+            ->test('pages::game-multiple-choice', ['item' => $item->id]);
 
         $question = Question::query()->findOrFail($component->get('questionIds')[0]);
         $wrong = $question->correctKey() === 'A' ? 'C' : 'A';
@@ -85,12 +88,12 @@ class QuickQuizTest extends TestCase
     public function test_finishing_the_quiz_awards_xp_for_correct_answers(): void
     {
         $this->withoutVite();
-        $this->seedQuiz(1);
+        $item = $this->seedQuiz(1);
 
         $user = User::factory()->fullySetUp()->withStats()->create();
 
         $component = Livewire::actingAs($user)
-            ->test('pages::game-multiple-choice');
+            ->test('pages::game-multiple-choice', ['item' => $item->id]);
 
         $question = Question::query()->findOrFail($component->get('questionIds')[0]);
 
@@ -104,12 +107,30 @@ class QuickQuizTest extends TestCase
         $this->assertSame(1, UserStat::query()->where('user_id', $user->id)->first()?->current_streak);
     }
 
-    private function seedQuiz(int $count = 1): void
+    private function seedQuiz(int $count = 1): WeekPlanItem
     {
-        $game = Game::factory()->create();
+        Game::factory()->create([
+            'slug' => GameType::MultipleChoice,
+            'user_id' => null,
+        ]);
+
+        $item = WeekPlanItem::factory()->create([
+            'subject' => SchoolSubject::Georgian,
+            'weekday' => 1,
+            'level' => 1,
+            'questions_per_round' => $count,
+        ]);
 
         $questions = Question::factory()->count($count)->create();
 
-        $game->questions()->sync($questions->pluck('id')->all());
+        $sync = [];
+
+        foreach ($questions as $index => $question) {
+            $sync[$question->id] = ['sort_order' => $index];
+        }
+
+        $item->questions()->sync($sync);
+
+        return $item;
     }
 }

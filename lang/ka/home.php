@@ -10,12 +10,26 @@ return [
 
     // Daily mission
     'todays_mission' => 'დღევანდელი მისია',
-    'hours_left' => '6 საათი დარჩა',
+    'hours_left' => ':hours საათი დარჩა',
     'finish_3_lessons' => 'დაასრულე 3 გაკვეთილი',
     'earn_120_xp' => 'მიიღე +120 XP',
     'progress_2_of_3' => '2 / 3',
+    'progress_n_of' => ':done / :total',
     'continue' => 'გაგრძელება',
     'plus_120_xp' => '+120 XP',
+    'week_complete' => 'კვირის გეგმა დასრულებულია',
+    'subject_complete' => 'ეს საგანი ამ კვირაში დასრულებულია',
+    'week_progress' => ':done / :total სავარჯიშო',
+    'weekday_pack' => ':day',
+    'weekdays' => [
+        1 => 'ორშაბათი',
+        2 => 'სამშაბათი',
+        3 => 'ოთხშაბათი',
+        4 => 'ხუთშაბათი',
+        5 => 'პარასკევი',
+        6 => 'შაბათი',
+        7 => 'კვირა',
+    ],
 
     // Continue + weekly streak
     'counting_1_20' => 'დათვლა 1–20',
@@ -58,7 +72,7 @@ return [
     'more' => 'მეტი',
     'quick_quiz' => 'სწრაფი ვიქტორინა',
     'beat_yesterdays_score' => 'მოხსენი გუშინდელი ქულა',
-    'quiz_description' => '10 კითხვა · ~2 წთ · მიიღე 80 XP-მდე',
+    'quiz_description' => '5 კითხვა · ~2 წთ · მიიღე 40 XP-მდე',
     'word_search' => 'სიტყვის ძიება',
     'word_search_desc' => '5 სიტყვა · მარტივი',
     'counting_fun' => 'მხიარული დათვლა',

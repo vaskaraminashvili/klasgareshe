@@ -2,6 +2,7 @@
 
 use App\Repositories\UserRepository;
 use App\Services\UserStatService;
+use App\Services\WeekPlanService;
 use Livewire\Component;
 
 new class extends Component
@@ -17,15 +18,88 @@ new class extends Component
     /** @var list<array{letter: string, on: bool, today: bool}> */
     public array $weekDays = [];
 
-    public function mount(UserStatService $stats, UserRepository $users): void
+    public int $missionDone = 0;
+
+    public int $missionTotal = 3;
+
+    public int $hoursLeft = 0;
+
+    public string $heroTitle = '';
+
+    public ?int $continueItemId = null;
+
+    public string $continueTitle = '';
+
+    public int $weekCompleted = 0;
+
+    public int $weekTotal = 0;
+
+    /**
+     * @var list<array{id: int|null, subject: string, title: string, subtitle: string, completed: bool, playable: bool, emoji: string, tile: string, inkClass: string}>
+     */
+    public array $planTasks = [];
+
+    public function mount(UserStatService $stats, WeekPlanService $week, UserRepository $users): void
     {
-        $home = $stats->homeSnapshot($users->authenticated());
+        $user = $users->authenticated();
+        $home = $stats->homeSnapshot($user);
+        $plan = $week->homePlan($user);
 
         $this->streak = $home->streak;
         $this->xp = $home->xp;
         $this->leagueLabel = $home->leagueLabel;
         $this->weekActiveDays = $home->weekActiveDays;
         $this->weekDays = $home->weekDays;
+        $this->missionDone = $plan->missionDone;
+        $this->missionTotal = $plan->missionTotal;
+        $this->hoursLeft = $plan->hoursLeft;
+        $this->heroTitle = $plan->heroTitle;
+        $this->continueItemId = $plan->continueItemId;
+        $this->continueTitle = $plan->continueTitle;
+        $this->weekCompleted = $plan->weekCompleted;
+        $this->weekTotal = $plan->weekTotal;
+        $this->planTasks = [];
+
+        foreach ($plan->tasks as $task) {
+            $this->planTasks[] = [
+                'id' => $task->id,
+                'subject' => $task->subject->label(),
+                'title' => $task->title,
+                'subtitle' => $task->subtitle,
+                'completed' => $task->completed,
+                'playable' => $task->playable,
+                'emoji' => $task->emoji,
+                'tile' => $task->tile,
+                'inkClass' => $task->inkClass,
+            ];
+        }
+    }
+
+    public function quizUrl(?int $itemId): string
+    {
+        if ($itemId === null) {
+            return route('daily-mission');
+        }
+
+        return route('game-multiple-choice', ['item' => $itemId]);
+    }
+
+    public function missionProgressPercent(): int
+    {
+        if ($this->missionTotal === 0) {
+            return 0;
+        }
+
+        return (int) round(($this->missionDone / $this->missionTotal) * 100);
+    }
+
+    public function weekProgressPercent(): int
+    {
+        if ($this->weekTotal === 0) {
+            return 0;
+        }
+
+        return (int) round(($this->weekCompleted / $this->weekTotal) * 100);
     }
 };
 ?>
@@ -51,7 +125,8 @@ new class extends Component
 
     <!-- =============== DAILY MISSION HERO =============== -->
     <section class="px-5 mt-4">
-        <a href="daily-mission.html"
+        <a href="{{ route('daily-mission') }}"
+            wire:navigate
             class="block k-card-lg card-hero-primary relative overflow-hidden focus:outline-none">
             <span class="watermark-emoji" aria-hidden="true">🎯</span>
             <div class="relative flex items-center gap-2">
@@ -59,14 +134,14 @@ new class extends Component
                     <i class="ph-fill ph-sparkle"></i> {{ __('home.todays_mission') }}
                 </span>
                 <span class="chip bg-white/20 border-0 text-white ml-auto">
-                    <i class="ph-fill ph-clock"></i> {{ __('home.hours_left') }}
+                    <i class="ph-fill ph-clock"></i> {{ __('home.hours_left', ['hours' => $hoursLeft]) }}
                 </span>
             </div>
-            <p class="h-display text-2xl mt-2 relative">{{ __('home.finish_3_lessons') }}</p>
+            <p class="h-display text-2xl mt-2 relative">{{ $heroTitle }}</p>
             <p class="text-sm text-white relative">{{ __('home.earn_120_xp') }}</p>
             <div class="mt-3 flex items-center gap-2 relative">
-                <div class="progress on-gradient grow"><span class="w-66"></span></div>
-                <span class="text-xs font-extrabold">{{ __('home.progress_2_of_3') }}</span>
+                <div class="progress on-gradient grow"><span style="width:{{ $this->missionProgressPercent() }}%"></span></div>
+                <span class="text-xs font-extrabold">{{ __('home.progress_n_of', ['done' => $missionDone, 'total' => $missionTotal]) }}</span>
             </div>
             <div class="mt-3 flex items-center gap-2 relative">
                 <p class="cta-soft block">{{ __('home.continue') }} <i class="ph-fill ph-arrow-right"></i></p>
@@ -77,14 +152,14 @@ new class extends Component
 
     <!-- =============== CONTINUE + WEEKLY STREAK =============== -->
     <section class="px-5 mt-4 grid grid-cols-2 gap-3">
-        <a href="lesson-continue.html" class="k-card p-4 relative overflow-hidden">
+        <a href="{{ $this->quizUrl($continueItemId) }}" wire:navigate class="k-card p-4 relative overflow-hidden">
             <div class="flex items-center gap-2">
                 <div class="size-9 rounded-xl tile-mint grid place-items-center">➗</div>
                 <span class="text-xs font-extrabold text-mint-ink">{{ __('home.continue') }}</span>
             </div>
-            <p class="h-display mt-2">{{ __('home.counting_1_20') }}</p>
-            <p class="text-xs text-muted">{{ __('home.activities_progress') }}</p>
-            <div class="progress progress-mint mt-2"><span class="w-72"></span></div>
+            <p class="h-display mt-2">{{ $continueTitle }}</p>
+            <p class="text-xs text-muted">{{ __('home.week_progress', ['done' => $weekCompleted, 'total' => $weekTotal]) }}</p>
+            <div class="progress progress-mint mt-2"><span style="width:{{ $this->weekProgressPercent() }}%"></span></div>
         </a>
         <a href="streak.html" class="k-card p-4 relative overflow-hidden">
             <div class="flex items-center gap-2">
@@ -104,36 +179,40 @@ new class extends Component
     <section class="px-5 mt-4">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('home.todays_plan') }}</h2>
-            <a href="daily-mission.html" class="link">{{ __('home.view_all') }}</a>
+            <a href="{{ route('daily-mission') }}" wire:navigate class="link">{{ __('home.view_all') }}</a>
         </div>
         <div class="k-card p-0 overflow-hidden">
-            <div class="flex items-center gap-3 p-3">
-                <div class="size-10 rounded-xl tile-mint grid place-items-center"><i
-                        class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
-                <div class="grow">
-                    <p class="font-extrabold text-sm">{{ __('home.finish_a_lesson') }}</p>
-                    <p class="text-xs text-muted">{{ __('home.counting_to_20_5min') }}</p>
+            @forelse ($planTasks as $task)
+                @if ($task['playable'] && $task['id'] !== null)
+                    <a href="{{ $this->quizUrl($task['id']) }}" wire:navigate class="flex items-center gap-3 p-3{{ ! $loop->first ? ' border-t border-token' : '' }}">
+                        <div class="size-10 rounded-xl {{ $task['tile'] }} grid place-items-center">{{ $task['emoji'] }}</div>
+                        <div class="grow">
+                            <p class="font-extrabold text-sm">{{ $task['title'] }}</p>
+                            <p class="text-xs text-muted">{{ $task['subtitle'] }}</p>
+                        </div>
+                        <span class="btn btn-primary h-9 min-h-0 px-4 text-sm">{{ __('home.play') }}</span>
+                    </a>
+                @else
+                    <div class="flex items-center gap-3 p-3{{ ! $loop->first ? ' border-t border-token' : '' }}">
+                        <div class="size-10 rounded-xl tile-mint grid place-items-center"><i
+                                class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
+                        <div class="grow">
+                            <p class="font-extrabold text-sm">{{ $task['title'] }}</p>
+                            <p class="text-xs text-muted">{{ $task['subtitle'] }}</p>
+                        </div>
+                        <span class="chip chip-mint">{{ __('home.plus_40_xp') }}</span>
+                    </div>
+                @endif
+            @empty
+                <div class="flex items-center gap-3 p-3">
+                    <div class="size-10 rounded-xl tile-mint grid place-items-center"><i
+                            class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
+                    <div class="grow">
+                        <p class="font-extrabold text-sm">{{ __('home.week_complete') }}</p>
+                        <p class="text-xs text-muted">{{ __('home.subject_complete') }}</p>
+                    </div>
                 </div>
-                <span class="chip chip-mint">{{ __('home.plus_40_xp') }}</span>
-            </div>
-            <div class="flex items-center gap-3 p-3 border-t border-token">
-                <div class="size-10 rounded-xl tile-mint grid place-items-center"><i
-                        class="ph-fill ph-check-circle text-lg text-mint-ink"></i></div>
-                <div class="grow">
-                    <p class="font-extrabold text-sm">{{ __('home.play_1_minigame') }}</p>
-                    <p class="text-xs text-muted">{{ __('home.any_category') }}</p>
-                </div>
-                <span class="chip chip-mint">{{ __('home.plus_40_xp') }}</span>
-            </div>
-            <a href="{{ route('game-multiple-choice') }}" wire:navigate class="flex items-center gap-3 p-3 border-t border-token">
-                <div class="size-10 rounded-xl tile-violet grid place-items-center">🎯</div>
-                <div class="grow">
-                    <p class="font-extrabold text-sm">{{ __('home.get_5_answers_right') }}</p>
-                    <p class="text-xs text-muted">{{ __('home.progress_keep_going') }}</p>
-                    <div class="progress mt-1"><span class="w-60"></span></div>
-                </div>
-                <span class="btn btn-primary h-9 min-h-0 px-4 text-sm">{{ __('home.play') }}</span>
-            </a>
+            @endforelse
         </div>
     </section>
 
@@ -141,40 +220,18 @@ new class extends Component
     <section class="mt-5">
         <div class="section-head px-5">
             <h2 class="h-display text-lg">{{ __('home.explore_subjects') }}</h2>
-            <a href="learn-categories.html" class="link">{{ __('home.see_all') }}</a>
+            <a href="{{ route('daily-mission') }}" wire:navigate class="link">{{ __('home.see_all') }}</a>
         </div>
         <div class="swiper subjects-swiper" data-swiper-rail>
             <div class="swiper-wrapper">
-                <a href="learn-math.html" class="swiper-slide tile tile-violet">
-                    <span class="chip chip-on-tile text-violet-ink">{{ __('home.lessons_24') }}</span>
-                    <h3 class="mt-3">{{ __('home.math') }}</h3>
-                    <p class="text-xs mt-1 text-violet-ink opacity-80">{{ __('home.numbers_shapes') }}</p>
-                    <span class="tile-emoji">➗</span>
-                </a>
-                <a href="learn-alphabet.html" class="swiper-slide tile tile-sun">
-                    <span class="chip chip-on-tile text-sun-ink">{{ __('home.lessons_18') }}</span>
-                    <h3 class="mt-3">{{ __('home.alphabet') }}</h3>
-                    <p class="text-xs mt-1 text-sun-ink opacity-80">{{ __('home.a_to_z_phonics') }}</p>
-                    <span class="tile-emoji">🔤</span>
-                </a>
-                <a href="learn-animals.html" class="swiper-slide tile tile-mint">
-                    <span class="chip chip-on-tile text-mint-ink">{{ __('home.lessons_14') }}</span>
-                    <h3 class="mt-3">{{ __('home.animals') }}</h3>
-                    <p class="text-xs mt-1 text-mint-ink opacity-80">{{ __('home.wildlife_habitats') }}</p>
-                    <span class="tile-emoji">🦁</span>
-                </a>
-                <a href="learn-words.html" class="swiper-slide tile tile-coral">
-                    <span class="chip chip-on-tile text-coral-ink">{{ __('home.lessons_20') }}</span>
-                    <h3 class="mt-3">{{ __('home.words') }}</h3>
-                    <p class="text-xs mt-1 text-coral-ink opacity-80">{{ __('home.read_spell') }}</p>
-                    <span class="tile-emoji">📚</span>
-                </a>
-                <a href="learn-knowledge.html" class="swiper-slide tile tile-sky">
-                    <span class="chip chip-on-tile text-sky-ink">{{ __('home.lessons_12') }}</span>
-                    <h3 class="mt-3">{{ __('home.knowledge') }}</h3>
-                    <p class="text-xs mt-1 text-sky-ink opacity-80">{{ __('home.world_science') }}</p>
-                    <span class="tile-emoji">🌍</span>
-                </a>
+                @foreach ($planTasks as $task)
+                    <a href="{{ $this->quizUrl($task['id']) }}" wire:navigate class="swiper-slide tile {{ $task['tile'] }}">
+                        <span class="chip chip-on-tile {{ $task['inkClass'] }}">{{ $task['subtitle'] }}</span>
+                        <h3 class="mt-3">{{ $task['subject'] }}</h3>
+                        <p class="text-xs mt-1 {{ $task['inkClass'] }} opacity-80">{{ $task['title'] }}</p>
+                        <span class="tile-emoji">{{ $task['emoji'] }}</span>
+                    </a>
+                @endforeach
             </div>
         </div>
     </section>
@@ -183,10 +240,10 @@ new class extends Component
     <section class="px-5 mt-4">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('home.featured_games') }}</h2>
-            <a href="learn-categories.html" class="link">{{ __('home.more') }}</a>
+            <a href="{{ route('daily-mission') }}" wire:navigate class="link">{{ __('home.more') }}</a>
         </div>
 
-        <a href="{{ route('game-multiple-choice') }}" wire:navigate class="k-card-lg card-hero-success relative overflow-hidden block">
+        <a href="{{ $this->quizUrl($continueItemId) }}" wire:navigate class="k-card-lg card-hero-success relative overflow-hidden block">
             <span class="watermark-emoji" aria-hidden="true">❓</span>
             <div class="relative flex items-center gap-3">
                 <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl">❓</div>
@@ -455,7 +512,7 @@ new class extends Component
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
                             aria-label="{{ __('home.unread') }}"></span>
                     </a>
-                    <a href="daily-mission.html" class="setting-row opacity-70" data-notif data-read>
+                    <a href="{{ route('daily-mission') }}" wire:navigate class="setting-row opacity-70" data-notif data-read>
                         <div class="setting-ico tile-sky"><i class="ph-fill ph-target"></i></div>
                         <div class="grow min-w-0">
                             <p class="setting-text font-extrabold text-sm text-ink">
