@@ -1,10 +1,29 @@
 <?php
 
+use App\Repositories\UserRepository;
+use App\Services\BadgeService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 new class extends Component
 {
+    public int $badgeCount = 0;
+
+    public int $catalogCount = 0;
+
+    /**
+     * @var list<array{slug: string, name: string, emoji: string, medalClass: string, meta: string, href: string, locked: bool, unseen: bool}>
+     */
+    public array $recentBadges = [];
+
+    public function mount(BadgeService $badges, UserRepository $users): void
+    {
+        $user = $users->authenticated();
+        $this->badgeCount = $badges->earnedCount($user);
+        $this->catalogCount = $badges->catalogCount();
+        $this->recentBadges = array_map(fn ($card) => $card->toArray(), $badges->recentRail($user));
+    }
+
     public function logout(): void
     {
         Auth::logout();
@@ -70,7 +89,7 @@ new class extends Component
                     <p class="hm-l">{{ __('profile.streak') }}</p>
                 </div>
                 <div class="hero-metric">
-                    <p class="hm-v">8</p>
+                    <p class="hm-v">{{ $badgeCount }}</p>
                     <p class="hm-l">{{ __('profile.badges') }}</p>
                 </div>
                 <div class="hero-metric">
@@ -121,35 +140,18 @@ new class extends Component
     <section class="mt-5">
         <div class="section-head px-5">
             <h2 class="h-display text-lg">{{ __('profile.recent_badges') }}</h2>
-            <a href="badges.html" class="link">{{ __('profile.all_count', ['count' => 8]) }}</a>
+            <a href="{{ route('badges') }}" wire:navigate class="link">{{ __('profile.all_count', ['count' => $badgeCount]) }}</a>
         </div>
         <div data-swiper-rail class="swiper rail-swiper">
             <div class="swiper-wrapper">
-                <a href="badge-unlock.html" class="swiper-slide k-card text-center w-28">
-                    <span class="badge-medal mx-auto">🏆</span>
-                    <p class="text-xs font-extrabold mt-2">{{ __('profile.first_win') }}</p>
-                    <p class="text-[10px] text-muted">{{ __('profile.yesterday') }}</p>
-                </a>
-                <a href="badges.html" class="swiper-slide k-card text-center w-28">
-                    <span class="badge-medal silver mx-auto">📚</span>
-                    <p class="text-xs font-extrabold mt-2">{{ __('profile.bookworm') }}</p>
-                    <p class="text-[10px] text-muted">{{ __('profile.days_ago', ['days' => 2]) }}</p>
-                </a>
-                <a href="badges.html" class="swiper-slide k-card text-center w-28">
-                    <span class="badge-medal bronze mx-auto">🔥</span>
-                    <p class="text-xs font-extrabold mt-2">{{ __('profile.on_fire') }}</p>
-                    <p class="text-[10px] text-muted">{{ __('profile.week_2') }}</p>
-                </a>
-                <a href="badges.html" class="swiper-slide k-card text-center w-28">
-                    <span class="badge-medal mx-auto">🎯</span>
-                    <p class="text-xs font-extrabold mt-2">{{ __('profile.target') }}</p>
-                    <p class="text-[10px] text-muted">{{ __('profile.week_2') }}</p>
-                </a>
-                <a href="badges.html" class="swiper-slide k-card text-center w-28 locked">
-                    <span class="badge-medal mx-auto">🔒</span>
-                    <p class="text-xs font-extrabold mt-2">{{ __('profile.math_pro') }}</p>
-                    <p class="text-[10px] text-muted">{{ __('profile.next') }}</p>
-                </a>
+                @foreach ($recentBadges as $badge)
+                    <a href="{{ $badge['href'] }}" wire:navigate
+                        class="swiper-slide k-card text-center w-28{{ $badge['locked'] ? ' locked' : '' }}">
+                        <span class="badge-medal {{ $badge['medalClass'] }} mx-auto">{{ $badge['emoji'] }}</span>
+                        <p class="text-xs font-extrabold mt-2">{{ $badge['name'] }}</p>
+                        <p class="text-[10px] text-muted">{{ $badge['meta'] }}</p>
+                    </a>
+                @endforeach
             </div>
         </div>
     </section>
@@ -245,7 +247,7 @@ new class extends Component
     <section class="px-5 mt-5">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('profile.recent_achievements') }}</h2>
-            <a href="badges.html" class="link">{{ __('profile.see_all') }}</a>
+            <a href="{{ route('badges') }}" wire:navigate class="link">{{ __('profile.see_all') }}</a>
         </div>
         <div class="space-y-2">
             <div class="ach-mini">
@@ -320,13 +322,13 @@ new class extends Component
                 <span class="chip chip-mint">3 / 4</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
-            <a href="badges.html" class="menu-row">
+            <a href="{{ route('badges') }}" wire:navigate class="menu-row">
                 <div class="menu-ico tile-coral">🏅</div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.all_badges') }}</p>
-                <span class="chip chip-primary">8 / 24</span>
+                <span class="chip chip-primary">{{ $badgeCount }} / {{ $catalogCount }}</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
-            <a href="rewards-dashboard.html" class="menu-row">
+            <a href="#" class="menu-row">
                 <div class="menu-ico tile-pink">🎁</div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.rewards_dashboard') }}</p>
                 <span class="chip chip-coral">3 {{ __('profile.new') }}</span>

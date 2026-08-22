@@ -22,6 +22,8 @@ Route::middleware(['auth:web', RedirectToKidSetup::class])->group(function () {
     Route::livewire('/leaderboard', 'pages::leaderboard')->name('leaderboard');
     Route::livewire('/ranking-weekly', 'pages::ranking-weekly')->name('ranking-weekly');
     Route::livewire('/league', 'pages::league')->name('league');
+    Route::livewire('/badges', 'pages::badges')->name('badges');
+    Route::livewire('/badge-unlock/{slug}', 'pages::badge-unlock')->name('badge-unlock');
     Route::livewire('/onboarding-age', 'pages::onboarding-age')->name('onboarding-age');
     Route::livewire('/onboarding-categories', 'pages::onboarding-categories')->name('onboarding-categories');
     Route::livewire('/onboarding-goals', 'pages::onboarding-goals')->name('onboarding-goals');

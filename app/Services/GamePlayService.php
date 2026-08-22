@@ -21,6 +21,7 @@ class GamePlayService
         private QuestionRepository $questions,
         private UserStatService $stats,
         private WeekPlanService $weekPlan,
+        private BadgeService $badges,
     ) {}
 
     public function startPlanItem(User $user, int $itemId): GameRound
@@ -128,11 +129,13 @@ class GamePlayService
 
         $xp = max(0, $correctCount) * $game->xp_per_correct;
 
-        $this->stats->recordPlay($user, $xp);
+        $this->stats->recordPlay($user, $xp, skipEvaluate: true);
 
         if ($weekPlanItemId !== null) {
             $this->weekPlan->completeItem($user, $weekPlanItemId, $correctCount);
         }
+
+        $this->badges->evaluate($user);
 
         return $xp;
     }

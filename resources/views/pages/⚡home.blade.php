@@ -1,6 +1,7 @@
 <?php
 
 use App\Repositories\UserRepository;
+use App\Services\BadgeService;
 use App\Services\UserStatService;
 use App\Services\WeekPlanService;
 use Livewire\Component;
@@ -39,7 +40,12 @@ new class extends Component
      */
     public array $planTasks = [];
 
-    public function mount(UserStatService $stats, WeekPlanService $week, UserRepository $users): void
+    /**
+     * @var list<array{slug: string, name: string, emoji: string, medalClass: string, meta: string, href: string, locked: bool, unseen: bool}>
+     */
+    public array $recentBadges = [];
+
+    public function mount(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges): void
     {
         $user = $users->authenticated();
         $home = $stats->homeSnapshot($user);
@@ -59,6 +65,7 @@ new class extends Component
         $this->weekCompleted = $plan->weekCompleted;
         $this->weekTotal = $plan->weekTotal;
         $this->planTasks = [];
+        $this->recentBadges = array_map(fn ($card) => $card->toArray(), $badges->recentRail($user));
 
         foreach ($plan->tasks as $task) {
             $this->planTasks[] = [
@@ -306,30 +313,22 @@ new class extends Component
     <section class="px-5 mt-5">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('home.recent_achievements') }}</h2>
-            <a href="badges.html" class="link">{{ __('home.see_all') }}</a>
+            <a href="{{ route('badges') }}" wire:navigate class="link">{{ __('home.see_all') }}</a>
         </div>
         <div class="swiper achievements-swiper" data-swiper-rail>
             <div class="swiper-wrapper">
-                <a href="badge-unlock.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
-                    <span class="badge-medal">🏆</span>
-                    <p class="text-xs font-extrabold">{{ __('home.first_win') }}</p>
-                    <span class="chip chip-mint">{{ __('home.new') }}</span>
-                </a>
-                <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
-                    <span class="badge-medal silver">📚</span>
-                    <p class="text-xs font-extrabold">{{ __('home.bookworm') }}</p>
-                    <p class="text-[11px] text-muted">{{ __('home.yesterday') }}</p>
-                </a>
-                <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2">
-                    <span class="badge-medal bronze">🔥</span>
-                    <p class="text-xs font-extrabold">{{ __('home.on_fire') }}</p>
-                    <p class="text-[11px] text-muted">{{ __('home.seven_day_streak') }}</p>
-                </a>
-                <a href="badges.html" class="swiper-slide k-card text-center flex flex-col items-center gap-2 locked">
-                    <span class="badge-medal">🔒</span>
-                    <p class="text-xs font-extrabold">{{ __('home.math_pro') }}</p>
-                    <p class="text-[11px] text-muted">{{ __('home.lessons_20') }}</p>
-                </a>
+                @foreach ($recentBadges as $badge)
+                    <a href="{{ $badge['href'] }}" wire:navigate
+                        class="swiper-slide k-card text-center flex flex-col items-center gap-2{{ $badge['locked'] ? ' locked' : '' }}">
+                        <span class="badge-medal {{ $badge['medalClass'] }}">{{ $badge['emoji'] }}</span>
+                        <p class="text-xs font-extrabold">{{ $badge['name'] }}</p>
+                        @if ($badge['unseen'])
+                            <span class="chip chip-mint">{{ __('home.new') }}</span>
+                        @else
+                            <p class="text-[11px] text-muted">{{ $badge['meta'] }}</p>
+                        @endif
+                    </a>
+                @endforeach
             </div>
         </div>
     </section>
@@ -490,7 +489,7 @@ new class extends Component
                         <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0"
                             aria-label="{{ __('home.unread') }}"></span>
                     </a>
-                    <a href="badges.html" class="setting-row" data-notif>
+                    <a href="{{ route('badges') }}" wire:navigate class="setting-row" data-notif>
                         <div class="setting-ico tile-mint"><i class="ph-fill ph-medal"></i></div>
                         <div class="grow min-w-0">
                             <p class="setting-text font-extrabold text-sm text-ink">

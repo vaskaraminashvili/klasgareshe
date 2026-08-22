@@ -17,9 +17,9 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ## Where we are (2026-08-22)
 
-**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3, then ქართული · მათემატიკა · ისტორია), parent-verify, logout. Home + Profile + Daily mission screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. **Week 1 plan** (grades 1–3, Mon–Sun × 3 subjects) is seeded in Georgian; Home mission / continue / today’s plan / 3 subject tiles / featured Quick Quiz all link to the next incomplete pack. Completing a pack awards XP via `recordPlay` and does not repeat that pack (catch-up stays). Ranking hub live (Global / Weekly / League) with Monday cohort promote/relegate.
+**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3, then ქართული · მათემატიკა · ისტორია), parent-verify, logout. Home + Profile + Daily mission screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. **Week 1 plan** (grades 1–3, Mon–Sun × 3 subjects) is seeded in Georgian; Home mission / continue / today’s plan / 3 subject tiles / featured Quick Quiz all link to the next incomplete pack. Completing a pack awards XP via `recordPlay` and does not repeat that pack (catch-up stays). Ranking hub live (Global / Weekly / League) with Monday cohort promote/relegate. **Badges:** 21-badge catalog, collection + one unlock celebration; awarded on pack finish (and league week close); Home/Profile recent badges are live. Rewards tab goes to `/badges`.
 
-**Still dummy on Home / Profile:** friends, badges, search catalog, notification list, profile hero stats, word-search / counting tiles. Daily-mission gift box / share / bonus cards are markup only.
+**Still dummy on Home / Profile:** friends, search catalog, notification list, profile hero stats (except badge count), word-search / counting tiles. Daily-mission gift box / share / bonus cards are markup only. Shop / Rewards dashboard / claim queue are not built.
 
 **Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress`. Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped. Admin assign UI still TODO.
 
@@ -33,8 +33,8 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 4. ~~XP / levels / scoring~~ — levels + xp-progress + award-from-play done
 5. Learn library + lessons + continue/lock — skipped; week plan stands in for “what next”
 6. ~~Mini-games + game scoring~~ — Quick Quiz plays the week pack (`startPlanItem`); other shells later
-7. **Daily mission + week plan ← current** — checklist + catch-up live; gift box / extra tasks dummy
-8. Badges + rewards + shop
+7. **Daily mission + week plan** — checklist + catch-up live; gift box / extra tasks dummy
+8. ~~Badges + rewards + shop~~ — collection + unlock live; shop / dashboard / claim queue later
 9. ~~Leaderboard + leagues~~ — Global / Weekly / League live; Friends deferred
 10. Parent zone (PIN, screen time, bedtime, reports)
 11. Settings, PWA, offline, legal, support
@@ -250,12 +250,12 @@ Shared game rules:
 - [ ] Rewards dashboard: XP wallet, to-claim count, badges, league
 - [ ] Claim queue: daily box, new badges, avatar items, streak freeze
 - [ ] 7-day daily login calendar (increasing XP, bigger prize on day 7)
-- [ ] Badge collection (24 in the template)
-  - [ ] Earned / in progress / locked
-  - [ ] Rarity: Common · Rare · Epic · Legend
-  - [ ] Gold / silver / bronze medal styles
-  - [ ] Badge unlock celebration screen
-  - [ ] Share badge
+- [x] Badge collection (21 from the template grid; hero dummy said 24)
+  - [x] Earned / in progress / locked
+  - [x] Rarity: Common · Rare · Epic · Legend
+  - [x] Gold / silver / bronze medal styles
+  - [x] Badge unlock celebration screen
+  - [~] Share badge — markup + toast only; no backend
 - [ ] Reward shop (spend XP)
   - [ ] Avatars
   - [ ] Hats
@@ -448,7 +448,7 @@ Use this when matching a feature to a UI screen.
 | Main | `home`, `daily-mission`, `learn-categories`, `rewards-dashboard`, `leaderboard`, `profile` |
 | Learn | `learn-math`, `learn-alphabet`, `learn-animals`, `learn-words`, `learn-knowledge`, `learn-opposites`, `section-list`, `lesson-details`, `lesson-continue`, `lesson-locked` |
 | Games | `game-multiple-choice`, `game-tap-correct`, `game-counting`, `game-trace-letter`, `game-fill-letter`, `game-spell-word`, `game-match-word`, `game-match-animal`, `game-guess-animal`, `game-word-search`, `game-connect-pair`, `game-opposites`, `game-body-parts`, `game-where-live`, `game-knowledge` |
-| Progress | `daily-mission` (ported + week checklist), `streak`, `xp-progress`, `badges`, `badge-unlock*` |
+| Progress | `daily-mission` (ported + week checklist), `streak`, `xp-progress`, `badges` (ported + live catalog), `badge-unlock` (one celebration screen) |
 | Rank | `leaderboard`, `ranking-weekly`, `ranking-friends`, `league` |
 | Parent | `parent-controls`, `parent-email`, `change-pin`, `screen-time`, `bedtime-lock`, `weekly-report`, `full-report`, `monthly-goals`, `preferred-subjects`, `export-progress` |
 | Settings | `settings`, `edit-profile`, `app-language`, `country`, `clear-cache`, `help-faq`, `contact-us`, `about`, `privacy-policy`, `terms-privacy` |

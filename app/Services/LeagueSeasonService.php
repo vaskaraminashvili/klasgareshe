@@ -24,6 +24,7 @@ class LeagueSeasonService
         private LeagueRepository $leagues,
         private UserStatRepository $stats,
         private LevelCalculator $levels,
+        private BadgeService $badges,
     ) {}
 
     public function ensureCurrentWeek(?CarbonImmutable $now = null): LeagueWeek
@@ -243,6 +244,14 @@ class LeagueSeasonService
                 $this->stats->update($stat, ['league' => $newLeague]);
             }
         }
+
+        foreach ($ranked as $member) {
+            $owner = $member->user;
+
+            if ($owner instanceof User) {
+                $this->badges->evaluate($owner);
+            }
+        }
     }
 
     /**
@@ -294,9 +303,11 @@ class LeagueSeasonService
             return $rows[0]->weekXp ?? 0;
         }
 
-        $third = $rows[2] ?? null;
+        if (! isset($rows[2])) {
+            return $rows[0]->weekXp;
+        }
 
-        return $third?->weekXp ?? 0;
+        return $rows[2]->weekXp;
     }
 
     private function zoneForRank(int $rank, int $n): string

@@ -55,6 +55,8 @@ class KidSetupService
                 'leaderboard',
                 'ranking-weekly',
                 'league',
+                'badges',
+                'badge-unlock',
             ];
         }
 

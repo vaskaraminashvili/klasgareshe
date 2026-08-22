@@ -149,8 +149,25 @@ class LeagueRepository
             ->get();
     }
 
-    public function transaction(callable $callback): mixed
+    /**
+     * @template TReturn
+     *
+     * @param  \Closure(): TReturn  $callback
+     * @return TReturn
+     */
+    public function transaction(\Closure $callback): mixed
     {
-        return DB::transaction($callback);
+        return DB::transaction(function () use ($callback) {
+            return $callback();
+        });
+    }
+
+    public function hasTopFinish(User $user, int $maxRank = 3): bool
+    {
+        return LeagueGroupMember::query()
+            ->where('user_id', $user->id)
+            ->whereNotNull('finish_rank')
+            ->where('finish_rank', '<=', $maxRank)
+            ->exists();
     }
 }

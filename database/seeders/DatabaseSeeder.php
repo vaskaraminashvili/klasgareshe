@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RankingSeeder::class,
             GameSeeder::class,
             WeekPlanSeeder::class,
+            BadgeSeeder::class,
         ]);
     }
 }

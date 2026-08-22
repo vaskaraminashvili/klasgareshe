@@ -2,6 +2,7 @@
 
 use App\Enums\GameType;
 use App\Repositories\UserRepository;
+use App\Services\BadgeService;
 use App\Services\GamePlayService;
 use App\Services\WeekPlanService;
 use Illuminate\View\View;
@@ -114,7 +115,7 @@ new class extends Component
         }
     }
 
-    public function next(GamePlayService $play, UserRepository $users): void
+    public function next(GamePlayService $play, UserRepository $users, BadgeService $badges): void
     {
         if (! $this->answered || $this->settled) {
             return;
@@ -130,6 +131,14 @@ new class extends Component
                 $this->correctCount,
                 $this->planItemId,
             );
+            $slug = $badges->firstUnseenSlug($users->authenticated());
+
+            if (is_string($slug)) {
+                $this->redirectRoute('badge-unlock', ['slug' => $slug], navigate: true);
+
+                return;
+            }
+
             $this->redirectRoute('home', navigate: true);
 
             return;
