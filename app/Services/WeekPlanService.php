@@ -57,7 +57,10 @@ class WeekPlanService
             $continueTitle = $continue->title;
         }
 
-        $missionDone = min(self::MISSION_TOTAL, $this->plans->completedTodayCount($user));
+        $missionDone = min(
+            self::MISSION_TOTAL,
+            count($this->plans->subjectsCompletedToday($user)),
+        );
         $items = $this->plans->itemsForGrade($this->gradeFor($user), $weekNumber);
         $completedIds = $this->plans->completedItemIds($user);
         $weekCompleted = 0;
@@ -182,12 +185,40 @@ class WeekPlanService
     public function dailyMission(User $user): DailyMissionSnapshot
     {
         $home = $this->homePlan($user);
-        $items = $this->checklist($user);
+        $completedAt = $this->plans->completedAtByItem($user);
+        $items = [];
+
+        foreach ($home->tasks as $task) {
+            $weekday = 0;
+            $completedAtLabel = null;
+
+            if ($task->id !== null) {
+                $pack = $this->plans->find($task->id);
+                $weekday = $pack?->weekday ?? 0;
+
+                if ($task->completed && isset($completedAt[$task->id])) {
+                    $completedAtLabel = $completedAt[$task->id]->format('H:i');
+                }
+            }
+
+            $items[] = new WeekChecklistItem(
+                id: $task->id ?? 0,
+                weekday: $weekday,
+                subject: $task->subject,
+                title: $task->title,
+                completed: $task->completed,
+                playable: $task->playable,
+                current: $task->playable,
+                emoji: $task->emoji,
+                completedAt: $completedAtLabel,
+                subtitle: $task->subtitle,
+            );
+        }
 
         return new DailyMissionSnapshot(
             missionDone: $home->missionDone,
             missionTotal: $home->missionTotal,
-            hoursLeft: $home->hoursLeft,
+            hoursLeft: $this->hoursLeftUntilEndOfDay(),
             weekCompleted: $home->weekCompleted,
             weekTotal: $home->weekTotal,
             items: $items,
@@ -256,6 +287,29 @@ class WeekPlanService
         return max(0, (int) round(CarbonImmutable::now()->diffInHours($end, false)));
     }
 
+    public function hoursLeftUntilEndOfDay(): int
+    {
+        $end = CarbonImmutable::now()->endOfDay();
+
+        return max(0, (int) round(CarbonImmutable::now()->diffInHours($end, false)));
+    }
+
+    public function minutesLeftUntilEndOfDay(): int
+    {
+        $end = CarbonImmutable::now()->endOfDay();
+        $seconds = max(0, (int) CarbonImmutable::now()->diffInSeconds($end, false));
+
+        return intdiv($seconds % 3600, 60);
+    }
+
+    public function secondsLeftUntilEndOfDay(): int
+    {
+        $end = CarbonImmutable::now()->endOfDay();
+        $seconds = max(0, (int) CarbonImmutable::now()->diffInSeconds($end, false));
+
+        return $seconds % 60;
+    }
+
     public function lessonsCompletedThisWeek(User $user): int
     {
         $start = CarbonImmutable::now()->startOfWeek(CarbonImmutable::MONDAY);
@@ -310,6 +364,26 @@ class WeekPlanService
 
     private function taskViewForSubject(User $user, SchoolSubject $subject): WeekPlanTaskView
     {
+        $doneToday = $this->plans->latestCompletedTodayForSubject($user, $subject);
+
+        if ($doneToday instanceof WeekPlanItem) {
+            $completedAt = $this->plans->completedAtByItem($user)[$doneToday->id] ?? null;
+
+            return new WeekPlanTaskView(
+                id: $doneToday->id,
+                subject: $subject,
+                title: $doneToday->title,
+                subtitle: $completedAt !== null
+                    ? (string) __('home.completed_today_at', ['time' => $completedAt->format('H:i')])
+                    : (string) __('home.completed_today', ['time' => '']),
+                completed: true,
+                playable: false,
+                emoji: $subject->emoji(),
+                tile: $subject->tile(),
+                inkClass: $subject->inkClass(),
+            );
+        }
+
         $item = $this->nextIncompleteForSubject($user, $subject);
 
         if ($item === null) {

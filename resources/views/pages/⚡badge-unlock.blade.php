@@ -57,19 +57,6 @@ new class extends Component
         $this->xpBonus = $view->xpBonus;
         $this->holderPercent = $view->holderPercent;
     }
-
-    public function continue(BadgeService $badges, UserRepository $users): void
-    {
-        $next = $badges->firstUnseenSlug($users->authenticated());
-
-        if (is_string($next)) {
-            $this->redirectRoute('badge-unlock', ['slug' => $next], navigate: true);
-
-            return;
-        }
-
-        $this->redirectRoute('badges', navigate: true);
-    }
 };
 ?>
 
@@ -106,7 +93,7 @@ new class extends Component
     </div>
 
     <header class="relative z-10 px-5 pt-4 safe-top flex items-center justify-between">
-        <a href="{{ route('badges') }}" class="icon-btn" data-back
+        <a href="{{ route('badges') }}" wire:navigate class="icon-btn"
             style="background:rgba(255,255,255,.16);color:white;border:1px solid rgba(255,255,255,.28);"><i
                 class="ph ph-caret-left"></i></a>
         <p class="font-extrabold text-white">{{ __('badges.new_badge') }}</p>
@@ -152,7 +139,7 @@ new class extends Component
             style="background:#FFE27A;color:#4B2FD6;box-shadow:0 10px 24px -10px rgba(255,214,107,.6), inset 0 -3px 0 rgba(0,0,0,.12);">
             <i class="ph-fill ph-share-fat"></i> {{ __('badges.share_friends') }}
         </button>
-        <button type="button" wire:click="continue" class="btn w-full"
-            style="background:rgba(255,255,255,.14);color:#ffffff;border:1px solid rgba(255,255,255,.35);">{{ __('badges.view_all') }}</button>
+        <a href="{{ route('badges') }}" wire:navigate class="btn w-full"
+            style="background:rgba(255,255,255,.14);color:#ffffff;border:1px solid rgba(255,255,255,.35);">{{ __('badges.view_all') }}</a>
     </div>
 </main>

@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\UserPlanProgress;
 use App\Models\UserStat;
 use App\Models\WeekPlanItem;
+use App\Services\GamePlayService;
 use App\Services\WeekPlanService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -88,6 +89,52 @@ class WeekPlanTest extends TestCase
         $this->assertNotNull($tuesdayMath);
         $this->assertSame(2, $tuesdayMath->weekday);
         $this->assertSame(SchoolSubject::Math, $tuesdayMath->subject);
+
+        Livewire::actingAs($user)
+            ->test('pages::home')
+            ->assertSet('missionDone', 1)
+            ->assertSet('planTasks.1.completed', true)
+            ->assertSet('planTasks.1.playable', false)
+            ->assertDontSee(route('game-multiple-choice', ['item' => $mondayMath->id]).'"', false);
+    }
+
+    public function test_completed_pack_cannot_be_started_again(): void
+    {
+        $this->withoutVite();
+        $this->seedWeek();
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+        $service = app(WeekPlanService::class);
+        $mondayMath = $service->nextIncompleteForSubject($user, SchoolSubject::Math);
+        $this->assertNotNull($mondayMath);
+
+        app(GamePlayService::class)->award(
+            $user,
+            GameType::MultipleChoice,
+            1,
+            $mondayMath->id,
+        );
+
+        Livewire::actingAs($user)
+            ->test('pages::game-multiple-choice', ['item' => $mondayMath->id])
+            ->assertRedirect(route('home'));
+    }
+
+    public function test_daily_mission_shows_three_today_tasks_not_the_full_week(): void
+    {
+        $this->withoutVite();
+        $this->seedWeek(weekdays: 7);
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+
+        Livewire::actingAs($user)
+            ->test('pages::daily-mission')
+            ->assertSet('missionTotal', 3)
+            ->assertCount('items', 3)
+            ->assertSee('georgian-w1-d1', false)
+            ->assertSee('math-w1-d1', false)
+            ->assertSee('history-w1-d1', false)
+            ->assertDontSee('georgian-w1-d2', false);
     }
 
     public function test_grade_two_cannot_play_a_grade_one_pack(): void
@@ -165,16 +212,17 @@ class WeekPlanTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages::home')
-            ->assertSee('georgian-w2-d1', false)
-            ->assertSee('math-w2-d1', false)
-            ->assertSee('history-w2-d1', false)
-            ->assertDontSee('georgian-w1-d1', false);
+            ->assertSet('missionDone', 3)
+            ->assertSee('georgian-w1-d', false)
+            ->assertSet('continueItemId', $next->id)
+            ->assertSee('georgian-w2-d1', false);
 
         Livewire::actingAs($user)
             ->test('pages::daily-mission')
-            ->assertSee('georgian-w2-d1', false)
-            ->assertSee('math-w2-d1', false)
-            ->assertDontSee('georgian-w1-d1', false);
+            ->assertCount('items', 3)
+            ->assertSet('missionDone', 3)
+            ->assertSee('georgian-w1-d', false)
+            ->assertDontSee('georgian-w2-d1', false);
     }
 
     public function test_subject_mastery_uses_active_curriculum_week(): void

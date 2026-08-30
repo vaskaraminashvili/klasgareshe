@@ -101,6 +101,52 @@ class WeekPlanRepository
             ->count();
     }
 
+    /**
+     * Subjects that already had at least one pack finished today.
+     *
+     * @return list<string>
+     */
+    public function subjectsCompletedToday(User $user): array
+    {
+        $subjects = [];
+
+        foreach (UserPlanProgress::query()
+            ->where('user_plan_progress.user_id', $user->id)
+            ->where('user_plan_progress.status', PlanProgressStatus::Completed)
+            ->whereDate('user_plan_progress.completed_at', now()->toDateString())
+            ->join('week_plan_items', 'week_plan_items.id', '=', 'user_plan_progress.week_plan_item_id')
+            ->distinct()
+            ->orderBy('week_plan_items.subject')
+            ->pluck('week_plan_items.subject') as $subject) {
+            $subjects[] = (string) $subject;
+        }
+
+        return $subjects;
+    }
+
+    public function latestCompletedTodayForSubject(User $user, SchoolSubject $subject): ?WeekPlanItem
+    {
+        $progress = UserPlanProgress::query()
+            ->where('user_plan_progress.user_id', $user->id)
+            ->where('user_plan_progress.status', PlanProgressStatus::Completed)
+            ->whereDate('user_plan_progress.completed_at', now()->toDateString())
+            ->join('week_plan_items', 'week_plan_items.id', '=', 'user_plan_progress.week_plan_item_id')
+            ->where('week_plan_items.subject', $subject)
+            ->orderByDesc('user_plan_progress.completed_at')
+            ->orderByDesc('user_plan_progress.id')
+            ->select([
+                'week_plan_items.id',
+                'user_plan_progress.completed_at',
+            ])
+            ->first();
+
+        if ($progress === null) {
+            return null;
+        }
+
+        return $this->find((int) $progress->id);
+    }
+
     public function completedCountBetween(User $user, string $from, string $to): int
     {
         return UserPlanProgress::query()

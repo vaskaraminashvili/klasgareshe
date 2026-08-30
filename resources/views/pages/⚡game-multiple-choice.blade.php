@@ -146,12 +146,12 @@ new class extends Component
             $slug = $badges->firstUnseenSlug($users->authenticated());
 
             if (is_string($slug)) {
-                $this->redirectRoute('badge-unlock', ['slug' => $slug], navigate: true);
+                $this->redirectRoute('badge-unlock', ['slug' => $slug]);
 
                 return;
             }
 
-            $this->redirectRoute('home', navigate: true);
+            $this->redirectRoute('home');
 
             return;
         }
@@ -172,53 +172,6 @@ new class extends Component
         }
 
         return (int) round((($this->index + 1) / $total) * 100);
-    }
-
-    public function aheadProgressPercent(): int
-    {
-        $total = count($this->questionIds);
-
-        if ($total === 0) {
-            return 0;
-        }
-
-        return (int) round((min($this->index + 2, $total) / $total) * 100);
-    }
-
-    public function hasAhead(): bool
-    {
-        return isset($this->deck[$this->index + 1]);
-    }
-
-    /**
-     * Current slide plus the next question, already painted for an instant Next.
-     *
-     * @return list<array{ahead: bool, n: int, view: array{id: int, prompt: string, emoji: string, tile: string, choices: list<array{key: string, label: string, emoji: string}>}}>
-     */
-    public function slides(): array
-    {
-        $slides = [];
-        $current = $this->deck[$this->index] ?? null;
-
-        if ($current !== null) {
-            $slides[] = [
-                'ahead' => false,
-                'n' => $this->index + 1,
-                'view' => $current,
-            ];
-        }
-
-        $ahead = $this->deck[$this->index + 1] ?? null;
-
-        if ($ahead !== null) {
-            $slides[] = [
-                'ahead' => true,
-                'n' => $this->index + 2,
-                'view' => $ahead,
-            ];
-        }
-
-        return $slides;
     }
 
     public function choiceClass(string $key): string
@@ -254,56 +207,45 @@ new class extends Component
 };
 ?>
 
-<main class="device-frame min-h-screen flex flex-col safe-top" x-data="{ showAhead: false }"
-    x-init="$wire.$watch('index', () => { showAhead = false })">
+<main class="device-frame min-h-screen flex flex-col safe-top">
     <header class="appbar">
-        <a href="{{ route('home') }}" class="icon-btn" data-back aria-label="{{ __('quiz.close') }}"><i
+        <a href="{{ route('daily-mission') }}" wire:navigate class="icon-btn" aria-label="{{ __('quiz.close') }}"><i
                 class="ph ph-x"></i></a>
         <div class="grow">
-            <div class="progress"><span
-                    style="width:{{ $this->progressPercent() }}%"
-                    :style="'width:' + (showAhead ? {{ $this->aheadProgressPercent() }} : {{ $this->progressPercent() }}) + '%'"></span>
-            </div>
+            <div class="progress"><span style="width:{{ $this->progressPercent() }}%"></span></div>
         </div>
         <span class="chip chip-coral">❤️ {{ $lives }}</span>
     </header>
 
-    @foreach ($this->slides() as $slide)
-        <div wire:key="slide-{{ $slide['view']['id'] }}" x-show="{{ $slide['ahead'] ? 'showAhead' : '!showAhead' }}"
-            @if ($slide['ahead']) style="display: none;" @endif>
-            <section class="px-6 mt-2 text-center">
-                <p class="text-xs font-extrabold" style="color:var(--color-k-muted)">
-                    {{ __('quiz.question_n_of', ['current' => $slide['n'], 'total' => count($questionIds)]) }}</p>
-                <h1 class="h-display text-2xl mt-2">{{ $slide['view']['prompt'] }}</h1>
-            </section>
+    <section class="px-6 mt-2 text-center" wire:key="q-meta-{{ $index }}">
+        <p class="text-xs font-extrabold" style="color:var(--color-k-muted)">
+            {{ __('quiz.question_n_of', ['current' => $index + 1, 'total' => count($questionIds)]) }}</p>
+        <h1 class="h-display text-2xl mt-2">{{ $prompt }}</h1>
+    </section>
 
-            @if ($slide['view']['emoji'] !== '')
-                <section class="px-6 mt-4">
-                    <div class="k-card-lg {{ $slide['view']['tile'] }} grid place-items-center aspect-[16/10]">
-                        <div class="text-8xl">{{ $slide['view']['emoji'] }}</div>
-                    </div>
-                </section>
-            @endif
+    @if ($emoji !== '')
+        <section class="px-6 mt-4" wire:key="q-emoji-{{ $index }}">
+            <div class="k-card-lg {{ $tile }} grid place-items-center aspect-[16/10]">
+                <div class="text-8xl">{{ $emoji }}</div>
+            </div>
+        </section>
+    @endif
 
-            <section class="px-6 mt-5 space-y-3" data-ans-group>
-                @foreach ($slide['view']['choices'] as $choice)
-                    <button type="button"
-                        class="ans{{ $slide['ahead'] ? '' : $this->choiceClass($choice['key']) }}"
-                        wire:click="pick('{{ $choice['key'] }}')" @disabled($answered || $slide['ahead'])>
-                        <span class="ans-key">{{ $choice['key'] }}</span>
-                        <span class="grow">{{ $choice['label'] }}</span>
-                        @if ($choice['emoji'] !== '')
-                            <span class="text-2xl">{{ $choice['emoji'] }}</span>
-                        @endif
-                    </button>
-                @endforeach
-            </section>
-        </div>
-    @endforeach
+    <section class="px-6 mt-5 space-y-3" data-ans-group wire:key="q-choices-{{ $index }}">
+        @foreach ($choices as $choice)
+            <button type="button" class="ans{{ $this->choiceClass($choice['key']) }}"
+                wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>
+                <span class="ans-key">{{ $choice['key'] }}</span>
+                <span class="grow">{{ $choice['label'] }}</span>
+                @if ($choice['emoji'] !== '')
+                    <span class="text-2xl">{{ $choice['emoji'] }}</span>
+                @endif
+            </button>
+        @endforeach
+    </section>
 
     <div class="mt-auto px-6 pb-6 pt-4 safe-bottom">
         <button type="button" class="btn btn-primary w-full" wire:click="next" wire:loading.attr="disabled"
-            @click="if ($wire.lives > 0 && {{ $this->hasAhead() ? 'true' : 'false' }}) showAhead = true"
             @disabled(! $answered)>
             {{ __('quiz.next_question') }} <i class="ph ph-arrow-right"></i>
         </button>

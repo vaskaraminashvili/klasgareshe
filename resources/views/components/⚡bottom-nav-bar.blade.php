@@ -10,7 +10,7 @@ new class extends Component
 
 <nav class="tabbar mt-auto" aria-label="{{ __('nav.primary') }}">
     <div class="tabbar-inner">
-        <a class="tab {{ request()->routeIs('home', 'daily-mission') ? 'active' : '' }}" href="{{ route('home') }}" wire:navigate>
+        <a class="tab {{ request()->routeIs('home', 'daily-mission') ? 'active' : '' }}" href="{{ route('home') }}">
             <span class="tab-ico">
                 <i class="ph-fill ph-house-simple text-xl"></i>
             </span>{{ __('nav.home') }}</a>
