@@ -41,16 +41,16 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 - After register: onboarding (**კლასი 1 / 2 / 3** → ქართული / მათემატიკა / ისტორია → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step. Kids without `grade` play class 1 packs.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
 - Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (`/game-multiple-choice/{item}`) or `daily-mission`. Friends, search, and notification list are still dummy. Recent badges on Home and Profile are live. Logout works.
-- Profile (`/profile`, `pages::profile`): live name, age · class, XP / streak / badges / global rank, level bar, league shortcut, subject mastery (week-1 %), this-week XP / days / packs, recent badge achievements, friends strip, monthly-goals chip. Edit profile and friends ranking are live; parent zone still template.
+- Profile (`/profile`, `pages::profile`): live name, age · class, XP / streak / badges / global rank, level bar, league shortcut, subject mastery (active curriculum week %), this-week XP / days / packs, recent badge achievements, friends strip, monthly-goals chip. Edit profile and friends ranking are live; parent zone still template.
 - Edit profile (`/edit-profile`): name, nickname, avatar emoji, age, gender, class 1–3, favourite subject, daily goal, privacy toggles. Parent email read-only. Reset/delete not wired.
 - Monthly goals (`/monthly-goals`): system goals for the calendar month (packs / XP / streak / badges) from live stats. Add/custom goals deferred.
 - Friends ranking (`/ranking-friends`): add by nickname (auto-accept v1), XP podium + list among friends. Parent approval later.
 - Daily mission (`/daily-mission`, `pages::daily-mission`): week checklist of 21 packs (done / next / locked). Gift box / share / bonus markup only.
-- Week plan: `week_plan_items` + `user_plan_progress`. Curriculum week 1 seeded for grades 1–3 (`WeekPlanSeeder`, `locale=ka`). Catch-up: first incomplete weekday per subject; progress is not wiped on Monday. Completing a pack calls `UserStatService::recordPlay()`.
+- Week plan: `week_plan_items` + `user_plan_progress`. Curriculum weeks 1–2 seeded for grades 1–3 (`WeekPlanSeeder`, `locale=ka`). Active week = lowest week with incomplete packs; advances to N+1 when N is fully done; stays on last seeded week when all complete. Catch-up: first incomplete weekday per subject within the active week; progress is not wiped on Monday. Completing a pack calls `UserStatService::recordPlay()`.
 - Quick Quiz (`/game-multiple-choice/{item}`): that pack’s 5 Georgian questions, 3 lives, XP on finish. Bare `/game-multiple-choice` redirects to the next incomplete item. Finishing a pack evaluates badges and may redirect to `/badge-unlock/{slug}`.
 - Badges (`/badges`, `pages::badges`) + unlock (`/badge-unlock/{slug}`): 21 Kidzio badges, Georgian names, immediate unlock + one-time celebration. Speed Runner and Social Star stay locked. Rewards tab opens the collection. Shop / claim queue / Rewards dashboard are later.
 
-Build next: week 2+ packs in the same tables, then another mini-game shell or Learn tab. Review seeded ისტორია facts.
+Build next: week 3+ packs in the same tables, then another mini-game shell or Learn tab.
 
 ---
 

@@ -10,8 +10,12 @@ final class WeekPlanQuestionBank
     /**
      * @return array{title: string, questions: list<array{prompt: string, correct: string, wrongs: list<string>, emoji: string}>}
      */
-    public static function pack(SchoolGrade $grade, SchoolSubject $subject, int $weekday): array
+    public static function pack(SchoolGrade $grade, SchoolSubject $subject, int $weekday, int $weekNumber = 1): array
     {
+        if ($weekNumber === 2) {
+            return WeekPlanQuestionBankWeek2::pack($grade, $subject, $weekday);
+        }
+
         return [
             'title' => self::title($grade, $subject, $weekday),
             'questions' => match ($subject) {

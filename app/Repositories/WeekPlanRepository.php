@@ -153,6 +153,53 @@ class WeekPlanRepository
         return $query->first();
     }
 
+    /**
+     * Lowest curriculum week that still has at least one incomplete pack for the grade.
+     */
+    public function lowestIncompleteWeekNumber(User $user, SchoolGrade $grade): ?int
+    {
+        $completed = $this->completedItemIds($user);
+
+        $query = WeekPlanItem::query()
+            ->where('grade', $grade)
+            ->orderBy('week_number')
+            ->orderBy('weekday')
+            ->orderBy('id');
+
+        if ($completed !== []) {
+            $query->whereNotIn('id', $completed);
+        }
+
+        $week = $query->value('week_number');
+
+        return $week === null ? null : (int) $week;
+    }
+
+    public function maxWeekNumber(SchoolGrade $grade): int
+    {
+        return (int) (WeekPlanItem::query()
+            ->where('grade', $grade)
+            ->max('week_number') ?? 1);
+    }
+
+    /**
+     * @return list<int>
+     */
+    public function weekNumbersForGrade(SchoolGrade $grade): array
+    {
+        $weeks = [];
+
+        foreach (WeekPlanItem::query()
+            ->where('grade', $grade)
+            ->distinct()
+            ->orderBy('week_number')
+            ->pluck('week_number') as $week) {
+            $weeks[] = (int) $week;
+        }
+
+        return $weeks;
+    }
+
     public function completedCount(User $user): int
     {
         return UserPlanProgress::query()

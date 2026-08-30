@@ -17,8 +17,6 @@ use InvalidArgumentException;
 
 class WeekPlanService
 {
-    public const CURRICULUM_WEEK = 1;
-
     public const MISSION_TOTAL = 3;
 
     public function __construct(private WeekPlanRepository $plans) {}
@@ -28,8 +26,25 @@ class WeekPlanService
         return $user->grade ?? SchoolGrade::First;
     }
 
+    /**
+     * Active curriculum week: lowest week with incomplete packs, or the last
+     * seeded week when everything is done.
+     */
+    public function activeWeekNumber(User $user): int
+    {
+        $grade = $this->gradeFor($user);
+        $incomplete = $this->plans->lowestIncompleteWeekNumber($user, $grade);
+
+        if ($incomplete !== null) {
+            return $incomplete;
+        }
+
+        return $this->plans->maxWeekNumber($grade);
+    }
+
     public function homePlan(User $user): HomeWeekPlan
     {
+        $weekNumber = $this->activeWeekNumber($user);
         $tasks = $this->homeTasks($user);
         $continue = $this->firstIncomplete($user);
         $heroTitle = (string) __('home.week_complete');
@@ -43,7 +58,7 @@ class WeekPlanService
         }
 
         $missionDone = min(self::MISSION_TOTAL, $this->plans->completedTodayCount($user));
-        $items = $this->plans->itemsForGrade($this->gradeFor($user), self::CURRICULUM_WEEK);
+        $items = $this->plans->itemsForGrade($this->gradeFor($user), $weekNumber);
         $completedIds = $this->plans->completedItemIds($user);
         $weekCompleted = 0;
 
@@ -82,12 +97,14 @@ class WeekPlanService
 
     public function firstIncomplete(User $user): ?WeekPlanItem
     {
+        $weekNumber = $this->activeWeekNumber($user);
+
         foreach (SchoolSubject::ordered() as $subject) {
             $item = $this->plans->nextIncomplete(
                 $user,
                 $this->gradeFor($user),
                 $subject,
-                self::CURRICULUM_WEEK,
+                $weekNumber,
             );
 
             if ($item instanceof WeekPlanItem) {
@@ -104,7 +121,7 @@ class WeekPlanService
             $user,
             $this->gradeFor($user),
             $subject,
-            self::CURRICULUM_WEEK,
+            $this->activeWeekNumber($user),
         );
     }
 
@@ -128,6 +145,11 @@ class WeekPlanService
         );
 
         if ($next === null || $next->id !== $item->id) {
+            throw new InvalidArgumentException('Week plan item is locked until earlier packs are finished.');
+        }
+
+        // Packs from a future curriculum week stay locked until earlier weeks are done.
+        if ($item->week_number > $this->activeWeekNumber($user)) {
             throw new InvalidArgumentException('Week plan item is locked until earlier packs are finished.');
         }
 
@@ -179,13 +201,14 @@ class WeekPlanService
     public function checklist(User $user): array
     {
         $grade = $this->gradeFor($user);
-        $items = $this->plans->itemsForGrade($grade, self::CURRICULUM_WEEK);
+        $weekNumber = $this->activeWeekNumber($user);
+        $items = $this->plans->itemsForGrade($grade, $weekNumber);
         $completedIds = $this->plans->completedItemIds($user);
         $completedAt = $this->plans->completedAtByItem($user);
         $nextBySubject = [];
 
         foreach (SchoolSubject::ordered() as $subject) {
-            $next = $this->plans->nextIncomplete($user, $grade, $subject, self::CURRICULUM_WEEK);
+            $next = $this->plans->nextIncomplete($user, $grade, $subject, $weekNumber);
             $nextBySubject[$subject->value] = $next?->id;
         }
 
@@ -250,7 +273,8 @@ class WeekPlanService
     public function subjectMastery(User $user): array
     {
         $grade = $this->gradeFor($user);
-        $items = $this->plans->itemsForGrade($grade, self::CURRICULUM_WEEK);
+        $weekNumber = $this->activeWeekNumber($user);
+        $items = $this->plans->itemsForGrade($grade, $weekNumber);
         $completedIds = array_flip($this->plans->completedItemIds($user));
         $rows = [];
 
