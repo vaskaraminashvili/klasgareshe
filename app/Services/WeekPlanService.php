@@ -194,7 +194,7 @@ class WeekPlanService
 
             if ($task->id !== null) {
                 $pack = $this->plans->find($task->id);
-                $weekday = $pack?->weekday ?? 0;
+                $weekday = $pack !== null ? $pack->weekday : 0;
 
                 if ($task->completed && isset($completedAt[$task->id])) {
                     $completedAtLabel = $completedAt[$task->id]->format('H:i');
