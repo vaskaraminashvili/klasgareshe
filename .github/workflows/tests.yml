@@ -32,7 +32,12 @@ jobs:
           node-version: '22'
 
       - name: Setup Application
-        run: composer setup
+        run: |
+          composer install --no-interaction --prefer-dist
+          cp .env.example .env
+          php artisan key:generate --force
+          npm install
+          npm run build
 
       - name: Run CI Checks
         run: composer ci:check
