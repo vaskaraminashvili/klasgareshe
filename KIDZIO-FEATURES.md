@@ -226,10 +226,10 @@ Shared game rules:
 
 ## 9. Daily mission
 
-- [x] Week checklist — `pages::daily-mission` (`kidzio/daily-mission.html`); 21 packs for the **active** curriculum week (7 days × 3 subjects), done / next / locked
-- [x] 3 Home tasks = next incomplete pack per subject; mission `n/3` = packs completed today
-- [x] Hours left until Sunday 23:59 on Home + mission hero
-- [x] Catch-up: missed weekday packs stay until finished (progress not wiped Monday)
+- [x] Daily checklist — `pages::daily-mission`; **3 today tasks** (1 per subject), done if that subject was played today
+- [x] 3 Home tasks = same daily set; mission `n/3` = subjects finished today
+- [x] Hours left until end of day on Daily mission; Home week hero still uses hours until Sunday
+- [x] Catch-up: missed weekday packs stay until finished (progress not wiped Monday); next pack opens after today’s subject slot is done
 - [~] Locked bonus / gift box / share / “kids playing” — markup only, no backend
 
 ---

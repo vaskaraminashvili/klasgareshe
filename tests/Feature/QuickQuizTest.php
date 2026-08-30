@@ -66,7 +66,7 @@ class QuickQuizTest extends TestCase
         $this->assertArrayNotHasKey('correctKey', $component->get('deck')[0]);
     }
 
-    public function test_quiz_paints_the_next_question_ahead_on_start(): void
+    public function test_quiz_shows_only_the_current_question_on_start(): void
     {
         $this->withoutVite();
         $item = $this->seedQuiz(3);
@@ -81,8 +81,8 @@ class QuickQuizTest extends TestCase
         $this->assertCount(3, $deck);
         $this->assertSame($deck[0]['prompt'], $component->get('prompt'));
         $this->assertNotSame($deck[0]['prompt'], $deck[1]['prompt']);
-        $component->assertSee($deck[1]['prompt']);
-        $this->assertTrue(isset($deck[1]));
+        $component->assertSee($deck[0]['prompt']);
+        $component->assertDontSee($deck[1]['prompt']);
     }
 
     public function test_next_uses_the_prefetched_deck_without_querying_questions(): void

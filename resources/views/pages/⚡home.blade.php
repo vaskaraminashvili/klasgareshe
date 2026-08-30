@@ -47,6 +47,21 @@ new class extends Component
 
     public function mount(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges): void
     {
+        $this->syncHome($stats, $week, $users, $badges);
+    }
+
+    public function hydrate(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges): void
+    {
+        $this->syncHome($stats, $week, $users, $badges);
+    }
+
+    public function refreshHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges): void
+    {
+        $this->syncHome($stats, $week, $users, $badges);
+    }
+
+    private function syncHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges): void
+    {
         $user = $users->authenticated();
         $home = $stats->homeSnapshot($user);
         $plan = $week->homePlan($user);
@@ -111,7 +126,10 @@ new class extends Component
 };
 ?>
 
-<main class="device-frame min-h-screen flex flex-col">
+<main class="device-frame min-h-screen flex flex-col"
+    x-data
+    x-on:livewire:navigated.window="$wire.refreshHome()"
+    x-on:pageshow.window="if ($event.persisted) $wire.refreshHome()">
 
     <livewire:profile-header />
     <!-- =============== QUICK STATS RIBBON =============== -->
@@ -232,7 +250,8 @@ new class extends Component
         <div class="swiper subjects-swiper" data-swiper-rail>
             <div class="swiper-wrapper">
                 @foreach ($planTasks as $task)
-                    <a href="{{ $this->quizUrl($task['id']) }}" wire:navigate class="swiper-slide tile {{ $task['tile'] }}">
+                    <a href="{{ $task['playable'] ? $this->quizUrl($task['id']) : route('daily-mission') }}"
+                        wire:navigate class="swiper-slide tile {{ $task['tile'] }}">
                         <span class="chip chip-on-tile {{ $task['inkClass'] }}">{{ $task['subtitle'] }}</span>
                         <h3 class="mt-3">{{ $task['subject'] }}</h3>
                         <p class="text-xs mt-1 {{ $task['inkClass'] }} opacity-80">{{ $task['title'] }}</p>
