@@ -93,16 +93,16 @@ Reusable later from Settings.
 
 - [~] Kid display name + nickname — stored (nickname auto from name); home greeting + Profile hero use name
 - [~] Age, class (`users.grade` 1–3), age group stored; country not stored; Profile shows age · class
-- [ ] Avatar picker (animal/emoji set)
+- [x] Avatar picker (animal/emoji set) — edit-profile emoji sheet; stored on `users.avatar`
 - [ ] Camera / change-avatar badge
 - [ ] Online status
 - [x] Level title (e.g. Lv 7 Explorer) — Profile chip + XP bar from `LevelCalculator`
-- [x] Profile stats: XP, streak, badges, rank — hero metrics + shortcuts live; friends still dummy
+- [x] Profile stats: XP, streak, badges, rank — hero metrics + shortcuts live
 - [x] Subject mastery bars (% complete per subject) — week-1 packs for ქართული / მათემატიკა / ისტორია
 - [x] Weekly activity recap on profile — XP / active days / packs + week dots
 - [~] Achievements timeline — recent badges; streak/mission milestone rows still later
 - [ ] Share profile
-- [ ] Edit profile (name, nickname, age, avatar, favourite subject)
+- [x] Edit profile (name, nickname, age, avatar, favourite subject) — `/edit-profile`; reset/delete deferred
 
 ---
 
@@ -273,14 +273,14 @@ Shared game rules:
 
 - [x] Global all-time leaderboard
 - [x] Weekly ranking + week prizes — ranking live; prize claiming deferred
-- [ ] Friends ranking
+- [x] Friends ranking
 - [x] Podium (top 3)
 - [x] “You are here” strip
 - [ ] Filters: worldwide, country, on a streak, online now
 - [ ] Search players
 - [ ] Top countries
-- [ ] Hide kid from global ranking (parent + settings toggle)
-- [ ] Show on leaderboard toggle
+- [~] Hide kid from global ranking (parent + settings toggle) — toggle stored on edit-profile; leaderboard filter later
+- [~] Show on leaderboard toggle — stored; not yet applied to global queries
 
 ### Leagues (weekly seasons)
 
@@ -295,12 +295,12 @@ Tiers: **Bronze → Silver → Gold → Emerald → Sapphire → Diamond**
 
 ### Friends
 
-- [ ] Friend list
-- [ ] Friend requests (parent approval by default)
+- [x] Friend list — friends ranking page
+- [~] Friend requests (parent approval by default) — nickname add auto-accepts in v1; parent PIN later
 - [ ] Suggested friends
-- [ ] Add friend
-- [ ] Friends-today activity on Home
-- [ ] Toggle: allow friend requests
+- [x] Add friend — by nickname on `/ranking-friends`
+- [~] Friends-today activity on Home — profile strip live; Home feed later
+- [x] Toggle: allow friend requests — edit-profile
 
 ---
 
@@ -338,7 +338,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 - [ ] Weekly report (XP, lessons, active days, charts)
 - [ ] Email weekly report to parent (e.g. Monday / Sunday)
 - [ ] Full report (longer charts)
-- [ ] Monthly goals (parent-set targets, % complete, XP/day)
+- [x] Monthly goals (parent-set targets, % complete, XP/day) — system month goals live on `/monthly-goals`; parent custom targets later
 - [ ] Export progress / all data as PDF
 - [ ] Parent tips
 

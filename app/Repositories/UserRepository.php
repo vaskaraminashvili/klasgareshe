@@ -42,9 +42,20 @@ class UserRepository
         return $user;
     }
 
-    public function nicknameExists(string $nickname): bool
+    public function nicknameExists(string $nickname, ?int $exceptUserId = null): bool
     {
-        return User::query()->where('nickname', $nickname)->exists();
+        $query = User::query()->where('nickname', $nickname);
+
+        if ($exceptUserId !== null) {
+            $query->whereKeyNot($exceptUserId);
+        }
+
+        return $query->exists();
+    }
+
+    public function findByNickname(string $nickname): ?User
+    {
+        return User::query()->where('nickname', $nickname)->first();
     }
 
     public function markEmailVerified(User $user): User

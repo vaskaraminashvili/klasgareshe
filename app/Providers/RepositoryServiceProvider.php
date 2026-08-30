@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Repositories\BadgeRepository;
+use App\Repositories\FriendshipRepository;
 use App\Repositories\GameRepository;
 use App\Repositories\LeagueRepository;
 use App\Repositories\QuestionRepository;
@@ -10,11 +11,14 @@ use App\Repositories\UserRepository;
 use App\Repositories\UserStatRepository;
 use App\Repositories\WeekPlanRepository;
 use App\Services\BadgeService;
+use App\Services\FriendshipService;
 use App\Services\GamePlayService;
 use App\Services\KidSetupService;
 use App\Services\LeagueSeasonService;
 use App\Services\LevelCalculator;
+use App\Services\MonthlyGoalService;
 use App\Services\ParentVerificationService;
+use App\Services\UserProfileService;
 use App\Services\UserRegistrationService;
 use App\Services\UserStatService;
 use App\Services\WeekPlanService;
@@ -29,11 +33,14 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->singleton(UserRepository::class);
         $this->app->singleton(UserStatRepository::class);
+        $this->app->singleton(FriendshipRepository::class);
         $this->app->singleton(LeagueRepository::class);
         $this->app->singleton(GameRepository::class);
         $this->app->singleton(QuestionRepository::class);
         $this->app->singleton(LevelCalculator::class);
         $this->app->singleton(UserRegistrationService::class);
+        $this->app->singleton(UserProfileService::class);
+        $this->app->singleton(FriendshipService::class);
         $this->app->singleton(LeagueSeasonService::class);
         $this->app->singleton(UserStatService::class);
         $this->app->singleton(GamePlayService::class);
@@ -43,5 +50,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(WeekPlanService::class);
         $this->app->singleton(BadgeRepository::class);
         $this->app->singleton(BadgeService::class);
+        $this->app->singleton(MonthlyGoalService::class);
     }
 }

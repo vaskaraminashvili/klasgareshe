@@ -55,7 +55,7 @@ class UserStatService
 
         return new ProfileSnapshot(
             name: $user->name,
-            avatar: $this->avatarFor($user->id),
+            avatar: $this->avatarFor($user),
             age: $user->age,
             gradeLabel: $grade->label(),
             xp: $stat->xp,
@@ -201,7 +201,7 @@ class UserStatService
                 level: $this->levels->forXp($row->xp)->level,
                 streak: $row->current_streak,
                 isYou: $owner->id === $user->id,
-                avatar: $this->avatarFor($owner->id),
+                avatar: $this->avatarFor($owner),
             );
         }
 
@@ -219,7 +219,7 @@ class UserStatService
             yourName: $user->name,
             yourLevel: $level->level,
             yourStreak: $stat->current_streak,
-            yourAvatar: $this->avatarFor($user->id),
+            yourAvatar: $this->avatarFor($user),
             xpToNextRank: $xpToNext,
             percentileLabel: __('ranking.top_percentile', ['percent' => $percentile]),
             podium: $podium,
@@ -265,9 +265,18 @@ class UserStatService
         return $updated;
     }
 
-    public function avatarFor(int $userId): string
+    public function avatarFor(User|int $user): string
     {
-        return self::AVATARS[$userId % count(self::AVATARS)];
+        if ($user instanceof User) {
+            if (is_string($user->avatar) && $user->avatar !== '') {
+                return $user->avatar;
+            }
+            $id = $user->id;
+        } else {
+            $id = $user;
+        }
+
+        return self::AVATARS[$id % count(self::AVATARS)];
     }
 
     private function weekdayLetter(int $isoDay): string

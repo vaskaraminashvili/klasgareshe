@@ -14,4 +14,18 @@ final readonly class ChoiceQuestionView
         public string $tile,
         public array $choices,
     ) {}
+
+    /**
+     * @return array{id: int, prompt: string, emoji: string, tile: string, choices: list<array{key: string, label: string, emoji: string}>}
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'prompt' => $this->prompt,
+            'emoji' => $this->emoji,
+            'tile' => $this->tile,
+            'choices' => $this->choices,
+        ];
+    }
 }

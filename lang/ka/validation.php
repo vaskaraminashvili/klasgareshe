@@ -199,13 +199,17 @@ return [
 
     'attributes' => [
         'name' => 'ბავშვის სახელი',
+        'nickname' => 'გამოსაჩენი სახელი',
         'age' => 'ასაკი',
         'gender' => 'სქესი',
+        'grade' => 'კლასი',
+        'favouriteSubject' => 'საყვარელი საგანი',
+        'dailyGoal' => 'ყოველდღიური მიზანი',
+        'avatar' => 'ავატარი',
         'email' => 'ელფოსტა',
         'password' => 'პაროლი',
         'agreed' => 'თანხმობა',
         'ageGroup' => 'ასაკობრივი ჯგუფი',
-        'dailyGoal' => 'ყოველდღიური მიზანი',
         'reminderTime' => 'შეხსენების დრო',
         'code' => 'კოდი',
     ],

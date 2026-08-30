@@ -2,6 +2,8 @@
 
 use App\Repositories\UserRepository;
 use App\Services\BadgeService;
+use App\Services\FriendshipService;
+use App\Services\MonthlyGoalService;
 use App\Services\UserStatService;
 use App\Services\WeekPlanService;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +48,19 @@ new #[Title('პროფილი · Kidzio')] class extends Component
 
     public string $weekRangeLabel = '';
 
+    public int $monthlyGoalsHit = 0;
+
+    public int $monthlyGoalsTotal = 4;
+
+    public int $friendsCount = 0;
+
+    public int $friendsOnline = 0;
+
+    public int $friendsBeating = 0;
+
+    /** @var list<string> */
+    public array $friendAvatars = [];
+
     /** @var list<array{letter: string, on: bool, today: bool}> */
     public array $weekDays = [];
 
@@ -68,10 +83,14 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         UserStatService $stats,
         WeekPlanService $week,
         BadgeService $badges,
+        MonthlyGoalService $monthlyGoals,
+        FriendshipService $friendships,
         UserRepository $users,
     ): void {
         $user = $users->authenticated();
         $snap = $stats->profileSnapshot($user, $week->lessonsCompletedThisWeek($user));
+        $monthly = $monthlyGoals->snapshot($user);
+        $friendsStrip = $friendships->profileStrip($user);
 
         $this->displayName = $snap->name;
         $this->avatar = $snap->avatar;
@@ -92,11 +111,17 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         $this->weekLessons = $snap->weekLessons;
         $this->weekRangeLabel = $snap->weekRangeLabel;
         $this->weekDays = $snap->weekDays;
+        $this->monthlyGoalsHit = $monthly->goalsHit;
+        $this->monthlyGoalsTotal = $monthly->goalsTotal;
 
         $this->badgeCount = $badges->earnedCount($user);
         $this->catalogCount = $badges->catalogCount();
         $this->recentBadges = array_map(fn ($card) => $card->toArray(), $badges->recentRail($user));
         $this->mastery = array_map(fn ($row) => $row->toArray(), $week->subjectMastery($user));
+        $this->friendsCount = $friendsStrip->count;
+        $this->friendsOnline = $friendsStrip->onlineCount;
+        $this->friendsBeating = $friendsStrip->beatingCount;
+        $this->friendAvatars = $friendsStrip->avatars;
 
         $this->achievements = [];
         foreach ($this->recentBadges as $badge) {
@@ -147,7 +172,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
             <p class="text-xs text-muted">{{ __('profile.your_learning_world') }}</p>
             <h1 class="h-display text-2xl leading-tight">{{ __('profile.profile') }}</h1>
         </div>
-        <a href="edit-profile.html" class="icon-btn" aria-label="{{ __('profile.edit_profile') }}"><i
+        <a href="{{ route('edit-profile') }}" wire:navigate class="icon-btn" aria-label="{{ __('profile.edit_profile') }}"><i
                 class="ph ph-pencil-simple text-xl"></i></a>
         <a href="settings.html" class="icon-btn" aria-label="{{ __('profile.settings') }}"><i
                 class="ph ph-gear text-xl"></i></a>
@@ -161,7 +186,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
             <div class="relative">
                 <span class="profile-avatar">
                     <span>{{ $avatar }}</span>
-                    <a href="edit-profile.html" class="camera-badge" aria-label="{{ __('profile.change_avatar') }}">
+                    <a href="{{ route('edit-profile') }}" wire:navigate class="camera-badge" aria-label="{{ __('profile.change_avatar') }}">
                         <i class="ph-fill ph-camera text-sm"></i>
                     </a>
                 </span>
@@ -208,7 +233,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
             </div>
 
             <div class="relative mt-4 flex items-center justify-center gap-2">
-                <a href="edit-profile.html" class="cta-soft">
+                <a href="{{ route('edit-profile') }}" wire:navigate class="cta-soft">
                     <i class="ph-fill ph-pencil-simple"></i> {{ __('profile.edit_profile') }}
                 </a>
                 <button type="button" class="chip bg-white/20 border-0 text-white">
@@ -341,19 +366,24 @@ new #[Title('პროფილი · Kidzio')] class extends Component
     <section class="px-5 mt-5">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('profile.friends') }}</h2>
-            <a href="ranking-friends.html" class="link">{{ __('profile.view_all') }}</a>
+            <a href="{{ route('ranking-friends') }}" wire:navigate class="link">{{ __('profile.view_all') }}</a>
         </div>
-        <a href="ranking-friends.html" class="k-card p-3 flex items-center gap-3">
+        <a href="{{ route('ranking-friends') }}" wire:navigate class="k-card p-3 flex items-center gap-3">
             <div class="avatar-stack">
-                <span class="size-10 rounded-full tile-sun grid place-items-center text-lg">👦</span>
-                <span class="size-10 rounded-full tile-mint grid place-items-center text-lg">👧</span>
-                <span class="size-10 rounded-full tile-coral grid place-items-center text-lg">🧒</span>
-                <span class="size-10 rounded-full tile-sky grid place-items-center text-lg">🐰</span>
+                @forelse ($friendAvatars as $index => $friendAvatar)
+                    @php
+                        $tile = ['tile-sun', 'tile-mint', 'tile-coral', 'tile-sky'][$index % 4];
+                    @endphp
+                    <span class="size-10 rounded-full {{ $tile }} grid place-items-center text-lg">{{ $friendAvatar }}</span>
+                @empty
+                    <span class="size-10 rounded-full tile-sun grid place-items-center text-lg">👫</span>
+                @endforelse
             </div>
             <div class="grow">
                 <p class="font-extrabold text-sm text-ink">
-                    {{ __('profile.friends_online', ['total' => 8, 'online' => 5]) }}</p>
-                <p class="text-[11px] text-muted">{{ __('profile.beating_friends_this_week', ['count' => 3]) }}</p>
+                    {{ __('profile.friends_online', ['total' => $friendsCount, 'online' => $friendsOnline]) }}</p>
+                <p class="text-[11px] text-muted">
+                    {{ __('profile.beating_friends_this_week', ['count' => $friendsBeating]) }}</p>
             </div>
             <i class="ph ph-caret-right text-muted"></i>
         </a>
@@ -375,10 +405,10 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                 <span class="chip chip-primary">{{ __('profile.level', ['level' => $level]) }}</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
-            <a href="monthly-goals.html" class="menu-row">
+            <a href="{{ route('monthly-goals') }}" wire:navigate class="menu-row">
                 <div class="menu-ico tile-mint">🎯</div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.monthly_goals') }}</p>
-                <span class="chip chip-mint">3 / 4</span>
+                <span class="chip chip-mint">{{ $monthlyGoalsHit }} / {{ $monthlyGoalsTotal }}</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
             <a href="{{ route('badges') }}" wire:navigate class="menu-row">

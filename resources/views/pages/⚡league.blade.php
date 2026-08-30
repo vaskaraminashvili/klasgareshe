@@ -121,7 +121,8 @@ new class extends Component
                     role="tab">🌍 {{ __('ranking.global') }}</a>
                 <a href="{{ route('ranking-weekly') }}" wire:navigate class="swiper-slide chip"
                     role="tab">📅 {{ __('ranking.weekly') }}</a>
-                <a href="#" class="swiper-slide chip" role="tab">👫 {{ __('ranking.friends') }}</a>
+                <a href="{{ route('ranking-friends') }}" wire:navigate class="swiper-slide chip"
+                    role="tab">👫 {{ __('ranking.friends') }}</a>
                 <a href="{{ route('league') }}" wire:navigate class="swiper-slide chip chip-primary" role="tab"
                     aria-selected="true">🏆 {{ __('ranking.league') }}</a>
             </div>

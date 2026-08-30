@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
  * @property string $name
  * @property string $surname
  * @property string $nickname
+ * @property string|null $avatar
  * @property string $email
  * @property int|null $age
  * @property Gender|null $gender
@@ -33,6 +34,8 @@ use Illuminate\Support\Str;
  * @property Carbon|null $onboarding_completed_at
  * @property array<string, mixed>|null $notification_preferences
  * @property ReminderTime|null $reminder_time
+ * @property bool $show_on_leaderboard
+ * @property bool $allow_friend_requests
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
@@ -43,6 +46,7 @@ use Illuminate\Support\Str;
     'name',
     'surname',
     'nickname',
+    'avatar',
     'email',
     'password',
     'age',
@@ -55,6 +59,8 @@ use Illuminate\Support\Str;
     'onboarding_completed_at',
     'notification_preferences',
     'reminder_time',
+    'show_on_leaderboard',
+    'allow_friend_requests',
 ])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -82,6 +88,8 @@ class User extends Authenticatable
             'onboarding_step' => OnboardingStep::class,
             'notification_preferences' => 'array',
             'reminder_time' => ReminderTime::class,
+            'show_on_leaderboard' => 'boolean',
+            'allow_friend_requests' => 'boolean',
         ];
     }
 
