@@ -35,27 +35,34 @@ class WeekPlanSeeder extends Seeder
         );
 
         foreach (SchoolGrade::cases() as $grade) {
-            foreach (SchoolSubject::ordered() as $subject) {
-                for ($weekday = 1; $weekday <= 7; $weekday++) {
-                    $this->seedPack($game, $grade, $subject, $weekday);
+            foreach ([1, 2] as $weekNumber) {
+                foreach (SchoolSubject::ordered() as $subject) {
+                    for ($weekday = 1; $weekday <= 7; $weekday++) {
+                        $this->seedPack($game, $grade, $subject, $weekday, $weekNumber);
+                    }
                 }
             }
         }
     }
 
-    private function seedPack(Game $game, SchoolGrade $grade, SchoolSubject $subject, int $weekday): void
-    {
-        $pack = WeekPlanQuestionBank::pack($grade, $subject, $weekday);
+    private function seedPack(
+        Game $game,
+        SchoolGrade $grade,
+        SchoolSubject $subject,
+        int $weekday,
+        int $weekNumber = 1,
+    ): void {
+        $pack = WeekPlanQuestionBank::pack($grade, $subject, $weekday, $weekNumber);
 
         $item = WeekPlanItem::query()->updateOrCreate(
             [
                 'grade' => $grade,
-                'week_number' => 1,
+                'week_number' => $weekNumber,
                 'weekday' => $weekday,
                 'subject' => $subject,
             ],
             [
-                'level' => $weekday,
+                'level' => (($weekNumber - 1) * 7) + $weekday,
                 'title' => $pack['title'],
                 'game_slug' => GameType::MultipleChoice,
                 'questions_per_round' => 5,
@@ -66,8 +73,9 @@ class WeekPlanSeeder extends Seeder
 
         foreach ($pack['questions'] as $index => $row) {
             $code = sprintf(
-                'g%d-w1-d%d-%s-%02d',
+                'g%d-w%d-d%d-%s-%02d',
                 $grade->value,
+                $weekNumber,
                 $weekday,
                 $subject->value,
                 $index + 1,

@@ -2,26 +2,154 @@
 
 use App\Repositories\UserRepository;
 use App\Services\BadgeService;
+use App\Services\FriendshipService;
+use App\Services\MonthlyGoalService;
+use App\Services\UserStatService;
+use App\Services\WeekPlanService;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new class extends Component
+new #[Title('პროფილი · Kidzio')] class extends Component
 {
+    public string $displayName = '';
+
+    public string $avatar = '🐻';
+
+    public string $metaLine = '';
+
+    public int $level = 1;
+
+    public string $levelTitle = '';
+
+    public int $nextLevel = 2;
+
+    public int $xpToNext = 0;
+
+    public int $levelPercent = 0;
+
+    public int $xp = 0;
+
+    public int $streak = 0;
+
     public int $badgeCount = 0;
 
     public int $catalogCount = 0;
+
+    public int $rank = 1;
+
+    public string $leagueLabel = '';
+
+    public int $weekXp = 0;
+
+    public int $weekActiveDays = 0;
+
+    public int $weekLessons = 0;
+
+    public string $weekRangeLabel = '';
+
+    public int $monthlyGoalsHit = 0;
+
+    public int $monthlyGoalsTotal = 4;
+
+    public int $friendsCount = 0;
+
+    public int $friendsOnline = 0;
+
+    public int $friendsBeating = 0;
+
+    /** @var list<string> */
+    public array $friendAvatars = [];
+
+    /** @var list<array{letter: string, on: bool, today: bool}> */
+    public array $weekDays = [];
+
+    /**
+     * @var list<array{subject: string, label: string, emoji: string, tile: string, progressClass: string, percent: int, done: int, total: int, nextItemId: int|null, href: string}>
+     */
+    public array $mastery = [];
 
     /**
      * @var list<array{slug: string, name: string, emoji: string, medalClass: string, meta: string, href: string, locked: bool, unseen: bool}>
      */
     public array $recentBadges = [];
 
-    public function mount(BadgeService $badges, UserRepository $users): void
-    {
+    /**
+     * @var list<array{slug: string, name: string, emoji: string, meta: string, href: string, unseen: bool}>
+     */
+    public array $achievements = [];
+
+    public function mount(
+        UserStatService $stats,
+        WeekPlanService $week,
+        BadgeService $badges,
+        MonthlyGoalService $monthlyGoals,
+        FriendshipService $friendships,
+        UserRepository $users,
+    ): void {
         $user = $users->authenticated();
+        $snap = $stats->profileSnapshot($user, $week->lessonsCompletedThisWeek($user));
+        $monthly = $monthlyGoals->snapshot($user);
+        $friendsStrip = $friendships->profileStrip($user);
+
+        $this->displayName = $snap->name;
+        $this->avatar = $snap->avatar;
+        $this->metaLine = $snap->age !== null
+            ? (string) __('profile.age_grade', ['age' => $snap->age, 'grade' => $snap->gradeLabel])
+            : $snap->gradeLabel;
+        $this->level = $snap->level->level;
+        $this->levelTitle = $snap->level->title;
+        $this->nextLevel = $snap->level->nextLevel;
+        $this->xpToNext = $snap->level->xpToNext;
+        $this->levelPercent = $snap->level->percent;
+        $this->xp = $snap->xp;
+        $this->streak = $snap->streak;
+        $this->rank = $snap->rank;
+        $this->leagueLabel = $snap->leagueLabel;
+        $this->weekXp = $snap->weekXp;
+        $this->weekActiveDays = $snap->weekActiveDays;
+        $this->weekLessons = $snap->weekLessons;
+        $this->weekRangeLabel = $snap->weekRangeLabel;
+        $this->weekDays = $snap->weekDays;
+        $this->monthlyGoalsHit = $monthly->goalsHit;
+        $this->monthlyGoalsTotal = $monthly->goalsTotal;
+
         $this->badgeCount = $badges->earnedCount($user);
         $this->catalogCount = $badges->catalogCount();
         $this->recentBadges = array_map(fn ($card) => $card->toArray(), $badges->recentRail($user));
+        $this->mastery = array_map(fn ($row) => $row->toArray(), $week->subjectMastery($user));
+        $this->friendsCount = $friendsStrip->count;
+        $this->friendsOnline = $friendsStrip->onlineCount;
+        $this->friendsBeating = $friendsStrip->beatingCount;
+        $this->friendAvatars = $friendsStrip->avatars;
+
+        $this->achievements = [];
+        foreach ($this->recentBadges as $badge) {
+            if ($badge['locked']) {
+                continue;
+            }
+
+            $this->achievements[] = [
+                'slug' => $badge['slug'],
+                'name' => $badge['name'],
+                'emoji' => $badge['emoji'],
+                'meta' => $badge['meta'],
+                'href' => $badge['href'],
+                'unseen' => $badge['unseen'],
+            ];
+        }
+    }
+
+    public function formattedXp(): string
+    {
+        return number_format($this->xp);
+    }
+
+    public function formattedWeekXp(): string
+    {
+        return $this->weekXp > 0
+            ? '+'.number_format($this->weekXp)
+            : '0';
     }
 
     public function logout(): void
@@ -44,7 +172,7 @@ new class extends Component
             <p class="text-xs text-muted">{{ __('profile.your_learning_world') }}</p>
             <h1 class="h-display text-2xl leading-tight">{{ __('profile.profile') }}</h1>
         </div>
-        <a href="edit-profile.html" class="icon-btn" aria-label="{{ __('profile.edit_profile') }}"><i
+        <a href="{{ route('edit-profile') }}" wire:navigate class="icon-btn" aria-label="{{ __('profile.edit_profile') }}"><i
                 class="ph ph-pencil-simple text-xl"></i></a>
         <a href="settings.html" class="icon-btn" aria-label="{{ __('profile.settings') }}"><i
                 class="ph ph-gear text-xl"></i></a>
@@ -57,22 +185,20 @@ new class extends Component
         <div class="k-card-lg hero-profile text-center">
             <div class="relative">
                 <span class="profile-avatar">
-                    <span>🐻</span>
-                    <a href="edit-profile.html" class="camera-badge" aria-label="{{ __('profile.change_avatar') }}">
+                    <span>{{ $avatar }}</span>
+                    <a href="{{ route('edit-profile') }}" wire:navigate class="camera-badge" aria-label="{{ __('profile.change_avatar') }}">
                         <i class="ph-fill ph-camera text-sm"></i>
                     </a>
                 </span>
             </div>
 
-            <h2 class="h-display text-2xl mt-4 relative">Luna Parker</h2>
-            <p class="text-xs text-white/90 relative">
-                {{ __('profile.age_grade_country', ['age' => 6, 'grade' => __('onboarding.age.groups.kindergarten'), 'country' => 'USA']) }}
-            </p>
+            <h2 class="h-display text-2xl mt-4 relative">{{ $displayName }}</h2>
+            <p class="text-xs text-white/90 relative">{{ $metaLine }}</p>
 
             <div class="relative mt-3 flex items-center justify-center gap-2">
                 <span class="chip bg-white/20 border-0 text-white">
                     <i class="ph-fill ph-crown-simple"></i>
-                    {{ __('profile.level_rank', ['level' => 7, 'rank' => __('onboarding.age.groups.explorer')]) }}
+                    {{ __('profile.level_rank', ['level' => $level, 'rank' => $levelTitle]) }}
                 </span>
                 <span class="chip bg-white/20 border-0 text-white">
                     <span class="live-dot"></span> {{ __('profile.online') }}
@@ -81,11 +207,11 @@ new class extends Component
 
             <div class="relative mt-5 grid grid-cols-4 gap-2">
                 <div class="hero-metric">
-                    <p class="hm-v">1,240</p>
+                    <p class="hm-v">{{ $this->formattedXp() }}</p>
                     <p class="hm-l">{{ __('profile.xp') }}</p>
                 </div>
                 <div class="hero-metric">
-                    <p class="hm-v">7</p>
+                    <p class="hm-v">{{ $streak }}</p>
                     <p class="hm-l">{{ __('profile.streak') }}</p>
                 </div>
                 <div class="hero-metric">
@@ -93,24 +219,24 @@ new class extends Component
                     <p class="hm-l">{{ __('profile.badges') }}</p>
                 </div>
                 <div class="hero-metric">
-                    <p class="hm-v">#5</p>
+                    <p class="hm-v">{{ __('profile.rank_n', ['rank' => $rank]) }}</p>
                     <p class="hm-l">{{ __('profile.rank') }}</p>
                 </div>
             </div>
 
             <div class="relative mt-4">
                 <div class="flex items-center gap-3">
-                    <div class="progress on-gradient grow"><span class="w-62"></span></div>
-                    <span class="text-sm font-extrabold shrink-0">{{ __('profile.level', ['level' => 8]) }}</span>
+                    <div class="progress on-gradient grow"><span style="width: {{ $levelPercent }}%"></span></div>
+                    <span class="text-sm font-extrabold shrink-0">{{ __('profile.level', ['level' => $nextLevel]) }}</span>
                 </div>
-                <p class="text-[11px] text-white/90 mt-1">{{ __('profile.xp_to_level_up', ['xp' => 760]) }}</p>
+                <p class="text-[11px] text-white/90 mt-1">{{ __('profile.xp_to_level_up', ['xp' => $xpToNext]) }}</p>
             </div>
 
             <div class="relative mt-4 flex items-center justify-center gap-2">
-                <a href="edit-profile.html" class="cta-soft">
+                <a href="{{ route('edit-profile') }}" wire:navigate class="cta-soft">
                     <i class="ph-fill ph-pencil-simple"></i> {{ __('profile.edit_profile') }}
                 </a>
-                <button class="chip bg-white/20 border-0 text-white">
+                <button type="button" class="chip bg-white/20 border-0 text-white">
                     <i class="ph-fill ph-share-fat"></i> {{ __('profile.share') }}
                 </button>
             </div>
@@ -121,17 +247,17 @@ new class extends Component
     <section class="px-5 mt-4 grid grid-cols-3 gap-3">
         <a href="streak.html" class="k-card p-3 text-center">
             <div class="size-10 rounded-2xl tile-sun grid place-items-center text-xl mx-auto">🔥</div>
-            <p class="h-display text-lg mt-1">7</p>
+            <p class="h-display text-lg mt-1">{{ $streak }}</p>
             <p class="text-[11px] text-muted font-extrabold">{{ __('profile.day_streak') }}</p>
         </a>
         <a href="{{ route('xp-progress') }}" wire:navigate class="k-card p-3 text-center">
             <div class="size-10 rounded-2xl tile-violet grid place-items-center text-xl mx-auto">⭐</div>
-            <p class="h-display text-lg mt-1">1,240</p>
+            <p class="h-display text-lg mt-1">{{ $this->formattedXp() }}</p>
             <p class="text-[11px] text-muted font-extrabold">{{ __('profile.total_xp') }}</p>
         </a>
         <a href="{{ route('league') }}" wire:navigate class="k-card p-3 text-center">
             <div class="size-10 rounded-2xl tile-mint grid place-items-center text-xl mx-auto">🏆</div>
-            <p class="h-display text-lg mt-1">{{ __('profile.gold') }}</p>
+            <p class="h-display text-lg mt-1">{{ $leagueLabel }}</p>
             <p class="text-[11px] text-muted font-extrabold">{{ __('profile.league') }}</p>
         </a>
     </section>
@@ -160,49 +286,21 @@ new class extends Component
     <section class="px-5 mt-5">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('profile.subject_mastery') }}</h2>
-            <a href="learn-categories.html" class="link">{{ __('profile.explore') }}</a>
+            <a href="{{ route('daily-mission') }}" wire:navigate class="link">{{ __('profile.explore') }}</a>
         </div>
         <div class="space-y-2">
-            <a href="learn-math.html" class="mastery-row">
-                <div class="mastery-ico tile-violet">➗</div>
-                <div class="grow min-w-0">
-                    <div class="flex items-center gap-2">
-                        <p class="font-extrabold text-sm text-ink">{{ __('profile.math') }}</p>
-                        <span class="text-[11px] text-muted font-extrabold ml-auto">74%</span>
+            @foreach ($mastery as $row)
+                <a href="{{ $row['href'] }}" wire:navigate class="mastery-row">
+                    <div class="mastery-ico {{ $row['tile'] }}">{{ $row['emoji'] }}</div>
+                    <div class="grow min-w-0">
+                        <div class="flex items-center gap-2">
+                            <p class="font-extrabold text-sm text-ink">{{ $row['label'] }}</p>
+                            <span class="text-[11px] text-muted font-extrabold ml-auto">{{ $row['percent'] }}%</span>
+                        </div>
+                        <div class="progress {{ $row['progressClass'] }} mt-1"><span style="width: {{ $row['percent'] }}%"></span></div>
                     </div>
-                    <div class="progress mt-1"><span class="w-75"></span></div>
-                </div>
-            </a>
-            <a href="learn-alphabet.html" class="mastery-row">
-                <div class="mastery-ico tile-sun">🔤</div>
-                <div class="grow min-w-0">
-                    <div class="flex items-center gap-2">
-                        <p class="font-extrabold text-sm text-ink">{{ __('profile.alphabet') }}</p>
-                        <span class="text-[11px] text-muted font-extrabold ml-auto">62%</span>
-                    </div>
-                    <div class="progress progress-sun mt-1"><span class="w-62"></span></div>
-                </div>
-            </a>
-            <a href="learn-animals.html" class="mastery-row">
-                <div class="mastery-ico tile-mint">🦁</div>
-                <div class="grow min-w-0">
-                    <div class="flex items-center gap-2">
-                        <p class="font-extrabold text-sm text-ink">{{ __('profile.animals') }}</p>
-                        <span class="text-[11px] text-muted font-extrabold ml-auto">50%</span>
-                    </div>
-                    <div class="progress progress-mint mt-1"><span class="w-50"></span></div>
-                </div>
-            </a>
-            <a href="learn-words.html" class="mastery-row">
-                <div class="mastery-ico tile-coral">📚</div>
-                <div class="grow min-w-0">
-                    <div class="flex items-center gap-2">
-                        <p class="font-extrabold text-sm text-ink">{{ __('profile.words') }}</p>
-                        <span class="text-[11px] text-muted font-extrabold ml-auto">30%</span>
-                    </div>
-                    <div class="progress progress-coral mt-1"><span class="w-30"></span></div>
-                </div>
-            </a>
+                </a>
+            @endforeach
         </div>
     </section>
 
@@ -210,35 +308,30 @@ new class extends Component
     <section class="px-5 mt-5">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('profile.this_week') }}</h2>
-            <span
-                class="link cursor-default">{{ __('profile.week_range', ['start' => 'Apr 11', 'end' => 'Apr 17']) }}</span>
+            <span class="link cursor-default">{{ $weekRangeLabel }}</span>
         </div>
         <div class="k-card p-4">
             <div class="grid grid-cols-3 gap-3 text-center">
                 <div>
-                    <p class="h-display text-lg">+940</p>
+                    <p class="h-display text-lg">{{ $this->formattedWeekXp() }}</p>
                     <p class="text-[10px] text-muted font-extrabold uppercase tracking-wide">
                         {{ __('profile.xp_earned') }}</p>
                 </div>
                 <div>
-                    <p class="h-display text-lg">6 / 7</p>
+                    <p class="h-display text-lg">{{ $weekActiveDays }} / 7</p>
                     <p class="text-[10px] text-muted font-extrabold uppercase tracking-wide">
                         {{ __('profile.active_days') }}</p>
                 </div>
                 <div>
-                    <p class="h-display text-lg">12</p>
+                    <p class="h-display text-lg">{{ $weekLessons }}</p>
                     <p class="text-[10px] text-muted font-extrabold uppercase tracking-wide">
                         {{ __('profile.lessons') }}</p>
                 </div>
             </div>
             <div class="mt-3 grid grid-cols-7 gap-2">
-                <span class="streak-dot on">M</span>
-                <span class="streak-dot on">T</span>
-                <span class="streak-dot on">W</span>
-                <span class="streak-dot on">T</span>
-                <span class="streak-dot on">F</span>
-                <span class="streak-dot on today">S</span>
-                <span class="streak-dot">S</span>
+                @foreach ($weekDays as $day)
+                    <span @class(['streak-dot', 'on' => $day['on'], 'today' => $day['today']])>{{ $day['letter'] }}</span>
+                @endforeach
             </div>
         </div>
     </section>
@@ -250,31 +343,22 @@ new class extends Component
             <a href="{{ route('badges') }}" wire:navigate class="link">{{ __('profile.see_all') }}</a>
         </div>
         <div class="space-y-2">
-            <div class="ach-mini">
-                <div class="ach-ico">🏆</div>
-                <div class="grow min-w-0">
-                    <p class="font-extrabold text-sm text-ink">{{ __('profile.unlocked_counter_champ') }}</p>
-                    <p class="text-[11px] text-muted">{{ __('profile.today_finished_math_lessons', ['count' => 5]) }}
-                    </p>
+            @forelse ($achievements as $item)
+                <a href="{{ $item['href'] }}" wire:navigate class="ach-mini">
+                    <div class="ach-ico">{{ $item['emoji'] }}</div>
+                    <div class="grow min-w-0">
+                        <p class="font-extrabold text-sm text-ink">{{ __('profile.unlocked_badge', ['name' => $item['name']]) }}</p>
+                        <p class="text-[11px] text-muted">{{ $item['meta'] }}</p>
+                    </div>
+                    @if ($item['unseen'])
+                        <span class="chip chip-mint">{{ __('profile.new') }}</span>
+                    @endif
+                </a>
+            @empty
+                <div class="k-card p-4 text-center">
+                    <p class="text-sm text-muted font-extrabold">{{ __('profile.no_recent_achievements') }}</p>
                 </div>
-                <span class="chip chip-mint">{{ __('profile.new') }}</span>
-            </div>
-            <div class="ach-mini">
-                <div class="ach-ico">🔥</div>
-                <div class="grow min-w-0">
-                    <p class="font-extrabold text-sm text-ink">{{ __('profile.seven_day_streak_milestone') }}</p>
-                    <p class="text-[11px] text-muted">{{ __('profile.today_bonus_xp_earned', ['bonus' => 50]) }}</p>
-                </div>
-                <span class="chip chip-sun">+50</span>
-            </div>
-            <div class="ach-mini">
-                <div class="ach-ico">🎯</div>
-                <div class="grow min-w-0">
-                    <p class="font-extrabold text-sm text-ink">{{ __('profile.daily_mission_complete') }}</p>
-                    <p class="text-[11px] text-muted">{{ __('profile.yesterday_all_tasks_done') }}</p>
-                </div>
-                <span class="chip chip-primary">+120</span>
-            </div>
+            @endforelse
         </div>
     </section>
 
@@ -282,19 +366,24 @@ new class extends Component
     <section class="px-5 mt-5">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('profile.friends') }}</h2>
-            <a href="ranking-friends.html" class="link">{{ __('profile.view_all') }}</a>
+            <a href="{{ route('ranking-friends') }}" wire:navigate class="link">{{ __('profile.view_all') }}</a>
         </div>
-        <a href="ranking-friends.html" class="k-card p-3 flex items-center gap-3">
+        <a href="{{ route('ranking-friends') }}" wire:navigate class="k-card p-3 flex items-center gap-3">
             <div class="avatar-stack">
-                <span class="size-10 rounded-full tile-sun grid place-items-center text-lg">👦</span>
-                <span class="size-10 rounded-full tile-mint grid place-items-center text-lg">👧</span>
-                <span class="size-10 rounded-full tile-coral grid place-items-center text-lg">🧒</span>
-                <span class="size-10 rounded-full tile-sky grid place-items-center text-lg">🐰</span>
+                @forelse ($friendAvatars as $index => $friendAvatar)
+                    @php
+                        $tile = ['tile-sun', 'tile-mint', 'tile-coral', 'tile-sky'][$index % 4];
+                    @endphp
+                    <span class="size-10 rounded-full {{ $tile }} grid place-items-center text-lg">{{ $friendAvatar }}</span>
+                @empty
+                    <span class="size-10 rounded-full tile-sun grid place-items-center text-lg">👫</span>
+                @endforelse
             </div>
             <div class="grow">
                 <p class="font-extrabold text-sm text-ink">
-                    {{ __('profile.friends_online', ['total' => 8, 'online' => 5]) }}</p>
-                <p class="text-[11px] text-muted">{{ __('profile.beating_friends_this_week', ['count' => 3]) }}</p>
+                    {{ __('profile.friends_online', ['total' => $friendsCount, 'online' => $friendsOnline]) }}</p>
+                <p class="text-[11px] text-muted">
+                    {{ __('profile.beating_friends_this_week', ['count' => $friendsBeating]) }}</p>
             </div>
             <i class="ph ph-caret-right text-muted"></i>
         </a>
@@ -307,19 +396,19 @@ new class extends Component
             <a href="streak.html" class="menu-row">
                 <div class="menu-ico tile-sun">🔥</div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.daily_streak') }}</p>
-                <span class="chip chip-sun">🔥 7</span>
+                <span class="chip chip-sun">🔥 {{ $streak }}</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
             <a href="{{ route('xp-progress') }}" wire:navigate class="menu-row">
                 <div class="menu-ico tile-violet">📈</div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.xp_progress') }}</p>
-                <span class="chip chip-primary">{{ __('profile.level', ['level' => 7]) }}</span>
+                <span class="chip chip-primary">{{ __('profile.level', ['level' => $level]) }}</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
-            <a href="monthly-goals.html" class="menu-row">
+            <a href="{{ route('monthly-goals') }}" wire:navigate class="menu-row">
                 <div class="menu-ico tile-mint">🎯</div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.monthly_goals') }}</p>
-                <span class="chip chip-mint">3 / 4</span>
+                <span class="chip chip-mint">{{ $monthlyGoalsHit }} / {{ $monthlyGoalsTotal }}</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
             <a href="{{ route('badges') }}" wire:navigate class="menu-row">

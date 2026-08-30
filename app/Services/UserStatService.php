@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Data\HomeStats;
 use App\Data\LeaderboardEntry;
 use App\Data\LeaderboardSnapshot;
+use App\Data\ProfileSnapshot;
 use App\Data\XpProgressSnapshot;
+use App\Enums\SchoolGrade;
 use App\Models\User;
 use App\Models\UserStat;
 use App\Repositories\UserStatRepository;
@@ -32,12 +34,59 @@ class UserStatService
     public function homeSnapshot(User $user): HomeStats
     {
         $stat = $this->ensureFor($user);
-        $start = now()->startOfWeek(CarbonImmutable::MONDAY);
-        $played = $this->stats->playedDatesBetween(
-            $user,
-            $start->toDateString(),
-            $start->addDays(6)->toDateString(),
+        $week = $this->weekActivity($user);
+
+        return new HomeStats(
+            streak: $stat->current_streak,
+            xp: $stat->xp,
+            league: $stat->league,
+            leagueLabel: $stat->league->label(),
+            weekActiveDays: $week['activeDays'],
+            weekDays: $week['days'],
         );
+    }
+
+    public function profileSnapshot(User $user, int $weekLessons = 0): ProfileSnapshot
+    {
+        $stat = $this->ensureFor($user);
+        $level = $this->levels->forXp($stat->xp);
+        $week = $this->weekActivity($user);
+        $grade = $user->grade ?? SchoolGrade::First;
+
+        return new ProfileSnapshot(
+            name: $user->name,
+            avatar: $this->avatarFor($user),
+            age: $user->age,
+            gradeLabel: $grade->label(),
+            xp: $stat->xp,
+            streak: $stat->current_streak,
+            rank: $this->stats->rankFor($user),
+            level: $level,
+            league: $stat->league,
+            leagueLabel: $stat->league->label(),
+            weekXp: $week['xp'],
+            weekActiveDays: $week['activeDays'],
+            weekLessons: $weekLessons,
+            weekRangeLabel: $week['rangeLabel'],
+            weekDays: $week['days'],
+        );
+    }
+
+    /**
+     * @return array{
+     *     days: list<array{letter: string, on: bool, today: bool}>,
+     *     activeDays: int,
+     *     xp: int,
+     *     rangeLabel: string
+     * }
+     */
+    private function weekActivity(User $user): array
+    {
+        $start = now()->startOfWeek(CarbonImmutable::MONDAY);
+        $end = $start->addDays(6);
+        $from = $start->toDateString();
+        $to = $end->toDateString();
+        $played = $this->stats->playedDatesBetween($user, $from, $to);
         $playedSet = array_flip($played);
         $today = now()->toDateString();
         $weekDays = [];
@@ -53,14 +102,12 @@ class UserStatService
             ];
         }
 
-        return new HomeStats(
-            streak: $stat->current_streak,
-            xp: $stat->xp,
-            league: $stat->league,
-            leagueLabel: $stat->league->label(),
-            weekActiveDays: count($played),
-            weekDays: $weekDays,
-        );
+        return [
+            'days' => $weekDays,
+            'activeDays' => count($played),
+            'xp' => $this->stats->sumXpBetween($user, $from, $to),
+            'rangeLabel' => $start->format('d.m').' — '.$end->format('d.m'),
+        ];
     }
 
     public function xpProgressSnapshot(User $user): XpProgressSnapshot
@@ -154,7 +201,7 @@ class UserStatService
                 level: $this->levels->forXp($row->xp)->level,
                 streak: $row->current_streak,
                 isYou: $owner->id === $user->id,
-                avatar: $this->avatarFor($owner->id),
+                avatar: $this->avatarFor($owner),
             );
         }
 
@@ -172,7 +219,7 @@ class UserStatService
             yourName: $user->name,
             yourLevel: $level->level,
             yourStreak: $stat->current_streak,
-            yourAvatar: $this->avatarFor($user->id),
+            yourAvatar: $this->avatarFor($user),
             xpToNextRank: $xpToNext,
             percentileLabel: __('ranking.top_percentile', ['percent' => $percentile]),
             podium: $podium,
@@ -218,9 +265,18 @@ class UserStatService
         return $updated;
     }
 
-    public function avatarFor(int $userId): string
+    public function avatarFor(User|int $user): string
     {
-        return self::AVATARS[$userId % count(self::AVATARS)];
+        if ($user instanceof User) {
+            if (is_string($user->avatar) && $user->avatar !== '') {
+                return $user->avatar;
+            }
+            $id = $user->id;
+        } else {
+            $id = $user;
+        }
+
+        return self::AVATARS[$id % count(self::AVATARS)];
     }
 
     private function weekdayLetter(int $isoDay): string

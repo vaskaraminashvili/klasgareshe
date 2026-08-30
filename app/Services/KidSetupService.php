@@ -49,14 +49,17 @@ class KidSetupService
             return [
                 'home',
                 'profile',
+                'edit-profile',
                 'game-multiple-choice',
                 'daily-mission',
                 'xp-progress',
                 'leaderboard',
                 'ranking-weekly',
+                'ranking-friends',
                 'league',
                 'badges',
                 'badge-unlock',
+                'monthly-goals',
             ];
         }
 

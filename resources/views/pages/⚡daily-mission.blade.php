@@ -13,6 +13,10 @@ new class extends Component
 
     public int $hoursLeft = 0;
 
+    public int $minutesLeft = 0;
+
+    public int $secondsLeft = 0;
+
     public int $weekCompleted = 0;
 
     public int $weekTotal = 0;
@@ -23,7 +27,7 @@ new class extends Component
     public array $weekDays = [];
 
     /**
-     * @var list<array{id: int, weekday: int, subject: string, title: string, completed: bool, playable: bool, emoji: string, completedAt: string|null}>
+     * @var list<array{id: int|null, weekday: int, subject: string, title: string, subtitle: string, completed: bool, playable: bool, emoji: string, completedAt: string|null}>
      */
     public array $items = [];
 
@@ -39,6 +43,21 @@ new class extends Component
 
     public function mount(WeekPlanService $week, UserStatService $stats, UserRepository $users): void
     {
+        $this->syncMission($week, $stats, $users);
+    }
+
+    public function hydrate(WeekPlanService $week, UserStatService $stats, UserRepository $users): void
+    {
+        $this->syncMission($week, $stats, $users);
+    }
+
+    public function refreshMission(WeekPlanService $week, UserStatService $stats, UserRepository $users): void
+    {
+        $this->syncMission($week, $stats, $users);
+    }
+
+    private function syncMission(WeekPlanService $week, UserStatService $stats, UserRepository $users): void
+    {
         $user = $users->authenticated();
         $home = $stats->homeSnapshot($user);
         $mission = $week->dailyMission($user);
@@ -46,6 +65,8 @@ new class extends Component
         $this->missionDone = $mission->missionDone;
         $this->missionTotal = $mission->missionTotal;
         $this->hoursLeft = $mission->hoursLeft;
+        $this->minutesLeft = $week->minutesLeftUntilEndOfDay();
+        $this->secondsLeft = $week->secondsLeftUntilEndOfDay();
         $this->weekCompleted = $mission->weekCompleted;
         $this->weekTotal = $mission->weekTotal;
         $this->streak = $home->streak;
@@ -54,10 +75,11 @@ new class extends Component
 
         foreach ($mission->items as $item) {
             $this->items[] = [
-                'id' => $item->id,
+                'id' => $item->id > 0 ? $item->id : null,
                 'weekday' => $item->weekday,
                 'subject' => $item->subject->label(),
                 'title' => $item->title,
+                'subtitle' => $item->subtitle,
                 'completed' => $item->completed,
                 'playable' => $item->playable,
                 'emoji' => $item->emoji,
@@ -86,7 +108,10 @@ new class extends Component
 };
 ?>
 
-<main class="device-frame min-h-screen flex flex-col">
+<main class="device-frame min-h-screen flex flex-col"
+    x-data
+    x-on:livewire:navigated.window="$wire.refreshMission()"
+    x-on:pageshow.window="if ($event.persisted) $wire.refreshMission()">
 
   <!-- =============== APPBAR =============== -->
   <header class="appbar safe-top">
@@ -123,15 +148,15 @@ new class extends Component
 
       <div class="relative mt-4 grid grid-cols-3 gap-2" aria-live="polite">
         <div class="count-pill">
-          <span class="count-value">{{ $hoursLeft }}</span>
+          <span class="count-value">{{ str_pad((string) $hoursLeft, 2, '0', STR_PAD_LEFT) }}</span>
           <span class="count-label">{{ __('daily-mission.hours') }}</span>
         </div>
         <div class="count-pill">
-          <span class="count-value">00</span>
+          <span class="count-value">{{ str_pad((string) $minutesLeft, 2, '0', STR_PAD_LEFT) }}</span>
           <span class="count-label">{{ __('daily-mission.minutes') }}</span>
         </div>
         <div class="count-pill">
-          <span class="count-value">00</span>
+          <span class="count-value">{{ str_pad((string) $secondsLeft, 2, '0', STR_PAD_LEFT) }}</span>
           <span class="count-label">{{ __('daily-mission.seconds') }}</span>
         </div>
       </div>
@@ -168,7 +193,7 @@ new class extends Component
             <div class="task-ico">{{ $item['emoji'] }}</div>
             <div class="task-body grow">
               <p class="task-title">{{ $item['title'] }}</p>
-              <p class="task-sub">{{ $item['subject'] }} · {{ __('home.weekdays.'.$item['weekday']) }}</p>
+              <p class="task-sub">{{ $item['subject'] }} · {{ $item['subtitle'] }}</p>
             </div>
             <span class="btn btn-primary h-9 min-h-0 px-4 text-sm shrink-0">{{ __('daily-mission.play') }}</span>
           </a>

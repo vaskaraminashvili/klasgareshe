@@ -15,6 +15,12 @@ new class extends Component
     #[Locked]
     public array $questionIds = [];
 
+    /**
+     * @var list<array{id: int, prompt: string, emoji: string, tile: string, choices: list<array{key: string, label: string, emoji: string}>}>
+     */
+    #[Locked]
+    public array $deck = [];
+
     #[Locked]
     public int $lives = 3;
 
@@ -87,7 +93,13 @@ new class extends Component
         $this->planItemId = $round->weekPlanItemId;
         $this->questionIds = $round->questionIds;
         $this->lives = $round->lives;
-        $this->showCurrent($play);
+        $this->deck = [];
+
+        foreach ($play->presentChoices($round->questionIds) as $view) {
+            $this->deck[] = $view->toArray();
+        }
+
+        $this->showCurrent();
     }
 
     public function pick(string $key, GamePlayService $play): void
@@ -134,12 +146,12 @@ new class extends Component
             $slug = $badges->firstUnseenSlug($users->authenticated());
 
             if (is_string($slug)) {
-                $this->redirectRoute('badge-unlock', ['slug' => $slug], navigate: true);
+                $this->redirectRoute('badge-unlock', ['slug' => $slug]);
 
                 return;
             }
 
-            $this->redirectRoute('home', navigate: true);
+            $this->redirectRoute('home');
 
             return;
         }
@@ -148,7 +160,7 @@ new class extends Component
         $this->answered = false;
         $this->pickedKey = null;
         $this->correctKey = null;
-        $this->showCurrent($play);
+        $this->showCurrent();
     }
 
     public function progressPercent(): int
@@ -179,21 +191,25 @@ new class extends Component
         return '';
     }
 
-    private function showCurrent(GamePlayService $play): void
+    private function showCurrent(): void
     {
-        $view = $play->presentChoice($this->questionIds[$this->index]);
+        $view = $this->deck[$this->index] ?? null;
 
-        $this->prompt = $view->prompt;
-        $this->emoji = $view->emoji;
-        $this->tile = $view->tile;
-        $this->choices = $view->choices;
+        if ($view === null) {
+            return;
+        }
+
+        $this->prompt = $view['prompt'];
+        $this->emoji = $view['emoji'];
+        $this->tile = $view['tile'];
+        $this->choices = $view['choices'];
     }
 };
 ?>
 
 <main class="device-frame min-h-screen flex flex-col safe-top">
     <header class="appbar">
-        <a href="{{ route('home') }}" class="icon-btn" data-back aria-label="{{ __('quiz.close') }}"><i
+        <a href="{{ route('daily-mission') }}" wire:navigate class="icon-btn" aria-label="{{ __('quiz.close') }}"><i
                 class="ph ph-x"></i></a>
         <div class="grow">
             <div class="progress"><span style="width:{{ $this->progressPercent() }}%"></span></div>
@@ -201,24 +217,24 @@ new class extends Component
         <span class="chip chip-coral">❤️ {{ $lives }}</span>
     </header>
 
-    <section class="px-6 mt-2 text-center" wire:key="prompt-{{ $questionIds[$index] ?? 0 }}">
+    <section class="px-6 mt-2 text-center" wire:key="q-meta-{{ $index }}">
         <p class="text-xs font-extrabold" style="color:var(--color-k-muted)">
             {{ __('quiz.question_n_of', ['current' => $index + 1, 'total' => count($questionIds)]) }}</p>
         <h1 class="h-display text-2xl mt-2">{{ $prompt }}</h1>
     </section>
 
     @if ($emoji !== '')
-        <section class="px-6 mt-4">
+        <section class="px-6 mt-4" wire:key="q-emoji-{{ $index }}">
             <div class="k-card-lg {{ $tile }} grid place-items-center aspect-[16/10]">
                 <div class="text-8xl">{{ $emoji }}</div>
             </div>
         </section>
     @endif
 
-    <section class="px-6 mt-5 space-y-3" data-ans-group wire:key="choices-{{ $questionIds[$index] ?? 0 }}">
+    <section class="px-6 mt-5 space-y-3" data-ans-group wire:key="q-choices-{{ $index }}">
         @foreach ($choices as $choice)
-            <button type="button" class="ans{{ $this->choiceClass($choice['key']) }}" wire:click="pick('{{ $choice['key'] }}')"
-                @disabled($answered)>
+            <button type="button" class="ans{{ $this->choiceClass($choice['key']) }}"
+                wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>
                 <span class="ans-key">{{ $choice['key'] }}</span>
                 <span class="grow">{{ $choice['label'] }}</span>
                 @if ($choice['emoji'] !== '')
@@ -229,7 +245,8 @@ new class extends Component
     </section>
 
     <div class="mt-auto px-6 pb-6 pt-4 safe-bottom">
-        <button type="button" class="btn btn-primary w-full" wire:click="next" @disabled(! $answered)>
+        <button type="button" class="btn btn-primary w-full" wire:click="next" wire:loading.attr="disabled"
+            @disabled(! $answered)>
             {{ __('quiz.next_question') }} <i class="ph ph-arrow-right"></i>
         </button>
     </div>

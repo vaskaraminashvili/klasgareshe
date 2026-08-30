@@ -8,10 +8,9 @@ new class extends Component
 };
 ?>
 
-<!-- =============== TAB BAR =============== -->
 <nav class="tabbar mt-auto" aria-label="{{ __('nav.primary') }}">
     <div class="tabbar-inner">
-        <a class="tab {{ request()->routeIs('home', 'daily-mission') ? 'active' : '' }}" href="{{ route('home') }}" wire:navigate>
+        <a class="tab {{ request()->routeIs('home', 'daily-mission') ? 'active' : '' }}" href="{{ route('home') }}">
             <span class="tab-ico">
                 <i class="ph-fill ph-house-simple text-xl"></i>
             </span>{{ __('nav.home') }}</a>
@@ -24,7 +23,7 @@ new class extends Component
             <span class="tab-ico">
                 <i class="{{ request()->routeIs('badges', 'badge-unlock') ? 'ph-fill' : 'ph' }} ph-gift text-xl"></i>
             </span>{{ __('nav.rewards') }}</a>
-        <a class="tab {{ request()->routeIs('leaderboard', 'ranking-weekly', 'league') ? 'active' : '' }}"
+        <a class="tab {{ request()->routeIs('leaderboard', 'ranking-weekly', 'ranking-friends', 'league') ? 'active' : '' }}"
             href="{{ route('leaderboard') }}" wire:navigate>
             <span class="tab-ico">
                 <i class="ph ph-trophy text-xl"></i>

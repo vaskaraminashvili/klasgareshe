@@ -21,6 +21,8 @@ return [
     'subject_complete' => 'ეს საგანი ამ კვირაში დასრულებულია',
     'week_progress' => ':done / :total სავარჯიშო',
     'weekday_pack' => ':day',
+    'completed_today' => 'დასრულდა დღეს:time',
+    'completed_today_at' => 'დასრულდა დღეს · :time',
     'weekdays' => [
         1 => 'ორშაბათი',
         2 => 'სამშაბათი',

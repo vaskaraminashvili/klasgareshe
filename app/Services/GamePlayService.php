@@ -97,15 +97,44 @@ class GamePlayService
 
     public function presentChoice(int $questionId): ChoiceQuestionView
     {
-        $question = $this->choiceQuestion($questionId);
+        $views = $this->presentChoices([$questionId]);
 
-        return new ChoiceQuestionView(
-            id: $question->id,
-            prompt: (string) $question->prompt,
-            emoji: $question->mediaEmoji(),
-            tile: $question->mediaTile(),
-            choices: $question->choices(),
-        );
+        if ($views === []) {
+            throw new InvalidArgumentException('Choice question not found.');
+        }
+
+        return $views[0];
+    }
+
+    /**
+     * @param  list<int>  $ids
+     * @return list<ChoiceQuestionView>
+     */
+    public function presentChoices(array $ids): array
+    {
+        if ($ids === []) {
+            return [];
+        }
+
+        $found = [];
+
+        foreach ($this->questions->findMany($ids) as $question) {
+            $found[$question->id] = $question;
+        }
+
+        $views = [];
+
+        foreach ($ids as $id) {
+            $question = $found[$id] ?? null;
+
+            if ($question === null || $question->format !== QuestionFormat::Choice) {
+                throw new InvalidArgumentException('Choice question not found.');
+            }
+
+            $views[] = $this->viewFrom($question);
+        }
+
+        return $views;
     }
 
     public function gradeChoice(int $questionId, string $key): ChoiceGrade
@@ -149,5 +178,16 @@ class GamePlayService
         }
 
         return $question;
+    }
+
+    private function viewFrom(Question $question): ChoiceQuestionView
+    {
+        return new ChoiceQuestionView(
+            id: $question->id,
+            prompt: (string) $question->prompt,
+            emoji: $question->mediaEmoji(),
+            tile: $question->mediaTile(),
+            choices: $question->choices(),
+        );
     }
 }

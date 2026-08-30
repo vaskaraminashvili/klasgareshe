@@ -12,6 +12,34 @@ class QuestionRepository
     }
 
     /**
+     * @param  list<int>  $ids
+     * @return list<Question>
+     */
+    public function findMany(array $ids): array
+    {
+        if ($ids === []) {
+            return [];
+        }
+
+        $questions = Question::query()
+            ->whereIn('id', $ids)
+            ->get()
+            ->keyBy('id');
+
+        $ordered = [];
+
+        foreach ($ids as $id) {
+            $question = $questions->get($id);
+
+            if ($question !== null) {
+                $ordered[] = $question;
+            }
+        }
+
+        return $ordered;
+    }
+
+    /**
      * @return list<Question>
      */
     public function randomForGame(int $gameId, string $locale, int $limit): array

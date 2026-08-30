@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\GameType;
+use App\Enums\PlanProgressStatus;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 use App\Models\Game;
@@ -11,6 +12,7 @@ use App\Models\User;
 use App\Models\UserPlanProgress;
 use App\Models\UserStat;
 use App\Models\WeekPlanItem;
+use App\Services\GamePlayService;
 use App\Services\WeekPlanService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -31,9 +33,9 @@ class WeekPlanTest extends TestCase
             ->test('pages::home')
             ->assertSee(__('home.progress_n_of', ['done' => 0, 'total' => 3]), false)
             ->assertDontSee(__('home.progress_2_of_3'), false)
-            ->assertSee('georgian-d1', false)
-            ->assertSee('math-d1', false)
-            ->assertSee('history-d1', false);
+            ->assertSee('georgian-w1-d1', false)
+            ->assertSee('math-w1-d1', false)
+            ->assertSee('history-w1-d1', false);
     }
 
     public function test_quiz_without_item_resolves_to_the_first_monday_pack(): void
@@ -87,6 +89,52 @@ class WeekPlanTest extends TestCase
         $this->assertNotNull($tuesdayMath);
         $this->assertSame(2, $tuesdayMath->weekday);
         $this->assertSame(SchoolSubject::Math, $tuesdayMath->subject);
+
+        Livewire::actingAs($user)
+            ->test('pages::home')
+            ->assertSet('missionDone', 1)
+            ->assertSet('planTasks.1.completed', true)
+            ->assertSet('planTasks.1.playable', false)
+            ->assertDontSee(route('game-multiple-choice', ['item' => $mondayMath->id]).'"', false);
+    }
+
+    public function test_completed_pack_cannot_be_started_again(): void
+    {
+        $this->withoutVite();
+        $this->seedWeek();
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+        $service = app(WeekPlanService::class);
+        $mondayMath = $service->nextIncompleteForSubject($user, SchoolSubject::Math);
+        $this->assertNotNull($mondayMath);
+
+        app(GamePlayService::class)->award(
+            $user,
+            GameType::MultipleChoice,
+            1,
+            $mondayMath->id,
+        );
+
+        Livewire::actingAs($user)
+            ->test('pages::game-multiple-choice', ['item' => $mondayMath->id])
+            ->assertRedirect(route('home'));
+    }
+
+    public function test_daily_mission_shows_three_today_tasks_not_the_full_week(): void
+    {
+        $this->withoutVite();
+        $this->seedWeek(weekdays: 7);
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+
+        Livewire::actingAs($user)
+            ->test('pages::daily-mission')
+            ->assertSet('missionTotal', 3)
+            ->assertCount('items', 3)
+            ->assertSee('georgian-w1-d1', false)
+            ->assertSee('math-w1-d1', false)
+            ->assertSee('history-w1-d1', false)
+            ->assertDontSee('georgian-w1-d2', false);
     }
 
     public function test_grade_two_cannot_play_a_grade_one_pack(): void
@@ -125,38 +173,165 @@ class WeekPlanTest extends TestCase
         $this->assertSame(1, $next->weekday);
     }
 
+    public function test_active_week_stays_on_week_one_while_packs_remain(): void
+    {
+        $this->seedCurriculumWeeks();
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+        $service = app(WeekPlanService::class);
+
+        $this->completeWeekPacks($user, 1, weekdays: 1);
+
+        $this->assertSame(1, $service->activeWeekNumber($user));
+
+        $next = $service->firstIncomplete($user);
+
+        $this->assertNotNull($next);
+        $this->assertSame(1, $next->week_number);
+        $this->assertSame(2, $next->weekday);
+    }
+
+    public function test_completing_all_week_one_packs_advances_to_week_two(): void
+    {
+        $this->withoutVite();
+        $this->seedCurriculumWeeks();
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+        $service = app(WeekPlanService::class);
+
+        $this->completeWeekPacks($user, 1);
+
+        $this->assertSame(2, $service->activeWeekNumber($user));
+
+        $next = $service->firstIncomplete($user);
+
+        $this->assertNotNull($next);
+        $this->assertSame(2, $next->week_number);
+        $this->assertSame(1, $next->weekday);
+        $this->assertSame(SchoolSubject::Georgian, $next->subject);
+
+        Livewire::actingAs($user)
+            ->test('pages::home')
+            ->assertSet('missionDone', 3)
+            ->assertSee('georgian-w1-d', false)
+            ->assertSet('continueItemId', $next->id)
+            ->assertSee('georgian-w2-d1', false);
+
+        Livewire::actingAs($user)
+            ->test('pages::daily-mission')
+            ->assertCount('items', 3)
+            ->assertSet('missionDone', 3)
+            ->assertSee('georgian-w1-d', false)
+            ->assertDontSee('georgian-w2-d1', false);
+    }
+
+    public function test_subject_mastery_uses_active_curriculum_week(): void
+    {
+        $this->seedCurriculumWeeks(weekdays: 2);
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+        $service = app(WeekPlanService::class);
+
+        $this->completeWeekPacks($user, 1, weekdays: 2);
+
+        $rows = $service->subjectMastery($user);
+        $georgian = collect($rows)->first(
+            fn ($row) => $row->subject === SchoolSubject::Georgian,
+        );
+
+        $this->assertNotNull($georgian);
+        $this->assertSame(0, $georgian->percent);
+        $this->assertSame(0, $georgian->done);
+        $this->assertSame(2, $georgian->total);
+        $this->assertNotNull($georgian->nextItemId);
+
+        $next = WeekPlanItem::query()->findOrFail($georgian->nextItemId);
+        $this->assertSame(2, $next->week_number);
+    }
+
+    public function test_all_seeded_weeks_complete_stays_on_last_week(): void
+    {
+        $this->seedCurriculumWeeks(weekdays: 1);
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+        $service = app(WeekPlanService::class);
+
+        $this->completeWeekPacks($user, 1, weekdays: 1);
+        $this->completeWeekPacks($user, 2, weekdays: 1);
+
+        $this->assertSame(2, $service->activeWeekNumber($user));
+        $this->assertNull($service->firstIncomplete($user));
+
+        foreach ($service->homeTasks($user) as $task) {
+            $this->assertTrue($task->completed);
+        }
+    }
+
     private function seedWeek(SchoolGrade $grade = SchoolGrade::First, int $weekdays = 2, int $perPack = 1): void
     {
+        $this->seedCurriculumWeeks($grade, weekNumbers: [1], weekdays: $weekdays, perPack: $perPack);
+    }
+
+    /**
+     * @param  list<int>  $weekNumbers
+     */
+    private function seedCurriculumWeeks(
+        SchoolGrade $grade = SchoolGrade::First,
+        array $weekNumbers = [1, 2],
+        int $weekdays = 2,
+        int $perPack = 1,
+    ): void {
         Game::factory()->create([
             'slug' => GameType::MultipleChoice,
             'user_id' => null,
         ]);
 
-        foreach (SchoolSubject::ordered() as $subject) {
-            for ($day = 1; $day <= $weekdays; $day++) {
-                $item = WeekPlanItem::factory()->create([
-                    'grade' => $grade,
-                    'week_number' => 1,
-                    'weekday' => $day,
-                    'subject' => $subject,
-                    'level' => $day,
-                    'title' => $subject->value.'-d'.$day,
-                    'questions_per_round' => $perPack,
-                ]);
+        foreach ($weekNumbers as $weekNumber) {
+            foreach (SchoolSubject::ordered() as $subject) {
+                for ($day = 1; $day <= $weekdays; $day++) {
+                    $item = WeekPlanItem::factory()->create([
+                        'grade' => $grade,
+                        'week_number' => $weekNumber,
+                        'weekday' => $day,
+                        'subject' => $subject,
+                        'level' => (($weekNumber - 1) * 7) + $day,
+                        'title' => $subject->value.'-w'.$weekNumber.'-d'.$day,
+                        'questions_per_round' => $perPack,
+                    ]);
 
-                $questions = Question::factory()->count($perPack)->create([
-                    'subject' => $subject->favourite(),
-                    'grade' => $grade->value,
-                ]);
+                    $questions = Question::factory()->count($perPack)->create([
+                        'subject' => $subject->favourite(),
+                        'grade' => $grade->value,
+                    ]);
 
-                $sync = [];
+                    $sync = [];
 
-                foreach ($questions as $index => $question) {
-                    $sync[$question->id] = ['sort_order' => $index];
+                    foreach ($questions as $index => $question) {
+                        $sync[$question->id] = ['sort_order' => $index];
+                    }
+
+                    $item->questions()->sync($sync);
                 }
-
-                $item->questions()->sync($sync);
             }
+        }
+    }
+
+    private function completeWeekPacks(User $user, int $weekNumber, int $weekdays = 2): void
+    {
+        $items = WeekPlanItem::query()
+            ->where('grade', $user->grade ?? SchoolGrade::First)
+            ->where('week_number', $weekNumber)
+            ->where('weekday', '<=', $weekdays)
+            ->get();
+
+        foreach ($items as $item) {
+            UserPlanProgress::query()->create([
+                'user_id' => $user->id,
+                'week_plan_item_id' => $item->id,
+                'status' => PlanProgressStatus::Completed,
+                'correct_count' => $item->questions_per_round,
+                'completed_at' => now(),
+            ]);
         }
     }
 }

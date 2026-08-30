@@ -40,6 +40,15 @@ enum SchoolSubject: string
         };
     }
 
+    public function progressClass(): string
+    {
+        return match ($this) {
+            self::Georgian => 'progress-sun',
+            self::Math => '',
+            self::History => 'progress-mint',
+        };
+    }
+
     public function favourite(): FavouriteSubject
     {
         return FavouriteSubject::from($this->value);
