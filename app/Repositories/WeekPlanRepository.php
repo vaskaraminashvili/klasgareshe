@@ -101,6 +101,52 @@ class WeekPlanRepository
             ->count();
     }
 
+    /**
+     * Subjects that already had at least one pack finished today.
+     *
+     * @return list<string>
+     */
+    public function subjectsCompletedToday(User $user): array
+    {
+        $subjects = [];
+
+        foreach (UserPlanProgress::query()
+            ->where('user_plan_progress.user_id', $user->id)
+            ->where('user_plan_progress.status', PlanProgressStatus::Completed)
+            ->whereDate('user_plan_progress.completed_at', now()->toDateString())
+            ->join('week_plan_items', 'week_plan_items.id', '=', 'user_plan_progress.week_plan_item_id')
+            ->distinct()
+            ->orderBy('week_plan_items.subject')
+            ->pluck('week_plan_items.subject') as $subject) {
+            $subjects[] = (string) $subject;
+        }
+
+        return $subjects;
+    }
+
+    public function latestCompletedTodayForSubject(User $user, SchoolSubject $subject): ?WeekPlanItem
+    {
+        $progress = UserPlanProgress::query()
+            ->where('user_plan_progress.user_id', $user->id)
+            ->where('user_plan_progress.status', PlanProgressStatus::Completed)
+            ->whereDate('user_plan_progress.completed_at', now()->toDateString())
+            ->join('week_plan_items', 'week_plan_items.id', '=', 'user_plan_progress.week_plan_item_id')
+            ->where('week_plan_items.subject', $subject)
+            ->orderByDesc('user_plan_progress.completed_at')
+            ->orderByDesc('user_plan_progress.id')
+            ->select([
+                'week_plan_items.id',
+                'user_plan_progress.completed_at',
+            ])
+            ->first();
+
+        if ($progress === null) {
+            return null;
+        }
+
+        return $this->find((int) $progress->id);
+    }
+
     public function completedCountBetween(User $user, string $from, string $to): int
     {
         return UserPlanProgress::query()
@@ -151,6 +197,53 @@ class WeekPlanRepository
         }
 
         return $query->first();
+    }
+
+    /**
+     * Lowest curriculum week that still has at least one incomplete pack for the grade.
+     */
+    public function lowestIncompleteWeekNumber(User $user, SchoolGrade $grade): ?int
+    {
+        $completed = $this->completedItemIds($user);
+
+        $query = WeekPlanItem::query()
+            ->where('grade', $grade)
+            ->orderBy('week_number')
+            ->orderBy('weekday')
+            ->orderBy('id');
+
+        if ($completed !== []) {
+            $query->whereNotIn('id', $completed);
+        }
+
+        $week = $query->value('week_number');
+
+        return $week === null ? null : (int) $week;
+    }
+
+    public function maxWeekNumber(SchoolGrade $grade): int
+    {
+        return (int) (WeekPlanItem::query()
+            ->where('grade', $grade)
+            ->max('week_number') ?? 1);
+    }
+
+    /**
+     * @return list<int>
+     */
+    public function weekNumbersForGrade(SchoolGrade $grade): array
+    {
+        $weeks = [];
+
+        foreach (WeekPlanItem::query()
+            ->where('grade', $grade)
+            ->distinct()
+            ->orderBy('week_number')
+            ->pluck('week_number') as $week) {
+            $weeks[] = (int) $week;
+        }
+
+        return $weeks;
     }
 
     public function completedCount(User $user): int

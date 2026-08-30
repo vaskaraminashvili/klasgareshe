@@ -17,11 +17,11 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ## Where we are (2026-08-22)
 
-**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3, then ქართული · მათემატიკა · ისტორია), parent-verify, logout. Home + Profile + Daily mission screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. **Week 1 plan** (grades 1–3, Mon–Sun × 3 subjects) is seeded in Georgian; Home mission / continue / today’s plan / 3 subject tiles / featured Quick Quiz all link to the next incomplete pack. Completing a pack awards XP via `recordPlay` and does not repeat that pack (catch-up stays). Ranking hub live (Global / Weekly / League) with Monday cohort promote/relegate. **Badges:** 21-badge catalog, collection + one unlock celebration; awarded on pack finish (and league week close); Home/Profile recent badges are live. Rewards tab goes to `/badges`.
+**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3, then ქართული · მათემატიკა · ისტორია), parent-verify, logout. Home + Profile + Daily mission screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3, Mon–Sun × 3 subjects) are seeded in Georgian; Home / daily mission / mastery use the **active curriculum week** (lowest week with incomplete packs; advances when a week is fully done). Completing a pack awards XP via `recordPlay` and does not repeat that pack (catch-up stays). Ranking hub live (Global / Weekly / League) with Monday cohort promote/relegate. **Badges:** 21-badge catalog, collection + one unlock celebration; awarded on pack finish (and league week close); Home/Profile recent badges are live. Rewards tab goes to `/badges`.
 
 **Still dummy on Home / Profile:** friends, search catalog, notification list, word-search / counting tiles. Profile friends strip + monthly goals / rewards dashboard chips stay template. Daily-mission gift box / share / bonus cards are markup only. Shop / Rewards dashboard / claim queue are not built.
 
-**Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress`. Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped. Admin assign UI still TODO.
+**Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress` (weeks 1–2 seeded). Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped. Admin assign UI still TODO.
 
 ---
 
@@ -98,7 +98,7 @@ Reusable later from Settings.
 - [ ] Online status
 - [x] Level title (e.g. Lv 7 Explorer) — Profile chip + XP bar from `LevelCalculator`
 - [x] Profile stats: XP, streak, badges, rank — hero metrics + shortcuts live
-- [x] Subject mastery bars (% complete per subject) — week-1 packs for ქართული / მათემატიკა / ისტორია
+- [x] Subject mastery bars (% complete per subject) — active curriculum week packs for ქართული / მათემატიკა / ისტორია
 - [x] Weekly activity recap on profile — XP / active days / packs + week dots
 - [~] Achievements timeline — recent badges; streak/mission milestone rows still later
 - [ ] Share profile
@@ -219,16 +219,17 @@ Shared game rules:
 - [~] Correct / incorrect feedback + sounds — visual correct/wrong on quiz; no sounds yet
 - [x] Lives or retry (if you want it; template is mostly check-and-continue) — 3 lives on Quick Quiz
 - [ ] Voice reader for questions
-- [x] Grade-appropriate week bank — `users.grade` + `week_plan_items`; quiz cannot load another class’s pack; catch-up is first incomplete weekday per subject
+- [x] Grade-appropriate week bank — `users.grade` + `week_plan_items` weeks 1–2; quiz cannot load another class’s pack; catch-up is first incomplete weekday per subject in the active week; finishing week N unlocks week N+1 when seeded
+- [x] Curriculum week advancement — `WeekPlanService::activeWeekNumber()` picks lowest incomplete week (stays on last when all done)
 
 ---
 
 ## 9. Daily mission
 
-- [x] Week checklist — `pages::daily-mission` (`kidzio/daily-mission.html`); 21 packs (7 days × 3 subjects), done / next / locked
-- [x] 3 Home tasks = next incomplete pack per subject; mission `n/3` = packs completed today
-- [x] Hours left until Sunday 23:59 on Home + mission hero
-- [x] Catch-up: missed weekday packs stay until finished (progress not wiped Monday)
+- [x] Daily checklist — `pages::daily-mission`; **3 today tasks** (1 per subject), done if that subject was played today
+- [x] 3 Home tasks = same daily set; mission `n/3` = subjects finished today
+- [x] Hours left until end of day on Daily mission; Home week hero still uses hours until Sunday
+- [x] Catch-up: missed weekday packs stay until finished (progress not wiped Monday); next pack opens after today’s subject slot is done
 - [~] Locked bonus / gift box / share / “kids playing” — markup only, no backend
 
 ---
