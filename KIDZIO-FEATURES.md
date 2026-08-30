@@ -15,29 +15,53 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ---
 
-## Where we are (2026-08-22)
+## Where we are (2026-08-31)
 
-**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3, then ქართული · მათემატიკა · ისტორია), parent-verify, logout. Home + Profile + Daily mission screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3, Mon–Sun × 3 subjects) are seeded in Georgian; Home / daily mission / mastery use the **active curriculum week** (lowest week with incomplete packs; advances when a week is fully done). Completing a pack awards XP via `recordPlay` and does not repeat that pack (catch-up stays). Ranking hub live (Global / Weekly / League) with Monday cohort promote/relegate. **Badges:** 21-badge catalog, collection + one unlock celebration; awarded on pack finish (and league week close); Home/Profile recent badges are live. Rewards tab goes to `/badges`.
+**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3 → ქართული · მათემატიკა · ისტორია → daily goal → notifications), parent-verify, logout. Home / Profile / Daily mission / Edit profile / Monthly goals / Friends ranking ported and mostly live. Home greeting, streak / XP / league ribbon, week dots from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3) seeded in Georgian; active week = lowest incomplete week. Daily mission = **3 today tasks** (1 pack per subject; done if that subject was played today). Completing a pack → `recordPlay` + badge eval. Ranking hub live (Global / Weekly / League / Friends). Profile hero, mastery, week activity, friends strip, monthly-goals chip live. Badges: 21-catalog + unlock celebration; Rewards tab → `/badges`.
 
-**Still dummy on Home / Profile:** friends, search catalog, notification list, word-search / counting tiles. Profile friends strip + monthly goals / rewards dashboard chips stay template. Daily-mission gift box / share / bonus cards are markup only. Shop / Rewards dashboard / claim queue are not built.
+### Still static / dummy (do not treat as done)
 
-**Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress` (weeks 1–2 seeded). Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped. Admin assign UI still TODO.
+Inventory of template markup, dead `.html` links, or stored prefs with no runtime effect. Checklist sections below stay the source of truth for build order; this list is the quick scan.
+
+| Area | Still static |
+|---|---|
+| **Tab bar** | Learn → `learn-categories.html` (no Livewire page). Rewards opens badges, not a Rewards dashboard. |
+| **Home — social** | Friends-today feed (Leo / Ana rows + fake streak chips). Ranking / beat-friends CTAs still `ranking-friends.html` (not `route('ranking-friends')`). |
+| **Home — games** | Word-search + counting featured tiles → `.html` shells (not built). |
+| **Home — search** | Overlay + popular/recent chips; catalog + result links are dummy (`.html`). No voice search. |
+| **Home — notifications** | Bell sheet list is hard-coded; unread badge fixed **“3”**. Rows link to `streak.html` / `rewards-dashboard.html` / `settings.html`. |
+| **Home — misc** | Streak ribbon / card → `streak.html` (no streak page). Parent tip → `settings.html`. PWA install = `data-install` UI only. Header avatar emoji + online dot are fixed (not `users.avatar`). |
+| **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards, hardcoded **+120 XP** chips — markup only. |
+| **Profile** | Rewards-dashboard row (`href="#"`, fake “3 new”). Parent zone (controls / weekly report / screen time) → `.html` or settings stubs; screen-time chip hardcodes **30 min**. Settings gear / menu → `settings.html`. Share profile button markup only. Streak menu → `streak.html`. Achievements timeline beyond recent badges not built. |
+| **Edit profile** | Reset password / delete account rows dead (`href="#"`). Parent email read-only (no change + re-verify). Camera / change-avatar badge not built. |
+| **Auth** | Phone login, social (Google / Apple / Facebook), forgot-password, Terms / Privacy hrefs (`#`). Parent-verify “change email” / “get help” chips dead. |
+| **Badges / rewards** | Speed Runner + Social Star never unlock. Share badge / unlock share = toast markup. Badges “Rewards” chip → `#`. No Rewards dashboard, claim queue, daily-login calendar, or XP shop. |
+| **Ranking / privacy** | `show_on_leaderboard` / hide-from-global toggles stored but **not applied** to leaderboard queries. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. |
+| **XP / streaks** | No dedicated streak screen / month calendar / streak freeze. XP history activity log TODO (`xp-progress` subject/source placeholders). Combo / speed bonus / difficulty setting not scored. Mission-complete bonus XP not awarded beyond pack `recordPlay`. |
+| **Learn library** | Entire Learn tab + subject library screens (math / alphabet / animals / words / …), lessons, chapters — not started. |
+| **Other mini-games** | Everything except Quick Quiz (tap-correct, counting, trace, spell, word-search, …) — not started. |
+| **Parent zone** | PIN gate, dashboard, screen time, bedtime, weekly/full reports, export PDF — not started (links only). Monthly goals page is live (system goals); parent custom targets later. |
+| **Settings / legal / PWA** | No Settings page. No push delivery (onboarding prefs stored only). No Terms / Privacy / FAQ / contact / about screens. Splash + walkthrough not built. Accent / text-size themes not built. |
+| **Content ops** | Week **3+** packs not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
+
+**Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress` (weeks 1–2 seeded). Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped.
 
 ---
 
 ## Suggested build order
 
-1. ~~Auth + parent verification + kid profile~~ — auth + verify done; profile UI still dummy
+1. ~~Auth + parent verification + kid profile~~ — auth + verify + edit-profile + live Profile stats done
 2. ~~Onboarding (class, school subjects, daily goal, notifications)~~ — კლასი 1–3 + ქართული / მათემატიკა / ისტორია; class drives week packs
-3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn / Rewards tabs still dead; Ranking wired
+3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn tab still dead; Rewards → badges; Ranking wired; search/notif still dummy
 4. ~~XP / levels / scoring~~ — levels + xp-progress + award-from-play done
 5. Learn library + lessons + continue/lock — skipped; week plan stands in for “what next”
 6. ~~Mini-games + game scoring~~ — Quick Quiz plays the week pack (`startPlanItem`); other shells later
-7. **Daily mission + week plan** — checklist + catch-up live; gift box / extra tasks dummy
+7. ~~Daily mission + week plan~~ — 3 today tasks + catch-up live; gift box / bonus cards still dummy
 8. ~~Badges + rewards + shop~~ — collection + unlock live; shop / dashboard / claim queue later
-9. ~~Leaderboard + leagues~~ — Global / Weekly / League live; Friends deferred
+9. ~~Leaderboard + leagues + friends~~ — Global / Weekly / League / Friends ranking live; Home friends feed + prize claim later
 10. Parent zone (PIN, screen time, bedtime, reports)
 11. Settings, PWA, offline, legal, support
+12. Week 3+ curriculum packs + remaining mini-game shells
 
 ---
 
@@ -48,7 +72,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 - [x] Light / dark theme (system default + toggle, persist)
 - [ ] Theme accent colors (violet, pink, mint, sky, sun)
 - [ ] Text size (small / medium / large)
-- [~] Bottom tab bar: Home · Learn · Rewards · Ranking · Profile — Home + Profile + Ranking routed; Learn / Rewards still `.html`
+- [~] Bottom tab bar: Home · Learn · Rewards · Ranking · Profile — Home / Profile / Ranking / Rewards→badges routed; Learn still `learn-categories.html`
 - [ ] Walkthrough (3 slides): play, streak, rewards — with Skip
 
 ---
