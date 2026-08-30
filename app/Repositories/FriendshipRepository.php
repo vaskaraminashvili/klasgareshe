@@ -54,7 +54,13 @@ class FriendshipRepository
             ->where('status', FriendshipStatus::Accepted)
             ->pluck('user_id');
 
-        return $asRequester->merge($asFriend)->unique()->values()->map(fn ($id) => (int) $id)->all();
+        $ids = [];
+
+        foreach ($asRequester->merge($asFriend)->unique()->values() as $id) {
+            $ids[] = (int) $id;
+        }
+
+        return $ids;
     }
 
     /**

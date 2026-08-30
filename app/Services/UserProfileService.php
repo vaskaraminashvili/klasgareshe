@@ -112,7 +112,7 @@ class UserProfileService
         $current = is_array($user->favourite_subjects) ? $user->favourite_subjects : [];
         $schoolCurrent = array_values(array_filter(
             $current,
-            static fn (mixed $value): bool => is_string($value) && in_array($value, $orderedValues, true),
+            static fn (string $value): bool => in_array($value, $orderedValues, true),
         ));
         $hasAll = count(array_unique($schoolCurrent)) === count($orderedValues);
 
