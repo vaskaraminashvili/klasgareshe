@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Data\DailyMissionSnapshot;
 use App\Data\HomeWeekPlan;
+use App\Data\SubjectMasteryRow;
 use App\Data\WeekChecklistItem;
 use App\Data\WeekPlanTaskView;
 use App\Enums\SchoolGrade;
@@ -230,6 +231,57 @@ class WeekPlanService
         $end = CarbonImmutable::now()->endOfWeek(CarbonImmutable::SUNDAY);
 
         return max(0, (int) round(CarbonImmutable::now()->diffInHours($end, false)));
+    }
+
+    public function lessonsCompletedThisWeek(User $user): int
+    {
+        $start = CarbonImmutable::now()->startOfWeek(CarbonImmutable::MONDAY);
+
+        return $this->plans->completedCountBetween(
+            $user,
+            $start->toDateString(),
+            $start->addDays(6)->toDateString(),
+        );
+    }
+
+    /**
+     * @return list<SubjectMasteryRow>
+     */
+    public function subjectMastery(User $user): array
+    {
+        $grade = $this->gradeFor($user);
+        $items = $this->plans->itemsForGrade($grade, self::CURRICULUM_WEEK);
+        $completedIds = array_flip($this->plans->completedItemIds($user));
+        $rows = [];
+
+        foreach (SchoolSubject::ordered() as $subject) {
+            $subjectItems = $items->where('subject', $subject);
+            $total = $subjectItems->count();
+            $done = 0;
+
+            foreach ($subjectItems as $item) {
+                if (isset($completedIds[$item->id])) {
+                    $done++;
+                }
+            }
+
+            $percent = $total > 0 ? (int) round(($done / $total) * 100) : 0;
+            $next = $this->nextIncompleteForSubject($user, $subject);
+
+            $rows[] = new SubjectMasteryRow(
+                subject: $subject,
+                label: $subject->label(),
+                emoji: $subject->emoji(),
+                tile: $subject->tile(),
+                progressClass: $subject->progressClass(),
+                percent: $percent,
+                done: $done,
+                total: $total,
+                nextItemId: $next?->id,
+            );
+        }
+
+        return $rows;
     }
 
     private function taskViewForSubject(User $user, SchoolSubject $subject): WeekPlanTaskView

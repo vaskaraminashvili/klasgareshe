@@ -19,7 +19,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 **Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3, then ქართული · მათემატიკა · ისტორია), parent-verify, logout. Home + Profile + Daily mission screens are ported. Home greeting, streak / XP / league ribbon, and week dots read from `user_stats` + `user_activity_days`. **Week 1 plan** (grades 1–3, Mon–Sun × 3 subjects) is seeded in Georgian; Home mission / continue / today’s plan / 3 subject tiles / featured Quick Quiz all link to the next incomplete pack. Completing a pack awards XP via `recordPlay` and does not repeat that pack (catch-up stays). Ranking hub live (Global / Weekly / League) with Monday cohort promote/relegate. **Badges:** 21-badge catalog, collection + one unlock celebration; awarded on pack finish (and league week close); Home/Profile recent badges are live. Rewards tab goes to `/badges`.
 
-**Still dummy on Home / Profile:** friends, search catalog, notification list, profile hero stats (except badge count), word-search / counting tiles. Daily-mission gift box / share / bonus cards are markup only. Shop / Rewards dashboard / claim queue are not built.
+**Still dummy on Home / Profile:** friends, search catalog, notification list, word-search / counting tiles. Profile friends strip + monthly goals / rewards dashboard chips stay template. Daily-mission gift box / share / bonus cards are markup only. Shop / Rewards dashboard / claim queue are not built.
 
 **Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress`. Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped. Admin assign UI still TODO.
 
@@ -91,16 +91,16 @@ Reusable later from Settings.
 
 ## 4. Kid profile
 
-- [~] Kid display name + nickname — stored (nickname auto from name); home greeting uses name; Profile still dummy “Luna”
-- [~] Age, class (`users.grade` 1–3), age group stored; country not stored; Profile still dummy
+- [~] Kid display name + nickname — stored (nickname auto from name); home greeting + Profile hero use name
+- [~] Age, class (`users.grade` 1–3), age group stored; country not stored; Profile shows age · class
 - [ ] Avatar picker (animal/emoji set)
 - [ ] Camera / change-avatar badge
 - [ ] Online status
-- [ ] Level title (e.g. Lv 7 Explorer)
-- [ ] Profile stats: XP, streak, badges, rank — Profile still hardcoded
-- [ ] Subject mastery bars (% complete per subject)
-- [ ] Weekly activity recap on profile
-- [ ] Achievements timeline
+- [x] Level title (e.g. Lv 7 Explorer) — Profile chip + XP bar from `LevelCalculator`
+- [x] Profile stats: XP, streak, badges, rank — hero metrics + shortcuts live; friends still dummy
+- [x] Subject mastery bars (% complete per subject) — week-1 packs for ქართული / მათემატიკა / ისტორია
+- [x] Weekly activity recap on profile — XP / active days / packs + week dots
+- [~] Achievements timeline — recent badges; streak/mission milestone rows still later
 - [ ] Share profile
 - [ ] Edit profile (name, nickname, age, avatar, favourite subject)
 

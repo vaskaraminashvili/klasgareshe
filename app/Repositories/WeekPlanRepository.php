@@ -101,6 +101,16 @@ class WeekPlanRepository
             ->count();
     }
 
+    public function completedCountBetween(User $user, string $from, string $to): int
+    {
+        return UserPlanProgress::query()
+            ->where('user_id', $user->id)
+            ->where('status', PlanProgressStatus::Completed)
+            ->whereDate('completed_at', '>=', $from)
+            ->whereDate('completed_at', '<=', $to)
+            ->count();
+    }
+
     public function isCompleted(User $user, int $itemId): bool
     {
         return UserPlanProgress::query()
