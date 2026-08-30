@@ -176,18 +176,45 @@ window.toggleTheme = toggleTheme;
 //   <div class="swiper rail-swiper" data-swiper-rail>          ← content row
 //   <div class="swiper rail-swiper" data-swiper-rail-tabs>     ← filter-chip row
 //
-// Both do free-mode horizontal sliding with slidesPerView:"auto".
-// The -tabs variant tunes the config so taps on chips keep firing:
-// short touches don't trigger a drag, and Swiper doesn't preventDefault
-// on touchstart. Options are tweakable per-rail via data-space-between,
+// cssMode uses native overflow-x so rails still swipe after Livewire
+// morphs (JS transform handlers get detached). preventClicks is off so
+// chip taps and wire:navigate links inside slides keep working.
+// Options are tweakable per-rail via data-space-between,
 // data-offset-before, data-offset-after.
 //
-// window.Swiper is exposed by the bundled index.js with `defer`, so we
-// wait for DOMContentLoaded before initializing — see NOTES.md
-// "Swiper timing". Re-run after wire:navigate: body swap drops instances.
+// window.Swiper is exposed by assets/js/index.js. Retry until it exists,
+// then re-run after wire:navigate / Livewire morph.
 (function () {
+  let swiperWaitFrames = 0;
+
+  const railIsAlive = (el) =>
+    el.swiper &&
+    !el.swiper.destroyed &&
+    el.swiper.wrapperEl &&
+    el.swiper.wrapperEl.isConnected &&
+    el.swiper.wrapperEl === el.querySelector(".swiper-wrapper");
+
+  const mountRail = (el, opts) => {
+    if (railIsAlive(el)) {
+      el.swiper.update();
+      return;
+    }
+    if (el.swiper) {
+      try {
+        el.swiper.destroy(true, true);
+      } catch (e) {
+        /* ignore stale instance */
+      }
+    }
+    new window.Swiper(el, opts);
+  };
+
   const initRailSwipers = () => {
-    if (!window.Swiper) return;
+    if (!window.Swiper) {
+      if (swiperWaitFrames++ < 60) requestAnimationFrame(initRailSwipers);
+      return;
+    }
+    swiperWaitFrames = 0;
     const mods = window.SwiperModules ? [window.SwiperModules.FreeMode] : [];
 
     const baseOpts = (el) => ({
@@ -195,32 +222,26 @@ window.toggleTheme = toggleTheme;
       slidesPerView: "auto",
       spaceBetween: parseInt(el.dataset.spaceBetween, 10) || 12,
       freeMode: true,
+      cssMode: true,
       grabCursor: true,
       slidesOffsetBefore: parseInt(el.dataset.offsetBefore, 10) || 20,
       slidesOffsetAfter: parseInt(el.dataset.offsetAfter, 10) || 20,
+      preventClicks: false,
+      preventClicksPropagation: false,
     });
 
     document.querySelectorAll(".swiper[data-swiper-rail]").forEach((el) => {
-      if (el.swiper) return;
-      new window.Swiper(el, baseOpts(el));
+      mountRail(el, baseOpts(el));
     });
 
-    document
-      .querySelectorAll(".swiper[data-swiper-rail-tabs]")
-      .forEach((el) => {
-        if (el.swiper) return;
-        new window.Swiper(el, {
-          ...baseOpts(el),
-          // Don't block native taps on chips. Swiper still suppresses
-          // clicks if a real drag happens (touchmove beyond threshold),
-          // so tap-to-filter keeps working and drag-to-scroll works too.
-          touchStartPreventDefault: false,
-          touchMoveStopPropagation: false,
-          // Small slide threshold = more tolerant for taps that move a
-          // hair. Default 3px is fine but we set it explicitly.
-          threshold: 5,
-        });
+    document.querySelectorAll(".swiper[data-swiper-rail-tabs]").forEach((el) => {
+      mountRail(el, {
+        ...baseOpts(el),
+        touchStartPreventDefault: false,
+        touchMoveStopPropagation: false,
+        threshold: 5,
       });
+    });
   };
 
   const destroyRailSwipers = () => {
@@ -238,6 +259,15 @@ window.toggleTheme = toggleTheme;
   document.addEventListener("livewire:navigating", destroyRailSwipers);
   document.addEventListener("livewire:navigated", () => {
     requestAnimationFrame(initRailSwipers);
+  });
+  document.addEventListener("livewire:initialized", () => {
+    requestAnimationFrame(initRailSwipers);
+  });
+  document.addEventListener("livewire:init", () => {
+    if (!window.Livewire || typeof window.Livewire.hook !== "function") return;
+    window.Livewire.hook("morph.updated", () => {
+      requestAnimationFrame(initRailSwipers);
+    });
   });
 })();
 

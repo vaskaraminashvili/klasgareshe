@@ -3279,6 +3279,14 @@ body {
   overflow: hidden;
 }
 
+/* Native cssMode rails: .swiper-horizontal defaults to pan-y, which blocks
+   horizontal overflow-x. Keep vertical page scroll on the rest of the page. */
+.rail-swiper.swiper-horizontal,
+.subjects-swiper.swiper-horizontal,
+.achievements-swiper.swiper-horizontal {
+  touch-action: pan-x;
+}
+
 .rail-swiper .swiper-slide {
   width: auto;
   height: auto;

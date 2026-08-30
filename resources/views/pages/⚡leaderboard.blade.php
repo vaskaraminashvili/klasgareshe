@@ -245,7 +245,9 @@ new class extends Component
                         default => '',
                     };
                 @endphp
-                <div class="rank-row {{ $row['isYou'] ? 'you' : '' }}" @if ($row['isYou']) data-me @endif>
+                <div class="rank-row {{ $row['isYou'] ? 'you' : '' }}" data-row
+                    data-name="{{ $row['name'] }}" data-streak="{{ $row['streak'] > 0 ? '1' : '0' }}"
+                    @if ($row['isYou']) data-me @endif>
                     <span class="rank-num {{ $medal }}">{{ $row['rank'] }}</span>
                     <div class="rank-av tile-sun">{{ $row['avatar'] }}</div>
                     <div class="grow min-w-0">

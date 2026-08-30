@@ -12,8 +12,6 @@
  *    Season countdown: 14 days from today, plus live… .... line  225
  * ═══════════════════════════════════════════════════════════════════ */
   (function () {
-    const filterChips = document.querySelectorAll('[data-filter]');
-    const rows = document.querySelectorAll('[data-row]');
     const noRank = document.getElementById('noRank');
     const queryStrip = document.getElementById('queryStrip');
     const queryLabel = document.getElementById('queryLabel');
@@ -24,10 +22,11 @@
     function norm(s) { return (s || '').toLowerCase().trim(); }
 
     function applyFilter() {
+      const rows = document.querySelectorAll('[data-row]');
       const q = norm(currentQuery);
       const isSearching = q.length > 0;
-      queryStrip.classList.toggle('hidden', !isSearching);
-      if (isSearching) queryLabel.textContent = '"' + currentQuery + '"';
+      if (queryStrip) queryStrip.classList.toggle('hidden', !isSearching);
+      if (isSearching && queryLabel) queryLabel.textContent = '"' + currentQuery + '"';
 
       let visible = 0;
       rows.forEach(function (row) {
@@ -53,25 +52,31 @@
         }
       });
 
-      noRank.classList.toggle('hidden', visible !== 0);
+      if (noRank) noRank.classList.toggle('hidden', visible !== 0);
     }
 
-    queryClear.addEventListener('click', function () {
-      currentQuery = '';
-      applyFilter();
-    });
+    if (queryClear) {
+      queryClear.addEventListener('click', function () {
+        currentQuery = '';
+        applyFilter();
+      });
+    }
 
-    filterChips.forEach(function (c) {
-      c.addEventListener('click', function () {
+    if (!window.__kidzioLeaderboardFilters) {
+      window.__kidzioLeaderboardFilters = true;
+      document.addEventListener('click', function (e) {
+        const c = e.target.closest('[data-filter]');
+        if (!c || !c.closest('.rail-swiper')) return;
+        const chips = document.querySelectorAll('[data-filter]');
         activeFilter = c.getAttribute('data-filter');
-        filterChips.forEach(function (o) {
+        chips.forEach(function (o) {
           const active = o === c;
           o.classList.toggle('chip-primary', active);
           o.setAttribute('aria-selected', active ? 'true' : 'false');
         });
         applyFilter();
       });
-    });
+    }
 
     // ---------- SEARCH OVERLAY ----------
     const searchOverlay = document.getElementById('searchOverlay');
@@ -124,7 +129,7 @@
 
       resultsBlock.innerHTML = '';
       let hits = 0;
-      rows.forEach(function (row) {
+      document.querySelectorAll('[data-row]').forEach(function (row) {
         const name = norm(row.getAttribute('data-name'));
         const country = norm(row.getAttribute('data-country'));
         if (!(name.includes(q) || country.includes(q))) return;
@@ -165,6 +170,7 @@
       }
     }
 
+    if (searchIcon && searchOverlay && searchPanel && searchBackdrop && searchClose && rankInput && clearBtn && suggestBlock && resultsBlock && applySearchBtn) {
     searchIcon.addEventListener('click', openSearch);
     searchClose.addEventListener('click', closeSearch);
     searchBackdrop.addEventListener('click', closeSearch);
@@ -220,6 +226,7 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !searchOverlay.classList.contains('hidden')) closeSearch();
     });
+    }
 
     // Season countdown: 14 days from today, plus live daily clock
     const seasonDays = document.getElementById('seasonDays');

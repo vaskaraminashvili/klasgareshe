@@ -51,8 +51,9 @@
 
     @livewireScripts
 
+    {{-- index.js exposes window.Swiper; load it before app.js so rails can init. --}}
+    <script src="{{ asset('assets/js/index.js') }}" data-navigate-once></script>
     <script src="{{ asset('assets/js/app.js') }}" data-navigate-once></script>
-    <script defer src="{{ asset('assets/js/index.js') }}" data-navigate-once></script>
     @stack('scripts')
 </body>
 
