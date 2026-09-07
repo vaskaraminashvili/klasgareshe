@@ -2,8 +2,18 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PlanProgressStatus;
+use App\Models\Badge;
 use App\Models\Director;
+use App\Models\Friendship;
+use App\Models\Game;
+use App\Models\LeagueWeek;
+use App\Models\Question;
 use App\Models\User;
+use App\Models\UserBadge;
+use App\Models\UserPlanProgress;
+use App\Models\WeekPlanItem;
+use Database\Seeders\BadgeSeeder;
 use Database\Seeders\DirectorSeeder;
 use Filament\Auth\Pages\Login;
 use Filament\Facades\Filament;
@@ -104,5 +114,52 @@ class DirectorPanelTest extends TestCase
         $this->assertDatabaseMissing('users', [
             'email' => 'director@example.com',
         ]);
+    }
+
+    public function test_director_can_open_generated_resource_lists(): void
+    {
+        $director = Director::factory()->create();
+        $user = User::factory()->fullySetUp()->withStats()->create();
+        $item = WeekPlanItem::factory()->create();
+
+        Question::factory()->create();
+        Game::factory()->create();
+        Friendship::factory()->create();
+        LeagueWeek::factory()->create();
+        $this->seed(BadgeSeeder::class);
+
+        UserPlanProgress::query()->create([
+            'user_id' => $user->id,
+            'week_plan_item_id' => $item->id,
+            'status' => PlanProgressStatus::Completed,
+            'correct_count' => 5,
+            'completed_at' => now(),
+        ]);
+
+        $badgeId = Badge::query()->value('id');
+        $this->assertNotNull($badgeId);
+
+        UserBadge::query()->create([
+            'user_id' => $user->id,
+            'badge_id' => $badgeId,
+            'unlocked_at' => now(),
+        ]);
+
+        $this->actingAs($director, 'director');
+
+        foreach ([
+            '/director/badges',
+            '/director/week-plan-items',
+            '/director/questions',
+            '/director/users',
+            '/director/user-stats',
+            '/director/user-plan-progress',
+            '/director/user-badges',
+            '/director/games',
+            '/director/friendships',
+            '/director/league-weeks',
+        ] as $uri) {
+            $this->get($uri)->assertOk();
+        }
     }
 }
