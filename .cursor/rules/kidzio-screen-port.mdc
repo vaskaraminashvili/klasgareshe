@@ -21,9 +21,17 @@ Reference (first completed port): `kidzio/login.html` → `resources/views/pages
 
 ## Files for one screen
 
-1. **Source:** `kidzio/{screen}.html` — copy `<main>…</main>` only (plus overlays/sheets in `<body>` if present). Strip HTTrack comments. Do **not** copy `<head>` or `<script>`.
-2. **Target:** `resources/views/pages/⚡{name}.blade.php`. If the page already exists, **replace** the placeholder. Do not wrap the template in a `<div>` or nest `livewire:…-form`.
-3. **Route** (only if missing) in `routes/web.php`:
+1. **Scaffold** (omit `pages::` and the file lands in `resources/views/components/`):
+
+```bash
+php artisan make:livewire pages::{name}
+```
+
+`php artisan make:livewire pages::learn-categories` → `resources/views/pages/⚡learn-categories.blade.php`. Nested: `php artisan make:livewire pages::post.create` → `resources/views/pages/post/⚡create.blade.php`. The `⚡` prefix is added automatically.
+
+2. **Source:** `kidzio/{screen}.html` — copy `<main>…</main>` only (plus overlays/sheets in `<body>` if present). Strip HTTrack comments. Do **not** copy `<head>` or `<script>`.
+3. **Target:** `resources/views/pages/⚡{name}.blade.php`. If the page already exists, **replace** the placeholder. Do not wrap the template in a `<div>` or nest `livewire:…-form`.
+4. **Route** (only if missing) in `routes/web.php`:
 
 ```php
 Route::livewire('/login', 'pages::user-login')->name('user-login');

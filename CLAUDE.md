@@ -92,12 +92,20 @@ Keep existing component names. Do not create `pages::login` when `pages::user-lo
 
 ### How to port a screen
 
-1. Open `kidzio/{screen}.html`. Copy **only** `<main>…</main>` (and overlays/sheets in `<body>`).
-2. Put it in `resources/views/pages/⚡{name}.blade.php`. If that file is a placeholder, **replace it**. Do not nest `livewire:…-form` inside the copied `<main>`.
-3. Root element is the copied `<main class="device-frame …">`. No extra wrapper `<div>`.
-4. PHP class at the top of the same file: `#[Title]` from the HTML title; validate + action here; no Eloquent in Livewire.
-5. Add `Route::livewire` in `routes/web.php` only if the route is missing.
-6. Wire in place — same tags and classes:
+1. Create the Livewire page (do **not** omit `pages::` — that writes to `resources/views/components/` instead):
+
+```bash
+php artisan make:livewire pages::{name}
+```
+
+Example: `php artisan make:livewire pages::learn-categories` → `resources/views/pages/⚡learn-categories.blade.php`. Nested: `php artisan make:livewire pages::post.create` → `resources/views/pages/post/⚡create.blade.php`. The `⚡` prefix is added automatically.
+
+2. Open `kidzio/{screen}.html`. Copy **only** `<main>…</main>` (and overlays/sheets in `<body>`).
+3. Put it in `resources/views/pages/⚡{name}.blade.php`. If that file is a placeholder, **replace it**. Do not nest `livewire:…-form` inside the copied `<main>`.
+4. Root element is the copied `<main class="device-frame …">`. No extra wrapper `<div>`.
+5. PHP class at the top of the same file: `#[Title]` from the HTML title; validate + action here; no Eloquent in Livewire.
+6. Add `Route::livewire` in `routes/web.php` only if the route is missing.
+7. Wire in place — same tags and classes:
 
    - `href="signup.html"` → `route('user-register')` + `wire:navigate`
    - `href="login.html"` → `route('user-login')` + `wire:navigate`
@@ -111,7 +119,7 @@ Keep existing component names. Do not create `pages::login` when `pages::user-lo
    - Hardcoded names/XP → Livewire/Blade variables **inside the same node**
    - Validation: `@error` as `<p class="text-sm" style="color:var(--color-k-coral)">` next to the field
 
-7. Auth login pattern (already on the login page): `Auth::attempt(..., $remember)` → `session()->regenerate()` → `$this->redirectRoute('home', navigate: true)`.
+8. Auth login pattern (already on the login page): `Auth::attempt(..., $remember)` → `session()->regenerate()` → `$this->redirectRoute('home', navigate: true)`.
 
 ### Allowed vs forbidden
 
@@ -212,4 +220,7 @@ composer dev            # php artisan dev
 composer test           # pint + phpstan + phpunit
 vendor/bin/pint --dirty
 php artisan test --filter=Example
+php artisan make:livewire pages::{name}   # full-page SFC → resources/views/pages/⚡{name}.blade.php
+# php artisan make:livewire pages::learn-categories
+# php artisan make:livewire pages::post.create   # nested → resources/views/pages/post/⚡create.blade.php
 ```
