@@ -22,6 +22,7 @@ class GamePlayService
         private UserStatService $stats,
         private WeekPlanService $weekPlan,
         private BadgeService $badges,
+        private QuestionPlayModeResolver $playModes,
     ) {}
 
     public function startPlanItem(User $user, int $itemId): GameRound
@@ -182,12 +183,44 @@ class GamePlayService
 
     private function viewFrom(Question $question): ChoiceQuestionView
     {
+        $choices = $question->choices();
+        $labels = [];
+
+        foreach ($choices as $choice) {
+            $labels[] = $choice['label'];
+        }
+
+        $shape = $this->playModes->forPrompt(
+            (string) $question->prompt,
+            $this->correctLabel($question, $choices),
+            $labels,
+        );
+
         return new ChoiceQuestionView(
             id: $question->id,
             prompt: (string) $question->prompt,
             emoji: $question->mediaEmoji(),
             tile: $question->mediaTile(),
-            choices: $question->choices(),
+            choices: $choices,
+            playMode: $shape->mode,
+            letters: $shape->letters,
+            countItems: $shape->countItems,
         );
+    }
+
+    /**
+     * @param  list<array{key: string, label: string, emoji: string}>  $choices
+     */
+    private function correctLabel(Question $question, array $choices): string
+    {
+        $key = $question->correctKey();
+
+        foreach ($choices as $choice) {
+            if ($choice['key'] === $key) {
+                return $choice['label'];
+            }
+        }
+
+        return '';
     }
 }

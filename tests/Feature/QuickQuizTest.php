@@ -162,7 +162,91 @@ class QuickQuizTest extends TestCase
         $this->assertSame(1, UserStat::query()->where('user_id', $user->id)->first()?->current_streak);
     }
 
-    private function seedQuiz(int $count = 1): WeekPlanItem
+    public function test_missing_letter_prompts_use_the_fill_letter_layout(): void
+    {
+        $this->withoutVite();
+        $item = $this->seedQuiz(1, [
+            'prompt' => 'კ_ტა — რომელი ასო აკლია?',
+            'payload' => [
+                'choices' => [
+                    ['key' => 'A', 'label' => 'ე', 'emoji' => ''],
+                    ['key' => 'B', 'label' => 'ა', 'emoji' => ''],
+                    ['key' => 'C', 'label' => 'ი', 'emoji' => ''],
+                    ['key' => 'D', 'label' => 'ო', 'emoji' => ''],
+                ],
+            ],
+            'answer' => ['key' => 'B'],
+            'media' => ['emoji' => '🐱', 'tile' => 'tile-coral'],
+        ]);
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+
+        Livewire::actingAs($user)
+            ->test('pages::game-multiple-choice', ['item' => $item->id])
+            ->assertSet('playMode', 'fill')
+            ->assertSee(__('quiz.fill_letter'), false)
+            ->assertSee(__('quiz.pick_letter'), false)
+            ->assertSee('border-dashed', false)
+            ->assertDontSee('ans-key', false);
+    }
+
+    public function test_emoji_count_prompts_use_the_counting_layout(): void
+    {
+        $this->withoutVite();
+        $item = $this->seedQuiz(1, [
+            'prompt' => 'დათვალე: 🍎🍎🍎 — რამდენია?',
+            'payload' => [
+                'choices' => [
+                    ['key' => 'A', 'label' => '2', 'emoji' => ''],
+                    ['key' => 'B', 'label' => '3', 'emoji' => ''],
+                    ['key' => 'C', 'label' => '4', 'emoji' => ''],
+                    ['key' => 'D', 'label' => '5', 'emoji' => ''],
+                ],
+            ],
+            'answer' => ['key' => 'B'],
+            'media' => ['emoji' => '🍎', 'tile' => 'tile-coral'],
+        ]);
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+
+        Livewire::actingAs($user)
+            ->test('pages::game-multiple-choice', ['item' => $item->id])
+            ->assertSet('playMode', 'count')
+            ->assertSet('countItems', ['🍎', '🍎', '🍎'])
+            ->assertSee(__('quiz.counting'), false)
+            ->assertSee('grid-cols-4', false);
+    }
+
+    public function test_short_letter_answers_use_the_tap_correct_layout(): void
+    {
+        $this->withoutVite();
+        $item = $this->seedQuiz(1, [
+            'prompt' => 'რომელი ასოა „ე“?',
+            'payload' => [
+                'choices' => [
+                    ['key' => 'A', 'label' => 'ა', 'emoji' => ''],
+                    ['key' => 'B', 'label' => 'ე', 'emoji' => ''],
+                    ['key' => 'C', 'label' => 'ბ', 'emoji' => ''],
+                    ['key' => 'D', 'label' => 'გ', 'emoji' => ''],
+                ],
+            ],
+            'answer' => ['key' => 'B'],
+        ]);
+
+        $user = User::factory()->fullySetUp()->withStats()->create();
+
+        Livewire::actingAs($user)
+            ->test('pages::game-multiple-choice', ['item' => $item->id])
+            ->assertSet('playMode', 'tap')
+            ->assertSee(__('quiz.tap_correct'), false)
+            ->assertSee('grid-cols-2', false)
+            ->assertDontSee('ans-key', false);
+    }
+
+    /**
+     * @param  array<string, mixed>  $question
+     */
+    private function seedQuiz(int $count = 1, array $question = []): WeekPlanItem
     {
         Game::factory()->create([
             'slug' => GameType::MultipleChoice,
@@ -178,15 +262,15 @@ class QuickQuizTest extends TestCase
 
         $questions = Question::factory()
             ->count($count)
-            ->sequence(fn ($sequence) => [
+            ->sequence(fn ($sequence) => array_merge([
                 'prompt' => 'რა ცხოველი ამბობს „მუ“? #'.($sequence->index + 1),
-            ])
+            ], $question))
             ->create();
 
         $sync = [];
 
-        foreach ($questions as $index => $question) {
-            $sync[$question->id] = ['sort_order' => $index];
+        foreach ($questions as $index => $row) {
+            $sync[$row->id] = ['sort_order' => $index];
         }
 
         $item->questions()->sync($sync);

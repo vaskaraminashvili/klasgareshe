@@ -18,6 +18,7 @@ use App\Services\LeagueSeasonService;
 use App\Services\LevelCalculator;
 use App\Services\MonthlyGoalService;
 use App\Services\ParentVerificationService;
+use App\Services\QuestionPlayModeResolver;
 use App\Services\UserProfileService;
 use App\Services\UserRegistrationService;
 use App\Services\UserStatService;
@@ -43,6 +44,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(FriendshipService::class);
         $this->app->singleton(LeagueSeasonService::class);
         $this->app->singleton(UserStatService::class);
+        $this->app->singleton(QuestionPlayModeResolver::class);
         $this->app->singleton(GamePlayService::class);
         $this->app->singleton(KidSetupService::class);
         $this->app->singleton(ParentVerificationService::class);
