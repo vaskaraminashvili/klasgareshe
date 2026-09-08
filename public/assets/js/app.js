@@ -25,6 +25,8 @@
  *     · [data-swiper-rail-tabs] — filter chip row (tap-preserving)
  *     · Re-init on livewire:navigated (wire:navigate)
  *
+ *   Mouse drag-to-scroll for cssMode rails ......... after rails
+ *
  *   Parent verify (method tabs, OTP, resend timer) . after rails
  * ═══════════════════════════════════════════════════════════════════ */
 
@@ -171,6 +173,10 @@ window.toggleTheme = toggleTheme;
 })();
 
 // ── Auto-init Swiper rails ───────────────────────────────────────
+// Breakage playbook + gesture matrix: docs/rails-swiper.md. Re-check every
+// gesture there before changing these options — cssMode silently disables
+// all of Swiper's own pointer handling.
+//
 // Two init modes:
 //
 //   <div class="swiper rail-swiper" data-swiper-rail>          ← content row
@@ -269,6 +275,85 @@ window.toggleTheme = toggleTheme;
       requestAnimationFrame(initRailSwipers);
     });
   });
+})();
+
+// ── Mouse drag-to-scroll for cssMode rails ───────────────────────
+// cssMode hands scrolling to the browser, so touch swipe, trackpad and
+// shift+wheel all work — but a plain mouse drag does nothing, because
+// Swiper skips its own pointer handlers when cssMode is on. grabCursor
+// promises a drag, so drive scrollLeft here instead.
+//
+// Delegated from document (survives Livewire morphs) and mouse-only, so
+// native touch scrolling is left untouched. A drag past THRESHOLD
+// swallows the trailing click so wire:navigate links inside slides only
+// fire on a real tap.
+(function () {
+  const THRESHOLD = 6;
+  let wrapper = null;
+  let startX = 0;
+  let startScroll = 0;
+  let snap = "";
+  let dragged = false;
+
+  const railWrapperOf = (node) => {
+    if (!(node instanceof Element)) return null;
+    const el = node.closest(".swiper-css-mode > .swiper-wrapper");
+    return el && el.scrollWidth > el.clientWidth + 1 ? el : null;
+  };
+
+  const stopDrag = () => {
+    if (!wrapper) return;
+    if (dragged) {
+      wrapper.style.scrollSnapType = snap;
+      wrapper.style.userSelect = "";
+      wrapper.style.cursor = "";
+    }
+    wrapper = null;
+  };
+
+  document.addEventListener("pointerdown", (e) => {
+    dragged = false;
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    const el = railWrapperOf(e.target);
+    if (!el) return;
+    wrapper = el;
+    startX = e.clientX;
+    startScroll = el.scrollLeft;
+  });
+
+  document.addEventListener("pointermove", (e) => {
+    if (!wrapper) return;
+    const dx = e.clientX - startX;
+    if (!dragged) {
+      if (Math.abs(dx) < THRESHOLD) return;
+      dragged = true;
+      snap = wrapper.style.scrollSnapType;
+      wrapper.style.scrollSnapType = "none";
+      wrapper.style.userSelect = "none";
+      wrapper.style.cursor = "grabbing";
+    }
+    e.preventDefault();
+    wrapper.scrollLeft = startScroll - dx;
+  });
+
+  document.addEventListener("pointerup", stopDrag);
+  document.addEventListener("pointercancel", stopDrag);
+
+  // Native link/image dragging would cancel the pointer stream.
+  document.addEventListener("dragstart", (e) => {
+    if (railWrapperOf(e.target)) e.preventDefault();
+  });
+
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (!dragged) return;
+      dragged = false;
+      e.preventDefault();
+      e.stopPropagation();
+    },
+    true,
+  );
 })();
 
 // ── Parent verification (survives wire:navigate) ─────────────────
