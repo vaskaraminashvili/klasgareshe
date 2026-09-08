@@ -69,6 +69,7 @@ Reference port: `kidzio/login.html` → `resources/views/pages/⚡user-login.bla
 | CSS | `public/assets/css/index.css` (after Vite in the layout). Do not rewrite in `resources/css/app.css`. |
 | Images | `public/assets/images/` → `asset('assets/images/…')` |
 | Theme / back / password-eye / sheets / tabs | `public/assets/js/app.js` (`data-theme-toggle`, `data-back`, `data-pwd-toggle`, …) |
+| Horizontal rails / sliders | `public/assets/js/app.js` (`data-swiper-rail`, `data-swiper-rail-tabs`); Swiper comes from the prebuilt `public/assets/js/index.js`, not npm. **When a rail stops scrolling, read `docs/rails-swiper.md` first** — it has broken four times for four different reasons and the console is clean every time. |
 | Icons | Phosphor in `public/assets/icons/{regular,fill}/` — keep `ph` / `ph-fill` classes |
 | Page JS | Only if the HTML still needs a unique script; copy from `kidzio/assets/js/` into `public/assets/js/` and load from the layout or that page. Prefer layout `app.js`. |
 

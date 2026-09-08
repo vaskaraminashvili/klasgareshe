@@ -1,0 +1,39 @@
+---
+description: Diagnose "the sliders/rails stopped working" on Kidzio screens (Swiper rails + Livewire). Use whenever a horizontal rail, slider, carousel or filter-chip row does not scroll, or before changing the rail options in public/assets/js/app.js.
+globs: public/assets/js/app.js,public/assets/css/index.css
+alwaysApply: false
+---
+
+# Rails / sliders not working
+
+Full playbook: `docs/rails-swiper.md`. Read it before changing rail options.
+
+This has broken four times, each time differently. **Do not guess — inspect the
+container's class list first**, it identifies the failure:
+
+| Class list on `.swiper.subjects-swiper` | Failure |
+|---|---|
+| no `swiper-initialized` | Swiper never ran (load order / missing re-init) |
+| `swiper-initialized`, nothing moves at all | stale instance after a Livewire morph |
+| `swiper-initialized … swiper-css-mode`, touch works but mouse drag doesn't | `cssMode` removed Swiper's pointer gestures |
+
+The console is **clean** in all three. "No console errors" ≠ "the JS is fine".
+
+## Load-bearing — do not remove to fix a gesture
+
+- `cssMode: true` in `app.js` — native `overflow-x` is the only thing that survives a
+  Livewire morph. Swiper skips *all* its pointer handlers when this is on, which is why
+  mouse drag needs the separate drag-to-scroll shim below it.
+- `.rail-swiper.swiper-horizontal { touch-action: pan-x }` in `index.css` — Swiper's
+  default `pan-y` blocks native horizontal scrolling on touch.
+- `window.Swiper` comes from the prebuilt `public/assets/js/index.js`, loaded before
+  `app.js` in the layout. Swiper is not an npm dependency; Vite is unrelated.
+
+## Gesture matrix — re-check ALL of these after any rail change
+
+Touch swipe, trackpad horizontal and shift+wheel are native. Mouse drag is the shim.
+Plain vertical wheel intentionally does nothing (it would steal page scroll).
+
+Every past fix repaired one gesture and silently killed another. Verify in a real
+browser, not by reading code — `docs/rails-swiper.md` has a working headless-Chrome
+recipe including how to mint a session cookie for the `auth:web` pages.
