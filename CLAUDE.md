@@ -153,6 +153,8 @@ routes/web.php
 - Validate in the Livewire component (or a FormRequest if a controller is used).
 - Controllers stay lean if they exist; prefer Livewire pages.
 
+Staff (Filament) is a separate identity from parent/kid accounts. Table `directors`, model `Director`, guard `director`. Panel path `/director`. Kid routes stay `auth:web`. Do not put an `is_admin` flag on `users`.
+
 ### Routes
 
 ```php
