@@ -137,12 +137,7 @@ new class extends Component
 
         if ($last || $this->lives === 0) {
             $this->settled = true;
-            $play->award(
-                $users->authenticated(),
-                GameType::MultipleChoice,
-                $this->correctCount,
-                $this->planItemId,
-            );
+            $play->award($users->authenticated(), GameType::MultipleChoice, $this->correctCount, $this->planItemId);
             $slug = $badges->firstUnseenSlug($users->authenticated());
 
             if (is_string($slug)) {
@@ -246,7 +241,7 @@ new class extends Component
 
     <div class="mt-auto px-6 pb-6 pt-4 safe-bottom">
         <button type="button" class="btn btn-primary w-full" wire:click="next" wire:loading.attr="disabled"
-            @disabled(! $answered)>
+            @disabled(!$answered)>
             {{ __('quiz.next_question') }} <i class="ph ph-arrow-right"></i>
         </button>
     </div>

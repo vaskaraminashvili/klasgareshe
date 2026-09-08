@@ -48,6 +48,7 @@ class KidSetupService
         if ($step === OnboardingStep::Done) {
             return [
                 'home',
+                'learn-categories',
                 'profile',
                 'edit-profile',
                 'game-multiple-choice',

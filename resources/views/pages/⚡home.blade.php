@@ -460,7 +460,7 @@ new class extends Component
             <div id="searchResults" class="overflow-y-auto grow px-5 mt-4 space-y-2 hidden"></div>
 
             <div class="px-5 pb-6 pt-3 safe-bottom">
-                <a href="learn-categories.html" class="btn btn-ghost w-full">
+                <a href="{{ route('learn-categories') }}" wire:navigate class="btn btn-ghost w-full">
                     <i class="ph ph-books"></i> {{ __('home.browse_full_library') }}
                 </a>
             </div>

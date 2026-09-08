@@ -17,7 +17,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ## Where we are (2026-08-31)
 
-**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3 → ქართული · მათემატიკა · ისტორია → daily goal → notifications), parent-verify, logout. Home / Profile / Daily mission / Edit profile / Monthly goals / Friends ranking ported and mostly live. Home greeting, streak / XP / league ribbon, week dots from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3) seeded in Georgian; active week = lowest incomplete week. Daily mission = **3 today tasks** (1 pack per subject; done if that subject was played today). Completing a pack → `recordPlay` + badge eval. Ranking hub live (Global / Weekly / League / Friends). Profile hero, mastery, week activity, friends strip, monthly-goals chip live. Badges: 21-catalog + unlock celebration; Rewards tab → `/badges`.
+**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3 → ქართული · მათემატიკა · ისტორია → daily goal → notifications), parent-verify, logout. Home / Profile / Daily mission / Edit profile / Monthly goals / Friends ranking ported and mostly live. Home greeting, streak / XP / league ribbon, week dots from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3) plus **week 3 for class 1** seeded in Georgian; active week = lowest incomplete week. Daily mission = **3 today tasks** (1 pack per subject; done if that subject was played today). Completing a pack → `recordPlay` + badge eval. Ranking hub live (Global / Weekly / League / Friends). Profile hero, mastery, week activity, friends strip, monthly-goals chip live. Badges: 21-catalog + unlock celebration; Rewards tab → `/badges`. Learn tab (`/learn-categories`) is a dummy library shell.
 
 ### Still static / dummy (do not treat as done)
 
@@ -25,7 +25,7 @@ Inventory of template markup, dead `.html` links, or stored prefs with no runtim
 
 | Area | Still static |
 |---|---|
-| **Tab bar** | Learn → `learn-categories.html` (no Livewire page). Rewards opens badges, not a Rewards dashboard. |
+| **Tab bar** | Learn → `/learn-categories` (library shell; dummy catalog). Rewards opens badges, not a Rewards dashboard. |
 | **Home — social** | Friends-today feed (Leo / Ana rows + fake streak chips). Ranking / beat-friends CTAs still `ranking-friends.html` (not `route('ranking-friends')`). |
 | **Home — games** | Word-search + counting featured tiles → `.html` shells (not built). |
 | **Home — search** | Overlay + popular/recent chips; catalog + result links are dummy (`.html`). No voice search. |
@@ -38,13 +38,13 @@ Inventory of template markup, dead `.html` links, or stored prefs with no runtim
 | **Badges / rewards** | Speed Runner + Social Star never unlock. Share badge / unlock share = toast markup. Badges “Rewards” chip → `#`. No Rewards dashboard, claim queue, daily-login calendar, or XP shop. |
 | **Ranking / privacy** | `show_on_leaderboard` / hide-from-global toggles stored but **not applied** to leaderboard queries. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. |
 | **XP / streaks** | No dedicated streak screen / month calendar / streak freeze. XP history activity log TODO (`xp-progress` subject/source placeholders). Combo / speed bonus / difficulty setting not scored. Mission-complete bonus XP not awarded beyond pack `recordPlay`. |
-| **Learn library** | Entire Learn tab + subject library screens (math / alphabet / animals / words / …), lessons, chapters — not started. |
+| **Learn library** | Tab shell ported (`pages::learn-categories`); subject screens (math / alphabet / animals / words / …), lessons, chapters — not started. Spotlight / stats / tiles still dummy. |
 | **Other mini-games** | Everything except Quick Quiz (tap-correct, counting, trace, spell, word-search, …) — not started. |
 | **Parent zone** | PIN gate, dashboard, screen time, bedtime, weekly/full reports, export PDF — not started (links only). Monthly goals page is live (system goals); parent custom targets later. |
 | **Settings / legal / PWA** | No Settings page. No push delivery (onboarding prefs stored only). No Terms / Privacy / FAQ / contact / about screens. Splash + walkthrough not built. Accent / text-size themes not built. |
-| **Content ops** | Week **3+** packs not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
+| **Content ops** | Week **3** is class 1 only; week 3 for grades 2–3 and week **4+** not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
 
-**Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress` (weeks 1–2 seeded). Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped.
+**Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress` (weeks 1–2 for grades 1–3; week 3 for class 1). Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped.
 
 ---
 
@@ -52,7 +52,7 @@ Inventory of template markup, dead `.html` links, or stored prefs with no runtim
 
 1. ~~Auth + parent verification + kid profile~~ — auth + verify + edit-profile + live Profile stats done
 2. ~~Onboarding (class, school subjects, daily goal, notifications)~~ — კლასი 1–3 + ქართული / მათემატიკა / ისტორია; class drives week packs
-3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn tab still dead; Rewards → badges; Ranking wired; search/notif still dummy
+3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn tab is a dummy library; Rewards → badges; Ranking wired; Home search/notif still dummy
 4. ~~XP / levels / scoring~~ — levels + xp-progress + award-from-play done
 5. Learn library + lessons + continue/lock — skipped; week plan stands in for “what next”
 6. ~~Mini-games + game scoring~~ — Quick Quiz plays the week pack (`startPlanItem`); other shells later
@@ -61,7 +61,7 @@ Inventory of template markup, dead `.html` links, or stored prefs with no runtim
 9. ~~Leaderboard + leagues + friends~~ — Global / Weekly / League / Friends ranking live; Home friends feed + prize claim later
 10. Parent zone (PIN, screen time, bedtime, reports)
 11. Settings, PWA, offline, legal, support
-12. Week 3+ curriculum packs + remaining mini-game shells
+12. Week 3 for grades 2–3 + week 4+ curriculum packs + remaining mini-game shells
 
 ---
 
@@ -72,7 +72,7 @@ Inventory of template markup, dead `.html` links, or stored prefs with no runtim
 - [x] Light / dark theme (system default + toggle, persist)
 - [ ] Theme accent colors (violet, pink, mint, sky, sun)
 - [ ] Text size (small / medium / large)
-- [~] Bottom tab bar: Home · Learn · Rewards · Ranking · Profile — Home / Profile / Ranking / Rewards→badges routed; Learn still `learn-categories.html`
+- [~] Bottom tab bar: Home · Learn · Rewards · Ranking · Profile — all five routed; Rewards → badges; Learn is a dummy library shell
 - [ ] Walkthrough (3 slides): play, streak, rewards — with Skip
 
 ---
@@ -191,14 +191,14 @@ Home week plan — not the Learn tab yet.
 - [x] ქართული — letters, syllables, simple words (`locale=ka`; no Latin A–Z)
 - [x] მათემატიკა — numbers, count, +1 / −1 (harder in grades 2–3)
 - [x] ისტორია — საქართველო (flag, თბილისი, holidays, regions); not world history
-- [ ] Learn tab library (Kidzio Math / Alphabet / Animals / Words / Knowledge / Opposites screens)
+- [~] Learn tab library — `pages::learn-categories` shell ported; Kidzio Math / Alphabet / Animals / Words / Knowledge / Opposites screens not built
 
 ### Library UX
 
-- [ ] Subject tiles with lesson count, % complete, difficulty, age range
-- [ ] Search + filters (difficulty, age, status, tags)
+- [~] Subject tiles with lesson count, % complete, difficulty, age range — markup + dummy numbers
+- [~] Search + filters (difficulty, age, status, tags) — overlay JS on dummy catalog
 - [ ] Favourite / heart a subject or lesson
-- [ ] Today's spotlight on Learn tab
+- [~] Today's spotlight on Learn tab — markup; links to daily-mission
 - [ ] Per-subject: continue, lessons list, mini-games, subject badges
 - [ ] Word / letter / animal / pair of the day
 - [ ] Letter sounds & animal sounds (audio)
@@ -243,7 +243,7 @@ Shared game rules:
 - [~] Correct / incorrect feedback + sounds — visual correct/wrong on quiz; no sounds yet
 - [x] Lives or retry (if you want it; template is mostly check-and-continue) — 3 lives on Quick Quiz
 - [ ] Voice reader for questions
-- [x] Grade-appropriate week bank — `users.grade` + `week_plan_items` weeks 1–2; quiz cannot load another class’s pack; catch-up is first incomplete weekday per subject in the active week; finishing week N unlocks week N+1 when seeded
+- [x] Grade-appropriate week bank — `users.grade` + `week_plan_items` weeks 1–2 (all classes) and week 3 (class 1); quiz cannot load another class’s pack; catch-up is first incomplete weekday per subject in the active week; finishing week N unlocks week N+1 when seeded
 - [x] Curriculum week advancement — `WeekPlanService::activeWeekNumber()` picks lowest incomplete week (stays on last when all done)
 
 ---
@@ -442,7 +442,7 @@ Settings search.
 ## 16. Search
 
 - [ ] Home search: subjects, games, lessons
-- [ ] Learn library search + filters
+- [~] Learn library search + filters — overlay JS on dummy catalog; no live index
 - [ ] Leaderboard player search
 - [ ] Settings search
 - [ ] Language list search

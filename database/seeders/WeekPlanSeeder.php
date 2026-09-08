@@ -35,7 +35,9 @@ class WeekPlanSeeder extends Seeder
         );
 
         foreach (SchoolGrade::cases() as $grade) {
-            foreach ([1, 2] as $weekNumber) {
+            $weeks = $grade === SchoolGrade::First ? [1, 2, 3] : [1, 2];
+
+            foreach ($weeks as $weekNumber) {
                 foreach (SchoolSubject::ordered() as $subject) {
                     for ($weekday = 1; $weekday <= 7; $weekday++) {
                         $this->seedPack($game, $grade, $subject, $weekday, $weekNumber);

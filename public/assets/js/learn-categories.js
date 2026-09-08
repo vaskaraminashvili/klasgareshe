@@ -90,10 +90,10 @@
 
     function labelFor(kind, v) {
       const maps = {
-        filter: { pop: '🔥 Popular', new: '🆕 New', games: '🎮 Games', read: '📖 Reading', math: '➗ Math' },
-        diff: { easy: '🌱 Easy', medium: '🌿 Medium', hard: '🌳 Challenge' },
-        age: { '4': 'Age 4–6', '6': 'Age 6–8', '8': 'Age 8+' },
-        status: { inprogress: '⏳ In progress', new: '🆕 Not started' }
+        filter: { pop: '🔥 პოპულარული', new: '🆕 ახალი', games: '🎮 თამაშები', read: '📖 კითხვა', math: '➗ მათემატიკა' },
+        diff: { easy: '🌱 მარტივი', medium: '🌿 საშუალო', hard: '🌳 გამოწვევა' },
+        age: { '4': 'ასაკი 4–6', '6': 'ასაკი 6–8', '8': 'ასაკი 8+' },
+        status: { inprogress: '⏳ მიმდინარე', new: '🆕 დაუწყებელი' }
       };
       return (maps[kind] && maps[kind][v]) || v;
     }
@@ -119,7 +119,7 @@
       });
       if (sectionCount) {
         const filtering = state.query || state.filter !== 'all' || state.diff !== 'all' || state.age !== 'all' || state.status !== 'all';
-        sectionCount.textContent = filtering ? subjectVisible + ' shown' : '6 total';
+        sectionCount.textContent = filtering ? subjectVisible + ' ნაჩვენები' : '6 სულ';
       }
       noResults.classList.toggle('hidden', visible !== 0);
       renderQueryChips();
@@ -218,7 +218,7 @@
         searchResults.appendChild(row);
       });
       if (hits === 0) {
-        searchResults.innerHTML = '<p class="text-xs text-muted text-center py-8">No matches for "' + q + '"</p>';
+        searchResults.innerHTML = '<p class="text-xs text-muted text-center py-8">ვერაფერი მოიძებნა: "' + q + '"</p>';
       }
     }
 
@@ -246,19 +246,19 @@
     if (micBtn) {
       const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
       micBtn.addEventListener('click', function () {
-        if (!Rec) { toast('Voice search not supported'); return; }
+        if (!Rec) { toast('ხმოვანი ძიება არ არის მხარდაჭერილი'); return; }
         const r = new Rec();
-        r.lang = 'en-US';
+        r.lang = 'ka-GE';
         r.interimResults = false;
         r.maxAlternatives = 1;
         micBtn.classList.add('animate-pulse');
-        toast('Listening\u2026');
+        toast('ვუსმენ\u2026');
         r.onresult = function (ev) {
           libSearch.value = ev.results[0][0].transcript;
           renderResults();
         };
         r.onend = function () { micBtn.classList.remove('animate-pulse'); };
-        r.onerror = function () { micBtn.classList.remove('animate-pulse'); toast('Couldn\u2019t hear you'); };
+        r.onerror = function () { micBtn.classList.remove('animate-pulse'); toast('ვერ გავიგე'); };
         try { r.start(); } catch (e) { micBtn.classList.remove('animate-pulse'); }
       });
     }

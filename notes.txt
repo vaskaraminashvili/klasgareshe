@@ -1,0 +1,9 @@
+So how question work in db 
+use has a user_plan_progress where we can see what user did. 
+
+how plans work question are. 
+week_plans_items -> week_plan_item_questions -> questions.
+
+this is why second time we do not get same question. 
+
+week_plans_items is like games. here we are getting questions for user to answers 

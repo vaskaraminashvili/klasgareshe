@@ -14,9 +14,10 @@ new class extends Component
             <span class="tab-ico">
                 <i class="ph-fill ph-house-simple text-xl"></i>
             </span>{{ __('nav.home') }}</a>
-        <a class="tab" href="learn-categories.html">
+        <a class="tab {{ request()->routeIs('learn-categories') ? 'active' : '' }}"
+            href="{{ route('learn-categories') }}" wire:navigate>
             <span class="tab-ico">
-                <i class="ph ph-books text-xl"></i>
+                <i class="{{ request()->routeIs('learn-categories') ? 'ph-fill' : 'ph' }} ph-books text-xl"></i>
             </span>{{ __('nav.learn') }}</a>
         <a class="tab {{ request()->routeIs('badges', 'badge-unlock') ? 'active' : '' }}" href="{{ route('badges') }}"
             wire:navigate>

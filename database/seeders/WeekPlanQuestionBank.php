@@ -12,6 +12,10 @@ final class WeekPlanQuestionBank
      */
     public static function pack(SchoolGrade $grade, SchoolSubject $subject, int $weekday, int $weekNumber = 1): array
     {
+        if ($weekNumber === 3) {
+            return WeekPlanQuestionBankWeek3::pack($grade, $subject, $weekday);
+        }
+
         if ($weekNumber === 2) {
             return WeekPlanQuestionBankWeek2::pack($grade, $subject, $weekday);
         }
