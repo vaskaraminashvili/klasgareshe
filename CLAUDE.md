@@ -50,7 +50,10 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 - Quick Quiz (`/game-multiple-choice/{item}`): that pack’s 5 Georgian questions, 3 lives, XP on finish. Bare `/game-multiple-choice` redirects to the next incomplete item. Finishing a pack evaluates badges and may redirect to `/badge-unlock/{slug}`.
 - Badges (`/badges`, `pages::badges`) + unlock (`/badge-unlock/{slug}`): 21 Kidzio badges, Georgian names, immediate unlock + one-time celebration. Speed Runner and Social Star stay locked. Rewards tab opens the collection. Shop / claim queue / Rewards dashboard are later.
 
-Build next: week 3 packs for grades 2–3 + week 4+, then another mini-game shell.
+**Ordered plan: `docs/roadmap.md`** — 22 tasks in build order, one brief per task in `docs/tasks/`.
+Read it before starting work; update the task's status and this section when one ships.
+
+Build next: **T01** week 3 packs for grades 2–3 + weeks 4–8, then **T02** the dead-link sweep.
 
 ---
 

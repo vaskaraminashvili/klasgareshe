@@ -2,6 +2,10 @@
 
 Extracted from the `kidzio/` HTML template. Use this as the product backlog. Tick items as they are built.
 
+> **Build order lives in `docs/roadmap.md`.** This file is the inventory of *what* exists in the
+> template; the roadmap is *when* we build it, with one brief per task in `docs/tasks/`. When you
+> finish a task, tick the matching lines here.
+
 Source UI: splash → walkthrough → signup/login → onboarding → home with 5 tabs (Home, Learn, Rewards, Ranking, Profile).
 
 ---
