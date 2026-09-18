@@ -9,7 +9,7 @@ new class extends Component
 {
     public int $totalPlayers = 0;
 
-    public int $yourRank = 1;
+    public ?int $yourRank = null;
 
     public int $yourXp = 0;
 
@@ -99,7 +99,8 @@ new class extends Component
     $second = $this->podiumAt(2);
     $first = $this->podiumAt(1);
     $third = $this->podiumAt(3);
-    $nextRank = max(1, $yourRank - 1);
+    $nextRank = $yourRank !== null ? max(1, $yourRank - 1) : null;
+    $rankLabel = $yourRank !== null ? '#'.$yourRank : __('ranking.unranked');
 @endphp
 
 <main class="device-frame min-h-screen flex flex-col">
@@ -148,7 +149,7 @@ new class extends Component
 
             <div class="relative mt-4 flex gap-2">
                 <div class="mini-stat">
-                    <p class="mini-v">#{{ $yourRank }}</p>
+                    <p class="mini-v">{{ $rankLabel }}</p>
                     <p class="mini-l">{{ __('ranking.your_rank') }}</p>
                 </div>
                 <div class="mini-stat">
@@ -156,8 +157,8 @@ new class extends Component
                     <p class="mini-l">{{ __('ranking.percentile') }}</p>
                 </div>
                 <div class="mini-stat">
-                    <p class="mini-v">{{ number_format($xpToNextRank) }}</p>
-                    <p class="mini-l">{{ __('ranking.to_rank', ['rank' => $nextRank]) }}</p>
+                    <p class="mini-v">{{ $nextRank !== null ? number_format($xpToNextRank) : __('ranking.unranked') }}</p>
+                    <p class="mini-l">{{ $nextRank !== null ? __('ranking.to_rank', ['rank' => $nextRank]) : __('ranking.to_rank_hidden') }}</p>
                 </div>
             </div>
 
@@ -201,12 +202,16 @@ new class extends Component
 
     <section class="px-5 mt-4">
         <div class="you-strip">
-            <div class="you-rank">#{{ $yourRank }}</div>
+            <div class="you-rank">{{ $rankLabel }}</div>
             <div class="grow min-w-0">
                 <p class="font-extrabold text-sm text-ink">
                     {{ __('ranking.you', ['name' => $yourName]) }} · {{ number_format($yourXp) }} XP</p>
                 <p class="text-[11px] text-muted">
-                    {{ __('ranking.you_meta', ['level' => $yourLevel, 'streak' => $yourStreak, 'xp' => number_format($xpToNextRank), 'rank' => $nextRank]) }}
+                    @if ($nextRank !== null)
+                        {{ __('ranking.you_meta', ['level' => $yourLevel, 'streak' => $yourStreak, 'xp' => number_format($xpToNextRank), 'rank' => $nextRank]) }}
+                    @else
+                        {{ __('ranking.you_hidden_meta', ['level' => $yourLevel, 'streak' => $yourStreak]) }}
+                    @endif
                 </p>
             </div>
             <a href="{{ route('game-multiple-choice') }}" wire:navigate

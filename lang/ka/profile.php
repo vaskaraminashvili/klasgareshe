@@ -19,6 +19,7 @@ return [
     'badges' => 'სამკერდე ნიშნები',
     'rank' => 'რეიტინგი',
     'rank_n' => '#:rank',
+    'rank_hidden' => '—',
     'level' => 'Lv :level',
     'xp_to_level_up' => ':xp XP აკლია დონის ასამაღლებლად',
     'share' => 'გაზიარება',

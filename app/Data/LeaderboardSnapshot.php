@@ -10,7 +10,7 @@ final readonly class LeaderboardSnapshot
      */
     public function __construct(
         public int $totalPlayers,
-        public int $yourRank,
+        public ?int $yourRank,
         public int $yourXp,
         public string $yourName,
         public int $yourLevel,

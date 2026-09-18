@@ -176,14 +176,19 @@ class UserStatService
         $stat = $this->ensureFor($user);
         $level = $this->levels->forXp($stat->xp);
         $yourRank = $this->stats->rankFor($user);
-        $total = max(1, $this->stats->countLearners());
-        $percentile = (int) max(1, min(100, ceil(($yourRank / $total) * 100)));
+        $total = $this->stats->countLearners();
+        $percentileLabel = __('ranking.hidden_percentile');
+        $xpToNext = 0;
 
-        $xpAbove = null;
-        if ($yourRank > 1) {
-            $xpAbove = $this->stats->xpAtRank($yourRank - 1);
+        if ($yourRank !== null && $total > 0) {
+            $percentile = (int) max(1, min(100, ceil(($yourRank / max(1, $total)) * 100)));
+            $percentileLabel = __('ranking.top_percentile', ['percent' => $percentile]);
+
+            if ($yourRank > 1) {
+                $xpAbove = $this->stats->xpAtRank($yourRank - 1);
+                $xpToNext = $xpAbove !== null ? max(0, $xpAbove - $stat->xp + 1) : 0;
+            }
         }
-        $xpToNext = $xpAbove !== null ? max(0, $xpAbove - $stat->xp + 1) : 0;
 
         $entries = [];
         $rank = 0;
@@ -221,7 +226,7 @@ class UserStatService
             yourStreak: $stat->current_streak,
             yourAvatar: $this->avatarFor($user),
             xpToNextRank: $xpToNext,
-            percentileLabel: __('ranking.top_percentile', ['percent' => $percentile]),
+            percentileLabel: $percentileLabel,
             podium: $podium,
             rows: $entries,
             level: $level,

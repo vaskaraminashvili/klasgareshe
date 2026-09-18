@@ -36,7 +36,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
 
     public int $catalogCount = 0;
 
-    public int $rank = 1;
+    public ?int $rank = null;
 
     public string $leagueLabel = '';
 
@@ -214,7 +214,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                     <p class="hm-l">{{ __('profile.badges') }}</p>
                 </div>
                 <div class="hero-metric">
-                    <p class="hm-v">{{ __('profile.rank_n', ['rank' => $rank]) }}</p>
+                    <p class="hm-v">{{ $rank !== null ? __('profile.rank_n', ['rank' => $rank]) : __('profile.rank_hidden') }}</p>
                     <p class="hm-l">{{ __('profile.rank') }}</p>
                 </div>
             </div>

@@ -16,7 +16,7 @@ final readonly class ProfileSnapshot
         public string $gradeLabel,
         public int $xp,
         public int $streak,
-        public int $rank,
+        public ?int $rank,
         public LevelProgress $level,
         public League $league,
         public string $leagueLabel,
