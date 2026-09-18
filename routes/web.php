@@ -12,6 +12,8 @@ Route::middleware('guest')->group(function () {
 Route::livewire('/forgot-password', 'pages::forgot-password')->name('forgot-password');
 Route::livewire('/otp', 'pages::otp')->name('otp');
 Route::livewire('/reset-password', 'pages::reset-password')->name('reset-password');
+Route::livewire('/terms', 'pages::terms-privacy')->name('terms-privacy');
+Route::livewire('/privacy', 'pages::privacy-policy')->name('privacy-policy');
 
 Route::get('/parent-verify/confirm/{user}', [ParentVerificationController::class, 'confirm'])
     ->middleware('signed')

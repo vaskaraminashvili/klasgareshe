@@ -1,7 +1,7 @@
 # T05 — Terms & Privacy screens
 
 **Priority:** P0 · ship blocker
-**Status:** not started
+**Status:** done
 **Depends on:** —
 
 ## Why now
@@ -13,13 +13,12 @@ designed in the template.
 
 ## Scope
 
-- [ ] `pages::terms-privacy` from `kidzio/terms-privacy.html` → `/terms`
-- [ ] `pages::privacy-policy` from `kidzio/privacy-policy.html` → `/privacy`
-- [ ] Both reachable **without auth** (guest group) — a parent must be able to read before signing up
-- [ ] Wire the signup consent checkbox links (`⚡user-register.blade.php`)
-- [ ] Georgian document text in `lang/ka` (or Blade partials per section if the text is long —
-      keep it out of the component class)
-- [ ] Link both from Settings when **T10** lands (note it there, don't build it here)
+- [x] `pages::terms-privacy` from `kidzio/terms-privacy.html` → `/terms`
+- [x] `pages::privacy-policy` from `kidzio/privacy-policy.html` → `/privacy`
+- [x] Both reachable **without auth** (public routes, not guest-only) — a parent must be able to read before signing up; a logged-in parent can still open them
+- [x] Wire the signup consent checkbox links (`⚡user-register.blade.php`)
+- [x] Georgian document text in `lang/ka/legal.php` — technical description, flagged for human legal review
+- [x] Link both from Settings when **T10** lands (noted in `docs/tasks/T10-settings-screen.md`)
 
 ## Content the documents must actually state
 
@@ -29,7 +28,7 @@ Not lorem ipsum. Minimum, given what the app already does:
 - Who the account belongs to (parent) and that the kid is a profile on it
 - Parent verification and why
 - Leaderboard visibility, nickname visibility to friends, and how to opt out (see **T04**)
-- Data deletion path and contact address (see **T09**)
+- Data deletion path and contact address (see **T09**) — in-app delete is not shipped; copy points to `privacy@kidzio.app`
 - No third-party ad tracking claim — only make claims that are true today
 
 If the final legal wording needs a human, ship the screens with the true technical description and

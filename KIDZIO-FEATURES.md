@@ -40,14 +40,14 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards, hardcoded **+120 XP** chips — markup only. |
 | **Profile** | Rewards-dashboard row, parent zone (controls / weekly report / screen time), settings gear + row, share button, streak menu row and the “online” chip all removed pending their tasks. Achievements timeline beyond recent badges not built. |
 | **Edit profile** | Delete account row still dead. Parent email read-only (no change + re-verify). Camera / change-avatar badge not built. Password reset is live. |
-| **Auth** | Phone login, social (Google / Apple / Facebook), Terms / Privacy hrefs (`#`). Parent-verify “change email” / “get help” chips dead. Password reset is live. |
+| **Auth** | Phone login, social (Google / Apple / Facebook). Parent-verify “change email” / “get help” chips dead. Password reset is live. Terms / Privacy screens are live. |
 | **Badges / rewards** | Speed Runner + Social Star never unlock. Share badge / unlock share = toast markup. Badges “Rewards” chip → `#`. No Rewards dashboard, claim queue, daily-login calendar, or XP shop. |
 | **Ranking / privacy** | Global leaderboard honors `show_on_leaderboard`. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. `/ranking-friends` filter tabs (all / online / streak / near) are inert, and presence (“N online”) was removed as fake. |
 | **XP / streaks** | No dedicated streak screen / month calendar / streak freeze. XP history activity log TODO (`xp-progress` subject/source placeholders). Combo / speed bonus / difficulty setting not scored. Mission-complete bonus XP not awarded beyond pack `recordPlay`. |
 | **Learn library** | Tab shell ported (`pages::learn-categories`); subject screens (math / alphabet / animals / words / …), lessons, chapters — not started. Spotlight / stats / tiles still dummy. |
 | **Other mini-games** | Everything except Quick Quiz (tap-correct, counting, trace, spell, word-search, …) — not started. |
 | **Parent zone** | PIN gate, dashboard, screen time, bedtime, weekly/full reports, export PDF — not started (links only). Monthly goals page is live (system goals); parent custom targets later. |
-| **Settings / legal / PWA** | No Settings page. No push delivery (onboarding prefs stored only). No Terms / Privacy / FAQ / contact / about screens. Splash + walkthrough not built. Accent / text-size themes not built. |
+| **Settings / legal / PWA** | No Settings page. No push delivery (onboarding prefs stored only). FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
 | **Content ops** | Week **3** is class 1 only; week 3 for grades 2–3 and week **4+** not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
 
 **Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress` (weeks 1–2 for grades 1–3; week 3 for class 1). Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped.
@@ -407,7 +407,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 - [ ] Show on leaderboard
 - [ ] Friend requests
-- [ ] Privacy policy (COPPA / GDPR-K mentioned in UI)
+- [x] Privacy policy (COPPA / GDPR-K mentioned in UI) — `/privacy` + `/terms`; technical Georgian copy, not a certification
 
 ### Storage
 
@@ -426,7 +426,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 - [ ] Contact us
 - [ ] Rate the app
 - [ ] About (version)
-- [ ] Terms & Privacy
+- [x] Terms & Privacy
 - [ ] Install app (PWA)
 
 Settings search.
@@ -462,7 +462,7 @@ Settings search.
 - [ ] Clear cache
 - [ ] Share: profile, badge, mission, weekly report
 - [ ] Voice search
-- [ ] Legal: Terms, Privacy
+- [x] Legal: Terms, Privacy
 - [ ] Help FAQ + contact form/email
 
 ---

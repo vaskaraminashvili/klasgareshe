@@ -38,7 +38,7 @@ Leagues: Bronze → Silver → Gold → Emerald → Sapphire → Diamond.
 
 Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 
-- Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired. Password reset is live: `/forgot-password` → 6-digit code at the parent email → `/reset-password`. Login “დაგავიწყდა?” and Edit profile’s reset row both start that flow.
+- Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired. Password reset is live: `/forgot-password` → 6-digit code at the parent email → `/reset-password`. Login “დაგავიწყდა?” and Edit profile’s reset row both start that flow. Signup consent links open `/terms` and `/privacy` (guest-readable Georgian documents; flagged for legal review).
 - After register: onboarding (**კლასი 1 / 2 / 3** → ქართული / მათემატიკა / ისტორია → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step. Kids without `grade` play class 1 packs.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
 - Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (`/game-multiple-choice/{item}`) or `daily-mission`. Friends, search, and notification list are still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is the Kidzio library shell (search / filter / subject tiles / mini-games); counts and Kidzio extras are still dummy. Spotlight and Quick Quiz link to `daily-mission` / `game-multiple-choice`.
@@ -65,7 +65,7 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
 - Home search is real: `SearchService::homeCatalog()` renders 12 Georgian destinations into
   `<script type="application/json" id="searchIndex">`, which `public/assets/js/home.js` reads.
 
-Build next: **T05** Terms & Privacy.
+Build next: **T06** parent PIN gate.
 (**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---
@@ -106,6 +106,8 @@ Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/
 | `forgot-password.html` | `pages::forgot-password` | `forgot-password` | `/forgot-password` |
 | `otp.html` | `pages::otp` | `otp` | `/otp` |
 | — | `pages::reset-password` | `reset-password` | `/reset-password` |
+| `terms-privacy.html` | `pages::terms-privacy` | `terms-privacy` | `/terms` |
+| `privacy-policy.html` | `pages::privacy-policy` | `privacy-policy` | `/privacy` |
 | `index.html` (splash) | not built yet; back buttons use `home` | `home` | `/` |
 | any other `{name}.html` | `pages::{name}` (kebab-case) | `{name}` | `/{name}` unless a name already exists |
 

@@ -23,7 +23,8 @@ reachable.
         not promise push that doesn't send yet.
   - **Learning** — daily goal, favourite subjects, difficulty (difficulty is **T19**; hide).
   - **Privacy & safety** — show on leaderboard, allow friend requests (both now enforced, T04) +
-        link to the privacy policy.
+        link to Privacy (`route('privacy-policy')` / `/privacy`) and Terms (`route('terms-privacy')` /
+        `/terms`). Those screens shipped in **T05**; do not invent new legal copy here.
   - **Language & region** — Georgian only today. Show it as a locked value with the current locale
         rather than an empty picker; a real picker is **T21**.
   - **Parent zone** — link into `/parent-controls` behind the PIN.

@@ -108,7 +108,7 @@ new class extends Component
 
         <label class="flex items-start gap-2 text-xs pt-1" style="color:var(--color-k-muted)">
             <input type="checkbox" class="mt-1 size-4 accent-[var(--color-k-primary)]" required wire:model="agreed" />
-            <span>{{ __('register.consent_start') }} <a class="font-bold" style="color:var(--color-k-primary)" href="#">{{ __('register.terms') }}</a>{{ __('register.consent_and') }}<a class="font-bold" style="color:var(--color-k-primary)" href="#">{{ __('register.privacy') }}</a>.</span>
+            <span>{{ __('register.consent_start') }} <a class="font-bold" style="color:var(--color-k-primary)" href="{{ route('terms-privacy', ['tab' => 'terms']) }}" wire:navigate>{{ __('register.terms') }}</a>{{ __('register.consent_and') }}<a class="font-bold" style="color:var(--color-k-primary)" href="{{ route('privacy-policy') }}" wire:navigate>{{ __('register.privacy') }}</a>.</span>
         </label>
         @error('agreed')
             <p class="text-sm" style="color:var(--color-k-coral)">{{ $message }}</p>
