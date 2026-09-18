@@ -120,4 +120,28 @@ class FriendsTest extends TestCase
 
         $this->assertSame(1, Friendship::query()->where('user_id', $me->id)->where('friend_id', $friend->id)->count());
     }
+
+    public function test_cannot_add_friend_when_target_disallows_requests(): void
+    {
+        $this->withoutVite();
+
+        $me = User::factory()->fullySetUp()->withStats()->create([
+            'nickname' => 'me-kid',
+        ]);
+        $private = User::factory()->fullySetUp()->withStats()->create([
+            'nickname' => 'private-kid',
+            'allow_friend_requests' => false,
+        ]);
+
+        Livewire::actingAs($me)
+            ->test('pages::ranking-friends')
+            ->set('nickname', 'private-kid')
+            ->call('requestFriend')
+            ->assertHasErrors(['nickname']);
+
+        $this->assertDatabaseMissing('friendships', [
+            'user_id' => $me->id,
+            'friend_id' => $private->id,
+        ]);
+    }
 }
