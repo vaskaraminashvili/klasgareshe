@@ -4,6 +4,7 @@ use App\Enums\GameType;
 use App\Repositories\UserRepository;
 use App\Services\BadgeService;
 use App\Services\GamePlayService;
+use App\Services\ScreenTimeService;
 use App\Services\WeekPlanService;
 use Illuminate\View\View;
 use Livewire\Attributes\Locked;
@@ -60,6 +61,12 @@ new class extends Component
 
     public ?string $correctKey = null;
 
+    public bool $showBreak = false;
+
+    public bool $showWarn = false;
+
+    public bool $showBedtimeSoon = false;
+
     public function title(): string
     {
         return __('quiz.page_title');
@@ -70,9 +77,15 @@ new class extends Component
         $view->title($this->title());
     }
 
-    public function mount(GamePlayService $play, UserRepository $users, WeekPlanService $week, ?int $item = null): void
+    public function mount(GamePlayService $play, UserRepository $users, WeekPlanService $week, ScreenTimeService $time, ?int $item = null): void
     {
         $user = $users->authenticated();
+
+        if ($time->blockReason($user) !== null) {
+            $this->redirectRoute('play-paused', navigate: true);
+
+            return;
+        }
 
         $itemId = $item ?? $this->item;
 
@@ -108,6 +121,32 @@ new class extends Component
         }
 
         $this->showCurrent();
+        $time->tick($user);
+        $this->refreshPlayGates($time, $user);
+    }
+
+    public function heartbeat(ScreenTimeService $time, UserRepository $users): void
+    {
+        if ($this->settled) {
+            return;
+        }
+
+        $user = $users->authenticated();
+        $blocked = $time->tick($user);
+
+        if ($blocked !== null) {
+            $this->redirectRoute('play-paused', navigate: true);
+
+            return;
+        }
+
+        $this->refreshPlayGates($time, $user);
+    }
+
+    public function dismissBreak(ScreenTimeService $time, UserRepository $users): void
+    {
+        $time->dismissBreak($users->authenticated());
+        $this->showBreak = false;
     }
 
     public function pick(string $key, GamePlayService $play): void
@@ -210,10 +249,17 @@ new class extends Component
         $this->letters = $view['letters'];
         $this->countItems = $view['countItems'];
     }
+
+    private function refreshPlayGates(ScreenTimeService $time, \App\Models\User $user): void
+    {
+        $this->showWarn = $time->shouldWarn($user);
+        $this->showBreak = $time->shouldBreak($user);
+        $this->showBedtimeSoon = $time->bedtimeSoon($user);
+    }
 };
 ?>
 
-<main class="device-frame min-h-screen flex flex-col safe-top">
+<main class="device-frame min-h-screen flex flex-col safe-top" wire:poll.15s="heartbeat">
     <header class="appbar">
         <a href="{{ route('daily-mission') }}" wire:navigate class="icon-btn" aria-label="{{ __('quiz.close') }}"><i
                 class="ph ph-x"></i></a>
@@ -222,6 +268,17 @@ new class extends Component
         </div>
         <span class="chip chip-coral">❤️ {{ $lives }}</span>
     </header>
+
+    @if ($showWarn || $showBedtimeSoon)
+        <section class="px-6 mt-2">
+            @if ($showWarn)
+                <p class="chip chip-sun w-full justify-center">{{ __('screen-time.warn_title') }}</p>
+            @endif
+            @if ($showBedtimeSoon)
+                <p class="chip chip-primary w-full justify-center mt-1">{{ __('screen-time.bedtime_soon') }}</p>
+            @endif
+        </section>
+    @endif
 
     <section class="px-6 mt-2 text-center" wire:key="q-meta-{{ $index }}">
         <p class="text-xs font-extrabold" style="color:var(--color-k-muted)">
@@ -327,4 +384,21 @@ new class extends Component
             {{ __('quiz.next_question') }} <i class="ph ph-arrow-right"></i>
         </button>
     </div>
+
+    @if ($showBreak)
+        <div class="fixed inset-0 z-50" role="dialog" aria-modal="true">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+            <div class="relative h-full flex flex-col justify-end">
+                <div class="mx-auto w-full max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom px-5 pt-4 pb-6 text-center">
+                    <div class="flex justify-center pt-1">
+                        <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+                    </div>
+                    <div class="mx-auto size-20 rounded-full tile-mint grid place-items-center text-4xl mt-3">🦉</div>
+                    <p class="h-display text-2xl mt-3 text-ink">{{ __('screen-time.break_title') }}</p>
+                    <p class="text-sm text-muted mt-1">{{ __('screen-time.break_body') }}</p>
+                    <button type="button" class="btn btn-primary w-full mt-5" wire:click="dismissBreak">{{ __('screen-time.break_continue') }}</button>
+                </div>
+            </div>
+        </div>
+    @endif
 </main>

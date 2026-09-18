@@ -92,6 +92,8 @@ return [
     'weekly_report' => 'კვირის ანგარიში',
     'screen_time' => 'ეკრანის დრო',
     'min' => 'წთ',
+    'screen_time_left' => ':minutes წთ',
+    'screen_time_off' => 'გამორთული',
 
     // Account
     'account' => 'ანგარიში',

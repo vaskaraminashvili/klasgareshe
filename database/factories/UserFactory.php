@@ -78,6 +78,26 @@ class UserFactory extends Factory
                 'quiet_hours' => true,
             ],
             'reminder_time' => ReminderTime::Evening,
+            'timezone' => 'Asia/Tbilisi',
+            'break_reminders' => true,
+            'warn_before_limit' => true,
+        ]);
+    }
+
+    public function withDailyLimit(int $minutes): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'daily_limit_minutes' => $minutes,
+        ]);
+    }
+
+    public function withBedtime(string $start = '21:00', string $end = '07:00'): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'bedtime_enabled' => true,
+            'bedtime_start' => $start,
+            'bedtime_end' => $end,
+            'bedtime_days' => [1, 2, 3, 4, 5, 6, 7],
         ]);
     }
 

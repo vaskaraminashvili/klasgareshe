@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnforceScreenTime;
 use App\Http\Middleware\EnsureParentUnlocked;
 use App\Http\Middleware\LockParentZoneOnExit;
 use App\Http\Middleware\RedirectToKidSetup;
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'kid.setup' => RedirectToKidSetup::class,
             'parent.verified' => EnsureParentUnlocked::class,
             'parent.zone.lock-on-exit' => LockParentZoneOnExit::class,
+            'play.time' => EnforceScreenTime::class,
         ]);
 
         $middleware->redirectGuestsTo(fn (Request $request) => route('user-login'));

@@ -3,6 +3,7 @@
 use App\Enums\ParentPinAttempt;
 use App\Repositories\UserRepository;
 use App\Services\ParentZoneService;
+use App\Services\ScreenTimeService;
 use App\Services\UserProfileService;
 use Illuminate\Support\Js;
 use Livewire\Component;
@@ -49,6 +50,25 @@ new class extends Component
     public string $pinChangedLabel = '';
 
     public int $dailyGoalMinutes = 10;
+
+    public int $weekMinutes = 0;
+
+    public int $todayUsedMinutes = 0;
+
+    public ?int $todayLimitMinutes = null;
+
+    public bool $limitOn = false;
+
+    public bool $bedtimeOn = false;
+
+    public string $bedtimeHint = '';
+
+    public bool $breakReminders = true;
+
+    /** @var list<array{letter: string, minutes: int, percent: int, today: bool}> */
+    public array $weekBars = [];
+
+    public int $daysHitGoal = 0;
 
     public function title(): string
     {
@@ -144,6 +164,18 @@ new class extends Component
         $this->persistPrivacy();
     }
 
+    public function updatedBreakReminders(bool $value): void
+    {
+        if (! $this->unlocked) {
+            return;
+        }
+
+        app(ScreenTimeService::class)->setBreakReminders(
+            app(UserRepository::class)->authenticated(),
+            $value,
+        );
+    }
+
     private function submitPin(ParentZoneService $zone, UserRepository $users): void
     {
         $user = $users->authenticated();
@@ -227,6 +259,31 @@ new class extends Component
         $this->pinChangedLabel = $dash->pinChangedLabel;
         $this->dailyGoalMinutes = $dash->dailyGoalMinutes;
         $this->hasPin = $dash->hasPin;
+
+        $time = app(ScreenTimeService::class)->snapshot($user);
+        $this->weekMinutes = $time->weekMinutes;
+        $this->todayUsedMinutes = $time->usedTodayMinutes();
+        $this->todayLimitMinutes = $time->limitMinutes;
+        $this->limitOn = $time->limitMinutes !== null;
+        $this->bedtimeOn = $time->bedtimeEnabled;
+        $this->bedtimeHint = $time->bedtimeEnabled
+            ? (string) __('parent-zone.bedtime_on_hint', [
+                'start' => app(ScreenTimeService::class)->formatClock($time->bedtimeStart, $time->timezone),
+                'end' => app(ScreenTimeService::class)->formatClock($time->bedtimeEnd, $time->timezone),
+            ])
+            : (string) __('parent-zone.bedtime_off_hint');
+        $this->breakReminders = $time->breakReminders;
+        $this->daysHitGoal = $time->daysHitGoal;
+        $this->weekBars = [];
+
+        foreach ($time->weekBars as $bar) {
+            $this->weekBars[] = [
+                'letter' => $bar->letter,
+                'minutes' => $bar->minutes,
+                'percent' => $bar->percent,
+                'today' => $bar->today,
+            ];
+        }
     }
 
     public function subjectsHint(): string
@@ -352,8 +409,8 @@ new class extends Component
                         <p class="text-[10px] text-white/85 mt-1">{{ __('parent-zone.xp_earned') }}</p>
                     </div>
                     <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
-                        <p class="h-display text-xl leading-none">{{ $weekActiveDays }}</p>
-                        <p class="text-[10px] text-white/85 mt-1">{{ __('parent-zone.active_days') }}</p>
+                        <p class="h-display text-xl leading-none">{{ $weekMinutes }}m</p>
+                        <p class="text-[10px] text-white/85 mt-1">{{ __('parent-zone.time_learning') }}</p>
                     </div>
                     <div class="rounded-2xl bg-white/15 backdrop-blur-sm p-3">
                         <p class="h-display text-xl leading-none">{{ $weekLessons }}</p>
@@ -368,9 +425,65 @@ new class extends Component
             </div>
         </section>
 
-        {{-- This-week minutes chart + daily goal hit count → docs/tasks/T07-screen-time-bedtime.md --}}
+        <section class="px-5 mt-5">
+            <div class="section-head">
+                <h2 class="h-display text-lg">{{ __('parent-zone.this_week') }}</h2>
+                {{-- Weekly report details → docs/tasks/T08-parent-reports.md --}}
+            </div>
+            <div class="k-card p-4">
+                <div class="grid grid-cols-7 gap-2 items-end h-24" id="weekBars" aria-label="{{ __('parent-zone.week_chart_aria') }}">
+                    @foreach ($weekBars as $bar)
+                        <div class="flex flex-col items-center gap-1 grow">
+                            <span class="w-full rounded-t-md bg-[var(--color-k-primary)] {{ $bar['today'] ? '' : 'opacity-80' }} transition-all duration-700" data-bar="{{ $bar['percent'] }}" style="height: {{ max(8, $bar['percent']) }}%"></span>
+                            <span class="text-[10px] {{ $bar['today'] ? 'text-primary-ink' : 'text-muted' }} font-extrabold">{{ $bar['letter'] }}</span>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="mt-3 flex items-center justify-between text-[11px]">
+                    <span class="text-muted">{{ __('parent-zone.daily_goal_line', ['minutes' => $dailyGoalMinutes]) }}</span>
+                    <span class="chip chip-mint">{{ __('parent-zone.days_hit_goal', ['hit' => $daysHitGoal]) }}</span>
+                </div>
+            </div>
+        </section>
 
-        {{-- Time & limits (screen time, bedtime, break reminders) → docs/tasks/T07-screen-time-bedtime.md --}}
+        <section class="px-5 mt-5">
+            <p class="section-label">{{ __('parent-zone.time_limits') }}</p>
+            <div class="mt-3 space-y-2">
+                <a href="{{ route('screen-time') }}" wire:navigate class="setting-row">
+                    <div class="setting-ico tile-sun"><i class="ph-fill ph-clock"></i></div>
+                    <div class="grow min-w-0">
+                        <p class="setting-text font-extrabold text-sm text-ink">{{ __('parent-zone.daily_screen_time') }}</p>
+                        <p class="text-[11px] text-muted">
+                            {{ $limitOn
+                                ? __('parent-zone.screen_time_on_hint', ['limit' => $todayLimitMinutes, 'used' => $todayUsedMinutes])
+                                : __('parent-zone.screen_time_off_hint', ['used' => $todayUsedMinutes]) }}
+                        </p>
+                        <div class="progress progress-sun mt-1"><span style="width: {{ $limitOn && $todayLimitMinutes ? min(100, (int) round(($todayUsedMinutes / max(1, $todayLimitMinutes)) * 100)) : 0 }}%"></span></div>
+                    </div>
+                    <span class="chip {{ $limitOn ? 'chip-sun' : 'chip-primary' }}">{{ $limitOn ? __('parent-zone.chip_on') : __('parent-zone.chip_off') }}</span>
+                </a>
+                <a href="{{ route('bedtime-lock') }}" wire:navigate class="setting-row">
+                    <div class="setting-ico tile-violet"><i class="ph-fill ph-moon-stars"></i></div>
+                    <div class="grow min-w-0">
+                        <p class="setting-text font-extrabold text-sm text-ink">{{ __('parent-zone.bedtime_lock') }}</p>
+                        <p class="text-[11px] text-muted">{{ $bedtimeHint }}</p>
+                    </div>
+                    <span class="chip chip-primary">{{ $bedtimeOn ? __('parent-zone.chip_on') : __('parent-zone.chip_off') }}</span>
+                </a>
+                <label class="setting-row cursor-pointer">
+                    <div class="setting-ico tile-mint"><i class="ph-fill ph-coffee"></i></div>
+                    <div class="grow min-w-0">
+                        <p class="setting-text font-extrabold text-sm text-ink">{{ __('parent-zone.break_reminders') }}</p>
+                        <p class="text-[11px] text-muted">{{ __('parent-zone.break_reminders_hint') }}</p>
+                    </div>
+                    <span class="ks-switch">
+                        <input type="checkbox" wire:model.live="breakReminders"/>
+                        <span class="track"></span>
+                        <span class="thumb"></span>
+                    </span>
+                </label>
+            </div>
+        </section>
 
         <section class="px-5 mt-5">
             <p class="section-label">{{ __('parent-zone.learning') }}</p>

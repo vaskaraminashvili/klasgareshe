@@ -38,6 +38,8 @@ class ParentZoneService
         'change-pin',
         'preferred-subjects',
         'parent-pin-otp',
+        'screen-time',
+        'bedtime-lock',
     ];
 
     public function __construct(

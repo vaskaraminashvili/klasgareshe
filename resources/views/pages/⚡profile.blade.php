@@ -4,6 +4,7 @@ use App\Repositories\UserRepository;
 use App\Services\BadgeService;
 use App\Services\FriendshipService;
 use App\Services\MonthlyGoalService;
+use App\Services\ScreenTimeService;
 use App\Services\UserStatService;
 use App\Services\WeekPlanService;
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +57,8 @@ new #[Title('პროფილი · Kidzio')] class extends Component
 
     public int $friendsBeating = 0;
 
+    public string $screenTimeChip = '';
+
     /** @var list<string> */
     public array $friendAvatars = [];
 
@@ -84,6 +87,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         MonthlyGoalService $monthlyGoals,
         FriendshipService $friendships,
         UserRepository $users,
+        ScreenTimeService $time,
     ): void {
         $user = $users->authenticated();
         $snap = $stats->profileSnapshot($user, $week->lessonsCompletedThisWeek($user));
@@ -111,6 +115,12 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         $this->weekDays = $snap->weekDays;
         $this->monthlyGoalsHit = $monthly->goalsHit;
         $this->monthlyGoalsTotal = $monthly->goalsTotal;
+
+        $clock = $time->snapshot($user);
+        $left = $clock->remainingMinutes();
+        $this->screenTimeChip = $clock->limitMinutes === null
+            ? (string) __('profile.screen_time_off')
+            : (string) __('profile.screen_time_left', ['minutes' => $left ?? 0]);
 
         $this->badgeCount = $badges->earnedCount($user);
         $this->catalogCount = $badges->catalogCount();
@@ -422,7 +432,11 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
             {{-- Weekly report → docs/tasks/T08-parent-reports.md --}}
-            {{-- Screen time → docs/tasks/T07-screen-time-bedtime.md --}}
+            <a href="{{ route('parent-controls') }}" wire:navigate class="menu-row">
+                <div class="menu-ico tile-coral"><i class="ph-fill ph-timer text-[#7E1E34]"></i></div>
+                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.screen_time') }}</p>
+                <span class="chip">{{ $screenTimeChip }}</span>
+            </a>
         </div>
     </section>
 

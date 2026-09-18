@@ -24,7 +24,6 @@ Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-e
     Route::livewire('/learn-categories', 'pages::learn-categories')->name('learn-categories');
     Route::livewire('/profile', 'pages::profile')->name('profile');
     Route::livewire('/edit-profile', 'pages::edit-profile')->name('edit-profile');
-    Route::livewire('/game-multiple-choice/{item?}', 'pages::game-multiple-choice')->name('game-multiple-choice');
     Route::livewire('/daily-mission', 'pages::daily-mission')->name('daily-mission');
     Route::livewire('/xp-progress', 'pages::xp-progress')->name('xp-progress');
     Route::livewire('/leaderboard', 'pages::leaderboard')->name('leaderboard');
@@ -34,11 +33,16 @@ Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-e
     Route::livewire('/badges', 'pages::badges')->name('badges');
     Route::livewire('/badge-unlock/{slug}', 'pages::badge-unlock')->name('badge-unlock');
     Route::livewire('/monthly-goals', 'pages::monthly-goals')->name('monthly-goals');
+    Route::livewire('/play-paused', 'pages::play-paused')->name('play-paused');
     Route::livewire('/onboarding-age', 'pages::onboarding-age')->name('onboarding-age');
     Route::livewire('/onboarding-categories', 'pages::onboarding-categories')->name('onboarding-categories');
     Route::livewire('/onboarding-goals', 'pages::onboarding-goals')->name('onboarding-goals');
     Route::livewire('/onboarding-notifications', 'pages::onboarding-notifications')->name('onboarding-notifications');
     Route::livewire('/parent-verify', 'pages::parent-verify')->name('parent-verify');
+
+    Route::middleware('play.time')->group(function () {
+        Route::livewire('/game-multiple-choice/{item?}', 'pages::game-multiple-choice')->name('game-multiple-choice');
+    });
 });
 
 Route::middleware(['auth:web', RedirectToKidSetup::class])->group(function () {
@@ -48,5 +52,7 @@ Route::middleware(['auth:web', RedirectToKidSetup::class])->group(function () {
     Route::middleware('parent.verified')->group(function () {
         Route::livewire('/change-pin', 'pages::change-pin')->name('change-pin');
         Route::livewire('/preferred-subjects', 'pages::preferred-subjects')->name('preferred-subjects');
+        Route::livewire('/screen-time', 'pages::screen-time')->name('screen-time');
+        Route::livewire('/bedtime-lock', 'pages::bedtime-lock')->name('bedtime-lock');
     });
 });

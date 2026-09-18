@@ -65,6 +65,9 @@ class KidSetupService
                 'change-pin',
                 'preferred-subjects',
                 'parent-pin-otp',
+                'screen-time',
+                'bedtime-lock',
+                'play-paused',
             ];
         }
 
