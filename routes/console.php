@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('league:close-week')->weeklyOn(1, '00:05');
+Schedule::command('reports:send-weekly')->weeklyOn(1, '08:00');

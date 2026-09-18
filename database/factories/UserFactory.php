@@ -76,6 +76,7 @@ class UserFactory extends Factory
                 'daily_mission' => false,
                 'friend_activity' => false,
                 'quiet_hours' => true,
+                'weekly_report' => true,
             ],
             'reminder_time' => ReminderTime::Evening,
             'timezone' => 'Asia/Tbilisi',

@@ -420,7 +420,7 @@ new class extends Component
 
                 <div class="relative mt-4 flex items-center gap-2 flex-wrap">
                     <span class="chip bg-white/20 border-0 text-white"><span class="live-dot"></span> {{ __('parent-zone.week_status') }}</span>
-                    {{-- Full report → docs/tasks/T08-parent-reports.md --}}
+                    <a href="{{ route('full-report') }}" wire:navigate class="cta-soft ml-auto">{{ __('reports.full_report') }} <i class="ph-fill ph-arrow-right"></i></a>
                 </div>
             </div>
         </section>
@@ -428,7 +428,7 @@ new class extends Component
         <section class="px-5 mt-5">
             <div class="section-head">
                 <h2 class="h-display text-lg">{{ __('parent-zone.this_week') }}</h2>
-                {{-- Weekly report details → docs/tasks/T08-parent-reports.md --}}
+                <a href="{{ route('weekly-report') }}" wire:navigate class="link">{{ __('reports.details') }}</a>
             </div>
             <div class="k-card p-4">
                 <div class="grid grid-cols-7 gap-2 items-end h-24" id="weekBars" aria-label="{{ __('parent-zone.week_chart_aria') }}">
@@ -488,7 +488,14 @@ new class extends Component
         <section class="px-5 mt-5">
             <p class="section-label">{{ __('parent-zone.learning') }}</p>
             <div class="mt-3 space-y-2">
-                {{-- Weekly report → docs/tasks/T08-parent-reports.md --}}
+                <a href="{{ route('weekly-report') }}" wire:navigate class="setting-row">
+                    <div class="setting-ico tile-sky"><i class="ph-fill ph-chart-line-up"></i></div>
+                    <div class="grow min-w-0">
+                        <p class="setting-text font-extrabold text-sm text-ink">{{ __('reports.weekly_report') }}</p>
+                        <p class="text-[11px] text-muted">{{ __('reports.weekly_report_hint') }}</p>
+                    </div>
+                    <i class="ph ph-caret-right text-muted"></i>
+                </a>
                 <a href="{{ route('monthly-goals') }}" wire:navigate class="setting-row">
                     <div class="setting-ico tile-coral"><i class="ph-fill ph-target"></i></div>
                     <div class="grow min-w-0">
@@ -551,7 +558,14 @@ new class extends Component
                         <span class="thumb"></span>
                     </span>
                 </label>
-                {{-- Export all data → docs/tasks/T09-account-and-data.md --}}
+                <a href="{{ route('export-progress') }}" wire:navigate class="setting-row">
+                    <div class="setting-ico tile-sun"><i class="ph-fill ph-download-simple"></i></div>
+                    <div class="grow min-w-0">
+                        <p class="setting-text font-extrabold text-sm text-ink">{{ __('reports.export_all') }}</p>
+                        <p class="text-[11px] text-muted">{{ __('reports.export_all_hint') }}</p>
+                    </div>
+                    <i class="ph ph-caret-right text-muted"></i>
+                </a>
             </div>
         </section>
 

@@ -68,6 +68,9 @@ class KidSetupService
                 'screen-time',
                 'bedtime-lock',
                 'play-paused',
+                'weekly-report',
+                'full-report',
+                'export-progress',
             ];
         }
 
@@ -213,6 +216,7 @@ class KidSetupService
             'daily_mission' => true,
             'friend_activity' => false,
             'quiet_hours' => true,
+            'weekly_report' => true,
         ];
     }
 
@@ -228,6 +232,7 @@ class KidSetupService
             'daily_mission' => false,
             'friend_activity' => false,
             'quiet_hours' => true,
+            'weekly_report' => true,
         ];
     }
 

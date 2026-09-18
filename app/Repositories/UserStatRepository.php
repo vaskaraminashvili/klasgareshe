@@ -98,6 +98,22 @@ class UserStatRepository
             ->sum('xp_earned');
     }
 
+    public function firstPlayedOn(User $user): ?string
+    {
+        $date = UserActivityDay::query()
+            ->where('user_id', $user->id)
+            ->orderBy('played_on')
+            ->value('played_on');
+
+        if ($date === null) {
+            return null;
+        }
+
+        return $date instanceof CarbonInterface
+            ? $date->toDateString()
+            : CarbonImmutable::parse((string) $date)->toDateString();
+    }
+
     public function countLearners(): int
     {
         return $this->publicRankingQuery()->count();

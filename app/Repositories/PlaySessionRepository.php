@@ -55,4 +55,19 @@ class PlaySessionRepository
             ->orderBy('started_at')
             ->get();
     }
+
+    public function earliestStartedAt(User $user): ?CarbonInterface
+    {
+        $row = UserPlaySession::query()
+            ->where('user_id', $user->id)
+            ->orderBy('started_at')
+            ->first();
+
+        return $row?->started_at;
+    }
+
+    public function countOverlapping(User $user, CarbonInterface $from, CarbonInterface $to): int
+    {
+        return $this->overlapping($user, $from, $to)->count();
+    }
 }

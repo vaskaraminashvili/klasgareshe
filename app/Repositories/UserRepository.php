@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -92,5 +93,19 @@ class UserRepository
         }
 
         return $user->fresh() ?? $user;
+    }
+
+    /**
+     * Parents who finished setup and verified email — weekly report mail candidates.
+     *
+     * @return Collection<int, User>
+     */
+    public function verifiedLearners(): Collection
+    {
+        return User::query()
+            ->whereNotNull('email_verified_at')
+            ->whereNotNull('onboarding_completed_at')
+            ->orderBy('id')
+            ->get();
     }
 }

@@ -4,6 +4,7 @@ use App\Repositories\UserRepository;
 use App\Services\BadgeService;
 use App\Services\FriendshipService;
 use App\Services\MonthlyGoalService;
+use App\Services\ProgressReportService;
 use App\Services\ScreenTimeService;
 use App\Services\UserStatService;
 use App\Services\WeekPlanService;
@@ -82,15 +83,17 @@ new #[Title('პროფილი · Kidzio')] class extends Component
 
     public function mount(
         UserStatService $stats,
-        WeekPlanService $week,
+        WeekPlanService $weekPlan,
         BadgeService $badges,
         MonthlyGoalService $monthlyGoals,
         FriendshipService $friendships,
         UserRepository $users,
         ScreenTimeService $time,
+        ProgressReportService $reports,
     ): void {
         $user = $users->authenticated();
-        $snap = $stats->profileSnapshot($user, $week->lessonsCompletedThisWeek($user));
+        $week = $reports->weekSnapshot($user);
+        $snap = $stats->profileSnapshot($user, $week->figures->packs);
         $monthly = $monthlyGoals->snapshot($user);
         $friendsStrip = $friendships->profileStrip($user);
 
@@ -108,11 +111,15 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         $this->streak = $snap->streak;
         $this->rank = $snap->rank;
         $this->leagueLabel = $snap->leagueLabel;
-        $this->weekXp = $snap->weekXp;
-        $this->weekActiveDays = $snap->weekActiveDays;
-        $this->weekLessons = $snap->weekLessons;
-        $this->weekRangeLabel = $snap->weekRangeLabel;
-        $this->weekDays = $snap->weekDays;
+        $this->weekXp = $week->figures->xp;
+        $this->weekActiveDays = $week->figures->activeDays;
+        $this->weekLessons = $week->figures->packs;
+        $this->weekRangeLabel = $week->figures->rangeLabel;
+        $this->weekDays = array_map(fn ($day) => [
+            'letter' => $day->letter,
+            'on' => $day->xp > 0 || $day->packs > 0,
+            'today' => $day->today,
+        ], $week->days);
         $this->monthlyGoalsHit = $monthly->goalsHit;
         $this->monthlyGoalsTotal = $monthly->goalsTotal;
 
@@ -125,7 +132,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         $this->badgeCount = $badges->earnedCount($user);
         $this->catalogCount = $badges->catalogCount();
         $this->recentBadges = array_map(fn ($card) => $card->toArray(), $badges->recentRail($user));
-        $this->mastery = array_map(fn ($row) => $row->toArray(), $week->subjectMastery($user));
+        $this->mastery = array_map(fn ($row) => $row->toArray(), $weekPlan->subjectMastery($user));
         $this->friendsCount = $friendsStrip->count;
         $this->friendsBeating = $friendsStrip->beatingCount;
         $this->friendAvatars = $friendsStrip->avatars;
@@ -431,7 +438,11 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.parent_controls') }}</p>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
-            {{-- Weekly report → docs/tasks/T08-parent-reports.md --}}
+            <a href="{{ route('weekly-report') }}" wire:navigate class="menu-row">
+                <div class="menu-ico tile-violet"><i class="ph-fill ph-chart-bar text-[#2c1680]"></i></div>
+                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.weekly_report') }}</p>
+                <span class="chip chip-mint">{{ $weekXp }} XP</span>
+            </a>
             <a href="{{ route('parent-controls') }}" wire:navigate class="menu-row">
                 <div class="menu-ico tile-coral"><i class="ph-fill ph-timer text-[#7E1E34]"></i></div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.screen_time') }}</p>

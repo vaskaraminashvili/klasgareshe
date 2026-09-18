@@ -169,7 +169,7 @@ new class extends Component
   <section class="px-5 mt-5">
     <div class="section-head">
       <h2 class="h-display text-lg">{{ __('monthly-goals.weekly_xp') }}</h2>
-      <span class="link cursor-default">{{ __('monthly-goals.weekly_total', ['xp' => number_format($weeklyXpTotal)]) }}</span>
+      <a href="{{ route('weekly-report') }}" wire:navigate class="link">{{ __('reports.details') }}</a>
     </div>
     <div class="k-card p-4">
       <div class="flex items-end gap-2 h-40">

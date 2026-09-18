@@ -157,6 +157,81 @@ class WeekPlanRepository
             ->count();
     }
 
+    /**
+     * @return array<string, int>
+     */
+    public function completedCountBySubjectBetween(User $user, string $from, string $to): array
+    {
+        $map = [];
+
+        foreach (UserPlanProgress::query()
+            ->where('user_plan_progress.user_id', $user->id)
+            ->where('user_plan_progress.status', PlanProgressStatus::Completed)
+            ->whereDate('user_plan_progress.completed_at', '>=', $from)
+            ->whereDate('user_plan_progress.completed_at', '<=', $to)
+            ->join('week_plan_items', 'week_plan_items.id', '=', 'user_plan_progress.week_plan_item_id')
+            ->selectRaw('week_plan_items.subject as subject, COUNT(*) as packs')
+            ->groupBy('week_plan_items.subject')
+            ->toBase()
+            ->get() as $row) {
+            $data = (array) $row;
+            $map[(string) ($data['subject'] ?? '')] = (int) ($data['packs'] ?? 0);
+        }
+
+        return $map;
+    }
+
+    /**
+     * @return array{correct: int, asked: int}
+     */
+    public function accuracyTotalsBetween(User $user, string $from, string $to): array
+    {
+        $row = UserPlanProgress::query()
+            ->where('user_plan_progress.user_id', $user->id)
+            ->where('user_plan_progress.status', PlanProgressStatus::Completed)
+            ->whereDate('user_plan_progress.completed_at', '>=', $from)
+            ->whereDate('user_plan_progress.completed_at', '<=', $to)
+            ->join('week_plan_items', 'week_plan_items.id', '=', 'user_plan_progress.week_plan_item_id')
+            ->selectRaw('COALESCE(SUM(user_plan_progress.correct_count), 0) as correct, COALESCE(SUM(week_plan_items.questions_per_round), 0) as asked')
+            ->toBase()
+            ->first();
+
+        if ($row === null) {
+            return ['correct' => 0, 'asked' => 0];
+        }
+
+        $data = (array) $row;
+
+        return [
+            'correct' => (int) ($data['correct'] ?? 0),
+            'asked' => (int) ($data['asked'] ?? 0),
+        ];
+    }
+
+    /**
+     * @return list<array{title: string, subject: string}>
+     */
+    public function completedPacksOnDate(User $user, string $date): array
+    {
+        $packs = [];
+
+        foreach (UserPlanProgress::query()
+            ->where('user_plan_progress.user_id', $user->id)
+            ->where('user_plan_progress.status', PlanProgressStatus::Completed)
+            ->whereDate('user_plan_progress.completed_at', $date)
+            ->join('week_plan_items', 'week_plan_items.id', '=', 'user_plan_progress.week_plan_item_id')
+            ->orderBy('user_plan_progress.completed_at')
+            ->toBase()
+            ->get(['week_plan_items.title', 'week_plan_items.subject']) as $row) {
+            $packs[] = [
+                'title' => (string) $row->title,
+                'subject' => (string) $row->subject,
+            ];
+        }
+
+        return $packs;
+    }
+
     public function isCompleted(User $user, int $itemId): bool
     {
         return UserPlanProgress::query()

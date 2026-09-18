@@ -21,6 +21,8 @@ use App\Services\MonthlyGoalService;
 use App\Services\ParentVerificationService;
 use App\Services\ParentZoneService;
 use App\Services\PasswordResetService;
+use App\Services\ProgressPdfService;
+use App\Services\ProgressReportService;
 use App\Services\QuestionPlayModeResolver;
 use App\Services\ScreenTimeService;
 use App\Services\SearchService;
@@ -65,5 +67,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(ParentZoneService::class);
         $this->app->singleton(PlaySessionRepository::class);
         $this->app->singleton(ScreenTimeService::class);
+        $this->app->singleton(ProgressReportService::class);
+        $this->app->singleton(ProgressPdfService::class);
     }
 }

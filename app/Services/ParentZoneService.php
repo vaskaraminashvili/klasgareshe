@@ -40,13 +40,16 @@ class ParentZoneService
         'parent-pin-otp',
         'screen-time',
         'bedtime-lock',
+        'weekly-report',
+        'full-report',
+        'export-progress',
     ];
 
     public function __construct(
         private UserRepository $users,
         private UserStatService $stats,
-        private WeekPlanService $week,
         private VerificationCodeService $codes,
+        private ProgressReportService $reports,
     ) {}
 
     public function hasPin(User $user): bool
@@ -209,7 +212,8 @@ class ParentZoneService
 
     public function dashboard(User $user): ParentControlsSnapshot
     {
-        $snap = $this->stats->profileSnapshot($user, $this->week->lessonsCompletedThisWeek($user));
+        $week = $this->reports->weekSnapshot($user);
+        $snap = $this->stats->profileSnapshot($user, $week->figures->packs);
         $goal = $user->daily_goal ?? DailyGoal::Regular;
         $subjects = is_array($user->favourite_subjects) ? $user->favourite_subjects : [];
         $labels = [];
@@ -231,10 +235,10 @@ class ParentZoneService
             kidName: $user->name,
             age: $user->age ?? 0,
             gradeLabel: ($user->grade ?? SchoolGrade::First)->label(),
-            weekXp: $snap->weekXp,
-            weekActiveDays: $snap->weekActiveDays,
-            weekLessons: $snap->weekLessons,
-            weekRangeLabel: $snap->weekRangeLabel,
+            weekXp: $week->figures->xp,
+            weekActiveDays: $week->figures->activeDays,
+            weekLessons: $week->figures->packs,
+            weekRangeLabel: $week->figures->rangeLabel,
             email: $user->email,
             emailVerified: $user->email_verified_at !== null,
             allowFriendRequests: (bool) $user->allow_friend_requests,

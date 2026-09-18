@@ -2,6 +2,7 @@
 
 use App\Repositories\UserRepository;
 use App\Services\BadgeService;
+use App\Services\ProgressReportService;
 use App\Services\SearchService;
 use App\Services\UserStatService;
 use App\Services\WeekPlanService;
@@ -49,6 +50,10 @@ new class extends Component
     /** @var list<array{name: string, keys: string, href: string, ico: string, tile: string}> */
     public array $searchIndex = [];
 
+    public string $parentTipTitle = '';
+
+    public string $parentTipBody = '';
+
     public function mount(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search): void
     {
         $this->syncHome($stats, $week, $users, $badges, $search);
@@ -73,8 +78,15 @@ new class extends Component
         $this->streak = $home->streak;
         $this->xp = $home->xp;
         $this->leagueLabel = $home->leagueLabel;
-        $this->weekActiveDays = $home->weekActiveDays;
-        $this->weekDays = $home->weekDays;
+
+        $reports = app(ProgressReportService::class);
+        $reportWeek = $reports->weekSnapshot($user);
+        $this->weekActiveDays = $reportWeek->figures->activeDays;
+        $this->weekDays = array_map(fn ($day) => [
+            'letter' => $day->letter,
+            'on' => $day->xp > 0 || $day->packs > 0,
+            'today' => $day->today,
+        ], $reportWeek->days);
         $this->missionDone = $plan->missionDone;
         $this->missionTotal = $plan->missionTotal;
         $this->hoursLeft = $plan->hoursLeft;
@@ -101,6 +113,10 @@ new class extends Component
         }
 
         $this->searchIndex = $search->homeCatalog($this->planTasks, $this->continueItemId);
+
+        $tip = $reports->homeTip($user, $reportWeek);
+        $this->parentTipTitle = $tip['title'];
+        $this->parentTipBody = $tip['body'];
     }
 
     public function quizUrl(?int $itemId): string
@@ -323,11 +339,18 @@ new class extends Component
         </div>
     </section>
 
-    {{-- PARENT TIP dropped: the copy named a kid who is not this kid ("ლუნა") and invented
-         a study habit. Re-port it when the report service can produce a real insight
-         (docs/tasks/T08-parent-reports.md).
+    <section class="px-5 mt-5">
+        <div class="k-card parent-note flex items-start gap-3">
+            <div class="size-10 rounded-xl grid place-items-center text-xl bg-white/60 dark:bg-white/10">👨‍👩‍👧</div>
+            <div class="grow">
+                <p class="font-extrabold text-sm text-ink">{{ $parentTipTitle }}</p>
+                <p class="text-xs text-muted mt-0.5">{{ $parentTipBody }}</p>
+            </div>
+            <a href="{{ route('weekly-report') }}" wire:navigate class="chip chip-primary">{{ __('reports.home_tip_chip') }}</a>
+        </div>
+    </section>
 
-         INSTALL PROMPT dropped: no manifest or service worker, so `beforeinstallprompt`
+    {{-- INSTALL PROMPT dropped: no manifest or service worker, so `beforeinstallprompt`
          never fires and the row was a dead end (docs/tasks/T15-splash-walkthrough-pwa.md). --}}
 
     <livewire:bottom-nav-bar />

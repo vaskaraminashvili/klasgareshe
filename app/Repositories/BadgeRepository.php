@@ -78,6 +78,20 @@ class BadgeRepository
             ->count();
     }
 
+    /**
+     * @return Collection<int, UserBadge>
+     */
+    public function earnedBetween(User $user, string $from, string $to): Collection
+    {
+        return UserBadge::query()
+            ->where('user_id', $user->id)
+            ->whereDate('unlocked_at', '>=', $from)
+            ->whereDate('unlocked_at', '<=', $to)
+            ->with('badge')
+            ->orderByDesc('unlocked_at')
+            ->get();
+    }
+
     public function findUserBadge(User $user, Badge $badge): ?UserBadge
     {
         return UserBadge::query()

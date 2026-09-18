@@ -40,7 +40,7 @@ rule in `CLAUDE.md`, not a nice-to-have.
 |---|---|---|
 | T06 | [Parent PIN gate + parent controls](tasks/T06-parent-pin-gate.md) | **done** |
 | T07 | [Screen time + bedtime lock](tasks/T07-screen-time-bedtime.md) | **done** |
-| T08 | [Weekly & full reports](tasks/T08-parent-reports.md) | not started |
+| T08 | [Weekly & full reports](tasks/T08-parent-reports.md) | in progress |
 | T09 | [Account & data control](tasks/T09-account-and-data.md) | not started |
 | T10 | [Settings screen](tasks/T10-settings-screen.md) | not started |
 | T11 | [Streaks & XP completeness](tasks/T11-streaks-and-xp.md) | not started |

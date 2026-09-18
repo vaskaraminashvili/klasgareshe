@@ -19,6 +19,10 @@ Route::get('/parent-verify/confirm/{user}', [ParentVerificationController::class
     ->middleware('signed')
     ->name('parent-verify.confirm');
 
+Route::livewire('/weekly-report/opt-out/{user}', 'pages::weekly-report-opt-out')
+    ->middleware('signed')
+    ->name('weekly-report.opt-out');
+
 Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-exit'])->group(function () {
     Route::livewire('/', 'pages::home')->name('home');
     Route::livewire('/learn-categories', 'pages::learn-categories')->name('learn-categories');
@@ -54,5 +58,8 @@ Route::middleware(['auth:web', RedirectToKidSetup::class])->group(function () {
         Route::livewire('/preferred-subjects', 'pages::preferred-subjects')->name('preferred-subjects');
         Route::livewire('/screen-time', 'pages::screen-time')->name('screen-time');
         Route::livewire('/bedtime-lock', 'pages::bedtime-lock')->name('bedtime-lock');
+        Route::livewire('/weekly-report', 'pages::weekly-report')->name('weekly-report');
+        Route::livewire('/full-report', 'pages::full-report')->name('full-report');
+        Route::livewire('/export-progress', 'pages::export-progress')->name('export-progress');
     });
 });

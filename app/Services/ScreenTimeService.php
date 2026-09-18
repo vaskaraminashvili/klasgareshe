@@ -368,7 +368,7 @@ class ScreenTimeService
             ?? $normalized;
     }
 
-    private function usedSecondsBetween(User $user, CarbonInterface $from, CarbonInterface $to): int
+    public function usedSecondsBetween(User $user, CarbonInterface $from, CarbonInterface $to): int
     {
         $fromTs = $from->getTimestamp();
         $toTs = $to->getTimestamp();
