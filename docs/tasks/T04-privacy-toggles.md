@@ -1,7 +1,7 @@
 # T04 — Enforce privacy toggles
 
 **Priority:** P0 · ship blocker
-**Status:** not started
+**Status:** done
 **Depends on:** —
 
 ## Why now
@@ -14,44 +14,43 @@ before anyone else uses the app.
 
 ## Scope
 
-- [ ] Filter `show_on_leaderboard = false` out of every ranking read:
-  - [ ] `UserStatRepository::topByXp()`
-  - [ ] `UserStatRepository::rankFor()` and `xpAtRank()` — an opted-out kid must not consume a rank
+- [x] Filter `show_on_leaderboard = false` out of every ranking read:
+  - [x] `UserStatRepository::topByXp()`
+  - [x] `UserStatRepository::rankFor()` and `xpAtRank()` — an opted-out kid must not consume a rank
         slot, and must still see a sensible "you" strip
-  - [ ] `UserStatRepository::countLearners()`
-  - [ ] weekly ranking queries
-  - [ ] `LeagueRepository` group standings — decide and document: a league is a closed ~12-player
-        group, so opting out of *global* should not remove a kid from their league. Write the
-        decision into the repository docblock.
-- [ ] Opted-out kid's own view: they still see their own XP and progress, just not a public rank
-- [ ] Friends ranking: still allowed (explicit mutual relationship), but respect
+  - [x] `UserStatRepository::countLearners()`
+  - [x] weekly ranking queries (`topByWeekXp`, `rankForWeek`, `weekXpAtRank`)
+  - [x] `LeagueRepository` group standings — a league is a closed ~12-player group, so opting out of
+        *global* does not remove a kid from their league. Documented on `membersRanked()`.
+- [x] Opted-out kid's own view: they still see their own XP and progress, just not a public rank
+- [x] Friends ranking: still allowed (explicit mutual relationship), but respect
       `allow_friend_requests` for *new* adds — already done, add a test
-- [ ] Profile "global rank" metric reflects the same rule as the leaderboard (no contradiction
+- [x] Profile "global rank" metric reflects the same rule as the leaderboard (no contradiction
       between two screens)
-- [ ] Feature tests: opted-out kid absent from `topByXp`, ranks of other kids close the gap, own
+- [x] Feature tests: opted-out kid absent from `topByXp`, ranks of other kids close the gap, own
       screens still work
 
-## Decisions to record
+## Decisions recorded
 
-Write these in the task file as you make them, then into `CLAUDE.md` product rules:
-
-- Does opting out hide the kid from **friends** ranking too? (proposed: no — friendship is consent)
-- Does it hide them from their **league**? (proposed: no — closed group, needed for promote/relegate)
-- Default for a new account? (proposed: visible, since `UserForm` defaults exist — confirm and make
-  it explicit in the migration default rather than implicit)
+- **Friends ranking:** opting out of global does **not** hide the kid. Friendship is consent.
+- **League / `/ranking-weekly`:** opting out of global does **not** hide the kid. A league is a
+  closed ~12-player group and promote/relegate needs every member. `/ranking-weekly` currently
+  renders that same cohort, so the public filter is the global weekly XP queries, not that page.
+- **Default for a new account:** visible. Confirmed on the migration (`default(true)`), `UserFactory`,
+  and Filament `UserForm`.
 
 ## Code touchpoints
 
 - `app/Repositories/UserStatRepository.php`
 - `app/Repositories/LeagueRepository.php`
-- `app/Models/User.php` — consider a `visibleOnLeaderboard` scope so the filter lives in one place
+- `app/Models/User.php` — `visibleOnLeaderboard` scope; `UserStat` applies it
 - `resources/views/pages/⚡leaderboard.blade.php`, `⚡ranking-weekly.blade.php`, `⚡profile.blade.php`
 
 ## Done when
 
-- Toggling the switch on `/edit-profile` visibly removes the kid from `/leaderboard` and
-  `/ranking-weekly` on the next load.
-- No ranking query bypasses the filter (one scope, used everywhere).
+- Toggling the switch on `/edit-profile` visibly removes the kid from `/leaderboard` on the next load.
+- `/ranking-weekly` and `/league` still list them (closed league group). `/ranking-friends` still lists them.
+- No public ranking query bypasses the filter (one `visibleOnLeaderboard` scope, used everywhere).
 - Tests cover opted-out exclusion and rank renumbering.
 
 ## Out of scope

@@ -22,6 +22,7 @@ This is **Livewire, not Vue**. Do not add Vue, Nuxt, Vuex, or Inertia.
 - **Language:** the product ships in Georgian (`ka` / ქართული). UI strings live in `lang/ka`; game questions and other user-facing DB content are seeded with `locale = ka`. Keep `__()` / `lang` files for every screen copy — do not hardcode English in Blade. English (`lang/en`) and other locales are for future localization only (`APP_FALLBACK_LOCALE=en`); do not make English the default content.
 - Parent-gated screens (PIN, reports, screen time, bedtime, delete account) must never be reachable by the kid without verification.
 - Password reset and parent verification go to the **parent email only**.
+- **Privacy:** `show_on_leaderboard` hides the kid from public (global all-time and weekly XP) ranking queries. Friends ranking still lists them (friendship is consent). League groups — and `/ranking-weekly`, which currently renders that closed cohort — still include them, because promote/relegate needs every member. New accounts default to visible.
 - **Class (`users.grade` 1–3)** drives week-plan packs (difficulty and question bank). Signup still stores `age`; `age_group` is set in the background and is not the content filter.
 - Scoring loop: play week pack → XP → level up → ranks / leagues / badges.
 
@@ -37,12 +38,12 @@ Leagues: Bronze → Silver → Gold → Emerald → Sapphire → Diamond.
 
 Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 
-- Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired.
+- Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired. Password reset is live: `/forgot-password` → 6-digit code at the parent email → `/reset-password`. Login “დაგავიწყდა?” and Edit profile’s reset row both start that flow.
 - After register: onboarding (**კლასი 1 / 2 / 3** → ქართული / მათემატიკა / ისტორია → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step. Kids without `grade` play class 1 packs.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
 - Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (`/game-multiple-choice/{item}`) or `daily-mission`. Friends, search, and notification list are still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is the Kidzio library shell (search / filter / subject tiles / mini-games); counts and Kidzio extras are still dummy. Spotlight and Quick Quiz link to `daily-mission` / `game-multiple-choice`.
 - Profile (`/profile`, `pages::profile`): live name, age · class, XP / streak / badges / global rank, level bar, league shortcut, subject mastery (active curriculum week %), this-week XP / days / packs, recent badge achievements, friends strip, monthly-goals chip. Edit profile and friends ranking are live; parent zone still template.
-- Edit profile (`/edit-profile`): name, nickname, avatar emoji, age, gender, class 1–3, favourite subject, daily goal, privacy toggles. Parent email read-only. Reset/delete not wired.
+- Edit profile (`/edit-profile`): name, nickname, avatar emoji, age, gender, class 1–3, favourite subject, daily goal, privacy toggles. Parent email read-only. Password reset is live (parent email code). Delete not wired. **`show_on_leaderboard` is enforced** on `/leaderboard` (and weekly XP ranking queries); friends + league stay visible.
 - Monthly goals (`/monthly-goals`): system goals for the calendar month (packs / XP / streak / badges) from live stats. Add/custom goals deferred.
 - Friends ranking (`/ranking-friends`): add by nickname (auto-accept v1), XP podium + list among friends. Parent approval later.
 - Daily mission (`/daily-mission`, `pages::daily-mission`): **3 today tasks** (next pack per subject, or done if already played today). Gift box / share / bonus markup only.
@@ -64,7 +65,7 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
 - Home search is real: `SearchService::homeCatalog()` renders 12 Georgian destinations into
   `<script type="application/json" id="searchIndex">`, which `public/assets/js/home.js` reads.
 
-Build next: **T03** password reset via parent email, then **T04** enforce the privacy toggles.
+Build next: **T05** Terms & Privacy.
 (**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---
@@ -102,6 +103,9 @@ Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/
 | `game-multiple-choice.html` | `pages::game-multiple-choice` | `game-multiple-choice` | `/game-multiple-choice/{item?}` |
 | `badges.html` | `pages::badges` | `badges` | `/badges` |
 | `badge-unlock.html` | `pages::badge-unlock` | `badge-unlock` | `/badge-unlock/{slug}` |
+| `forgot-password.html` | `pages::forgot-password` | `forgot-password` | `/forgot-password` |
+| `otp.html` | `pages::otp` | `otp` | `/otp` |
+| — | `pages::reset-password` | `reset-password` | `/reset-password` |
 | `index.html` (splash) | not built yet; back buttons use `home` | `home` | `/` |
 | any other `{name}.html` | `pages::{name}` (kebab-case) | `{name}` | `/{name}` unless a name already exists |
 

@@ -27,8 +27,8 @@ the parent, or a legal gap.
 |---|---|---|---|
 | T01 | [Content runway — weeks 3–8](tasks/T01-content-runway.md) | Kid runs out of packs in ~2 weeks (grades 2–3) | not started |
 | T02 | [Dead links & fake data sweep](tasks/T02-dead-links-sweep.md) | 21 `.html` hrefs 404; hardcoded "3" unread, fake friends | **done** |
-| T03 | [Password reset via parent email](tasks/T03-password-reset.md) | No account recovery at all | not started |
-| T04 | [Enforce privacy toggles](tasks/T04-privacy-toggles.md) | `show_on_leaderboard` is stored and ignored — a kid opted out is still listed | not started |
+| T03 | [Password reset via parent email](tasks/T03-password-reset.md) | No account recovery at all | **done** |
+| T04 | [Enforce privacy toggles](tasks/T04-privacy-toggles.md) | `show_on_leaderboard` is stored and ignored — a kid opted out is still listed | **done** |
 | T05 | [Terms & Privacy screens](tasks/T05-legal-screens.md) | Signup consent checkbox links to `#`; COPPA/GDPR-K claims with no document | not started |
 
 ## P1 — core product
