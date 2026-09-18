@@ -92,6 +92,12 @@ class LeagueRepository
     }
 
     /**
+     * Closed-group standings for one league cohort (~12 kids).
+     *
+     * `users.show_on_leaderboard` is a *global* ranking privacy flag. Opting out of the
+     * worldwide leaderboard does not remove a kid from this group: promote / relegate
+     * needs every member present, and `/ranking-weekly` currently renders this same cohort.
+     *
      * @return Collection<int, LeagueGroupMember>
      */
     public function membersRanked(LeagueGroup $group): Collection

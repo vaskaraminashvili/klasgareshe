@@ -45,6 +45,8 @@ class UserFactory extends Factory
             'age' => 6,
             'gender' => Gender::Girl,
             'onboarding_step' => OnboardingStep::Age,
+            'show_on_leaderboard' => true,
+            'allow_friend_requests' => true,
         ];
     }
 

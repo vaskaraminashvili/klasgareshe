@@ -7,6 +7,7 @@ use App\Models\UserActivityDay;
 use App\Models\UserStat;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class UserStatRepository
@@ -99,7 +100,7 @@ class UserStatRepository
 
     public function countLearners(): int
     {
-        return UserStat::query()->count();
+        return $this->publicRankingQuery()->count();
     }
 
     /**
@@ -107,7 +108,7 @@ class UserStatRepository
      */
     public function topByXp(int $limit = 50): Collection
     {
-        return UserStat::query()
+        return $this->publicRankingQuery()
             ->with('user')
             ->orderByDesc('xp')
             ->orderBy('user_id')
@@ -115,11 +116,15 @@ class UserStatRepository
             ->get();
     }
 
-    public function rankFor(User $user): int
+    public function rankFor(User $user): ?int
     {
+        if (! $user->show_on_leaderboard) {
+            return null;
+        }
+
         $stat = $this->firstOrCreateFor($user);
 
-        return 1 + (int) UserStat::query()
+        return 1 + (int) $this->publicRankingQuery()
             ->where(function ($query) use ($stat): void {
                 $query->where('xp', '>', $stat->xp)
                     ->orWhere(function ($inner) use ($stat): void {
@@ -136,7 +141,7 @@ class UserStatRepository
             return null;
         }
 
-        $row = UserStat::query()
+        $row = $this->publicRankingQuery()
             ->orderByDesc('xp')
             ->orderBy('user_id')
             ->skip($rank - 1)
@@ -144,5 +149,83 @@ class UserStatRepository
             ->first();
 
         return $row?->xp;
+    }
+
+    /**
+     * Public weekly ranking: visible kids ordered by XP earned in [from, to].
+     *
+     * @return Collection<int, UserStat>
+     */
+    public function topByWeekXp(string $from, string $to, int $limit = 50): Collection
+    {
+        return $this->publicRankingQuery()
+            ->with('user')
+            ->leftJoinSub($this->weekXpSubquery($from, $to), 'week_totals', 'week_totals.user_id', '=', 'user_stats.user_id')
+            ->orderByRaw('COALESCE(week_totals.week_xp, 0) DESC')
+            ->orderBy('user_stats.user_id')
+            ->limit($limit)
+            ->get(['user_stats.*']);
+    }
+
+    public function rankForWeek(User $user, string $from, string $to): ?int
+    {
+        if (! $user->show_on_leaderboard) {
+            return null;
+        }
+
+        $mine = $this->sumXpBetween($user, $from, $to);
+
+        return 1 + (int) $this->publicRankingQuery()
+            ->leftJoinSub($this->weekXpSubquery($from, $to), 'week_totals', 'week_totals.user_id', '=', 'user_stats.user_id')
+            ->where(function ($query) use ($mine, $user): void {
+                $query->whereRaw('COALESCE(week_totals.week_xp, 0) > ?', [$mine])
+                    ->orWhere(function ($inner) use ($mine, $user): void {
+                        $inner->whereRaw('COALESCE(week_totals.week_xp, 0) = ?', [$mine])
+                            ->where('user_stats.user_id', '<', $user->id);
+                    });
+            })
+            ->count();
+    }
+
+    public function weekXpAtRank(int $rank, string $from, string $to): ?int
+    {
+        if ($rank < 1) {
+            return null;
+        }
+
+        $row = $this->publicRankingQuery()
+            ->leftJoinSub($this->weekXpSubquery($from, $to), 'week_totals', 'week_totals.user_id', '=', 'user_stats.user_id')
+            ->orderByRaw('COALESCE(week_totals.week_xp, 0) DESC')
+            ->orderBy('user_stats.user_id')
+            ->skip($rank - 1)
+            ->take(1)
+            ->first(['user_stats.user_id']);
+
+        if ($row === null) {
+            return null;
+        }
+
+        return $this->sumXpBetween(User::query()->findOrFail($row->user_id), $from, $to);
+    }
+
+    /**
+     * @return Builder<UserStat>
+     */
+    private function publicRankingQuery(): Builder
+    {
+        return UserStat::query()->visibleOnLeaderboard();
+    }
+
+    /**
+     * @return Builder<UserActivityDay>
+     */
+    private function weekXpSubquery(string $from, string $to): Builder
+    {
+        return UserActivityDay::query()
+            ->select('user_id')
+            ->selectRaw('SUM(xp_earned) as week_xp')
+            ->whereDate('played_on', '>=', $from)
+            ->whereDate('played_on', '<=', $to)
+            ->groupBy('user_id');
     }
 }

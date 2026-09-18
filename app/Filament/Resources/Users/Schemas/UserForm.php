@@ -45,8 +45,10 @@ class UserForm
                 Select::make('reminder_time')
                     ->options(ReminderTime::class),
                 Toggle::make('show_on_leaderboard')
+                    ->default(true)
                     ->required(),
                 Toggle::make('allow_friend_requests')
+                    ->default(true)
                     ->required(),
                 TextInput::make('email')
                     ->label('Email address')

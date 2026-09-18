@@ -11,6 +11,7 @@ use App\Enums\SchoolGrade;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -91,6 +92,20 @@ class User extends Authenticatable
             'show_on_leaderboard' => 'boolean',
             'allow_friend_requests' => 'boolean',
         ];
+    }
+
+    /**
+     * Kids whose parent left them on the worldwide leaderboard.
+     *
+     * New accounts default to visible (`users.show_on_leaderboard` is true). Opting out
+     * hides the kid from public ranking reads only — friends and league cohorts stay.
+     *
+     * @param  Builder<User>  $query
+     * @return Builder<User>
+     */
+    public function scopeVisibleOnLeaderboard(Builder $query): Builder
+    {
+        return $query->where('show_on_leaderboard', true);
     }
 
     /**
