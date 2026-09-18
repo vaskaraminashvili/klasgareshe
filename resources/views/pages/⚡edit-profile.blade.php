@@ -398,6 +398,14 @@ new #[Title('პროფილის რედაქტირება · Kidzi
             @endif
           </p>
         </div>
+        <a href="{{ route('forgot-password') }}" wire:navigate class="setting-row">
+          <div class="setting-ico tile-sun"><i class="ph-fill ph-key"></i></div>
+          <div class="grow min-w-0">
+            <p class="setting-text font-extrabold text-sm text-ink">{{ __('edit-profile.reset_password') }}</p>
+            <p class="text-[11px] text-muted">{{ __('edit-profile.reset_password_hint') }}</p>
+          </div>
+          <i class="ph ph-caret-right text-muted"></i>
+        </a>
         <a href="#" class="setting-row">
           <div class="setting-ico tile-violet"><i class="ph-fill ph-shield-check"></i></div>
           <div class="grow min-w-0">

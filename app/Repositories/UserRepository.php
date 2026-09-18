@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UserRepository
 {
@@ -56,6 +58,29 @@ class UserRepository
     public function findByNickname(string $nickname): ?User
     {
         return User::query()->where('nickname', $nickname)->first();
+    }
+
+    public function findByEmail(string $email): ?User
+    {
+        return User::query()
+            ->whereRaw('lower(email) = ?', [mb_strtolower($email)])
+            ->first();
+    }
+
+    public function rotateRememberToken(User $user): User
+    {
+        $user->setRememberToken(Str::random(60));
+        $user->save();
+
+        return $user->fresh() ?? $user;
+    }
+
+    public function deleteOtherSessions(User $user, string $keepSessionId): void
+    {
+        DB::table('sessions')
+            ->where('user_id', $user->id)
+            ->where('id', '!=', $keepSessionId)
+            ->delete();
     }
 
     public function markEmailVerified(User $user): User

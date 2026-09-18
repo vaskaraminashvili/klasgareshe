@@ -18,11 +18,13 @@ use App\Services\LeagueSeasonService;
 use App\Services\LevelCalculator;
 use App\Services\MonthlyGoalService;
 use App\Services\ParentVerificationService;
+use App\Services\PasswordResetService;
 use App\Services\QuestionPlayModeResolver;
 use App\Services\SearchService;
 use App\Services\UserProfileService;
 use App\Services\UserRegistrationService;
 use App\Services\UserStatService;
+use App\Services\VerificationCodeService;
 use App\Services\WeekPlanService;
 use Illuminate\Support\ServiceProvider;
 
@@ -49,6 +51,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(GamePlayService::class);
         $this->app->singleton(KidSetupService::class);
         $this->app->singleton(ParentVerificationService::class);
+        $this->app->singleton(VerificationCodeService::class);
+        $this->app->singleton(PasswordResetService::class);
         $this->app->singleton(WeekPlanRepository::class);
         $this->app->singleton(WeekPlanService::class);
         $this->app->singleton(BadgeRepository::class);

@@ -9,6 +9,10 @@ Route::middleware('guest')->group(function () {
     Route::livewire('/register', 'pages::user-register')->name('user-register');
 });
 
+Route::livewire('/forgot-password', 'pages::forgot-password')->name('forgot-password');
+Route::livewire('/otp', 'pages::otp')->name('otp');
+Route::livewire('/reset-password', 'pages::reset-password')->name('reset-password');
+
 Route::get('/parent-verify/confirm/{user}', [ParentVerificationController::class, 'confirm'])
     ->middleware('signed')
     ->name('parent-verify.confirm');

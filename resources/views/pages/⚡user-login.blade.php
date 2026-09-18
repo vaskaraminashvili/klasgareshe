@@ -77,7 +77,7 @@ new class extends Component
         <div class="flex items-center justify-between text-sm pt-1">
             <label class="flex items-center gap-2"><input type="checkbox"
                     class="size-4 accent-[var(--color-k-primary)]" wire:model="remember" /><span>{{ __('login.remember_me') }}</span></label>
-            <a href="#" class="font-bold" style="color:var(--color-k-primary)">{{ __('login.forgot') }}</a>
+            <a href="{{ route('forgot-password') }}" class="font-bold" style="color:var(--color-k-primary)" wire:navigate>{{ __('login.forgot') }}</a>
         </div>
 
         <button class="btn btn-primary w-full mt-2">{{ __('login.log_in') }}</button>

@@ -5,15 +5,16 @@ namespace App\Services;
 use App\Models\User;
 use App\Notifications\ParentVerificationNotification;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 
 class ParentVerificationService
 {
-    public function __construct(private UserRepository $users) {}
+    public function __construct(
+        private UserRepository $users,
+        private VerificationCodeService $codes,
+    ) {}
 
     public function send(User $user, bool $forceNewCode = false): void
     {
@@ -21,12 +22,12 @@ class ParentVerificationService
             return;
         }
 
-        $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        $this->storeCode($user, $code);
+        $code = $this->codes->generate();
+        $this->codes->store($this->cacheKey($user), $code);
 
         $url = URL::temporarySignedRoute(
             'parent-verify.confirm',
-            now()->addMinutes(10),
+            now()->addMinutes(VerificationCodeService::TTL_MINUTES),
             ['user' => $user->id],
         );
 
@@ -49,23 +50,17 @@ class ParentVerificationService
 
     public function verifyCode(User $user, string $code): bool
     {
-        $attemptKey = 'parent-verify-attempt:'.$user->id;
+        $payload = $this->codes->consume(
+            $this->cacheKey($user),
+            $code,
+            'parent-verify-attempt:'.$user->id,
+        );
 
-        if (RateLimiter::tooManyAttempts($attemptKey, 5)) {
+        if ($payload === null) {
             return false;
         }
 
-        $payload = Cache::get($this->cacheKey($user));
-
-        if (! is_array($payload) || ! isset($payload['hash']) || ! is_string($payload['hash']) || ! Hash::check($code, $payload['hash'])) {
-            RateLimiter::hit($attemptKey, 60);
-
-            return false;
-        }
-
-        RateLimiter::clear($attemptKey);
         $this->markVerified($user);
-        Cache::forget($this->cacheKey($user));
 
         return true;
     }
@@ -73,21 +68,14 @@ class ParentVerificationService
     public function markVerified(User $user): User
     {
         $verified = $this->users->markEmailVerified($user);
-        Cache::forget($this->cacheKey($user));
+        $this->codes->forget($this->cacheKey($user));
 
         return $verified;
     }
 
     public function hasPendingCode(User $user): bool
     {
-        return Cache::has($this->cacheKey($user));
-    }
-
-    private function storeCode(User $user, string $code): void
-    {
-        Cache::put($this->cacheKey($user), [
-            'hash' => Hash::make($code),
-        ], now()->addMinutes(10));
+        return $this->codes->has($this->cacheKey($user));
     }
 
     private function cacheKey(User $user): string
