@@ -26,7 +26,7 @@ the parent, or a legal gap.
 | # | Task | Why it blocks | Status |
 |---|---|---|---|
 | T01 | [Content runway — weeks 3–8](tasks/T01-content-runway.md) | Kid runs out of packs in ~2 weeks (grades 2–3) | not started |
-| T02 | [Dead links & fake data sweep](tasks/T02-dead-links-sweep.md) | 21 `.html` hrefs 404; hardcoded "3" unread, fake friends | not started |
+| T02 | [Dead links & fake data sweep](tasks/T02-dead-links-sweep.md) | 21 `.html` hrefs 404; hardcoded "3" unread, fake friends | **done** |
 | T03 | [Password reset via parent email](tasks/T03-password-reset.md) | No account recovery at all | not started |
 | T04 | [Enforce privacy toggles](tasks/T04-privacy-toggles.md) | `show_on_leaderboard` is stored and ignored — a kid opted out is still listed | not started |
 | T05 | [Terms & Privacy screens](tasks/T05-legal-screens.md) | Signup consent checkbox links to `#`; COPPA/GDPR-K claims with no document | not started |
@@ -75,8 +75,12 @@ Real features, but the app is usable and sellable without them.
 4. **Parent-gated stays gated.** PIN or parent verification, enforced server-side in middleware —
    not by hiding a link.
 5. **No new dummy data.** If the backend isn't ready, the markup is out of scope for that task —
-   don't ship a fake number to fill the slot.
-6. Finish with `composer test` (Pint + PHPStan level 7 + PHPUnit) green.
+   don't ship a fake number to fill the slot. `tests/Feature/NoTemplateLinksTest.php` enforces the
+   dead-link half of this; the fake-data half is on you.
+6. **Re-porting a block T02 removed.** Several tasks below inherit a one-line Blade comment naming
+   the block and this task. Copy the markup back from `kidzio/{screen}.html` — do not reinvent it —
+   then wire it to the real data and delete the comment.
+7. Finish with `composer test` (Pint + PHPStan level 7 + PHPUnit) green.
 
 ## Definition of "done" for a task
 

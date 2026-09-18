@@ -19,6 +19,7 @@ use App\Services\LevelCalculator;
 use App\Services\MonthlyGoalService;
 use App\Services\ParentVerificationService;
 use App\Services\QuestionPlayModeResolver;
+use App\Services\SearchService;
 use App\Services\UserProfileService;
 use App\Services\UserRegistrationService;
 use App\Services\UserStatService;
@@ -53,5 +54,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(BadgeRepository::class);
         $this->app->singleton(BadgeService::class);
         $this->app->singleton(MonthlyGoalService::class);
+        $this->app->singleton(SearchService::class);
     }
 }

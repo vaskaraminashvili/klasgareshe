@@ -53,7 +53,19 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 **Ordered plan: `docs/roadmap.md`** — 22 tasks in build order, one brief per task in `docs/tasks/`.
 Read it before starting work; update the task's status and this section when one ships.
 
-Build next: **T01** week 3 packs for grades 2–3 + weeks 4–8, then **T02** the dead-link sweep.
+**T02 (dead links & fake data) is done.** Home, Profile, the shared header and `/ranking-friends` no
+longer link to template `.html` files or show invented numbers. Two rules now hold:
+
+- No Blade view or loaded page script may link to a `.html` file —
+  `tests/Feature/NoTemplateLinksTest.php` fails the build if one appears.
+- Blocks whose backend does not exist were **deleted**, each leaving a one-line Blade comment naming
+  the block and the task that re-ports it. Copy the markup back from `kidzio/{screen}.html` when you
+  get there. Elements that showed live data but had no link target were kept and made inert.
+- Home search is real: `SearchService::homeCatalog()` renders 12 Georgian destinations into
+  `<script type="application/json" id="searchIndex">`, which `public/assets/js/home.js` reads.
+
+Build next: **T03** password reset via parent email, then **T04** enforce the privacy toggles.
+(**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---
 

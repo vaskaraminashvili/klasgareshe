@@ -10,7 +10,6 @@ final readonly class FriendsLeaderboardSnapshot
      */
     public function __construct(
         public int $friendCount,
-        public int $onlineCount,
         public int $beatingCount,
         public int $yourRank,
         public int $yourXp,

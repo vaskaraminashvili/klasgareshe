@@ -113,7 +113,7 @@ window.toggleTheme = toggleTheme;
     if (!back) return;
     e.preventDefault();
     if (history.length > 1) history.back();
-    else location.href = back.getAttribute("href") || "index.html";
+    else location.href = back.getAttribute("href") || "/";
   });
 
   // Theme toggle buttons

@@ -54,8 +54,6 @@ new #[Title('პროფილი · Kidzio')] class extends Component
 
     public int $friendsCount = 0;
 
-    public int $friendsOnline = 0;
-
     public int $friendsBeating = 0;
 
     /** @var list<string> */
@@ -119,7 +117,6 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         $this->recentBadges = array_map(fn ($card) => $card->toArray(), $badges->recentRail($user));
         $this->mastery = array_map(fn ($row) => $row->toArray(), $week->subjectMastery($user));
         $this->friendsCount = $friendsStrip->count;
-        $this->friendsOnline = $friendsStrip->onlineCount;
         $this->friendsBeating = $friendsStrip->beatingCount;
         $this->friendAvatars = $friendsStrip->avatars;
 
@@ -174,8 +171,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         </div>
         <a href="{{ route('edit-profile') }}" wire:navigate class="icon-btn" aria-label="{{ __('profile.edit_profile') }}"><i
                 class="ph ph-pencil-simple text-xl"></i></a>
-        <a href="settings.html" class="icon-btn" aria-label="{{ __('profile.settings') }}"><i
-                class="ph ph-gear text-xl"></i></a>
+        {{-- Settings gear dropped until the screen exists (docs/tasks/T10-settings-screen.md). --}}
         <button class="icon-btn" data-theme-toggle aria-label="{{ __('profile.toggle_theme') }}"><i
                 class="ph ph-moon text-xl"></i></button>
     </header>
@@ -200,9 +196,8 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                     <i class="ph-fill ph-crown-simple"></i>
                     {{ __('profile.level_rank', ['level' => $level, 'rank' => $levelTitle]) }}
                 </span>
-                <span class="chip bg-white/20 border-0 text-white">
-                    <span class="live-dot"></span> {{ __('profile.online') }}
-                </span>
+                {{-- "Online" chip dropped: nothing tracks presence, so it was always on.
+                     Re-port it when sessions exist (docs/tasks/T07-screen-time-bedtime.md). --}}
             </div>
 
             <div class="relative mt-5 grid grid-cols-4 gap-2">
@@ -236,20 +231,20 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                 <a href="{{ route('edit-profile') }}" wire:navigate class="cta-soft">
                     <i class="ph-fill ph-pencil-simple"></i> {{ __('profile.edit_profile') }}
                 </a>
-                <button type="button" class="chip bg-white/20 border-0 text-white">
-                    <i class="ph-fill ph-share-fat"></i> {{ __('profile.share') }}
-                </button>
+                {{-- Share button dropped: no share backend, the button did nothing
+                     (docs/tasks/T21-sound-voice-appearance.md). --}}
             </div>
         </div>
     </section>
 
     <!-- =============== QUICK SHORTCUTS =============== -->
     <section class="px-5 mt-4 grid grid-cols-3 gap-3">
-        <a href="streak.html" class="k-card p-3 text-center">
+        {{-- Inert until the streak screen exists (docs/tasks/T11-streaks-and-xp.md). --}}
+        <div class="k-card p-3 text-center">
             <div class="size-10 rounded-2xl tile-sun grid place-items-center text-xl mx-auto">🔥</div>
             <p class="h-display text-lg mt-1">{{ $streak }}</p>
             <p class="text-[11px] text-muted font-extrabold">{{ __('profile.day_streak') }}</p>
-        </a>
+        </div>
         <a href="{{ route('xp-progress') }}" wire:navigate class="k-card p-3 text-center">
             <div class="size-10 rounded-2xl tile-violet grid place-items-center text-xl mx-auto">⭐</div>
             <p class="h-display text-lg mt-1">{{ $this->formattedXp() }}</p>
@@ -381,7 +376,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
             </div>
             <div class="grow">
                 <p class="font-extrabold text-sm text-ink">
-                    {{ __('profile.friends_online', ['total' => $friendsCount, 'online' => $friendsOnline]) }}</p>
+                    {{ __('profile.friends_count', ['total' => $friendsCount]) }}</p>
                 <p class="text-[11px] text-muted">
                     {{ __('profile.beating_friends_this_week', ['count' => $friendsBeating]) }}</p>
             </div>
@@ -393,12 +388,8 @@ new #[Title('პროფილი · Kidzio')] class extends Component
     <section class="px-5 mt-5">
         <p class="section-label">{{ __('profile.quick_links') }}</p>
         <div class="mt-3 space-y-2">
-            <a href="streak.html" class="menu-row">
-                <div class="menu-ico tile-sun">🔥</div>
-                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.daily_streak') }}</p>
-                <span class="chip chip-sun">🔥 {{ $streak }}</span>
-                <i class="ph ph-caret-right text-muted"></i>
-            </a>
+            {{-- Daily-streak row dropped: it only navigated, and the streak count is already
+                 live in the shortcut above (docs/tasks/T11-streaks-and-xp.md). --}}
             <a href="{{ route('xp-progress') }}" wire:navigate class="menu-row">
                 <div class="menu-ico tile-violet">📈</div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.xp_progress') }}</p>
@@ -417,46 +408,21 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                 <span class="chip chip-primary">{{ $badgeCount }} / {{ $catalogCount }}</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
-            <a href="#" class="menu-row">
-                <div class="menu-ico tile-pink">🎁</div>
-                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.rewards_dashboard') }}</p>
-                <span class="chip chip-coral">3 {{ __('profile.new') }}</span>
-                <i class="ph ph-caret-right text-muted"></i>
-            </a>
+            {{-- Rewards-dashboard row dropped: dead `href="#"` with a hardcoded "3 new".
+                 Re-port it with a real claim count (docs/tasks/T13-rewards-dashboard.md). --}}
         </div>
     </section>
 
-    <!-- =============== PARENT ZONE =============== -->
-    <section class="px-5 mt-5">
-        <p class="section-label">{{ __('profile.parent_zone') }}</p>
-        <div class="mt-3 space-y-2">
-            <a href="parent-verify.html" class="menu-row">
-                <div class="menu-ico tile-sky"><i class="ph-fill ph-shield-check text-[#0B476E]"></i></div>
-                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.parent_controls') }}</p>
-                <i class="ph ph-caret-right text-muted"></i>
-            </a>
-            <a href="settings.html" class="menu-row">
-                <div class="menu-ico tile-violet"><i class="ph-fill ph-chart-bar text-[#2c1680]"></i></div>
-                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.weekly_report') }}</p>
-                <span class="chip chip-mint">{{ __('profile.new') }}</span>
-            </a>
-            <a href="settings.html" class="menu-row">
-                <div class="menu-ico tile-coral"><i class="ph-fill ph-timer text-[#7E1E34]"></i></div>
-                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.screen_time') }}</p>
-                <span class="chip">30 {{ __('profile.min') }}</span>
-            </a>
-        </div>
-    </section>
+    {{-- PARENT ZONE dropped: none of the three screens exist and the screen-time chip
+         hardcoded "30 min". This section must also sit behind the PIN gate, so re-port it
+         from kidzio/profile.html with docs/tasks/T06-parent-pin-gate.md (controls),
+         T07 (screen time) and T08 (weekly report). --}}
 
     <!-- =============== SETTINGS / LOGOUT =============== -->
     <section class="px-5 mt-5 mb-5">
         <p class="section-label">{{ __('profile.account') }}</p>
         <div class="mt-3 space-y-2">
-            <a href="settings.html" class="menu-row">
-                <div class="menu-ico tile-mint">⚙️</div>
-                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.settings') }}</p>
-                <i class="ph ph-caret-right text-muted"></i>
-            </a>
+            {{-- Settings row dropped until the screen exists (docs/tasks/T10-settings-screen.md). --}}
             <button data-install hidden class="menu-row w-full text-left">
                 <div class="menu-ico tile-violet"><i class="ph-fill ph-download-simple"></i></div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.install_kidzio') }}</p>

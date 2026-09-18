@@ -74,6 +74,7 @@ return [
     'friends' => 'მეგობრები',
     'view_all' => 'ყველას ნახვა',
     'friends_online' => ':total მეგობარი · :online ონლაინ',
+    'friends_count' => ':total მეგობარი',
     'beating_friends_this_week' => 'ამ კვირაში აჯობე :count მეგობარს 🎉',
 
     // Quick links

@@ -25,22 +25,24 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ### Still static / dummy (do not treat as done)
 
-Inventory of template markup, dead `.html` links, or stored prefs with no runtime effect. Checklist sections below stay the source of truth for build order; this list is the quick scan.
+Inventory of template markup or stored prefs with no runtime effect. Checklist sections below stay the source of truth for build order; this list is the quick scan.
+
+**Dead `.html` links are gone** (T02, `docs/tasks/T02-dead-links-sweep.md`). Blocks with no backend were deleted, each leaving a Blade comment naming the task that re-ports them from `kidzio/`; `tests/Feature/NoTemplateLinksTest.php` keeps them from coming back. So "still static" below now means *not on the screen yet*, not *links to a 404*.
 
 | Area | Still static |
 |---|---|
 | **Tab bar** | Learn → `/learn-categories` (library shell; dummy catalog). Rewards opens badges, not a Rewards dashboard. |
-| **Home — social** | Friends-today feed (Leo / Ana rows + fake streak chips). Ranking / beat-friends CTAs still `ranking-friends.html` (not `route('ranking-friends')`). |
-| **Home — games** | Word-search + counting featured tiles → `.html` shells (not built). |
-| **Home — search** | Overlay + popular/recent chips; catalog + result links are dummy (`.html`). No voice search. |
-| **Home — notifications** | Bell sheet list is hard-coded; unread badge fixed **“3”**. Rows link to `streak.html` / `rewards-dashboard.html` / `settings.html`. |
-| **Home — misc** | Streak ribbon / card → `streak.html` (no streak page). Parent tip → `settings.html`. PWA install = `data-install` UI only. Header avatar emoji + online dot are fixed (not `users.avatar`). |
+| **Home — social** | Friends-today feed removed (was Leo / Ana rows + fake streak chips) — no real activity feed yet. |
+| **Home — games** | Word-search + counting featured tiles removed; only Quick Quiz is playable. |
+| **Home — search** | Overlay + results are **live** over 12 real destinations (`SearchService`). Recent / popular chips and voice search removed — no query history, no Georgian speech model. |
+| **Home — notifications** | Bell, unread badge and the whole sheet removed — no notification backend. |
+| **Home — misc** | Streak ribbon / card are inert (live numbers, no streak page). Parent tip and PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. |
 | **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards, hardcoded **+120 XP** chips — markup only. |
-| **Profile** | Rewards-dashboard row (`href="#"`, fake “3 new”). Parent zone (controls / weekly report / screen time) → `.html` or settings stubs; screen-time chip hardcodes **30 min**. Settings gear / menu → `settings.html`. Share profile button markup only. Streak menu → `streak.html`. Achievements timeline beyond recent badges not built. |
+| **Profile** | Rewards-dashboard row, parent zone (controls / weekly report / screen time), settings gear + row, share button, streak menu row and the “online” chip all removed pending their tasks. Achievements timeline beyond recent badges not built. |
 | **Edit profile** | Reset password / delete account rows dead (`href="#"`). Parent email read-only (no change + re-verify). Camera / change-avatar badge not built. |
 | **Auth** | Phone login, social (Google / Apple / Facebook), forgot-password, Terms / Privacy hrefs (`#`). Parent-verify “change email” / “get help” chips dead. |
 | **Badges / rewards** | Speed Runner + Social Star never unlock. Share badge / unlock share = toast markup. Badges “Rewards” chip → `#`. No Rewards dashboard, claim queue, daily-login calendar, or XP shop. |
-| **Ranking / privacy** | `show_on_leaderboard` / hide-from-global toggles stored but **not applied** to leaderboard queries. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. |
+| **Ranking / privacy** | `show_on_leaderboard` / hide-from-global toggles stored but **not applied** to leaderboard queries. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. `/ranking-friends` filter tabs (all / online / streak / near) are inert, and presence (“N online”) was removed as fake. |
 | **XP / streaks** | No dedicated streak screen / month calendar / streak freeze. XP history activity log TODO (`xp-progress` subject/source placeholders). Combo / speed bonus / difficulty setting not scored. Mission-complete bonus XP not awarded beyond pack `recordPlay`. |
 | **Learn library** | Tab shell ported (`pages::learn-categories`); subject screens (math / alphabet / animals / words / …), lessons, chapters — not started. Spotlight / stats / tiles still dummy. |
 | **Other mini-games** | Everything except Quick Quiz (tap-correct, counting, trace, spell, word-search, …) — not started. |
@@ -173,16 +175,16 @@ Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Week-plan blocks are
 - [x] Weekly streak dots (Mon–Sun)
 - [x] Today's plan — next incomplete pack per subject; Play → `/game-multiple-choice/{item}`; “ყველას ნახვა” → `daily-mission`
 - [x] Explore subjects — three tiles only: ქართული, მათემატიკა, ისტორია → that subject’s next pack
-- [~] Featured games — Quick Quiz → next incomplete pack; word-search / counting tiles still `.html`
-- [ ] Friends activity feed
-- [ ] Recent achievements
-- [ ] Parent tip card
-- [ ] Install PWA prompt — `data-install` UI only
-- [~] Search overlay (subjects, games, lessons) — overlay + `home.js`; catalog is dummy, results still `.html`
-  - [ ] Recent searches
-  - [ ] Popular chips
-  - [ ] Voice search (mic)
-- [~] In-app notification sheet (bell + unread badge) — sheet UI; dummy list, badge hardcoded “3”
+- [~] Featured games — Quick Quiz → next incomplete pack; word-search / counting tiles removed until those games exist
+- [ ] Friends activity feed — template rows removed (invented kids); needs a real feed
+- [x] Recent achievements — live badge rail
+- [ ] Parent tip card — removed; copy named a hardcoded kid and invented a study habit
+- [ ] Install PWA prompt — removed; no manifest or service worker, so it never fired
+- [~] Search overlay (subjects, games, lessons) — overlay + `home.js` live over `SearchService::homeCatalog()`: 12 Georgian destinations, real routes, subjects open their next pack. No lesson-level index yet (T17)
+  - [ ] Recent searches — chips removed until query history exists
+  - [ ] Popular chips — removed until real query counts exist
+  - [ ] Voice search (mic) — removed, was `en-US` only
+- [ ] In-app notification sheet (bell + unread badge) — removed in T02; needs a real backend (T16)
 
 ---
 

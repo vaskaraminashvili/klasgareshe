@@ -16,7 +16,7 @@ return [
     'online_count' => ':count ონლაინ',
     'search_placeholder' => 'მოძებნე მეგობრები…',
     'filter_all' => 'ყველა · :count',
-    'filter_online' => '🟢 ონლაინ · :count',
+    'filter_online' => '🟢 ონლაინ',
     'filter_streak' => '🔥 სერიაზე',
     'filter_near' => 'ახლოს',
     'friend_ranking' => 'მეგობრების რეიტინგი',

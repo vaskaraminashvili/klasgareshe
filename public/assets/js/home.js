@@ -153,26 +153,18 @@
     const resultsBlock = document.getElementById('searchResults');
     const recentChips = document.querySelectorAll('[data-recent]');
 
-    // Full index of items searchable from home
-    const INDEX = [
-      { name: 'Math',            keys: 'math numbers counting shapes addition',      href: 'learn-math.html',      ico: '➗', tile: 'tile-violet' },
-      { name: 'Alphabet',        keys: 'alphabet abc letters phonics reading',        href: 'learn-alphabet.html',  ico: '🔤', tile: 'tile-sun' },
-      { name: 'Animals',         keys: 'animals wildlife lion giraffe dog cat',       href: 'learn-animals.html',   ico: '🦁', tile: 'tile-mint' },
-      { name: 'Words',           keys: 'words sight spelling vocabulary reading',     href: 'learn-words.html',     ico: '📚', tile: 'tile-coral' },
-      { name: 'Knowledge',       keys: 'knowledge world science space planets',       href: 'learn-knowledge.html', ico: '🌍', tile: 'tile-sky' },
-      { name: 'Opposites',       keys: 'opposites big small hot cold up down',        href: 'learn-opposites.html', ico: '⚖️', tile: 'tile-pink' },
-      { name: 'Quick Quiz',      keys: 'quiz multiple choice questions game',         href: '/game-multiple-choice', ico: '❓', tile: 'tile-violet' },
-      { name: 'Match Words',     keys: 'match words drag drop vocabulary game',       href: 'game-match-word.html', ico: '🧩', tile: 'tile-mint' },
-      { name: 'Word Search',     keys: 'word search find letters game',               href: 'game-word-search.html', ico: '🔎', tile: 'tile-coral' },
-      { name: 'Counting game',   keys: 'counting numbers math apples game',           href: 'game-counting.html',   ico: '🔢', tile: 'tile-sky' },
-      { name: 'Trace letter',    keys: 'trace letters handwriting alphabet',          href: 'game-trace-letter.html', ico: '✍️', tile: 'tile-sun' },
-      { name: 'Spell it',        keys: 'spell words letters apple game',              href: 'game-spell-word.html', ico: '✏️', tile: 'tile-sun' },
-      { name: 'Match animal',    keys: 'animals match giraffe zebra lion game',       href: 'game-match-animal.html', ico: '🦒', tile: 'tile-mint' },
-      { name: 'Daily mission',   keys: 'mission daily tasks goal',                    href: 'daily-mission.html',   ico: '🎯', tile: 'tile-violet' },
-      { name: 'Streak',          keys: 'streak fire days habit',                      href: 'streak.html',          ico: '🔥', tile: 'tile-sun' },
-      { name: 'Badges',          keys: 'badges achievements medals trophies',         href: 'badges.html',          ico: '🏅', tile: 'tile-mint' },
-      { name: 'Leaderboard',     keys: 'ranking leaderboard compete friends',         href: 'leaderboard.html',     ico: '🏆', tile: 'tile-sun' }
-    ];
+    // Searchable destinations, rendered by the Livewire page into #searchIndex so the
+    // names are Georgian and every href is a real route. Empty until it ships.
+    const INDEX = (function () {
+      const node = document.getElementById('searchIndex');
+      if (!node) return [];
+      try {
+        const parsed = JSON.parse(node.textContent || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    })();
 
     function normS(s) { return (s || '').toLowerCase().trim(); }
 
@@ -200,8 +192,8 @@
 
     function renderSearch() {
       const q = normS(homeSearch.value);
-      clearBtn.classList.toggle('hidden', q.length === 0);
-      micBtn.classList.toggle('hidden', q.length > 0);
+      if (clearBtn) clearBtn.classList.toggle('hidden', q.length === 0);
+      if (micBtn) micBtn.classList.toggle('hidden', q.length > 0);
       const hasQuery = q.length > 0;
       suggestBlock.classList.toggle('hidden', hasQuery);
       resultsBlock.classList.toggle('hidden', !hasQuery);
@@ -216,9 +208,12 @@
       if (matches.length === 0) {
         resultsBlock.innerHTML = '<div class="k-card text-center p-6">'
           + '<div class="w-16 h-16 mx-auto rounded-2xl tile-sky grid place-items-center text-3xl">🔍</div>'
-          + '<p class="h-display text-lg mt-3 text-ink">No matches</p>'
-          + '<p class="text-xs text-muted mt-1">Try different words like "counting" or "animals".</p>'
+          + '<p class="h-display text-lg mt-3 text-ink"></p>'
+          + '<p class="text-xs text-muted mt-1"></p>'
           + '</div>';
+        const lines = resultsBlock.querySelectorAll('p');
+        lines[0].textContent = resultsBlock.dataset.emptyTitle || '';
+        lines[1].textContent = resultsBlock.dataset.emptyHint || '';
         return;
       }
 
@@ -226,12 +221,18 @@
         const row = document.createElement('a');
         row.href = m.href;
         row.className = 'setting-row opacity-0 translate-y-1 transition-all duration-300';
-        row.innerHTML = '<div class="setting-ico ' + m.tile + ' text-xl">' + m.ico + '</div>'
+        row.innerHTML = '<div class="setting-ico text-xl"></div>'
           + '<div class="grow min-w-0">'
-          +   '<p class="setting-text font-extrabold text-sm text-ink">' + m.name + '</p>'
-          +   '<p class="text-[11px] text-muted">' + m.keys.slice(0, 60) + '</p>'
+          +   '<p class="setting-text font-extrabold text-sm text-ink"></p>'
+          +   '<p class="text-[11px] text-muted"></p>'
           + '</div>'
           + '<i class="ph ph-caret-right text-muted"></i>';
+        const ico = row.querySelector('.setting-ico');
+        ico.classList.add(m.tile);
+        ico.textContent = m.ico;
+        const text = row.querySelectorAll('p');
+        text[0].textContent = m.name;
+        text[1].textContent = m.keys.slice(0, 60);
         resultsBlock.appendChild(row);
         setTimeout(function () {
           row.classList.remove('opacity-0', 'translate-y-1');

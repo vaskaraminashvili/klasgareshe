@@ -148,7 +148,6 @@ class FriendshipService
 
         return new FriendsLeaderboardSnapshot(
             friendCount: $friendCount,
-            onlineCount: $friendCount,
             beatingCount: $friendCount === 0 ? 0 : $beatingCount,
             yourRank: $friendCount === 0 ? 1 : $yourRank,
             yourXp: $youStat->xp,
@@ -184,7 +183,6 @@ class FriendshipService
 
         return new FriendsProfileStrip(
             count: $snap->friendCount,
-            onlineCount: $snap->onlineCount,
             beatingCount: $snap->beatingCount,
             avatars: $avatars,
         );

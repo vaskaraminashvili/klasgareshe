@@ -9,7 +9,6 @@ final readonly class FriendsProfileStrip
      */
     public function __construct(
         public int $count,
-        public int $onlineCount,
         public int $beatingCount,
         public array $avatars,
     ) {}

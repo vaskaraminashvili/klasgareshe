@@ -15,8 +15,6 @@ new class extends Component
 
     public int $friendCount = 0;
 
-    public int $onlineCount = 0;
-
     public int $beatingCount = 0;
 
     public int $yourRank = 1;
@@ -109,7 +107,6 @@ new class extends Component
         $snap = $friends->friendsLeaderboard($users->authenticated());
 
         $this->friendCount = $snap->friendCount;
-        $this->onlineCount = $snap->onlineCount;
         $this->beatingCount = $snap->beatingCount;
         $this->yourRank = $snap->yourRank;
         $this->yourXp = $snap->yourXp;
@@ -231,9 +228,8 @@ new class extends Component
                     onclick="document.getElementById('friend-nickname')?.focus()">
                     <i class="ph-fill ph-user-plus"></i> {{ __('friends.invite_friend') }}
                 </button>
-                <span class="chip bg-white/20 border-0 text-white ml-auto">
-                    <span class="live-dot"></span> {{ __('friends.online_count', ['count' => $onlineCount]) }}
-                </span>
+                {{-- "N online" chip dropped: the count was just the friend total. Re-port it
+                     when presence is real (docs/tasks/T07-screen-time-bedtime.md). --}}
             </div>
         </div>
     </section>
@@ -302,7 +298,7 @@ new class extends Component
                     <button type="button" class="swiper-slide chip chip-primary" data-tab="all">
                         {{ __('friends.filter_all', ['count' => $friendCount]) }}</button>
                     <button type="button" class="swiper-slide chip" data-tab="online">
-                        {{ __('friends.filter_online', ['count' => $onlineCount]) }}</button>
+                        {{ __('friends.filter_online') }}</button>
                     <button type="button" class="swiper-slide chip" data-tab="streak">
                         {{ __('friends.filter_streak') }}</button>
                     <button type="button" class="swiper-slide chip" data-tab="near">
