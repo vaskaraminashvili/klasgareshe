@@ -89,6 +89,14 @@ class UserFactory extends Factory
         ]);
     }
 
+    public function withParentPin(string $pin = '2580'): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'parent_pin' => $pin,
+            'parent_pin_set_at' => now(),
+        ]);
+    }
+
     /**
      * @param  array<string, mixed>  $attributes
      */

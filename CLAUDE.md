@@ -42,7 +42,7 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 - After register: onboarding (**კლასი 1 / 2 / 3** → ქართული / მათემატიკა / ისტორია → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step. Kids without `grade` play class 1 packs.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
 - Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (`/game-multiple-choice/{item}`) or `daily-mission`. Friends, search, and notification list are still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is the Kidzio library shell (search / filter / subject tiles / mini-games); counts and Kidzio extras are still dummy. Spotlight and Quick Quiz link to `daily-mission` / `game-multiple-choice`.
-- Profile (`/profile`, `pages::profile`): live name, age · class, XP / streak / badges / global rank, level bar, league shortcut, subject mastery (active curriculum week %), this-week XP / days / packs, recent badge achievements, friends strip, monthly-goals chip. Edit profile and friends ranking are live; parent zone still template.
+- Profile (`/profile`, `pages::profile`): live name, age · class, XP / streak / badges / global rank, level bar, league shortcut, subject mastery (active curriculum week %), this-week XP / days / packs, recent badge achievements, friends strip, monthly-goals chip. Edit profile and friends ranking are live. Parent zone links to `/parent-controls` behind a 4-digit PIN (setup / unlock / change / email recovery).
 - Edit profile (`/edit-profile`): name, nickname, avatar emoji, age, gender, class 1–3, favourite subject, daily goal, privacy toggles. Parent email read-only. Password reset is live (parent email code). Delete not wired. **`show_on_leaderboard` is enforced** on `/leaderboard` (and weekly XP ranking queries); friends + league stay visible.
 - Monthly goals (`/monthly-goals`): system goals for the calendar month (packs / XP / streak / badges) from live stats. Add/custom goals deferred.
 - Friends ranking (`/ranking-friends`): add by nickname (auto-accept v1), XP podium + list among friends. Parent approval later.
@@ -65,7 +65,7 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
 - Home search is real: `SearchService::homeCatalog()` renders 12 Georgian destinations into
   `<script type="application/json" id="searchIndex">`, which `public/assets/js/home.js` reads.
 
-Build next: **T06** parent PIN gate.
+Build next: **T07** screen time + bedtime lock.
 (**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---
@@ -108,6 +108,10 @@ Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/
 | — | `pages::reset-password` | `reset-password` | `/reset-password` |
 | `terms-privacy.html` | `pages::terms-privacy` | `terms-privacy` | `/terms` |
 | `privacy-policy.html` | `pages::privacy-policy` | `privacy-policy` | `/privacy` |
+| `parent-controls.html` | `pages::parent-controls` | `parent-controls` | `/parent-controls` |
+| `change-pin.html` | `pages::change-pin` | `change-pin` | `/change-pin` |
+| `preferred-subjects.html` | `pages::preferred-subjects` | `preferred-subjects` | `/preferred-subjects` |
+| `otp.html` (PIN reset) | `pages::parent-pin-otp` | `parent-pin-otp` | `/parent-pin-otp` |
 | `index.html` (splash) | not built yet; back buttons use `home` | `home` | `/` |
 | any other `{name}.html` | `pages::{name}` (kebab-case) | `{name}` | `/{name}` unless a name already exists |
 

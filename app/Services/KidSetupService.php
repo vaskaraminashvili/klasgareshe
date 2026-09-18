@@ -61,6 +61,10 @@ class KidSetupService
                 'badges',
                 'badge-unlock',
                 'monthly-goals',
+                'parent-controls',
+                'change-pin',
+                'preferred-subjects',
+                'parent-pin-otp',
             ];
         }
 

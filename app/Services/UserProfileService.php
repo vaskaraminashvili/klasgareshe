@@ -132,4 +132,40 @@ class UserProfileService
 
         return [$favourite->value, ...$missing];
     }
+
+    public function updatePrivacy(User $user, bool $showOnLeaderboard, bool $allowFriendRequests): User
+    {
+        return $this->users->update($user, [
+            'show_on_leaderboard' => $showOnLeaderboard,
+            'allow_friend_requests' => $allowFriendRequests,
+        ]);
+    }
+
+    /**
+     * @param  list<string>  $subjects
+     */
+    public function updateFavouriteSubjects(User $user, array $subjects): User
+    {
+        $allowed = array_map(
+            static fn (SchoolSubject $subject): string => $subject->value,
+            SchoolSubject::ordered(),
+        );
+        $clean = [];
+
+        foreach ($subjects as $value) {
+            if (in_array($value, $allowed, true) && ! in_array($value, $clean, true)) {
+                $clean[] = $value;
+            }
+        }
+
+        if ($clean === []) {
+            throw ValidationException::withMessages([
+                'subjects' => (string) __('parent-zone.subjects_required'),
+            ]);
+        }
+
+        return $this->users->update($user, [
+            'favourite_subjects' => $clean,
+        ]);
+    }
 }

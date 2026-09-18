@@ -39,6 +39,8 @@ use Illuminate\Support\Str;
  * @property bool $allow_friend_requests
  * @property Carbon|null $email_verified_at
  * @property string $password
+ * @property string|null $parent_pin
+ * @property Carbon|null $parent_pin_set_at
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -62,8 +64,10 @@ use Illuminate\Support\Str;
     'reminder_time',
     'show_on_leaderboard',
     'allow_friend_requests',
+    'parent_pin',
+    'parent_pin_set_at',
 ])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'parent_pin', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -80,6 +84,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'onboarding_completed_at' => 'datetime',
             'password' => 'hashed',
+            'parent_pin' => 'hashed',
+            'parent_pin_set_at' => 'datetime',
             'age' => 'integer',
             'gender' => Gender::class,
             'age_group' => AgeGroup::class,

@@ -38,7 +38,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Home — notifications** | Bell, unread badge and the whole sheet removed — no notification backend. |
 | **Home — misc** | Streak ribbon / card are inert (live numbers, no streak page). Parent tip and PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. |
 | **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards, hardcoded **+120 XP** chips — markup only. |
-| **Profile** | Rewards-dashboard row, parent zone (controls / weekly report / screen time), settings gear + row, share button, streak menu row and the “online” chip all removed pending their tasks. Achievements timeline beyond recent badges not built. |
+| **Profile** | Rewards-dashboard row, weekly report / screen time parent rows, settings gear + row, share button, streak menu row and the “online” chip all removed pending their tasks. Parent **controls** row is live (PIN-gated). Achievements timeline beyond recent badges not built. |
 | **Edit profile** | Delete account row still dead. Parent email read-only (no change + re-verify). Camera / change-avatar badge not built. Password reset is live. |
 | **Auth** | Phone login, social (Google / Apple / Facebook). Parent-verify “change email” / “get help” chips dead. Password reset is live. Terms / Privacy screens are live. |
 | **Badges / rewards** | Speed Runner + Social Star never unlock. Share badge / unlock share = toast markup. Badges “Rewards” chip → `#`. No Rewards dashboard, claim queue, daily-login calendar, or XP shop. |
@@ -46,7 +46,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **XP / streaks** | No dedicated streak screen / month calendar / streak freeze. XP history activity log TODO (`xp-progress` subject/source placeholders). Combo / speed bonus / difficulty setting not scored. Mission-complete bonus XP not awarded beyond pack `recordPlay`. |
 | **Learn library** | Tab shell ported (`pages::learn-categories`); subject screens (math / alphabet / animals / words / …), lessons, chapters — not started. Spotlight / stats / tiles still dummy. |
 | **Other mini-games** | Everything except Quick Quiz (tap-correct, counting, trace, spell, word-search, …) — not started. |
-| **Parent zone** | PIN gate, dashboard, screen time, bedtime, weekly/full reports, export PDF — not started (links only). Monthly goals page is live (system goals); parent custom targets later. |
+| **Parent zone** | PIN gate, dashboard week numbers, preferred subjects, change/reset PIN are live. Screen time, bedtime, weekly/full reports, export PDF, delete account — not started. Monthly goals page is live (system goals); parent custom targets later. |
 | **Settings / legal / PWA** | No Settings page. No push delivery (onboarding prefs stored only). FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
 | **Content ops** | Week **3** is class 1 only; week 3 for grades 2–3 and week **4+** not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
 
@@ -339,16 +339,16 @@ Tiers: **Bronze → Silver → Gold → Emerald → Sapphire → Diamond**
 
 All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
-- [ ] PIN gate overlay + numeric pad
-- [ ] Change PIN
-- [ ] Lock parent zone after viewing
-- [ ] Parent dashboard: XP, minutes, lessons this week
+- [x] PIN gate overlay + numeric pad
+- [x] Change PIN
+- [x] Lock parent zone after viewing
+- [x] Parent dashboard: XP, active days, lessons this week (minutes chart → T07)
 - [ ] Daily minutes chart vs daily goal
 - [ ] Break reminders (every 15 min)
-- [ ] Age-appropriate content filter
-- [ ] Preferred subjects (parent override)
-- [ ] Kid profile shortcut
-- [ ] Parent email (verified)
+- [x] Age-appropriate content filter — grade already scopes packs; no second filter
+- [x] Preferred subjects (parent override)
+- [x] Kid profile shortcut
+- [x] Parent email (verified) — shown; change email is T09
 - [ ] Delete account
 
 ### Screen time

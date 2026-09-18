@@ -18,6 +18,7 @@ use App\Services\LeagueSeasonService;
 use App\Services\LevelCalculator;
 use App\Services\MonthlyGoalService;
 use App\Services\ParentVerificationService;
+use App\Services\ParentZoneService;
 use App\Services\PasswordResetService;
 use App\Services\QuestionPlayModeResolver;
 use App\Services\SearchService;
@@ -59,5 +60,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(BadgeService::class);
         $this->app->singleton(MonthlyGoalService::class);
         $this->app->singleton(SearchService::class);
+        $this->app->singleton(ParentZoneService::class);
     }
 }

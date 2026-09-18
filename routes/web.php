@@ -19,7 +19,7 @@ Route::get('/parent-verify/confirm/{user}', [ParentVerificationController::class
     ->middleware('signed')
     ->name('parent-verify.confirm');
 
-Route::middleware(['auth:web', RedirectToKidSetup::class])->group(function () {
+Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-exit'])->group(function () {
     Route::livewire('/', 'pages::home')->name('home');
     Route::livewire('/learn-categories', 'pages::learn-categories')->name('learn-categories');
     Route::livewire('/profile', 'pages::profile')->name('profile');
@@ -39,4 +39,14 @@ Route::middleware(['auth:web', RedirectToKidSetup::class])->group(function () {
     Route::livewire('/onboarding-goals', 'pages::onboarding-goals')->name('onboarding-goals');
     Route::livewire('/onboarding-notifications', 'pages::onboarding-notifications')->name('onboarding-notifications');
     Route::livewire('/parent-verify', 'pages::parent-verify')->name('parent-verify');
+});
+
+Route::middleware(['auth:web', RedirectToKidSetup::class])->group(function () {
+    Route::livewire('/parent-controls', 'pages::parent-controls')->name('parent-controls');
+    Route::livewire('/parent-pin-otp', 'pages::parent-pin-otp')->name('parent-pin-otp');
+
+    Route::middleware('parent.verified')->group(function () {
+        Route::livewire('/change-pin', 'pages::change-pin')->name('change-pin');
+        Route::livewire('/preferred-subjects', 'pages::preferred-subjects')->name('preferred-subjects');
+    });
 });

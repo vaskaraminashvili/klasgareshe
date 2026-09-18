@@ -413,10 +413,18 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         </div>
     </section>
 
-    {{-- PARENT ZONE dropped: none of the three screens exist and the screen-time chip
-         hardcoded "30 min". This section must also sit behind the PIN gate, so re-port it
-         from kidzio/profile.html with docs/tasks/T06-parent-pin-gate.md (controls),
-         T07 (screen time) and T08 (weekly report). --}}
+    <section class="px-5 mt-5">
+        <p class="section-label">{{ __('profile.parent_zone') }}</p>
+        <div class="mt-3 space-y-2">
+            <a href="{{ route('parent-controls') }}" wire:navigate class="menu-row">
+                <div class="menu-ico tile-sky"><i class="ph-fill ph-shield-check text-[#0B476E]"></i></div>
+                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.parent_controls') }}</p>
+                <i class="ph ph-caret-right text-muted"></i>
+            </a>
+            {{-- Weekly report → docs/tasks/T08-parent-reports.md --}}
+            {{-- Screen time → docs/tasks/T07-screen-time-bedtime.md --}}
+        </div>
+    </section>
 
     <!-- =============== SETTINGS / LOGOUT =============== -->
     <section class="px-5 mt-5 mb-5">
