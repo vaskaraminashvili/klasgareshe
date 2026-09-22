@@ -63,7 +63,9 @@ that email and to erase the child's data. Both are parent-gated.
 - Requesting deletion immediately removes the kid from rankings and friends, and the purge job
   removes all rows after the grace window.
 - A kid without the PIN cannot reach either flow, including by direct URL.
-- Tests: pending-email verification, deletion request hides from rankings, purge removes dependents.
+- Tests: pending-email verification (signed link + 6-digit Livewire), old email stays
+  authoritative for password reset and weekly reports until confirm, deletion request hides from
+  rankings, Livewire delete page + purge removes dependents.
 
 ## Out of scope
 

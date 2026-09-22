@@ -48,9 +48,19 @@ new class extends Component
 
     public function getReadyProperty(): bool
     {
-        return filter_var($this->newEmail, FILTER_VALIDATE_EMAIL) !== false
-            && $this->newEmail === $this->confirmEmail
+        return $this->getEmailLooksGoodProperty()
+            && $this->getEmailsMatchProperty()
             && strlen($this->currentPin) === 4;
+    }
+
+    public function getEmailLooksGoodProperty(): bool
+    {
+        return filter_var(trim($this->newEmail), FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    public function getEmailsMatchProperty(): bool
+    {
+        return $this->newEmail !== '' && mb_strtolower(trim($this->newEmail)) === mb_strtolower(trim($this->confirmEmail));
     }
 
     public function submit(AccountService $accounts, UserRepository $users, ProgressReportService $reports, UserStatRepository $stats): void
@@ -150,7 +160,7 @@ new class extends Component
       <p class="relative chip bg-white/20 border-0 text-white mt-4">
         <i class="ph-fill ph-shield-check"></i> {{ $emailVerified ? __('account.verified') : __('account.unverified') }}
       </p>
-      <p class="relative h-display text-2xl mt-2 leading-tight">{{ $email }}</p>
+      <p class="relative h-display text-2xl mt-2 leading-tight" id="heroEmail">{{ $email }}</p>
       <p class="relative text-xs text-white/90 mt-1">{{ __('account.hero_hint') }}</p>
 
       <div class="relative mt-4 grid grid-cols-3 gap-2">
@@ -177,10 +187,10 @@ new class extends Component
         <i class="ph-fill ph-check-circle text-mint-ink"></i>
       </div>
       <div class="grow min-w-0">
-        <p class="font-extrabold text-sm text-ink">{{ $email }}</p>
+        <p class="font-extrabold text-sm text-ink" id="currentEmail">{{ $email }}</p>
         <p class="text-[11px] text-muted">{{ $verifiedLabel }}</p>
       </div>
-      <button type="button" class="chip chip-primary" wire:click="copyEmail" aria-label="{{ __('account.copy_email') }}"><i class="ph ph-copy"></i></button>
+      <button type="button" id="copyBtn" class="chip chip-primary" wire:click="copyEmail" aria-label="{{ __('account.copy_email') }}"><i class="ph ph-copy"></i></button>
     </div>
   </section>
 
@@ -213,14 +223,18 @@ new class extends Component
         </div>
       </div>
     @else
-      <form class="mt-3 space-y-3" wire:submit="submit">
+      <form id="emailForm" class="mt-3 space-y-3" wire:submit="submit">
         <div>
           <label for="newEmail" class="text-[11px] font-extrabold text-muted uppercase tracking-wide">{{ __('account.new_email') }}</label>
           <div class="input-wrap mt-1">
             <i class="ph ph-envelope-simple i-left"></i>
             <input id="newEmail" type="email" class="input has-left" placeholder="{{ __('account.new_email_placeholder') }}" autocomplete="email" wire:model.live="newEmail"/>
+            <span id="emailStatus" class="i-right {{ $this->emailLooksGood ? '' : 'hidden' }}"><i class="ph-fill ph-check-circle text-mint-ink"></i></span>
           </div>
-          <p class="text-[10px] text-muted mt-1"><i class="ph ph-info"></i> {{ __('account.new_email_hint') }}</p>
+          <p id="emailHint" class="text-[10px] mt-1 {{ $this->newEmail === '' ? 'text-muted' : ($this->emailLooksGood ? 'text-mint-ink' : 'text-coral-ink') }}">
+            <i class="ph {{ $this->emailLooksGood ? 'ph-fill ph-check-circle' : ($this->newEmail === '' ? 'ph-info' : 'ph-fill ph-warning-circle') }}"></i>
+            {{ $this->newEmail === '' ? __('account.new_email_hint') : ($this->emailLooksGood ? __('account.email_ok') : __('account.email_invalid')) }}
+          </p>
           @error('newEmail')
             <p class="text-sm" style="color:var(--color-k-coral)">{{ $message }}</p>
           @enderror
@@ -232,7 +246,10 @@ new class extends Component
             <i class="ph ph-envelope-simple i-left"></i>
             <input id="confirmEmail" type="email" class="input has-left" placeholder="{{ __('account.confirm_email_placeholder') }}" autocomplete="email" wire:model.live="confirmEmail"/>
           </div>
-          <p class="text-[10px] text-muted mt-1"><i class="ph ph-info"></i> {{ __('account.confirm_email_hint') }}</p>
+          <p id="confirmHint" class="text-[10px] mt-1 {{ $this->confirmEmail === '' ? 'text-muted' : ($this->emailsMatch ? 'text-mint-ink' : 'text-coral-ink') }}">
+            <i class="ph {{ $this->emailsMatch ? 'ph-fill ph-check-circle' : ($this->confirmEmail === '' ? 'ph-info' : 'ph-fill ph-warning-circle') }}"></i>
+            {{ $this->confirmEmail === '' ? __('account.confirm_email_hint') : ($this->emailsMatch ? __('account.emails_match') : __('account.email_mismatch')) }}
+          </p>
           @error('confirmEmail')
             <p class="text-sm" style="color:var(--color-k-coral)">{{ $message }}</p>
           @enderror
@@ -250,7 +267,7 @@ new class extends Component
           @enderror
         </div>
 
-        <button type="submit" class="btn btn-primary w-full" @unless($this->ready) disabled @endunless>
+        <button type="submit" id="saveBtn" class="btn btn-primary w-full" @unless($this->ready) disabled @endunless>
           <i class="ph-fill ph-paper-plane-tilt"></i> {{ __('account.send_link') }}
         </button>
       </form>
