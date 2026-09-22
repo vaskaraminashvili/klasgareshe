@@ -11,6 +11,7 @@ use App\Repositories\QuestionRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserStatRepository;
 use App\Repositories\WeekPlanRepository;
+use App\Services\AccountService;
 use App\Services\BadgeService;
 use App\Services\FriendshipService;
 use App\Services\GamePlayService;
@@ -69,5 +70,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(ScreenTimeService::class);
         $this->app->singleton(ProgressReportService::class);
         $this->app->singleton(ProgressPdfService::class);
+        $this->app->singleton(AccountService::class);
     }
 }

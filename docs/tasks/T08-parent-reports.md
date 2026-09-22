@@ -1,7 +1,7 @@
 # T08 — Weekly & full reports
 
 **Priority:** P1 · core product
-**Status:** in progress (paused 18 Sep 2026 — finish verification, then mark done)
+**Status:** done
 **Depends on:** T06 (gate), T07 (minutes data)
 
 ## Why now
@@ -50,12 +50,7 @@ tracking started rather than a zero that reads as "my kid did nothing".
 - Parent-set custom goals (monthly goals page is system-generated for now)
 - Multi-kid comparison — v1 is one kid per account
 
-## Paused — resume here
-
-Implementation is in the working tree (not committed). Pickup: finish the checks below, then mark this
-task / `docs/roadmap.md` / `CLAUDE.md` **done** and set Build next to **T09**.
-
-### Already wired
+## Verification (22 Sep 2026)
 
 - PIN-gated `/weekly-report`, `/full-report`, `/export-progress` (`parent.verified`)
 - `ProgressReportService` is the shared week source for Profile, parent dashboard, and Home tip
@@ -63,19 +58,12 @@ task / `docs/roadmap.md` / `CLAUDE.md` **done** and set Build next to **T09**.
 - Monday `reports:send-weekly` at 08:00; opt-out `notification_preferences.weekly_report` + signed
   `/weekly-report/opt-out/{user}`
 - PDF: `barryvdh/laravel-dompdf` + `resources/fonts/NotoSansGeorgian-{Regular,Bold}.ttf`
-- Tests: `tests/Feature/ProgressReportTest.php` (plus Profile / PIN week-number match)
+- `ProgressPdfService` creates `storage/fonts` (DomPDF font-metric cache) before render
+- PDF raster check: Mkhedruli renders; emoji in the recap were dropped (DomPDF tofus them)
+- Tests: `tests/Feature/ProgressReportTest.php` including embedded `NotoSansGeorgian` in the PDF binary
+- PHPStan level 7 and Pint `--dirty` green via Herd `php84` + empty `auto_prepend_file`
 
-### Still to do
-
-1. **PDF in the browser** — unlock PIN, `/export-progress` → download, confirm ქართული is not tofu.
-2. **PHPStan** — Herd `dump-loader.php` auto_prepend breaks parallel workers. Run with php84 and a dummy
-   prepend file, e.g.  
-   `C:\Users\vaska\.config\herd\bin\php84\php.exe -d auto_prepend_file=%TEMP%\kidzio-empty-prepend.php vendor/phpunit/phpunit/phpunit --filter=ProgressReportTest`  
-   PHPStan needs a single-process run (parallel workers ignore `-d` and die on dump-loader).
-3. Pint already ran on dirty PHP (`ProgressPdfService` was cleaned). Re-run `--dirty` after any last edits.
-4. Browser tab was left on `https://klasgareshe.test/full-report` (Mia, PIN `2580`). Unlocked.
-
-### Known quirks (not blockers unless you want to polish)
+### Known quirks (not blockers)
 
 - Week chip copy is `კ:n` → renders `კ38`. Could be `კვ. :n`.
 - Livewire sheets live **inside** `<main>` (one root element). Do not move them back out.

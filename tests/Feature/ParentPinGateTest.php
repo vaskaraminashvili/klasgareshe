@@ -135,6 +135,14 @@ class ParentPinGateTest extends TestCase
         $this->actingAs($user)
             ->get(route('preferred-subjects'))
             ->assertRedirect(route('parent-controls'));
+
+        $this->actingAs($user)
+            ->get(route('parent-email'))
+            ->assertRedirect(route('parent-controls'));
+
+        $this->actingAs($user)
+            ->get(route('delete-account'))
+            ->assertRedirect(route('parent-controls'));
     }
 
     public function test_unlock_expires_after_idle_and_when_leaving_the_zone(): void

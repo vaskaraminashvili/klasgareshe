@@ -2,13 +2,17 @@
 
 use App\Enums\ReportScope;
 use App\Repositories\UserRepository;
+use App\Services\AccountService;
 use App\Services\ProgressPdfService;
 use App\Services\ProgressReportService;
+use Illuminate\Support\Js;
 use Livewire\Component;
 
 new class extends Component
 {
     public string $range = 'month';
+
+    public string $format = 'pdf';
 
     public bool $includeXp = true;
 
@@ -46,8 +50,22 @@ new class extends Component
         }
     }
 
-    public function download(ProgressPdfService $pdf, UserRepository $users)
+    public function pickFormat(string $format): void
     {
+        if (in_array($format, ['pdf', 'json'], true)) {
+            $this->format = $format;
+        }
+    }
+
+    public function download(ProgressPdfService $pdf, AccountService $accounts, UserRepository $users)
+    {
+        if ($this->format === 'json') {
+            $accounts->emailDataExport($users->authenticated());
+            $this->js('toast('.Js::from(__('account.export_json_sent')).')');
+
+            return;
+        }
+
         return $pdf->download(
             $users->authenticated(),
             ReportScope::from($this->range),
@@ -164,7 +182,7 @@ new class extends Component
     <section class="px-5 mt-5">
         <p class="section-label">{{ __('reports.export_format') }}</p>
         <div class="mt-3 grid grid-cols-3 gap-3">
-            <button type="button" class="pick-card !p-3 flex-col text-center is-selected">
+            <button type="button" wire:click="pickFormat('pdf')" class="pick-card !p-3 flex-col text-center {{ $format === 'pdf' ? 'is-selected' : '' }}">
                 <span class="text-3xl">📄</span>
                 <span class="pc-name mt-1">{{ __('reports.fmt_pdf') }}</span>
                 <span class="pc-sub">{{ __('reports.fmt_pdf_sub') }}</span>
@@ -174,10 +192,10 @@ new class extends Component
                 <span class="pc-name mt-1">{{ __('reports.fmt_csv') }}</span>
                 <span class="pc-sub">{{ __('reports.fmt_later') }}</span>
             </button>
-            <button type="button" class="pick-card !p-3 flex-col text-center opacity-50" disabled>
+            <button type="button" wire:click="pickFormat('json')" class="pick-card !p-3 flex-col text-center {{ $format === 'json' ? 'is-selected' : '' }}">
                 <span class="text-3xl">🌐</span>
                 <span class="pc-name mt-1">{{ __('reports.fmt_json') }}</span>
-                <span class="pc-sub">{{ __('reports.fmt_later') }}</span>
+                <span class="pc-sub">{{ __('reports.fmt_json_sub') }}</span>
             </button>
         </div>
         <p class="text-[11px] text-muted text-center mt-2">{{ __('reports.pdf_only_v1') }}</p>
@@ -206,7 +224,7 @@ new class extends Component
             </div>
         </div>
         <button type="button" wire:click="download" class="btn btn-primary w-full mt-3">
-            <i class="ph-fill ph-download-simple"></i> {{ __('reports.download_pdf_btn') }}
+            <i class="ph-fill ph-download-simple"></i> {{ $format === 'json' ? __('reports.email_json_btn') : __('reports.download_pdf_btn') }}
         </button>
     </section>
 </main>

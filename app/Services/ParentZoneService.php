@@ -43,6 +43,8 @@ class ParentZoneService
         'weekly-report',
         'full-report',
         'export-progress',
+        'parent-email',
+        'delete-account',
     ];
 
     public function __construct(
@@ -130,6 +132,11 @@ class ParentZoneService
         }
 
         return $result;
+    }
+
+    public function confirmPin(User $user, string $pin): ParentPinAttempt
+    {
+        return $this->checkPin($user, $pin);
     }
 
     public function createPin(User $user, string $pin, string $confirm): ParentPinAttempt

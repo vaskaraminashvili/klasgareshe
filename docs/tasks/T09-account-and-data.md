@@ -1,7 +1,7 @@
 # T09 — Account & data control
 
 **Priority:** P1 · core product
-**Status:** not started
+**Status:** done
 **Depends on:** T03 (code service), T05 (policy text), T06 (PIN gate)
 
 ## Why now
@@ -12,27 +12,41 @@ that email and to erase the child's data. Both are parent-gated.
 
 ## Scope — change parent email
 
-- [ ] `pages::parent-email` from `kidzio/parent-email.html` → `/parent-email` (parent group)
-- [ ] New address must be verified before it replaces the old one (pending-email pattern)
-- [ ] Notify the **old** address that a change was requested
-- [ ] Until verified, the old email stays authoritative for reset and reports
-- [ ] Edit-profile's read-only parent email links here
+- [x] `pages::parent-email` from `kidzio/parent-email.html` → `/parent-email` (parent group)
+- [x] New address must be verified before it replaces the old one (pending-email pattern)
+- [x] Notify the **old** address that a change was requested
+- [x] Until verified, the old email stays authoritative for reset and reports
+- [x] Edit-profile's read-only parent email links here
 
 ## Scope — delete account
 
-- [ ] Delete flow behind PIN **and** a fresh parent email confirmation — two factors, because it is
+- [x] Delete flow behind PIN **and** a fresh parent email confirmation — two factors, because it is
       irreversible
-- [ ] Explain exactly what is removed before confirming (profile, XP, streak, badges, friendships,
+- [x] Explain exactly what is removed before confirming (profile, XP, streak, badges, friendships,
       play history)
-- [ ] Soft delete the `users` row (project convention: soft deletes where recoverable) with a grace
+- [x] Soft delete the `users` row (project convention: soft deletes where recoverable) with a grace
       window, then a scheduled job hard-deletes and purges dependent rows
-- [ ] Friendship rows, league membership, leaderboard presence removed immediately on request — the
+- [x] Friendship rows, league membership, leaderboard presence removed immediately on request — the
       grace window must not keep the kid publicly visible
-- [ ] Nickname freed or reserved — decide and record here
+- [x] Nickname freed or reserved — decide and record here
 
 ## Scope — data export
 
-- [ ] "Export all data" (JSON or the T08 PDF) for the parent, delivered to the verified email
+- [x] "Export all data" (JSON or the T08 PDF) for the parent, delivered to the verified email
+
+## Decisions recorded
+
+- **Grace window:** 14 days (`AccountService::GRACE_DAYS`). Template copy said 24h; 14 days matches
+  “soft deletes where recoverable”.
+- **Nickname / email:** reserved while the row is soft-deleted (unique indexes + `withTrashed`
+  occupancy checks). Freed on `accounts:purge-deleted` hard delete.
+- **Email change:** signed magic link (60 min) **and** 6-digit code (10 min, same as other parent
+  codes) go to the **new** address. The **old** address gets an alert. `users.email` does not change
+  until confirm.
+- **JSON export:** emailed from `/export-progress` (JSON format card). PDF remains an on-device
+  download (T08).
+- **Hero stats** on parent-email: live week XP / active days / streak (template “reports sent /
+  opens” had no backend). Badge / streak / product-update mail toggles stay T16.
 
 ## Code touchpoints
 

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -38,6 +39,10 @@ use Illuminate\Support\Str;
  * @property bool $show_on_leaderboard
  * @property bool $allow_friend_requests
  * @property Carbon|null $email_verified_at
+ * @property string|null $pending_parent_email
+ * @property string|null $pending_parent_email_token
+ * @property Carbon|null $pending_parent_email_sent_at
+ * @property Carbon|null $deletion_requested_at
  * @property string $password
  * @property string|null $parent_pin
  * @property Carbon|null $parent_pin_set_at
@@ -54,6 +59,7 @@ use Illuminate\Support\Str;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  */
 #[Fillable([
     'name',
@@ -74,6 +80,10 @@ use Illuminate\Support\Str;
     'reminder_time',
     'show_on_leaderboard',
     'allow_friend_requests',
+    'pending_parent_email',
+    'pending_parent_email_token',
+    'pending_parent_email_sent_at',
+    'deletion_requested_at',
     'parent_pin',
     'parent_pin_set_at',
     'daily_limit_minutes',
@@ -87,11 +97,11 @@ use Illuminate\Support\Str;
     'bedtime_days',
     'timezone',
 ])]
-#[Hidden(['password', 'parent_pin', 'remember_token'])]
+#[Hidden(['password', 'parent_pin', 'remember_token', 'pending_parent_email_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * Get the attributes that should be cast.
@@ -102,6 +112,8 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'pending_parent_email_sent_at' => 'datetime',
+            'deletion_requested_at' => 'datetime',
             'onboarding_completed_at' => 'datetime',
             'password' => 'hashed',
             'parent_pin' => 'hashed',

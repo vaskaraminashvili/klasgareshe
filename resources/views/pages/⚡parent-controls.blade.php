@@ -580,14 +580,14 @@ new class extends Component
                     </div>
                     <i class="ph ph-caret-right text-muted"></i>
                 </a>
-                <div class="setting-row">
+                <a href="{{ route('parent-email') }}" wire:navigate class="setting-row">
                     <div class="setting-ico tile-sky"><i class="ph-fill ph-envelope-simple"></i></div>
                     <div class="grow min-w-0">
                         <p class="setting-text font-extrabold text-sm text-ink">{{ __('parent-zone.parent_email') }}</p>
                         <p class="text-[11px] text-muted">{{ $email }} · {{ $emailVerified ? __('parent-zone.email_verified') : __('parent-zone.email_unverified') }}</p>
                     </div>
-                    {{-- Change parent email → docs/tasks/T09-account-and-data.md --}}
-                </div>
+                    <i class="ph ph-caret-right text-muted"></i>
+                </a>
                 <a href="{{ route('change-pin') }}" wire:navigate class="setting-row">
                     <div class="setting-ico tile-violet"><i class="ph-fill ph-lock-key"></i></div>
                     <div class="grow min-w-0">
@@ -596,7 +596,14 @@ new class extends Component
                     </div>
                     <i class="ph ph-caret-right text-muted"></i>
                 </a>
-                {{-- Delete account → docs/tasks/T09-account-and-data.md --}}
+                <a href="{{ route('delete-account') }}" wire:navigate class="setting-row danger">
+                    <div class="setting-ico"><i class="ph-fill ph-trash"></i></div>
+                    <div class="grow min-w-0">
+                        <p class="setting-text font-extrabold text-sm">{{ __('parent-zone.delete_account') }}</p>
+                        <p class="text-[11px] text-muted">{{ __('parent-zone.delete_account_hint') }}</p>
+                    </div>
+                    <i class="ph ph-caret-right text-muted"></i>
+                </a>
             </div>
         </section>
 

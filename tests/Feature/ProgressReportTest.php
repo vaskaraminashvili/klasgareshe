@@ -169,6 +169,20 @@ class ProgressReportTest extends TestCase
         $this->assertStringContainsString('NotoSansGeorgian', $html);
     }
 
+    public function test_export_pdf_embeds_noto_sans_georgian(): void
+    {
+        $this->seed(BadgeSeeder::class);
+        $user = User::factory()->fullySetUp()->withStats()->create(['name' => 'ნინო']);
+
+        $response = app(ProgressPdfService::class)->download($user, ReportScope::Week);
+        $binary = $response->getContent();
+
+        $this->assertNotFalse($binary);
+        $this->assertNotSame('', $binary);
+        $this->assertStringStartsWith('%PDF', $binary);
+        $this->assertStringContainsString('NotoSansGeorgian', $binary);
+    }
+
     private function seedWeek(SchoolGrade $grade = SchoolGrade::First, int $weekdays = 2, int $perPack = 1): void
     {
         Game::factory()->create([

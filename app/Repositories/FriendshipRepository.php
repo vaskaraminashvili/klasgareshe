@@ -119,4 +119,12 @@ class FriendshipRepository
 
         return User::query()->whereIn('id', $ids)->get();
     }
+
+    public function deleteAllFor(User $user): void
+    {
+        Friendship::query()
+            ->where('user_id', $user->id)
+            ->orWhere('friend_id', $user->id)
+            ->delete();
+    }
 }

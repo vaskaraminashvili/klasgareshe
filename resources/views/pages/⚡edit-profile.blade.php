@@ -396,6 +396,7 @@ new #[Title('პროფილის რედაქტირება · Kidzi
               <i class="ph ph-info"></i>
               <span>{{ __('edit-profile.email_unverified') }}</span>
             @endif
+            <a href="{{ route('parent-email') }}" wire:navigate class="chip chip-primary ml-1">{{ __('edit-profile.change_email') }}</a>
           </p>
         </div>
         <a href="{{ route('forgot-password') }}" wire:navigate class="setting-row">
@@ -460,14 +461,14 @@ new #[Title('პროფილის რედაქტირება · Kidzi
           </div>
           <i class="ph ph-caret-right text-muted"></i>
         </button>
-        <button type="button" id="deleteBtn" class="setting-row danger w-full text-left">
+        <a href="{{ route('delete-account') }}" wire:navigate class="setting-row danger">
           <div class="setting-ico"><i class="ph-fill ph-trash"></i></div>
           <div class="grow min-w-0">
             <p class="setting-text font-extrabold text-sm">{{ __('edit-profile.delete_profile') }}</p>
             <p class="text-[11px] text-muted">{{ __('edit-profile.delete_profile_hint') }}</p>
           </div>
           <i class="ph ph-caret-right text-muted"></i>
-        </button>
+        </a>
       </div>
     </div>
   </form>

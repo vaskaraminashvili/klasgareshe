@@ -71,6 +71,8 @@ class KidSetupService
                 'weekly-report',
                 'full-report',
                 'export-progress',
+                'parent-email',
+                'delete-account',
             ];
         }
 

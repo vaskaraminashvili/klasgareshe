@@ -6,6 +6,7 @@ use App\Enums\ReportScope;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProgressPdfService
@@ -14,6 +15,8 @@ class ProgressPdfService
 
     public function download(User $user, ReportScope $scope, bool $includeXp = true, bool $includeStreak = true, bool $includeBadges = true, bool $includeLessons = true): Response|StreamedResponse
     {
+        $this->ensureFontCache();
+
         $snap = $this->reports->exportSnapshot($user, $scope);
         $full = $this->reports->fullSnapshot($user, $scope);
 
@@ -35,6 +38,8 @@ class ProgressPdfService
 
     public function html(User $user, ReportScope $scope): string
     {
+        $this->ensureFontCache();
+
         $snap = $this->reports->exportSnapshot($user, $scope);
         $full = $this->reports->fullSnapshot($user, $scope);
 
@@ -48,5 +53,10 @@ class ProgressPdfService
             'fontRegular' => resource_path('fonts/NotoSansGeorgian-Regular.ttf'),
             'fontBold' => resource_path('fonts/NotoSansGeorgian-Bold.ttf'),
         ])->render();
+    }
+
+    private function ensureFontCache(): void
+    {
+        File::ensureDirectoryExists(storage_path('fonts'));
     }
 }

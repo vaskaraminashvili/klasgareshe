@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ParentEmailConfirmController;
 use App\Http\Controllers\ParentVerificationController;
 use App\Http\Middleware\RedirectToKidSetup;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,10 @@ Route::livewire('/privacy', 'pages::privacy-policy')->name('privacy-policy');
 Route::get('/parent-verify/confirm/{user}', [ParentVerificationController::class, 'confirm'])
     ->middleware('signed')
     ->name('parent-verify.confirm');
+
+Route::get('/parent-email/confirm/{user}', ParentEmailConfirmController::class)
+    ->middleware('signed')
+    ->name('parent-email.confirm');
 
 Route::livewire('/weekly-report/opt-out/{user}', 'pages::weekly-report-opt-out')
     ->middleware('signed')
@@ -61,5 +66,7 @@ Route::middleware(['auth:web', RedirectToKidSetup::class])->group(function () {
         Route::livewire('/weekly-report', 'pages::weekly-report')->name('weekly-report');
         Route::livewire('/full-report', 'pages::full-report')->name('full-report');
         Route::livewire('/export-progress', 'pages::export-progress')->name('export-progress');
+        Route::livewire('/parent-email', 'pages::parent-email')->name('parent-email');
+        Route::livewire('/delete-account', 'pages::delete-account')->name('delete-account');
     });
 });

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Carbon\CarbonInterface;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -47,7 +48,24 @@ class UserRepository
 
     public function nicknameExists(string $nickname, ?int $exceptUserId = null): bool
     {
-        $query = User::query()->where('nickname', $nickname);
+        $query = User::withTrashed()->where('nickname', $nickname);
+
+        if ($exceptUserId !== null) {
+            $query->whereKeyNot($exceptUserId);
+        }
+
+        return $query->exists();
+    }
+
+    public function emailTaken(string $email, ?int $exceptUserId = null): bool
+    {
+        $email = mb_strtolower(trim($email));
+
+        $query = User::withTrashed()
+            ->where(function ($inner) use ($email): void {
+                $inner->whereRaw('lower(email) = ?', [$email])
+                    ->orWhereRaw('lower(pending_parent_email) = ?', [$email]);
+            });
 
         if ($exceptUserId !== null) {
             $query->whereKeyNot($exceptUserId);
@@ -107,5 +125,38 @@ class UserRepository
             ->whereNotNull('onboarding_completed_at')
             ->orderBy('id')
             ->get();
+    }
+
+    /**
+     * Soft-deleted accounts whose grace window has elapsed.
+     *
+     * @return Collection<int, User>
+     */
+    public function dueForPurge(CarbonInterface $requestedBefore): Collection
+    {
+        return User::onlyTrashed()
+            ->whereNotNull('deletion_requested_at')
+            ->where('deletion_requested_at', '<=', $requestedBefore)
+            ->orderBy('id')
+            ->get();
+    }
+
+    public function softDelete(User $user): User
+    {
+        $user->delete();
+
+        return $user;
+    }
+
+    public function forceDelete(User $user): void
+    {
+        $user->forceDelete();
+    }
+
+    public function deleteSessions(User $user): void
+    {
+        DB::table('sessions')
+            ->where('user_id', $user->id)
+            ->delete();
     }
 }

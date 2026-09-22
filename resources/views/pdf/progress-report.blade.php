@@ -17,7 +17,7 @@
         body { font-family: 'NotoSansGeorgian', DejaVu Sans, sans-serif; color: #1B1240; font-size: 14px; }
         h1 { font-size: 28px; margin: 0 0 8px; }
         h2 { font-size: 16px; margin: 24px 0 8px; }
-        .kicker { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #5B5178; }
+        .kicker { font-size: 11px; letter-spacing: 0.12em; color: #5B5178; }
         .meta { color: #5B5178; margin-bottom: 24px; }
         table { width: 100%; border-collapse: collapse; }
         td { padding: 8px 0; border-bottom: 1px solid #EEE8F8; }
@@ -50,7 +50,7 @@
             @endif
             @foreach ($full->subjects as $row)
                 <tr>
-                    <td>{{ $row->emoji }} {{ $row->label }}</td>
+                    <td>{{ $row->label }}</td>
                     <td class="num">{{ $row->packs }} · {{ $row->masteryPercent }}%</td>
                 </tr>
             @endforeach
@@ -72,7 +72,7 @@
         <table>
             <tr><td>{{ __('reports.kpi_badges_delta', ['n' => $snap->figures->badgesEarned]) }}</td><td class="num">{{ $snap->figures->badgesEarned }}</td></tr>
             @foreach ($full->timeline as $event)
-                <tr><td>{{ $event->emoji }} {{ $event->title }}</td><td class="num">{{ $event->subtitle }}</td></tr>
+                <tr><td>{{ $event->title }}</td><td class="num">{{ $event->subtitle }}</td></tr>
             @endforeach
         </table>
     @endif

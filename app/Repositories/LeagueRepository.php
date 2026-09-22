@@ -176,4 +176,9 @@ class LeagueRepository
             ->where('finish_rank', '<=', $maxRank)
             ->exists();
     }
+
+    public function removeUser(User $user): void
+    {
+        LeagueGroupMember::query()->where('user_id', $user->id)->delete();
+    }
 }
