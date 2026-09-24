@@ -90,7 +90,7 @@ new class extends Component
 
     <!-- =============== APPBAR =============== -->
     <header class="appbar safe-top">
-        <a href="{{ route('home') }}" class="icon-btn" data-back aria-label="{{ __('badges.your_collection') }}"><i
+        <a href="{{ route('rewards-dashboard') }}" class="icon-btn" data-back aria-label="{{ __('badges.your_collection') }}"><i
                 class="ph ph-caret-left"></i></a>
         <div class="grow">
             <p class="text-xs text-muted">{{ __('badges.your_collection') }}</p>
@@ -306,7 +306,7 @@ new class extends Component
                 <p class="font-extrabold text-sm text-ink">{{ __('badges.did_you_know') }}</p>
                 <p class="text-xs text-muted">{{ __('badges.tip') }}</p>
             </div>
-            <a href="#" class="chip chip-primary">{{ __('badges.rewards') }}</a>
+            <a href="{{ route('rewards-dashboard') }}" wire:navigate class="chip chip-primary">{{ __('badges.rewards') }}</a>
         </div>
     </section>
 

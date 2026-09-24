@@ -293,7 +293,10 @@ class UserStatService
             $this->stats->addDayXp($user, $onDate, 0);
         }
 
-        $attributes = ['xp' => $stat->xp + $amount];
+        $attributes = [
+            'xp' => $stat->xp + $amount,
+            'coins' => $stat->coins + $amount,
+        ];
         $streakChanged = false;
 
         if ($countsAsPlay) {
@@ -330,27 +333,45 @@ class UserStatService
             return 0;
         }
 
-        $weekStart = $at->startOfWeek(CarbonImmutable::MONDAY);
-        $logged = array_flip($this->stats->eventDatesBetween(
-            $user,
-            XpSource::DailyLogin,
-            $weekStart->toDateString(),
-            $date,
-        ));
-
-        $consecutive = 1;
-        for ($i = 1; $i < 7; $i++) {
-            $prev = $at->subDays($i)->toDateString();
-            if ($prev < $weekStart->toDateString() || ! isset($logged[$prev])) {
-                break;
-            }
-            $consecutive++;
-        }
-
-        $amount = self::LOGIN_XP[min(7, $consecutive)];
+        $amount = self::LOGIN_XP[min(7, $this->loginStreakLength($user, $at))];
         $this->awardXp($user, XpSource::DailyLogin, $amount, $at, context: $date, countsAsPlay: false);
 
         return $amount;
+    }
+
+    public function nextDailyLoginXp(User $user, ?CarbonInterface $on = null): int
+    {
+        $at = CarbonImmutable::parse($on ?? now());
+        $date = $at->toDateString();
+
+        if ($this->stats->hasXpEvent($user, XpSource::DailyLogin, $date)) {
+            return 0;
+        }
+
+        return self::LOGIN_XP[min(7, $this->loginStreakLength($user, $at))];
+    }
+
+    /**
+     * @return array<int, int>
+     */
+    public function loginXpTable(): array
+    {
+        return self::LOGIN_XP;
+    }
+
+    public function grantFreeze(User $user): bool
+    {
+        $stat = $this->ensureFor($user);
+
+        if ($stat->streak_freezes >= self::FREEZE_CAP) {
+            return false;
+        }
+
+        $this->stats->update($stat, [
+            'streak_freezes' => $stat->streak_freezes + 1,
+        ]);
+
+        return true;
     }
 
     public function useFreeze(User $user, ?CarbonInterface $on = null): bool
@@ -511,15 +532,6 @@ class UserStatService
                 countsAsPlay: false,
             );
         }
-
-        if ($streak === 7) {
-            $stat = $this->ensureFor($user);
-            if ($stat->streak_freezes < self::FREEZE_CAP) {
-                $this->stats->update($stat, [
-                    'streak_freezes' => $stat->streak_freezes + 1,
-                ]);
-            }
-        }
     }
 
     /**
@@ -648,5 +660,36 @@ class UserStatService
             6 => 'S',
             default => 'S',
         };
+    }
+
+    public function calendarLetter(int $isoDay): string
+    {
+        return $this->weekdayLetter($isoDay);
+    }
+
+    private function loginStreakLength(User $user, CarbonImmutable $at): int
+    {
+        $weekStart = $at->startOfWeek(CarbonImmutable::MONDAY);
+        $date = $at->toDateString();
+        $logged = array_flip($this->stats->eventDatesBetween(
+            $user,
+            XpSource::DailyLogin,
+            $weekStart->toDateString(),
+            $date,
+        ));
+
+        $consecutive = 1;
+
+        for ($i = 1; $i < 7; $i++) {
+            $prev = $at->subDays($i)->toDateString();
+
+            if ($prev < $weekStart->toDateString() || ! isset($logged[$prev])) {
+                break;
+            }
+
+            $consecutive++;
+        }
+
+        return $consecutive;
     }
 }

@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $user_id
  * @property int $xp
+ * @property int $coins
  * @property int $current_streak
  * @property int $longest_streak
  * @property int $streak_freezes
@@ -26,6 +27,7 @@ use Illuminate\Support\Carbon;
 #[Fillable([
     'user_id',
     'xp',
+    'coins',
     'current_streak',
     'longest_streak',
     'streak_freezes',
@@ -44,6 +46,7 @@ class UserStat extends Model
     {
         return [
             'xp' => 0,
+            'coins' => 0,
             'current_streak' => 0,
             'longest_streak' => 0,
             'streak_freezes' => 0,
@@ -59,6 +62,7 @@ class UserStat extends Model
     {
         return [
             'xp' => 'integer',
+            'coins' => 'integer',
             'current_streak' => 'integer',
             'longest_streak' => 'integer',
             'streak_freezes' => 'integer',

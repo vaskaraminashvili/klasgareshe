@@ -80,7 +80,7 @@ class StreakXpTest extends TestCase
         );
     }
 
-    public function test_seven_day_milestone_grants_a_freeze(): void
+    public function test_seven_day_milestone_does_not_auto_grant_a_freeze(): void
     {
         $user = User::factory()->fullySetUp()->create();
         $stats = app(UserStatService::class);
@@ -93,7 +93,7 @@ class StreakXpTest extends TestCase
         $stat = UserStat::query()->where('user_id', $user->id)->first();
 
         $this->assertSame(7, $stat?->current_streak);
-        $this->assertSame(1, $stat?->streak_freezes);
+        $this->assertSame(0, $stat?->streak_freezes);
         $this->assertSame(1, $this->eventCount($user, XpSource::StreakMilestone, '7'));
         $this->assertSame(1, $this->eventCount($user, XpSource::StreakMilestone, '3'));
     }

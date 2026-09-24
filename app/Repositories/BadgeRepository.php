@@ -113,6 +113,22 @@ class BadgeRepository
             ->first();
     }
 
+    /**
+     * @return Collection<int, UserBadge>
+     */
+    public function unseenForUser(User $user): Collection
+    {
+        return UserBadge::query()
+            ->where('user_id', $user->id)
+            ->whereNull('seen_at')
+            ->with('badge')
+            ->join('badges', 'badges.id', '=', 'user_badges.badge_id')
+            ->orderBy('badges.sort_order')
+            ->orderBy('user_badges.id')
+            ->select('user_badges.*')
+            ->get();
+    }
+
     public function award(User $user, Badge $badge): UserBadge
     {
         $existing = $this->findUserBadge($user, $badge);

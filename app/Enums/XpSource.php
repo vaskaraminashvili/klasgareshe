@@ -8,6 +8,7 @@ enum XpSource: string
     case DailyMission = 'daily_mission';
     case StreakMilestone = 'streak_milestone';
     case DailyLogin = 'daily_login';
+    case DailyBox = 'daily_box';
     case Combo = 'combo';
     case Speed = 'speed';
     case Badge = 'badge';
@@ -24,6 +25,7 @@ enum XpSource: string
             self::DailyMission => '🎯',
             self::StreakMilestone => '🔥',
             self::DailyLogin => '📅',
+            self::DailyBox => '🎁',
             self::Combo => '💥',
             self::Speed => '⚡',
             self::Badge => '🏅',
@@ -37,6 +39,7 @@ enum XpSource: string
             self::DailyMission => 'tile-sun',
             self::StreakMilestone => 'tile-coral',
             self::DailyLogin => 'tile-mint',
+            self::DailyBox => 'tile-violet',
             self::Combo => 'tile-sky',
             self::Speed => 'tile-sun',
             self::Badge => 'tile-mint',

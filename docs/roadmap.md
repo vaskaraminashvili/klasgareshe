@@ -45,7 +45,7 @@ rule in `CLAUDE.md`, not a nice-to-have.
 | T10 | [Settings screen](tasks/T10-settings-screen.md) | **done** |
 | T11 | [Streaks & XP completeness](tasks/T11-streaks-and-xp.md) | **done** |
 | T12 | [Mini-games batch 1 — tap-correct + counting](tasks/T12-minigames-batch-1.md) | **done** |
-| T13 | [Rewards dashboard + login calendar](tasks/T13-rewards-dashboard.md) | not started |
+| T13 | [Rewards dashboard + login calendar](tasks/T13-rewards-dashboard.md) | **done** |
 
 ## P2 — depth & growth
 

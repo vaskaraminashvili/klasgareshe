@@ -5,6 +5,7 @@ use App\Services\BadgeService;
 use App\Services\FriendshipService;
 use App\Services\MonthlyGoalService;
 use App\Services\ProgressReportService;
+use App\Services\RewardService;
 use App\Services\ScreenTimeService;
 use App\Services\UserStatService;
 use App\Services\WeekPlanService;
@@ -60,6 +61,8 @@ new #[Title('პროფილი · Kidzio')] class extends Component
 
     public string $screenTimeChip = '';
 
+    public int $claimCount = 0;
+
     /** @var list<string> */
     public array $friendAvatars = [];
 
@@ -90,6 +93,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         UserRepository $users,
         ScreenTimeService $time,
         ProgressReportService $reports,
+        RewardService $rewards,
     ): void {
         $user = $users->authenticated();
         $week = $reports->weekSnapshot($user);
@@ -131,6 +135,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
 
         $this->badgeCount = $badges->earnedCount($user);
         $this->catalogCount = $badges->catalogCount();
+        $this->claimCount = $rewards->pendingCount($user);
         $this->recentBadges = array_map(fn ($card) => $card->toArray(), $badges->recentRail($user));
         $this->mastery = array_map(fn ($row) => $row->toArray(), $weekPlan->subjectMastery($user));
         $this->friendsCount = $friendsStrip->count;
@@ -428,8 +433,14 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                 <span class="chip chip-primary">{{ $badgeCount }} / {{ $catalogCount }}</span>
                 <i class="ph ph-caret-right text-muted"></i>
             </a>
-            {{-- Rewards-dashboard row dropped: dead `href="#"` with a hardcoded "3 new".
-                 Re-port it with a real claim count (docs/tasks/T13-rewards-dashboard.md). --}}
+            <a href="{{ route('rewards-dashboard') }}" wire:navigate class="menu-row">
+                <div class="menu-ico tile-pink">🎁</div>
+                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.rewards_dashboard') }}</p>
+                @if ($claimCount > 0)
+                    <span class="chip chip-coral">{{ __('profile.rewards_new', ['count' => $claimCount]) }}</span>
+                @endif
+                <i class="ph ph-caret-right text-muted"></i>
+            </a>
         </div>
     </section>
 

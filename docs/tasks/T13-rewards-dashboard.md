@@ -1,7 +1,7 @@
 # T13 — Rewards dashboard + daily login calendar
 
 **Priority:** P1 · core product
-**Status:** not started
+**Status:** done
 **Depends on:** T11 (XP sources + award path)
 
 ## Why now
@@ -13,22 +13,28 @@ single highest-retention item left in the template.
 
 ## Scope
 
-- [ ] `pages::rewards-dashboard` from `kidzio/rewards-dashboard.html` → `/rewards-dashboard`
-- [ ] Rewards tab in the bottom nav points here; badges become a row inside it
-- [ ] XP wallet: total XP and **spendable** XP. Decide now whether spending reduces ranking XP —
+- [x] `pages::rewards-dashboard` from `kidzio/rewards-dashboard.html` → `/rewards-dashboard`
+- [x] Rewards tab in the bottom nav points here; badges become a row inside it
+- [x] XP wallet: total XP and **spendable** XP. Decide now whether spending reduces ranking XP —
       proposed: no, keep a separate `coins`/spendable balance so the leaderboard stays honest.
       Record the decision in this file.
-- [ ] 7-day daily login calendar, increasing XP, bigger prize on day 7 (award rule lives in T11)
-- [ ] Claim queue: daily box, newly earned badges, streak freeze. A claim is explicit and one-time.
-- [ ] To-claim count badge on the tab — real, not the "3 new" placeholder removed in T02
-- [ ] League standing summary + link to `/league`
-- [ ] Restore the Profile rewards row and the Home notification row neutralized in T02
+- [x] 7-day daily login calendar, increasing XP, bigger prize on day 7 (award rule lives in T11)
+- [x] Claim queue: daily box, newly earned badges, streak freeze. A claim is explicit and one-time.
+- [x] To-claim count badge on the tab — real, not the "3 new" placeholder removed in T02
+- [x] League standing summary + link to `/league`
+- [x] Restore the Profile rewards row (real claim count). Home notification sheet stays **T16**.
 
 ## Scope — data
 
-- [ ] `reward_claims` table: `user_id`, `type`, `reference`, `claimed_at`, unique per claimable
-- [ ] `daily_logins` (or derive from `user_activity_days` — check first, don't duplicate)
-- [ ] Idempotent claiming: double-tap or double-submit must not pay twice
+- [x] `reward_claims` table: `user_id`, `type`, `reference`, `claimed_at`, unique per claimable
+- [x] Login calendar derives from `xp_events` (`daily_login`) — no extra `daily_logins` table
+- [x] Idempotent claiming: double-tap or double-submit must not pay twice
+
+## Spendable vs ranking XP
+
+**Decision:** spending does **not** reduce ranking XP. `user_stats.xp` is all-time ranking XP.
+`user_stats.coins` is the spendable balance (1:1 with XP earned). Shop purchases in **T20** decrement
+`coins` only.
 
 ## Code touchpoints
 
@@ -47,6 +53,7 @@ single highest-retention item left in the template.
 
 ## Out of scope
 
-- Spending XP on items → **T20**
+- Spending XP on items → **T20** (shop + limited bundle markup left as a T20 comment)
 - Weekly league prize payout and champion rewards → **T18**
 - Share badge backend → **T21**
+- Home notification “daily gift ready” row → **T16**

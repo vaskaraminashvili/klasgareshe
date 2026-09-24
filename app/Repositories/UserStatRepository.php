@@ -86,6 +86,19 @@ class UserStatRepository
     /**
      * @return Collection<int, XpEvent>
      */
+    public function recentXpEvents(User $user, int $limit = 5): Collection
+    {
+        return XpEvent::query()
+            ->where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * @return Collection<int, XpEvent>
+     */
     public function xpEventsBetween(User $user, string $from, string $to): Collection
     {
         return XpEvent::query()

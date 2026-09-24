@@ -85,6 +85,7 @@ return [
     'monthly_goals' => 'თვიური მიზნები',
     'all_badges' => 'ყველა სამკერდე ნიშანი',
     'rewards_dashboard' => 'ჯილდოების დაფა',
+    'rewards_new' => ':count ახალი',
 
     // Parent zone
     'parent_zone' => 'მშობლის ზონა',

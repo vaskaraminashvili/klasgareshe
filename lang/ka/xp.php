@@ -6,6 +6,7 @@ return [
         'daily_mission' => 'მისიები',
         'streak_milestone' => 'სერიის ბონუსი',
         'daily_login' => 'ყოველდღიური შესვლა',
+        'daily_box' => 'დღის ყუთი',
         'combo' => 'კომბო',
         'speed' => 'სიჩქარის ბონუსი',
         'badge' => 'სამკერდე ნიშნები',

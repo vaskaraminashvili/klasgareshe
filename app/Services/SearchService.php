@@ -23,6 +23,7 @@ class SearchService
         'settings' => ['settings', '⚙️', 'tile-mint'],
         'streak' => ['streak', '🔥', 'tile-sun'],
         'counting' => ['game-counting', '🔢', 'tile-sky'],
+        'rewards' => ['rewards-dashboard', '🎁', 'tile-pink'],
     ];
 
     /**

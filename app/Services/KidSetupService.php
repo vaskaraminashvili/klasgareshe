@@ -64,6 +64,7 @@ class KidSetupService
                 'league',
                 'badges',
                 'badge-unlock',
+                'rewards-dashboard',
                 'monthly-goals',
                 'parent-controls',
                 'change-pin',

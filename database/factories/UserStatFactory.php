@@ -25,6 +25,7 @@ class UserStatFactory extends Factory
         return [
             'user_id' => User::factory(),
             'xp' => $xp,
+            'coins' => $xp,
             'current_streak' => $streak,
             'longest_streak' => max($streak, fake()->numberBetween($streak, 21)),
             'streak_freezes' => 0,
@@ -37,6 +38,7 @@ class UserStatFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'xp' => $xp,
+            'coins' => $xp,
         ]);
     }
 
@@ -66,6 +68,7 @@ class UserStatFactory extends Factory
 
         return $this->state(fn (array $attributes) => [
             'xp' => $xp,
+            'coins' => $xp,
             'current_streak' => $streak,
             'longest_streak' => fake()->numberBetween($streak, max($streak, 30)),
             'last_played_on' => now()->toDateString(),
@@ -85,6 +88,7 @@ class UserStatFactory extends Factory
 
         return $this->state(fn (array $attributes) => [
             'xp' => $xp,
+            'coins' => $xp,
             'current_streak' => $streak,
             'longest_streak' => fake()->numberBetween($streak, 40),
             'last_played_on' => now()->toDateString(),
