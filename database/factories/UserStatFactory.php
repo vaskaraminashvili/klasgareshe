@@ -27,6 +27,7 @@ class UserStatFactory extends Factory
             'xp' => $xp,
             'current_streak' => $streak,
             'longest_streak' => max($streak, fake()->numberBetween($streak, 21)),
+            'streak_freezes' => 0,
             'last_played_on' => $streak > 0 ? now()->toDateString() : null,
             'league' => League::Bronze,
         ];

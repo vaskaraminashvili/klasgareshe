@@ -277,7 +277,7 @@ new class extends Component
 
   <!-- =============== STREAK KEEPER =============== -->
   <section class="px-5 mt-5">
-    <div class="k-card-lg streak-strip block">
+    <a href="{{ route('streak') }}" wire:navigate class="k-card-lg streak-strip block">
       <div class="flex items-center gap-3">
         <div class="text-4xl">🔥</div>
         <div class="grow">
@@ -286,7 +286,7 @@ new class extends Component
         </div>
         <span class="chip chip-on-tile text-sun-ink">🔥 {{ $streak }}</span>
       </div>
-    </div>
+    </a>
   </section>
 
   <!-- =============== MISSION HISTORY =============== -->

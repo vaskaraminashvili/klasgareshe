@@ -7,6 +7,7 @@ use App\Data\ChoiceQuestionView;
 use App\Data\GameRound;
 use App\Enums\GameType;
 use App\Enums\QuestionFormat;
+use App\Enums\XpSource;
 use App\Models\Question;
 use App\Models\User;
 use App\Repositories\GameRepository;
@@ -149,8 +150,16 @@ class GamePlayService
         );
     }
 
-    public function award(User $user, GameType $type, int $correctCount, ?int $weekPlanItemId = null): int
-    {
+    public function award(
+        User $user,
+        GameType $type,
+        int $correctCount,
+        ?int $weekPlanItemId = null,
+        int $maxCombo = 0,
+        ?int $elapsedSeconds = null,
+        int $questionTotal = 0,
+        bool $completedAll = false,
+    ): int {
         $game = $this->games->findBySlug($type);
 
         if ($game === null) {
@@ -158,11 +167,47 @@ class GamePlayService
         }
 
         $xp = max(0, $correctCount) * $game->xp_per_correct;
+        $item = $weekPlanItemId !== null ? $this->weekPlan->findItem($weekPlanItemId) : null;
+        $subject = $item?->subject;
+        $date = now()->toDateString();
+        $packKey = (string) ($weekPlanItemId ?? 'open');
 
-        $this->stats->recordPlay($user, $xp, skipEvaluate: true);
+        $this->stats->awardXp($user, XpSource::Pack, $xp, subject: $subject, context: $weekPlanItemId !== null ? 'pack-'.$weekPlanItemId : null);
 
         if ($weekPlanItemId !== null) {
             $this->weekPlan->completeItem($user, $weekPlanItemId, $correctCount);
+        }
+
+        if ($questionTotal >= 5 && $maxCombo >= 5) {
+            $this->stats->awardXp(
+                $user,
+                XpSource::Combo,
+                20,
+                subject: $subject,
+                context: 'combo-'.$packKey.'-'.$date,
+            );
+            $xp += 20;
+        }
+
+        if ($questionTotal >= 5 && $completedAll && $elapsedSeconds !== null && $elapsedSeconds < 120) {
+            $this->stats->awardXp(
+                $user,
+                XpSource::Speed,
+                20,
+                subject: $subject,
+                context: 'speed-'.$packKey.'-'.$date,
+            );
+            $xp += 20;
+        }
+
+        if ($weekPlanItemId !== null && $this->weekPlan->dailyMissionJustCompleted($user)) {
+            $this->stats->awardXp(
+                $user,
+                XpSource::DailyMission,
+                120,
+                context: $date,
+            );
+            $xp += 120;
         }
 
         $this->badges->evaluate($user);

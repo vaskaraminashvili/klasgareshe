@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Database\Factories\UserActivityDayFactory;
+use App\Enums\SchoolSubject;
+use App\Enums\XpSource;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -12,22 +12,23 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $user_id
- * @property Carbon $played_on
- * @property int $xp_earned
- * @property bool $frozen
+ * @property XpSource $source
+ * @property SchoolSubject|null $subject
+ * @property int $amount
+ * @property string|null $context
  * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
  */
 #[Fillable([
     'user_id',
-    'played_on',
-    'xp_earned',
-    'frozen',
+    'source',
+    'subject',
+    'amount',
+    'context',
+    'created_at',
 ])]
-class UserActivityDay extends Model
+class XpEvent extends Model
 {
-    /** @use HasFactory<UserActivityDayFactory> */
-    use HasFactory;
+    public const UPDATED_AT = null;
 
     /**
      * @return array<string, string>
@@ -35,9 +36,10 @@ class UserActivityDay extends Model
     protected function casts(): array
     {
         return [
-            'played_on' => 'date',
-            'xp_earned' => 'integer',
-            'frozen' => 'boolean',
+            'source' => XpSource::class,
+            'subject' => SchoolSubject::class,
+            'amount' => 'integer',
+            'created_at' => 'datetime',
         ];
     }
 

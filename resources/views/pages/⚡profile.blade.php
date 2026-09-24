@@ -256,12 +256,11 @@ new #[Title('პროფილი · Kidzio')] class extends Component
 
     <!-- =============== QUICK SHORTCUTS =============== -->
     <section class="px-5 mt-4 grid grid-cols-3 gap-3">
-        {{-- Inert until the streak screen exists (docs/tasks/T11-streaks-and-xp.md). --}}
-        <div class="k-card p-3 text-center">
+        <a href="{{ route('streak') }}" wire:navigate class="k-card p-3 text-center">
             <div class="size-10 rounded-2xl tile-sun grid place-items-center text-xl mx-auto">🔥</div>
             <p class="h-display text-lg mt-1">{{ $streak }}</p>
             <p class="text-[11px] text-muted font-extrabold">{{ __('profile.day_streak') }}</p>
-        </div>
+        </a>
         <a href="{{ route('xp-progress') }}" wire:navigate class="k-card p-3 text-center">
             <div class="size-10 rounded-2xl tile-violet grid place-items-center text-xl mx-auto">⭐</div>
             <p class="h-display text-lg mt-1">{{ $this->formattedXp() }}</p>
@@ -405,8 +404,12 @@ new #[Title('პროფილი · Kidzio')] class extends Component
     <section class="px-5 mt-5">
         <p class="section-label">{{ __('profile.quick_links') }}</p>
         <div class="mt-3 space-y-2">
-            {{-- Daily-streak row dropped: it only navigated, and the streak count is already
-                 live in the shortcut above (docs/tasks/T11-streaks-and-xp.md). --}}
+            <a href="{{ route('streak') }}" wire:navigate class="menu-row">
+                <div class="menu-ico tile-sun">🔥</div>
+                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.daily_streak') }}</p>
+                <span class="chip chip-sun">🔥 {{ $streak }}</span>
+                <i class="ph ph-caret-right text-muted"></i>
+            </a>
             <a href="{{ route('xp-progress') }}" wire:navigate class="menu-row">
                 <div class="menu-ico tile-violet">📈</div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.xp_progress') }}</p>

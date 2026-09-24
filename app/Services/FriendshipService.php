@@ -187,4 +187,66 @@ class FriendshipService
             avatars: $avatars,
         );
     }
+
+    /**
+     * @return list<array{name: string, avatar: string, streak: int, longest: int, isYou: bool, subtitle: string}>
+     */
+    public function friendFlames(User $user): array
+    {
+        $youStat = $this->userStats->ensureFor($user);
+        $rows = [[
+            'user' => $user,
+            'streak' => $youStat->current_streak,
+            'longest' => $youStat->longest_streak,
+            'isYou' => true,
+        ]];
+
+        foreach ($this->friendships->acceptedFriends($user) as $friend) {
+            $stat = $this->userStats->ensureFor($friend);
+            $rows[] = [
+                'user' => $friend,
+                'streak' => $stat->current_streak,
+                'longest' => $stat->longest_streak,
+                'isYou' => false,
+            ];
+        }
+
+        usort($rows, function (array $a, array $b): int {
+            if ($a['streak'] !== $b['streak']) {
+                return $b['streak'] <=> $a['streak'];
+            }
+
+            if ($a['longest'] !== $b['longest']) {
+                return $b['longest'] <=> $a['longest'];
+            }
+
+            return $a['user']->id <=> $b['user']->id;
+        });
+
+        $flames = [];
+
+        foreach ($rows as $index => $row) {
+            /** @var User $member */
+            $member = $row['user'];
+            $rank = $index + 1;
+            $subtitle = $row['isYou']
+                ? ($rank === 1
+                    ? (string) __('streak.you_lead')
+                    : (string) __('streak.beat_to_place', ['place' => $rank - 1]))
+                : (string) __('streak.longest_days', ['n' => $row['longest']]);
+
+            $flames[] = [
+                'name' => $row['isYou']
+                    ? (string) __('streak.you_name', ['name' => $member->name])
+                    : $member->name,
+                'avatar' => $this->userStats->avatarFor($member),
+                'streak' => $row['streak'],
+                'longest' => $row['longest'],
+                'isYou' => $row['isYou'],
+                'subtitle' => $subtitle,
+            ];
+        }
+
+        return $flames;
+    }
 }

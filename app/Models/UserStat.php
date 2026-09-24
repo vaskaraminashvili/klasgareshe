@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $xp
  * @property int $current_streak
  * @property int $longest_streak
+ * @property int $streak_freezes
  * @property Carbon|null $last_played_on
  * @property League $league
  * @property Carbon|null $created_at
@@ -27,6 +28,7 @@ use Illuminate\Support\Carbon;
     'xp',
     'current_streak',
     'longest_streak',
+    'streak_freezes',
     'last_played_on',
     'league',
 ])]
@@ -44,6 +46,7 @@ class UserStat extends Model
             'xp' => 0,
             'current_streak' => 0,
             'longest_streak' => 0,
+            'streak_freezes' => 0,
             'last_played_on' => null,
             'league' => League::Bronze,
         ];
@@ -58,6 +61,7 @@ class UserStat extends Model
             'xp' => 'integer',
             'current_streak' => 'integer',
             'longest_streak' => 'integer',
+            'streak_freezes' => 'integer',
             'last_played_on' => 'date',
             'league' => League::class,
         ];

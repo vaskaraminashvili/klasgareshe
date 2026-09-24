@@ -26,6 +26,16 @@ class WeekPlanService
         return $user->grade ?? SchoolGrade::First;
     }
 
+    public function findItem(int $id): ?WeekPlanItem
+    {
+        return $this->plans->find($id);
+    }
+
+    public function dailyMissionJustCompleted(User $user): bool
+    {
+        return count($this->plans->subjectsCompletedToday($user)) >= self::MISSION_TOTAL;
+    }
+
     /**
      * Active curriculum week: lowest week with incomplete packs, or the last
      * seeded week when everything is done.

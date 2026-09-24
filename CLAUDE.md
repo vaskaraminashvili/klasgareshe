@@ -46,10 +46,10 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 - Edit profile (`/edit-profile`): name, nickname, avatar emoji, age, gender, class 1–3, favourite subject, daily goal, privacy toggles. Parent email read-only with a link to PIN-gated `/parent-email` (pending-email re-verify). Password reset is live (parent email code). Delete goes to `/delete-account` (PIN + email code). **`show_on_leaderboard` is enforced** on `/leaderboard` (and weekly XP ranking queries); friends + league stay visible.
 - Monthly goals (`/monthly-goals`): system goals for the calendar month (packs / XP / streak / badges) from live stats. Add/custom goals deferred.
 - Friends ranking (`/ranking-friends`): add by nickname (auto-accept v1), XP podium + list among friends. Parent approval later.
-- Daily mission (`/daily-mission`, `pages::daily-mission`): **3 today tasks** (next pack per subject, or done if already played today). Gift box / share / bonus markup only.
-- Week plan: `week_plan_items` + `user_plan_progress`. Curriculum weeks 1–2 seeded for grades 1–3; **week 3** for class 1 (`WeekPlanSeeder`, `locale=ka`). Active week = lowest week with incomplete packs; advances to N+1 when N is fully done; stays on last seeded week when all complete. Catch-up: first incomplete weekday per subject within the active week; progress is not wiped on Monday. Completing a pack calls `UserStatService::recordPlay()`.
+- Daily mission (`/daily-mission`, `pages::daily-mission`): **3 today tasks** (next pack per subject, or done if already played today). Completing all 3 subjects today awards +120 XP once. Gift box / share / bonus markup only.
+- Week plan: `week_plan_items` + `user_plan_progress`. Curriculum weeks 1–2 seeded for grades 1–3; **week 3** for class 1 (`WeekPlanSeeder`, `locale=ka`). Active week = lowest week with incomplete packs; advances to N+1 when N is fully done; stays on last seeded week when all complete. Catch-up: first incomplete weekday per subject within the active week; progress is not wiped on Monday. Completing a pack calls `UserStatService::awardXp()`.
 - Quick Quiz (`/game-multiple-choice/{item}`): that pack’s 5 Georgian questions, 3 lives, XP on finish. Bare `/game-multiple-choice` redirects to the next incomplete item. Finishing a pack evaluates badges and may redirect to `/badge-unlock/{slug}`.
-- Badges (`/badges`, `pages::badges`) + unlock (`/badge-unlock/{slug}`): 21 Kidzio badges, Georgian names, immediate unlock + one-time celebration. Speed Runner and Social Star stay locked. Rewards tab opens the collection. Shop / claim queue / Rewards dashboard are later.
+- Badges (`/badges`, `pages::badges`) + unlock (`/badge-unlock/{slug}`): 21 Kidzio badges, Georgian names, immediate unlock + one-time celebration. Speed Runner unlocks on a full pack finished under 2 minutes. Social Star stays locked. Rewards tab opens the collection. Shop / claim queue / Rewards dashboard are later.
 
 **Ordered plan: `docs/roadmap.md`** — 22 tasks in build order, one brief per task in `docs/tasks/`.
 Read it before starting work; update the task's status and this section when one ships.
@@ -62,14 +62,20 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
 - Blocks whose backend does not exist were **deleted**, each leaving a one-line Blade comment naming
   the block and the task that re-ports it. Copy the markup back from `kidzio/{screen}.html` when you
   get there. Elements that showed live data but had no link target were kept and made inert.
-- Home search is real: `SearchService::homeCatalog()` renders 13 Georgian destinations into
+- Home search is real: `SearchService::homeCatalog()` renders 14 Georgian destinations into
   `<script type="application/json" id="searchIndex">`, which `public/assets/js/home.js` reads.
 - Settings (`/settings`, `pages::settings`): dark mode (layout JS), notification prefs + reminder
   time, daily goal, favourite subjects, privacy toggles, locked Georgian locale, parent zone, parent
   email, delete account. Search filters the visible rows. Accent / sound / difficulty / support are
   hidden until **T21** / **T19**. Delivery of the saved notification prefs is **T16**.
+- Streaks & XP (`/streak`, `pages::streak`): current / best streak, week dots, month map from
+  `user_activity_days`, milestones 3 / 7 / 14 / 30 / 100, freeze earned at 7 days (auto-consumed on
+  a 1-day gap). Home, Profile, and Daily mission link here. `awardXp` writes `xp_events`; `/xp-progress`
+  lists real sources and subjects. Combo (+20) and speed (+20, Speed Runner) apply on a 5-question
+  pack. Daily mission complete is +120 once/day. Login-calendar XP (`awardDailyLogin`, +10→+100) is
+  ready for **T13**.
 
-Build next: **T11** streaks & XP completeness.
+Build next: **T12** mini-games batch 1.
 (**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---
@@ -123,6 +129,7 @@ Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/
 | `parent-email.html` | `pages::parent-email` | `parent-email` | `/parent-email` |
 | — | `pages::delete-account` | `delete-account` | `/delete-account` |
 | `settings.html` | `pages::settings` | `settings` | `/settings` |
+| `streak.html` | `pages::streak` | `streak` | `/streak` |
 | `index.html` (splash) | not built yet; back buttons use `home` | `home` | `/` |
 | any other `{name}.html` | `pages::{name}` (kebab-case) | `{name}` | `/{name}` unless a name already exists |
 

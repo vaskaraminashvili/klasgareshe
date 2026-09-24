@@ -21,7 +21,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ## Where we are (2026-08-31)
 
-**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3 → ქართული · მათემატიკა · ისტორია → daily goal → notifications), parent-verify, logout. Home / Profile / Daily mission / Edit profile / Monthly goals / Friends ranking ported and mostly live. Home greeting, streak / XP / league ribbon, week dots from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3) plus **week 3 for class 1** seeded in Georgian; active week = lowest incomplete week. Daily mission = **3 today tasks** (1 pack per subject; done if that subject was played today). Completing a pack → `recordPlay` + badge eval. Ranking hub live (Global / Weekly / League / Friends). Profile hero, mastery, week activity, friends strip, monthly-goals chip live. Badges: 21-catalog + unlock celebration; Rewards tab → `/badges`. Learn tab (`/learn-categories`) is a dummy library shell.
+**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3 → ქართული · მათემატიკა · ისტორია → daily goal → notifications), parent-verify, logout. Home / Profile / Daily mission / Edit profile / Monthly goals / Friends ranking / Settings / Streak ported and mostly live. Home greeting, streak / XP / league ribbon, week dots from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3) plus **week 3 for class 1** seeded in Georgian; active week = lowest incomplete week. Daily mission = **3 today tasks** (1 pack per subject; done if that subject was played today). Completing a pack → `awardXp` + badge eval. Ranking hub live (Global / Weekly / League / Friends). Profile hero, mastery, week activity, friends strip, monthly-goals chip live. Badges: 21-catalog + unlock celebration (Speed Runner on a sub-2-minute pack); Rewards tab → `/badges`. Learn tab (`/learn-categories`) is a dummy library shell.
 
 ### Still static / dummy (do not treat as done)
 
@@ -34,16 +34,16 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Tab bar** | Learn → `/learn-categories` (library shell; dummy catalog). Rewards opens badges, not a Rewards dashboard. |
 | **Home — social** | Friends-today feed removed (was Leo / Ana rows + fake streak chips) — no real activity feed yet. |
 | **Home — games** | Word-search + counting featured tiles removed; only Quick Quiz is playable. |
-| **Home — search** | Overlay + results are **live** over 12 real destinations (`SearchService`). Recent / popular chips and voice search removed — no query history, no Georgian speech model. |
+| **Home — search** | Overlay + results are **live** over 14 real destinations (`SearchService`). Recent / popular chips and voice search removed — no query history, no Georgian speech model. |
 | **Home — notifications** | Bell, unread badge and the whole sheet removed — no notification backend. |
-| **Home — misc** | Streak ribbon / card are inert (live numbers, no streak page). PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. Parent tip is live (week figures + link to PIN-gated `/weekly-report`). |
-| **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards, hardcoded **+120 XP** chips — markup only. |
-| **Profile** | Rewards-dashboard row, share button, streak menu row and the “online” chip all removed pending their tasks. Settings gear + row go to `/settings`. Parent **controls**, **screen time**, and **weekly report** rows are live (PIN-gated). Achievements timeline beyond recent badges not built. |
+| **Home — misc** | PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. Parent tip is live (week figures + link to PIN-gated `/weekly-report`). Streak ribbon / week card open `/streak`. |
+| **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards still markup. **+120 XP** is awarded once when all 3 subjects are done today. |
+| **Profile** | Rewards-dashboard row, share button, and the “online” chip all removed pending their tasks. Streak shortcut + menu row open `/streak`. Settings gear + row go to `/settings`. Parent **controls**, **screen time**, and **weekly report** rows are live (PIN-gated). Achievements timeline beyond recent badges not built. |
 | **Edit profile** | Camera / change-avatar badge not built. Password reset is live. Parent email change and delete are PIN-gated. |
 | **Auth** | Phone login, social (Google / Apple / Facebook). Parent-verify “change email” / “get help” chips dead. Password reset is live. Terms / Privacy screens are live. |
-| **Badges / rewards** | Speed Runner + Social Star never unlock. Share badge / unlock share = toast markup. Badges “Rewards” chip → `#`. No Rewards dashboard, claim queue, daily-login calendar, or XP shop. |
+| **Badges / rewards** | Social Star never unlocks. Share badge / unlock share = toast markup. Badges “Rewards” chip → `#`. No Rewards dashboard, claim queue, daily-login calendar UI, or XP shop. Speed Runner unlocks on a 5-question pack finished in under 2 minutes. |
 | **Ranking / privacy** | Global leaderboard honors `show_on_leaderboard`. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. `/ranking-friends` filter tabs (all / online / streak / near) are inert, and presence (“N online”) was removed as fake. |
-| **XP / streaks** | No dedicated streak screen / month calendar / streak freeze. XP history activity log TODO (`xp-progress` subject/source placeholders). Combo / speed bonus / difficulty setting not scored. Mission-complete bonus XP not awarded beyond pack `recordPlay`. |
+| **XP / streaks** | Streak screen live (`/streak`): month map, best streak, freeze at 7-day milestone. Combo / speed bonus scored on full packs. Mission-complete +120 awarded once/day. Login-calendar XP rule exists (`awardDailyLogin`); UI is **T13**. Difficulty setting not scored. |
 | **Learn library** | Tab shell ported (`pages::learn-categories`); subject screens (math / alphabet / animals / words / …), lessons, chapters — not started. Spotlight / stats / tiles still dummy. |
 | **Other mini-games** | Everything except Quick Quiz (tap-correct, counting, trace, spell, word-search, …) — not started. |
 | **Parent zone** | PIN gate, dashboard week numbers + daily minutes chart, preferred subjects, change/reset PIN, screen time, bedtime lock, weekly/full reports, PDF/JSON export, parent email change, and delete account are live. Monthly goals page is live (system goals); parent custom targets later. |
@@ -140,15 +140,15 @@ Reusable later from Settings.
 
 Core loop: play → earn XP → level up → climb ranks.
 
-- [~] Award XP for lessons, games, missions, streaks, login calendar — Quick Quiz calls `recordPlay`; other actions do not yet
-- [~] Show XP on home, profile, rewards, leaderboard — home + leaderboard + xp-progress live; profile/rewards still partly dummy
+- [x] Award XP for lessons, games, missions, streaks, login calendar — `awardXp` + `xp_events`; login UI is **T13**
+- [x] Show XP on home, profile, rewards, leaderboard — home + leaderboard + xp-progress live
 - [x] Daily / weekly XP totals — stored and shown on xp-progress / weekly ranking
 - [x] Level system (e.g. Lv 7 Explorer → Lv 8 Master) with XP-to-next
 - [x] League stored on `user_stats`; weekly seasons with promote/relegate
-- [~] XP history (last 7 days chart live; activity log still TODO)
+- [x] XP history (last 7 days chart + source/subject log from `xp_events`)
 - [ ] Difficulty setting: Easy / Medium / Hard (affects questions and XP)
 - [ ] Kid ratings / score per quiz (correct answers, beat yesterday)
-- [ ] Combo / speed bonus (e.g. 5-in-a-row extra XP)
+- [x] Combo / speed bonus (e.g. 5-in-a-row extra XP)
 
 Suggested XP examples from the template (tune later):
 
@@ -266,12 +266,12 @@ Shared game rules:
 
 ## 10. Streaks
 
-- [~] Daily streak counter (keep flame by finishing a daily check-in) — `current_streak` stored + shown on Home; `recordPlay` bumps it; no dedicated streak screen
-- [~] Week view (days hit / missed) — Home week dots live
-- [ ] Month calendar (streak map)
-- [~] Best streak — `longest_streak` stored, not shown
-- [ ] Milestones: 3, 7, 14, 30, 100 days (XP + badges)
-- [ ] Streak freeze / streak shield (save flame 1×)
+- [x] Daily streak counter (keep flame by finishing a daily check-in)
+- [x] Week view (days hit / missed) — Home week dots + `/streak`
+- [x] Month calendar (streak map)
+- [x] Best streak — `longest_streak` shown on `/streak`
+- [x] Milestones: 3, 7, 14, 30, 100 days (XP + badges)
+- [x] Streak freeze / streak shield (save flame 1×; earned at 7-day milestone, shop later)
 - [ ] Streak reminder notification (default ~6 PM, configurable)
 
 ---

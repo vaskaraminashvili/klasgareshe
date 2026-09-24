@@ -1,7 +1,7 @@
 # T11 — Streaks & XP completeness
 
 **Priority:** P1 · core product
-**Status:** not started
+**Status:** done
 **Depends on:** T02
 
 ## Why now
@@ -13,32 +13,32 @@ table lists eight earning actions; we award one.
 
 ## Scope — streak screen
 
-- [ ] `pages::streak` from `kidzio/streak.html` → `/streak`
-- [ ] Current streak, best streak (`longest_streak` is stored but never shown)
-- [ ] Week view (reuse the Home dots) + **month calendar** streak map from `user_activity_days`
-- [ ] Milestones 3 / 7 / 14 / 30 / 100 days with XP + badge awards
-- [ ] Streak freeze / shield: one save, consumable. Decide where it comes from — earned at a
+- [x] `pages::streak` from `kidzio/streak.html` → `/streak`
+- [x] Current streak, best streak (`longest_streak` is stored but never shown)
+- [x] Week view (reuse the Home dots) + **month calendar** streak map from `user_activity_days`
+- [x] Milestones 3 / 7 / 14 / 30 / 100 days with XP + badge awards
+- [x] Streak freeze / shield: one save, consumable. Decide where it comes from — earned at a
       milestone now, purchasable in **T20** later.
-- [ ] Restore the three Home streak links neutralized in T02
+- [x] Restore the three Home streak links neutralized in T02
 
 ## Scope — XP earning parity
 
 Award XP for the actions the UI already advertises, via `UserStatService` so streak/league/badges
 all update through one path:
 
-- [ ] Daily mission complete (+120) — currently not awarded beyond the packs themselves
-- [ ] Streak milestones (+20 / +50 / +100)
-- [ ] 7-day daily-login calendar (+10 → +100) — the calendar UI is **T13**; the award rule belongs
+- [x] Daily mission complete (+120) — currently not awarded beyond the packs themselves
+- [x] Streak milestones (+20 / +50 / +100)
+- [x] 7-day daily-login calendar (+10 → +100) — the calendar UI is **T13**; the award rule belongs
       here
-- [ ] Combo / 5-in-a-row bonus inside a pack
-- [ ] Speed bonus (+20) — this also unblocks the **Speed Runner** badge, which currently can never
+- [x] Combo / 5-in-a-row bonus inside a pack
+- [x] Speed bonus (+20) — this also unblocks the **Speed Runner** badge, which currently can never
       unlock
-- [ ] Record each award with a source so XP history stops using placeholders
+- [x] Record each award with a source so XP history stops using placeholders
 
 ## Scope — XP history
 
-- [ ] `xp_events` table: `user_id`, `source` (enum), `subject`, `amount`, `created_at`
-- [ ] `/xp-progress` activity log reads real rows (the 7-day chart is already live; the subject and
+- [x] `xp_events` table: `user_id`, `source` (enum), `subject`, `amount`, `created_at`
+- [x] `/xp-progress` activity log reads real rows (the 7-day chart is already live; the subject and
       source labels are placeholders)
 
 ## Code touchpoints

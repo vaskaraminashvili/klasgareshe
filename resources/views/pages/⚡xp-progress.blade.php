@@ -39,6 +39,12 @@ new class extends Component
 
     public string $chartJson = '[]';
 
+    /** @var list<array{label: string, emoji: string, tile: string, amount: int, percent: int}> */
+    public array $sourceRows = [];
+
+    /** @var list<array{label: string, emoji: string, tile: string, amount: int, percent: int}> */
+    public array $subjectRows = [];
+
     public function title(): string
     {
         return __('ranking.xp_page_title');
@@ -68,6 +74,8 @@ new class extends Component
         $this->quietDayLabel = $snap->quietDayLabel;
         $this->activeDays = $snap->activeDays;
         $this->chartJson = $snap->chartJson;
+        $this->sourceRows = $snap->sourceRows;
+        $this->subjectRows = $snap->subjectRows;
     }
 };
 ?>
@@ -195,9 +203,20 @@ new class extends Component
     <section class="px-5 mt-5">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('ranking.xp_by_subject') }}</h2>
-            <span class="link cursor-default">{{ __('ranking.subjects_placeholder') }}</span>
+            <span class="link cursor-default">{{ __('ranking.this_week') }}</span>
         </div>
-        <div class="k-card p-4 text-center text-sm text-muted">{{ __('ranking.subjects_placeholder') }}</div>
+        <div class="k-card p-4 space-y-3">
+            @forelse ($subjectRows as $row)
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="size-9 rounded-xl {{ $row['tile'] }} grid place-items-center text-lg shrink-0">{{ $row['emoji'] }}</span>
+                    <span class="grow font-extrabold text-ink">{{ $row['label'] }}</span>
+                    <span class="text-muted text-xs">{{ __('ranking.xp_amount', ['xp' => number_format($row['amount'])]) }}</span>
+                    <span class="trend-pill">{{ $row['percent'] }}%</span>
+                </div>
+            @empty
+                <p class="text-center text-sm text-muted">{{ __('xp.empty_subjects') }}</p>
+            @endforelse
+        </div>
     </section>
 
     <section class="px-5 mt-5">
@@ -230,7 +249,18 @@ new class extends Component
             <h2 class="h-display text-lg">{{ __('ranking.where_xp_comes') }}</h2>
             <span class="link cursor-default">{{ __('ranking.this_week') }}</span>
         </div>
-        <div class="k-card p-4 text-center text-sm text-muted">{{ __('ranking.sources_placeholder') }}</div>
+        <div class="k-card p-4 space-y-3">
+            @forelse ($sourceRows as $row)
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="size-9 rounded-xl {{ $row['tile'] }} grid place-items-center text-lg shrink-0">{{ $row['emoji'] }}</span>
+                    <span class="grow font-extrabold text-ink">{{ $row['label'] }}</span>
+                    <span class="text-muted text-xs">{{ __('ranking.xp_amount', ['xp' => number_format($row['amount'])]) }}</span>
+                    <span class="trend-pill">{{ $row['percent'] }}%</span>
+                </div>
+            @empty
+                <p class="text-center text-sm text-muted">{{ __('xp.empty_sources') }}</p>
+            @endforelse
+        </div>
     </section>
 
     <section class="px-5 mt-5">

@@ -81,12 +81,8 @@ new class extends Component
 
         $reports = app(ProgressReportService::class);
         $reportWeek = $reports->weekSnapshot($user);
-        $this->weekActiveDays = $reportWeek->figures->activeDays;
-        $this->weekDays = array_map(fn ($day) => [
-            'letter' => $day->letter,
-            'on' => $day->xp > 0 || $day->packs > 0,
-            'today' => $day->today,
-        ], $reportWeek->days);
+        $this->weekActiveDays = $home->weekActiveDays;
+        $this->weekDays = $home->weekDays;
         $this->missionDone = $plan->missionDone;
         $this->missionTotal = $plan->missionTotal;
         $this->hoursLeft = $plan->hoursLeft;
@@ -156,11 +152,10 @@ new class extends Component
     <livewire:profile-header />
     <!-- =============== QUICK STATS RIBBON =============== -->
     <section class="px-5 mt-5 grid grid-cols-3 gap-2">
-        {{-- Inert until the streak screen exists (docs/tasks/T11-streaks-and-xp.md). --}}
-        <div class="stat items-start">
+        <a href="{{ route('streak') }}" wire:navigate class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">🔥 {{ __('home.streak') }}</span>
             <span class="stat-value">{{ $streak }} <span class="text-xs font-bold text-muted">{{ __('home.days') }}</span></span>
-        </div>
+        </a>
         <a href="{{ route('xp-progress') }}" wire:navigate class="stat items-start hover:ring-primary transition">
             <span class="stat-label flex items-center gap-1">⭐ {{ __('home.xp') }}</span>
             <span class="stat-value" id="xpStat" data-target="{{ $xp }}">0</span>
@@ -209,8 +204,7 @@ new class extends Component
             <p class="text-xs text-muted">{{ __('home.week_progress', ['done' => $weekCompleted, 'total' => $weekTotal]) }}</p>
             <div class="progress progress-mint mt-2"><span style="width:{{ $this->weekProgressPercent() }}%"></span></div>
         </a>
-        {{-- Inert until the streak screen exists (docs/tasks/T11-streaks-and-xp.md). --}}
-        <div class="k-card p-4 relative overflow-hidden">
+        <a href="{{ route('streak') }}" wire:navigate class="k-card p-4 relative overflow-hidden">
             <div class="flex items-center gap-2">
                 <div class="size-9 rounded-xl tile-sun grid place-items-center">🔥</div>
                 <span class="text-xs font-extrabold text-sun-ink">{{ __('home.this_week') }}</span>
@@ -221,7 +215,7 @@ new class extends Component
                     <span class="streak-dot{{ $day['on'] ? ' on' : '' }}{{ $day['today'] ? ' today' : '' }} opacity-0 transition-all duration-300">{{ $day['letter'] }}</span>
                 @endforeach
             </div>
-        </div>
+        </a>
     </section>
 
     <!-- =============== TODAY'S PLAN (new section) =============== -->

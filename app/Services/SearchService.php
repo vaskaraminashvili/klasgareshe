@@ -19,6 +19,7 @@ class SearchService
         'monthly_goals' => ['monthly-goals', '🗓️', 'tile-mint'],
         'friends' => ['ranking-friends', '👫', 'tile-sky'],
         'settings' => ['settings', '⚙️', 'tile-mint'],
+        'streak' => ['streak', '🔥', 'tile-sun'],
     ];
 
     /**

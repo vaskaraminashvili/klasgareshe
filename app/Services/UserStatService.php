@@ -6,8 +6,11 @@ use App\Data\HomeStats;
 use App\Data\LeaderboardEntry;
 use App\Data\LeaderboardSnapshot;
 use App\Data\ProfileSnapshot;
+use App\Data\StreakSnapshot;
 use App\Data\XpProgressSnapshot;
 use App\Enums\SchoolGrade;
+use App\Enums\SchoolSubject;
+use App\Enums\XpSource;
 use App\Models\User;
 use App\Models\UserStat;
 use App\Repositories\UserStatRepository;
@@ -19,6 +22,17 @@ class UserStatService
 {
     /** @var list<string> */
     private const AVATARS = ['🐻', '🦊', '🐰', '🐼', '🐨', '🦄', '🐢', '🦁', '🐸', '🐯'];
+
+    private const FREEZE_CAP = 3;
+
+    /** @var array<int, int> */
+    private const MILESTONE_XP = [3 => 20, 7 => 50, 14 => 100];
+
+    /** @var array<int, int> */
+    private const LOGIN_XP = [1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 70, 7 => 100];
+
+    /** @var list<int> */
+    private const MILESTONE_DAYS = [3, 7, 14, 30, 100];
 
     public function __construct(
         private UserStatRepository $stats,
@@ -168,6 +182,8 @@ class UserStatService
             activeDays: $activeDays,
             chartDays: $chartDays,
             chartJson: json_encode($chartDays, JSON_THROW_ON_ERROR),
+            sourceRows: $this->xpBreakdown($user, $start->toDateString(), $end->toDateString(), 'source'),
+            subjectRows: $this->xpBreakdown($user, $start->toDateString(), $end->toDateString(), 'subject'),
         );
     }
 
@@ -235,39 +251,203 @@ class UserStatService
 
     public function recordPlay(User $user, int $xp = 0, ?CarbonInterface $playedOn = null, bool $skipEvaluate = false): UserStat
     {
-        if ($xp < 0) {
+        unset($skipEvaluate);
+
+        return $this->awardXp($user, XpSource::Pack, $xp, $playedOn);
+    }
+
+    public function awardXp(
+        User $user,
+        XpSource $source,
+        int $amount,
+        ?CarbonInterface $playedOn = null,
+        ?SchoolSubject $subject = null,
+        ?string $context = null,
+        bool $countsAsPlay = true,
+    ): UserStat {
+        if ($amount < 0) {
             throw new InvalidArgumentException('XP cannot be negative.');
         }
 
-        unset($skipEvaluate);
-
-        $on = CarbonImmutable::parse($playedOn ?? now())->startOfDay();
+        $at = CarbonImmutable::parse($playedOn ?? now());
+        $on = $at->startOfDay();
         $onDate = $on->toDateString();
+
+        if ($context !== null && $this->stats->hasXpEvent($user, $source, $context)) {
+            return $this->ensureFor($user);
+        }
+
         $stat = $this->ensureFor($user);
+        $previousStreak = $stat->current_streak;
 
-        $this->stats->addDayXp($user, $onDate, $xp);
+        if ($countsAsPlay) {
+            $this->consumeFreezeForGap($user, $on);
+            $stat = $this->ensureFor($user);
+        }
 
+        if ($amount > 0) {
+            $this->stats->createXpEvent($user, $source, $amount, $subject, $context, $at);
+            $this->stats->addDayXp($user, $onDate, $amount);
+            $this->leagues->addWeekXp($user, $amount);
+        } elseif ($countsAsPlay) {
+            $this->stats->addDayXp($user, $onDate, 0);
+        }
+
+        $attributes = ['xp' => $stat->xp + $amount];
+        $streakChanged = false;
+
+        if ($countsAsPlay) {
+            $lastDate = $stat->last_played_on?->toDateString();
+            $streak = $stat->current_streak;
+
+            if ($lastDate !== $onDate) {
+                $streak = $lastDate === $on->subDay()->toDateString()
+                    ? $stat->current_streak + 1
+                    : 1;
+            }
+
+            $streakChanged = $streak !== $previousStreak;
+            $attributes['current_streak'] = $streak;
+            $attributes['longest_streak'] = max($stat->longest_streak, $streak);
+            $attributes['last_played_on'] = $onDate;
+        }
+
+        $updated = $this->stats->update($stat, $attributes);
+
+        if ($streakChanged) {
+            $this->grantMilestones($user, (int) $updated->current_streak, $at);
+        }
+
+        return $this->ensureFor($user);
+    }
+
+    public function awardDailyLogin(User $user, ?CarbonInterface $on = null): int
+    {
+        $at = CarbonImmutable::parse($on ?? now());
+        $date = $at->toDateString();
+
+        if ($this->stats->hasXpEvent($user, XpSource::DailyLogin, $date)) {
+            return 0;
+        }
+
+        $weekStart = $at->startOfWeek(CarbonImmutable::MONDAY);
+        $logged = array_flip($this->stats->eventDatesBetween(
+            $user,
+            XpSource::DailyLogin,
+            $weekStart->toDateString(),
+            $date,
+        ));
+
+        $consecutive = 1;
+        for ($i = 1; $i < 7; $i++) {
+            $prev = $at->subDays($i)->toDateString();
+            if ($prev < $weekStart->toDateString() || ! isset($logged[$prev])) {
+                break;
+            }
+            $consecutive++;
+        }
+
+        $amount = self::LOGIN_XP[min(7, $consecutive)];
+        $this->awardXp($user, XpSource::DailyLogin, $amount, $at, context: $date, countsAsPlay: false);
+
+        return $amount;
+    }
+
+    public function useFreeze(User $user, ?CarbonInterface $on = null): bool
+    {
+        $on = CarbonImmutable::parse($on ?? now())->startOfDay();
+
+        return $this->consumeFreezeForGap($user, $on);
+    }
+
+    /**
+     * @param  list<array{name: string, avatar: string, streak: int, longest: int, isYou: bool, subtitle: string}>  $friendFlames
+     */
+    public function streakSnapshot(User $user, array $friendFlames = []): StreakSnapshot
+    {
+        $stat = $this->ensureFor($user);
+        $week = $this->weekActivity($user);
+        $today = CarbonImmutable::now()->toDateString();
+        $playedToday = $stat->last_played_on?->toDateString() === $today;
+        $monthStart = CarbonImmutable::now()->startOfMonth();
+        $monthEnd = $monthStart->endOfMonth();
+        $played = array_flip($this->stats->playedDatesBetween($user, $monthStart->toDateString(), $monthEnd->toDateString()));
+        $firstPlayed = $this->stats->firstPlayedOn($user);
+        $monthHits = count($played);
+
+        $weekStart = CarbonImmutable::now()->startOfWeek(CarbonImmutable::MONDAY);
+        $weekDays = [];
+        foreach ($week['days'] as $i => $day) {
+            $date = $weekStart->addDays($i);
+            $on = $day['on'];
+            $weekDays[] = [
+                'letter' => $day['letter'],
+                'on' => $on,
+                'today' => $day['today'],
+                'dayNum' => (int) $date->format('j'),
+                'ico' => $on ? '🔥' : ($day['today'] ? '🎯' : '·'),
+            ];
+        }
+
+        $chart = [];
+        foreach ($weekDays as $day) {
+            $chart[] = ['label' => $day['letter'], 'done' => $day['on']];
+        }
+
+        $pad = ((int) $monthStart->dayOfWeekIso) - 1;
+        $cells = [];
+        for ($i = 0; $i < $pad; $i++) {
+            $cells[] = ['empty' => true, 'day' => 0, 'on' => false, 'miss' => false, 'today' => false];
+        }
+
+        $daysInMonth = (int) $monthEnd->format('j');
+        for ($d = 1; $d <= $daysInMonth; $d++) {
+            $date = $monthStart->addDays($d - 1)->toDateString();
+            $isToday = $date === $today;
+            $on = array_key_exists($date, $played);
+            $past = $date < $today;
+            $started = $firstPlayed !== null && $date >= $firstPlayed;
+            $cells[] = [
+                'empty' => false,
+                'day' => $d,
+                'on' => $on,
+                'miss' => $past && $started && ! $on,
+                'today' => $isToday,
+            ];
+        }
+
+        $milestones = $this->milestoneRows($stat->current_streak);
+        $milestonesDone = count(array_filter($milestones, fn (array $row): bool => $row['status'] === 'done' || $row['status'] === 'current'));
         $lastDate = $stat->last_played_on?->toDateString();
-        $streak = $stat->current_streak;
+        $missedYesterday = $lastDate === CarbonImmutable::now()->subDays(2)->toDateString();
 
-        if ($lastDate !== $onDate) {
-            $streak = $lastDate === $on->subDay()->toDateString()
-                ? $stat->current_streak + 1
-                : 1;
-        }
-
-        $updated = $this->stats->update($stat, [
-            'xp' => $stat->xp + $xp,
-            'current_streak' => $streak,
-            'longest_streak' => max($stat->longest_streak, $streak),
-            'last_played_on' => $onDate,
-        ]);
-
-        if ($xp > 0) {
-            $this->leagues->addWeekXp($user, $xp);
-        }
-
-        return $updated;
+        return new StreakSnapshot(
+            current: $stat->current_streak,
+            best: $stat->longest_streak,
+            weekActiveDays: $week['activeDays'],
+            weekDays: $weekDays,
+            leagueLabel: $stat->league->label(),
+            playedToday: $playedToday,
+            grewFromYesterday: $playedToday && $stat->current_streak > 1,
+            heroLine: $this->heroLine($stat->current_streak),
+            checkInTitle: $playedToday
+                ? (string) __('streak.checkin_done')
+                : (string) __('streak.checkin_keep'),
+            checkInMeta: $playedToday
+                ? (string) __('streak.checkin_done_meta')
+                : (string) __('streak.checkin_keep_meta'),
+            monthLabel: (string) __('streak.month_map', ['month' => __('streak.months.'.CarbonImmutable::now()->month)]),
+            monthHits: $monthHits,
+            calendarCells: $cells,
+            milestones: $milestones,
+            milestonesDone: $milestonesDone,
+            milestonesTotal: count(self::MILESTONE_DAYS),
+            freezes: $stat->streak_freezes,
+            freezeCap: self::FREEZE_CAP,
+            canUseFreeze: $stat->streak_freezes > 0 && $missedYesterday && ! $playedToday,
+            friendFlames: $friendFlames,
+            chartJson: json_encode($chart, JSON_THROW_ON_ERROR),
+        );
     }
 
     public function avatarFor(User|int $user): string
@@ -282,6 +462,179 @@ class UserStatService
         }
 
         return self::AVATARS[$id % count(self::AVATARS)];
+    }
+
+    private function consumeFreezeForGap(User $user, CarbonImmutable $on): bool
+    {
+        $stat = $this->ensureFor($user);
+
+        if ($stat->streak_freezes < 1) {
+            return false;
+        }
+
+        $lastDate = $stat->last_played_on?->toDateString();
+        $yesterday = $on->subDay()->toDateString();
+
+        if ($lastDate === null || $lastDate === $on->toDateString() || $lastDate === $yesterday) {
+            return false;
+        }
+
+        if ($lastDate !== $on->subDays(2)->toDateString()) {
+            return false;
+        }
+
+        $streak = $stat->current_streak + 1;
+        $this->stats->addDayXp($user, $yesterday, 0, frozen: true);
+        $this->stats->update($stat, [
+            'streak_freezes' => $stat->streak_freezes - 1,
+            'current_streak' => $streak,
+            'longest_streak' => max($stat->longest_streak, $streak),
+            'last_played_on' => $yesterday,
+        ]);
+
+        return true;
+    }
+
+    private function grantMilestones(User $user, int $streak, CarbonInterface $at): void
+    {
+        foreach (self::MILESTONE_XP as $days => $xp) {
+            if ($streak !== $days) {
+                continue;
+            }
+
+            $this->awardXp(
+                $user,
+                XpSource::StreakMilestone,
+                $xp,
+                $at,
+                context: (string) $days,
+                countsAsPlay: false,
+            );
+        }
+
+        if ($streak === 7) {
+            $stat = $this->ensureFor($user);
+            if ($stat->streak_freezes < self::FREEZE_CAP) {
+                $this->stats->update($stat, [
+                    'streak_freezes' => $stat->streak_freezes + 1,
+                ]);
+            }
+        }
+    }
+
+    /**
+     * @return list<array{days: int, name: string, hint: string, status: string, chip: string, ico: string, percent: int}>
+     */
+    private function milestoneRows(int $current): array
+    {
+        $rows = [];
+        $foundCurrent = false;
+
+        foreach (self::MILESTONE_DAYS as $days) {
+            $remaining = max(0, $days - $current);
+            $percent = (int) min(100, floor(($current / $days) * 100));
+            $xp = self::MILESTONE_XP[$days] ?? 0;
+
+            if ($current > $days) {
+                $status = 'done';
+                $chip = (string) __('streak.earned');
+                $hint = $xp > 0
+                    ? (string) __('streak.milestone_xp_unlocked', ['xp' => $xp])
+                    : (string) __('streak.milestone_badge_unlocked');
+            } elseif ($current === $days) {
+                $status = 'current';
+                $foundCurrent = true;
+                $chip = (string) __('streak.today_chip');
+                $hint = $xp > 0
+                    ? (string) __('streak.milestone_xp_today', ['xp' => $xp])
+                    : (string) __('streak.milestone_badge_unlocked');
+            } elseif (! $foundCurrent) {
+                $status = 'current';
+                $foundCurrent = true;
+                $chip = $remaining === 0
+                    ? (string) __('streak.today_chip')
+                    : (string) __('streak.days_short', ['n' => $remaining]);
+                $hint = $xp > 0
+                    ? (string) __('streak.milestone_xp_left', ['xp' => $xp, 'days' => $remaining])
+                    : (string) __('streak.milestone_badge_left', ['days' => $remaining]);
+            } else {
+                $status = 'upcoming';
+                $chip = (string) __('streak.days_short', ['n' => $remaining]);
+                $hint = $xp > 0
+                    ? (string) __('streak.milestone_xp_left', ['xp' => $xp, 'days' => $remaining])
+                    : (string) __('streak.milestone_badge_left', ['days' => $remaining]);
+            }
+
+            $rows[] = [
+                'days' => $days,
+                'name' => (string) __('streak.milestones.'.$days),
+                'hint' => $hint,
+                'status' => $status,
+                'chip' => $chip,
+                'ico' => match (true) {
+                    $days <= 3 => 'bronze',
+                    $days <= 7 => 'silver',
+                    $days <= 30 => 'gold',
+                    default => 'diamond',
+                },
+                'percent' => $percent,
+            ];
+        }
+
+        return $rows;
+    }
+
+    private function heroLine(int $streak): string
+    {
+        return match (true) {
+            $streak <= 0 => (string) __('streak.hero_zero'),
+            $streak === 1 => (string) __('streak.hero_one'),
+            $streak >= 7 => (string) __('streak.hero_fire'),
+            default => (string) __('streak.hero_keep'),
+        };
+    }
+
+    /**
+     * @return list<array{label: string, emoji: string, tile: string, amount: int, percent: int}>
+     */
+    private function xpBreakdown(User $user, string $from, string $to, string $group): array
+    {
+        $totals = [];
+
+        foreach ($this->stats->xpEventsBetween($user, $from, $to) as $event) {
+            if ($group === 'subject') {
+                if (! $event->subject instanceof SchoolSubject) {
+                    continue;
+                }
+                $key = $event->subject->value;
+                $totals[$key]['amount'] = ($totals[$key]['amount'] ?? 0) + $event->amount;
+                $totals[$key]['label'] = $event->subject->label();
+                $totals[$key]['emoji'] = $event->subject->emoji();
+                $totals[$key]['tile'] = $event->subject->tile();
+            } else {
+                $key = $event->source->value;
+                $totals[$key]['amount'] = ($totals[$key]['amount'] ?? 0) + $event->amount;
+                $totals[$key]['label'] = $event->source->label();
+                $totals[$key]['emoji'] = $event->source->emoji();
+                $totals[$key]['tile'] = $event->source->tile();
+            }
+        }
+
+        uasort($totals, fn (array $a, array $b): int => $b['amount'] <=> $a['amount']);
+        $sum = array_sum(array_column($totals, 'amount'));
+        $rows = [];
+
+        foreach ($totals as $row) {
+            $rows[] = [
+                'label' => $row['label'],
+                'emoji' => $row['emoji'],
+                'tile' => $row['tile'],
+                'amount' => $row['amount'],
+                'percent' => $sum > 0 ? (int) round(($row['amount'] / $sum) * 100) : 0,
+            ];
+        }
+
+        return $rows;
     }
 
     private function weekdayLetter(int $isoDay): string

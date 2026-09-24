@@ -34,6 +34,15 @@ new class extends Component
     #[Locked]
     public ?int $planItemId = null;
 
+    #[Locked]
+    public int $combo = 0;
+
+    #[Locked]
+    public int $maxCombo = 0;
+
+    #[Locked]
+    public string $startedAt = '';
+
     public ?int $item = null;
 
     public int $index = 0;
@@ -114,6 +123,9 @@ new class extends Component
         $this->planItemId = $round->weekPlanItemId;
         $this->questionIds = $round->questionIds;
         $this->lives = $round->lives;
+        $this->combo = 0;
+        $this->maxCombo = 0;
+        $this->startedAt = now()->toIso8601String();
         $this->deck = [];
 
         foreach ($play->presentChoices($round->questionIds) as $view) {
@@ -169,8 +181,11 @@ new class extends Component
 
         if ($grade->correct) {
             $this->correctCount++;
+            $this->combo++;
+            $this->maxCombo = max($this->maxCombo, $this->combo);
         } else {
             $this->lives = max(0, $this->lives - 1);
+            $this->combo = 0;
         }
     }
 
@@ -184,7 +199,17 @@ new class extends Component
 
         if ($last || $this->lives === 0) {
             $this->settled = true;
-            $play->award($users->authenticated(), GameType::MultipleChoice, $this->correctCount, $this->planItemId);
+            $elapsed = max(0, (int) now()->diffInSeconds($this->startedAt));
+            $play->award(
+                $users->authenticated(),
+                GameType::MultipleChoice,
+                $this->correctCount,
+                $this->planItemId,
+                $this->maxCombo,
+                $elapsed,
+                count($this->questionIds),
+                $last,
+            );
             $slug = $badges->firstUnseenSlug($users->authenticated());
 
             if (is_string($slug)) {

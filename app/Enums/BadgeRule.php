@@ -16,5 +16,6 @@ enum BadgeRule: string
     case LeagueTopFinish = 'league_top_finish';
     case WeekPacksCompleted = 'week_packs_completed';
     case SubjectAllPerfect = 'subject_all_perfect';
+    case SpeedBonus = 'speed_bonus';
     case Locked = 'locked';
 }

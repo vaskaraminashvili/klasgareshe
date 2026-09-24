@@ -2,9 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Enums\SchoolSubject;
+use App\Enums\XpSource;
 use App\Models\User;
 use App\Models\UserActivityDay;
 use App\Models\UserStat;
+use App\Models\XpEvent;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,7 +33,7 @@ class UserStatRepository
         return $stat->fresh() ?? $stat;
     }
 
-    public function addDayXp(User $user, string $playedOn, int $xp): void
+    public function addDayXp(User $user, string $playedOn, int $xp, bool $frozen = false): void
     {
         $day = UserActivityDay::query()
             ->where('user_id', $user->id)
@@ -42,12 +45,85 @@ class UserStatRepository
                 'user_id' => $user->id,
                 'played_on' => $playedOn,
                 'xp_earned' => 0,
+                'frozen' => $frozen,
             ]);
+        } elseif ($frozen && ! $day->frozen) {
+            $day->update(['frozen' => true]);
         }
 
         if ($xp > 0) {
             $day->increment('xp_earned', $xp);
         }
+    }
+
+    public function hasXpEvent(User $user, XpSource $source, string $context): bool
+    {
+        return XpEvent::query()
+            ->where('user_id', $user->id)
+            ->where('source', $source)
+            ->where('context', $context)
+            ->exists();
+    }
+
+    public function createXpEvent(
+        User $user,
+        XpSource $source,
+        int $amount,
+        ?SchoolSubject $subject,
+        ?string $context,
+        CarbonInterface $at,
+    ): XpEvent {
+        return XpEvent::query()->create([
+            'user_id' => $user->id,
+            'source' => $source,
+            'subject' => $subject,
+            'amount' => $amount,
+            'context' => $context,
+            'created_at' => $at,
+        ]);
+    }
+
+    /**
+     * @return Collection<int, XpEvent>
+     */
+    public function xpEventsBetween(User $user, string $from, string $to): Collection
+    {
+        return XpEvent::query()
+            ->where('user_id', $user->id)
+            ->whereDate('created_at', '>=', $from)
+            ->whereDate('created_at', '<=', $to)
+            ->orderBy('created_at')
+            ->get();
+    }
+
+    public function countXpEvents(User $user, XpSource $source): int
+    {
+        return XpEvent::query()
+            ->where('user_id', $user->id)
+            ->where('source', $source)
+            ->count();
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function eventDatesBetween(User $user, XpSource $source, string $from, string $to): array
+    {
+        $dates = [];
+
+        foreach (XpEvent::query()
+            ->where('user_id', $user->id)
+            ->where('source', $source)
+            ->whereDate('created_at', '>=', $from)
+            ->whereDate('created_at', '<=', $to)
+            ->orderBy('created_at')
+            ->pluck('created_at') as $at) {
+            $dates[] = $at instanceof CarbonInterface
+                ? $at->toDateString()
+                : CarbonImmutable::parse((string) $at)->toDateString();
+        }
+
+        return array_values(array_unique($dates));
     }
 
     /**

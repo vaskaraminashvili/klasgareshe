@@ -75,6 +75,7 @@ return [
     'learn' => 'გაიგე',
     'subjects_placeholder' => 'საგნები მალე',
     'sources_placeholder' => 'წყაროები მალე',
+    'xp_amount' => ':xp XP',
 
     'ranking_week_range' => 'რეიტინგი · :from — :to',
     'weekly_ranking' => 'ყოველკვირეული',

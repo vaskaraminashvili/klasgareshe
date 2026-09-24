@@ -22,6 +22,7 @@ class UserActivityDayFactory extends Factory
             'user_id' => User::factory(),
             'played_on' => fake()->dateTimeBetween('-14 days', 'now')->format('Y-m-d'),
             'xp_earned' => fake()->numberBetween(8, 120),
+            'frozen' => false,
         ];
     }
 

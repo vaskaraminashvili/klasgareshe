@@ -1,12 +1,23 @@
-// Page script for streak.html — extracted from inline <script>.
-// Loaded via <script src="./assets/js/streak.js"></script>.
-
-  KCharts.streak(document.getElementById('streakChart'), [
-    { label: 'Mon', done: true },
-    { label: 'Tue', done: true },
-    { label: 'Wed', done: true },
-    { label: 'Thu', done: true },
-    { label: 'Fri', done: true },
-    { label: 'Sat', done: true },
-    { label: 'Sun', done: false }
-  ]);
+// Page script for streak — reads live week dots from #streakChart[data-days].
+(function () {
+  var el = document.getElementById('streakChart');
+  if (!el || typeof KCharts === 'undefined') return;
+  var days = [];
+  try {
+    days = JSON.parse(el.getAttribute('data-days') || '[]');
+  } catch (e) {
+    days = [];
+  }
+  if (!days.length) {
+    days = [
+      { label: 'M', done: false },
+      { label: 'T', done: false },
+      { label: 'W', done: false },
+      { label: 'T', done: false },
+      { label: 'F', done: false },
+      { label: 'S', done: false },
+      { label: 'S', done: false }
+    ];
+  }
+  KCharts.streak(el, days);
+})();

@@ -10,6 +10,7 @@ use App\Data\RecentBadgeView;
 use App\Enums\BadgeRule;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
+use App\Enums\XpSource;
 use App\Models\Badge;
 use App\Models\User;
 use App\Models\UserBadge;
@@ -40,7 +41,6 @@ class BadgeService
         }
 
         $awarded = [];
-        $bonus = 0;
 
         foreach ($this->badges->catalog() as $badge) {
             if (isset($earnedIds[$badge->id])) {
@@ -53,11 +53,16 @@ class BadgeService
 
             $this->badges->award($user, $badge);
             $awarded[] = $badge->slug;
-            $bonus += $badge->xp_bonus;
-        }
 
-        if ($bonus > 0) {
-            app(UserStatService::class)->recordPlay($user, $bonus, skipEvaluate: true);
+            if ($badge->xp_bonus > 0) {
+                app(UserStatService::class)->awardXp(
+                    $user,
+                    XpSource::Badge,
+                    $badge->xp_bonus,
+                    context: $badge->slug,
+                    countsAsPlay: false,
+                );
+            }
         }
 
         return $awarded;
@@ -321,6 +326,9 @@ class BadgeService
             case BadgeRule::SubjectAllPerfect:
                 $current = $this->plans->hasPerfectSubjectWeek($user, $grade) ? 1 : 0;
                 $target = 1;
+                break;
+            case BadgeRule::SpeedBonus:
+                $current = $this->stats->countXpEvents($user, XpSource::Speed);
                 break;
             case BadgeRule::Locked:
                 $current = 0;
