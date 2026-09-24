@@ -27,7 +27,7 @@ new class extends Component
     public array $weekDays = [];
 
     /**
-     * @var list<array{id: int|null, weekday: int, subject: string, title: string, subtitle: string, completed: bool, playable: bool, emoji: string, completedAt: string|null}>
+     * @var list<array{id: int|null, weekday: int, subject: string, title: string, subtitle: string, completed: bool, playable: bool, emoji: string, completedAt: string|null, href: string}>
      */
     public array $items = [];
 
@@ -84,17 +84,9 @@ new class extends Component
                 'playable' => $item->playable,
                 'emoji' => $item->emoji,
                 'completedAt' => $item->completedAt,
+                'href' => $item->href,
             ];
         }
-    }
-
-    public function quizUrl(?int $itemId): string
-    {
-        if ($itemId === null) {
-            return route('daily-mission');
-        }
-
-        return route('game-multiple-choice', ['item' => $itemId]);
     }
 
     public function missionProgressPercent(): int
@@ -188,7 +180,7 @@ new class extends Component
             <span class="task-xp">{{ __('daily-mission.plus_xp', ['xp' => 40]) }}</span>
           </div>
         @elseif ($item['playable'])
-          <a href="{{ $this->quizUrl($item['id']) }}" wire:navigate class="task current">
+          <a href="{{ $item['href'] }}" wire:navigate class="task current">
             <span class="ribbon">{{ __('daily-mission.now') }}</span>
             <div class="task-ico">{{ $item['emoji'] }}</div>
             <div class="task-body grow">

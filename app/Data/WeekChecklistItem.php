@@ -17,5 +17,6 @@ final readonly class WeekChecklistItem
         public string $emoji,
         public ?string $completedAt,
         public string $subtitle = '',
+        public string $href = '',
     ) {}
 }

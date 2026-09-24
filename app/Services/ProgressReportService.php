@@ -82,6 +82,7 @@ class ProgressReportService
                 masteryPercent: $row->percent,
                 barPercent: (int) round(($packs / $packMax) * 100),
                 nextItemId: $row->nextItemId,
+                href: $row->playHref(),
             );
         }
 
@@ -143,6 +144,7 @@ class ProgressReportService
                 masteryPercent: $row->percent,
                 barPercent: (int) round(($packs / $packMax) * 100),
                 nextItemId: $row->nextItemId,
+                href: $row->playHref(),
             );
         }
 
@@ -592,9 +594,7 @@ class ProgressReportService
                 emoji: '💡',
                 tile: 'tile-coral',
                 chip: (string) __('reports.watch_suggest'),
-                ctaHref: $weak->nextItemId !== null
-                    ? route('game-multiple-choice', ['item' => $weak->nextItemId])
-                    : route('daily-mission'),
+                ctaHref: $weak->href,
                 ctaLabel: (string) __('reports.watch_suggest'),
             );
         }

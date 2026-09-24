@@ -248,7 +248,7 @@ class GameSeeder extends Seeder
                         ['key' => 'D', 'label' => '9', 'value' => 9],
                     ],
                 ],
-                'answer' => ['value' => 8],
+                'answer' => ['key' => 'C', 'value' => 8],
             ],
             [
                 'format' => QuestionFormat::Spell,

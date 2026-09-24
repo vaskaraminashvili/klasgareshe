@@ -33,8 +33,8 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 |---|---|
 | **Tab bar** | Learn → `/learn-categories` (library shell; dummy catalog). Rewards opens badges, not a Rewards dashboard. |
 | **Home — social** | Friends-today feed removed (was Leo / Ana rows + fake streak chips) — no real activity feed yet. |
-| **Home — games** | Word-search + counting featured tiles removed; only Quick Quiz is playable. |
-| **Home — search** | Overlay + results are **live** over 14 real destinations (`SearchService`). Recent / popular chips and voice search removed — no query history, no Georgian speech model. |
+| **Home — games** | Word-search featured tile removed (T19). Counting tile is live. |
+| **Home — search** | Overlay + results are **live** over 15 real destinations (`SearchService`). Recent / popular chips and voice search removed — no query history, no Georgian speech model. |
 | **Home — notifications** | Bell, unread badge and the whole sheet removed — no notification backend. |
 | **Home — misc** | PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. Parent tip is live (week figures + link to PIN-gated `/weekly-report`). Streak ribbon / week card open `/streak`. |
 | **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards still markup. **+120 XP** is awarded once when all 3 subjects are done today. |
@@ -45,7 +45,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Ranking / privacy** | Global leaderboard honors `show_on_leaderboard`. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. `/ranking-friends` filter tabs (all / online / streak / near) are inert, and presence (“N online”) was removed as fake. |
 | **XP / streaks** | Streak screen live (`/streak`): month map, best streak, freeze at 7-day milestone. Combo / speed bonus scored on full packs. Mission-complete +120 awarded once/day. Login-calendar XP rule exists (`awardDailyLogin`); UI is **T13**. Difficulty setting not scored. |
 | **Learn library** | Tab shell ported (`pages::learn-categories`); subject screens (math / alphabet / animals / words / …), lessons, chapters — not started. Spotlight / stats / tiles still dummy. |
-| **Other mini-games** | Everything except Quick Quiz (tap-correct, counting, trace, spell, word-search, …) — not started. |
+| **Other mini-games** | Trace, spell, word-search, match, habitats, … — **T19**. Tap-correct and counting are live. |
 | **Parent zone** | PIN gate, dashboard week numbers + daily minutes chart, preferred subjects, change/reset PIN, screen time, bedtime lock, weekly/full reports, PDF/JSON export, parent email change, and delete account are live. Monthly goals page is live (system goals); parent custom targets later. |
 | **Settings / legal / PWA** | Settings page live (`/settings`); notification prefs editable but not delivered. FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
 | **Content ops** | Week **3** is class 1 only; week 3 for grades 2–3 and week **4+** not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
@@ -173,14 +173,14 @@ Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Week-plan blocks are
 - [x] Today's mission hero — real `0/3` (packs finished today), hours left until Sunday, CTA → `daily-mission` / next pack
 - [x] Continue — first incomplete week-plan pack (not `lesson-continue.html`)
 - [x] Weekly streak dots (Mon–Sun)
-- [x] Today's plan — next incomplete pack per subject; Play → `/game-multiple-choice/{item}`; “ყველას ნახვა” → `daily-mission`
+- [x] Today's plan — next incomplete pack per subject; Play → that pack’s player; “ყველას ნახვა” → `daily-mission`
 - [x] Explore subjects — three tiles only: ქართული, მათემატიკა, ისტორია → that subject’s next pack
-- [~] Featured games — Quick Quiz → next incomplete pack; word-search / counting tiles removed until those games exist
+- [~] Featured games — Quick Quiz → next incomplete pack; counting → next counting pack; word-search removed until T19
 - [ ] Friends activity feed — template rows removed (invented kids); needs a real feed
 - [x] Recent achievements — live badge rail
 - [ ] Parent tip card — removed; copy named a hardcoded kid and invented a study habit
 - [ ] Install PWA prompt — removed; no manifest or service worker, so it never fired
-- [~] Search overlay (subjects, games, lessons) — overlay + `home.js` live over `SearchService::homeCatalog()`: 12 Georgian destinations, real routes, subjects open their next pack. No lesson-level index yet (T17)
+- [~] Search overlay (subjects, games, lessons) — overlay + `home.js` live over `SearchService::homeCatalog()`: 15 Georgian destinations, real routes, subjects open their next pack. No lesson-level index yet (T17)
   - [ ] Recent searches — chips removed until query history exists
   - [ ] Popular chips — removed until real query counts exist
   - [ ] Voice search (mic) — removed, was `en-US` only
@@ -229,8 +229,8 @@ Each game: progress bar, hear-aloud, check answer, XP on finish.
 Quick Quiz is live as the **week-plan player**. Other games will reuse attached `questions` via `game_question` (`format` + `payload` / `answer` JSON).
 
 - [x] Quick Quiz (multiple choice) — `pages::game-multiple-choice`; `/game-multiple-choice/{item}` plays that pack (5 questions, fixed order); bare URL redirects to the next incomplete item; 3 lives; XP + pack complete on finish
-- [ ] Tap the correct answer
-- [ ] Counting (count objects)
+- [x] Tap the correct answer — `pages::game-tap-correct`; week 1 math Monday (all classes)
+- [x] Counting (count objects) — `pages::game-counting`; week 1 class 1 math Wednesday; Home featured tile
 - [ ] Trace letter (follow dots / handwriting)
 - [ ] Fill missing letter
 - [ ] Spell the word (letter tiles)
@@ -247,7 +247,7 @@ Quick Quiz is live as the **week-plan player**. Other games will reuse attached 
 Shared game rules:
 
 - [~] Correct / incorrect feedback + sounds — visual correct/wrong on quiz; no sounds yet
-- [x] Lives or retry (if you want it; template is mostly check-and-continue) — 3 lives on Quick Quiz
+- [x] Lives or retry (if you want it; template is mostly check-and-continue) — 3 lives on Quick Quiz, tap-correct, and counting
 - [ ] Voice reader for questions
 - [x] Grade-appropriate week bank — `users.grade` + `week_plan_items` weeks 1–2 (all classes) and week 3 (class 1); quiz cannot load another class’s pack; catch-up is first incomplete weekday per subject in the active week; finishing week N unlocks week N+1 when seeded
 - [x] Curriculum week advancement — `WeekPlanService::activeWeekNumber()` picks lowest incomplete week (stays on last when all done)

@@ -287,7 +287,7 @@ new class extends Component
                     <p class="font-extrabold text-sm text-ink">{{ __('learn.word_search') }}</p>
                     <p class="text-xs text-muted">{{ __('learn.find_5_words') }}</p>
                 </a>
-                <a href="#" class="swiper-slide k-card w-40 text-center" data-item
+                <a href="{{ route('game-counting') }}" wire:navigate class="swiper-slide k-card w-40 text-center" data-item
                     data-name="{{ __('learn.counting') }}" data-keywords="დათვლა რიცხვები მათემატიკა"
                     data-tags="games math">
                     <div class="size-12 rounded-2xl tile-sky grid place-items-center text-2xl mx-auto mb-2">🔢</div>

@@ -41,14 +41,14 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 - Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired. Password reset is live: `/forgot-password` → 6-digit code at the parent email → `/reset-password`. Login “დაგავიწყდა?” and Edit profile’s reset row both start that flow. Signup consent links open `/terms` and `/privacy` (guest-readable Georgian documents; flagged for legal review).
 - After register: onboarding (**კლასი 1 / 2 / 3** → ქართული / მათემატიკა / ისტორია → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step. Kids without `grade` play class 1 packs.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
-- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (`/game-multiple-choice/{item}`) or `daily-mission`. Friends, search, and notification list are still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is the Kidzio library shell (search / filter / subject tiles / mini-games); counts and Kidzio extras are still dummy. Spotlight and Quick Quiz link to `daily-mission` / `game-multiple-choice`.
+- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (the pack’s player: Quick Quiz, tap-correct, or counting) or `daily-mission`. Featured counting tile opens the next counting pack. Friends, search, and notification list are still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is the Kidzio library shell (search / filter / subject tiles / mini-games); counts and Kidzio extras are still dummy. Spotlight and Quick Quiz link to `daily-mission` / `game-multiple-choice`; counting cards open `/game-counting`.
 - Profile (`/profile`, `pages::profile`): live name, age · class, XP / streak / badges / global rank, level bar, league shortcut, subject mastery (active curriculum week %), this-week XP / days / packs, recent badge achievements, friends strip, monthly-goals chip. Settings gear + row open `/settings`. Edit profile and friends ranking are live. Parent zone links to `/parent-controls` behind a 4-digit PIN (setup / unlock / change / email recovery). Screen-time chip shows remaining minutes (or off). Screen time (`/screen-time`) and bedtime (`/bedtime-lock`) are PIN-gated; play routes pause at the daily limit or during sleep hours (`/play-paused`). Heartbeat tracks minutes on Quick Quiz. Weekly/full reports (`/weekly-report`, `/full-report`) and PDF export (`/export-progress`) are PIN-gated; figures match Profile. Monday 08:00 Georgian parent email (`reports:send-weekly`) respects `notification_preferences.weekly_report`. Parent email change (`/parent-email`) and delete (`/delete-account`) are PIN-gated; delete also needs a 6-digit code at the parent email, then a 14-day soft-delete grace before `accounts:purge-deleted`.
 - Edit profile (`/edit-profile`): name, nickname, avatar emoji, age, gender, class 1–3, favourite subject, daily goal, privacy toggles. Parent email read-only with a link to PIN-gated `/parent-email` (pending-email re-verify). Password reset is live (parent email code). Delete goes to `/delete-account` (PIN + email code). **`show_on_leaderboard` is enforced** on `/leaderboard` (and weekly XP ranking queries); friends + league stay visible.
 - Monthly goals (`/monthly-goals`): system goals for the calendar month (packs / XP / streak / badges) from live stats. Add/custom goals deferred.
 - Friends ranking (`/ranking-friends`): add by nickname (auto-accept v1), XP podium + list among friends. Parent approval later.
-- Daily mission (`/daily-mission`, `pages::daily-mission`): **3 today tasks** (next pack per subject, or done if already played today). Completing all 3 subjects today awards +120 XP once. Gift box / share / bonus markup only.
+- Daily mission (`/daily-mission`, `pages::daily-mission`): **3 today tasks** (next pack per subject, or done if already played today). Completing all 3 subjects today awards +120 XP once. Gift box / share / bonus markup only. Each playable task opens that pack’s player.
 - Week plan: `week_plan_items` + `user_plan_progress`. Curriculum weeks 1–2 seeded for grades 1–3; **week 3** for class 1 (`WeekPlanSeeder`, `locale=ka`). Active week = lowest week with incomplete packs; advances to N+1 when N is fully done; stays on last seeded week when all complete. Catch-up: first incomplete weekday per subject within the active week; progress is not wiped on Monday. Completing a pack calls `UserStatService::awardXp()`.
-- Quick Quiz (`/game-multiple-choice/{item}`): that pack’s 5 Georgian questions, 3 lives, XP on finish. Bare `/game-multiple-choice` redirects to the next incomplete item. Finishing a pack evaluates badges and may redirect to `/badge-unlock/{slug}`.
+- Quick Quiz (`/game-multiple-choice/{item}`), tap-correct (`/game-tap-correct/{item}`), and counting (`/game-counting/{item}`): that pack’s 5 Georgian questions, 3 lives, XP on finish. Bare URLs redirect to the next incomplete pack of that format (or the next pack of any format). Week 1 math Monday is tap-correct (all classes); week 1 class 1 math Wednesday is counting. Scoring is shared (`GamePlayService` + `PlaysWeekPlanPack`). Finishing a pack evaluates badges and may redirect to `/badge-unlock/{slug}`.
 - Badges (`/badges`, `pages::badges`) + unlock (`/badge-unlock/{slug}`): 21 Kidzio badges, Georgian names, immediate unlock + one-time celebration. Speed Runner unlocks on a full pack finished under 2 minutes. Social Star stays locked. Rewards tab opens the collection. Shop / claim queue / Rewards dashboard are later.
 
 **Ordered plan: `docs/roadmap.md`** — 22 tasks in build order, one brief per task in `docs/tasks/`.
@@ -62,7 +62,7 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
 - Blocks whose backend does not exist were **deleted**, each leaving a one-line Blade comment naming
   the block and the task that re-ports it. Copy the markup back from `kidzio/{screen}.html` when you
   get there. Elements that showed live data but had no link target were kept and made inert.
-- Home search is real: `SearchService::homeCatalog()` renders 14 Georgian destinations into
+- Home search is real: `SearchService::homeCatalog()` renders 15 Georgian destinations into
   `<script type="application/json" id="searchIndex">`, which `public/assets/js/home.js` reads.
 - Settings (`/settings`, `pages::settings`): dark mode (layout JS), notification prefs + reminder
   time, daily goal, favourite subjects, privacy toggles, locked Georgian locale, parent zone, parent
@@ -75,7 +75,7 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
   pack. Daily mission complete is +120 once/day. Login-calendar XP (`awardDailyLogin`, +10→+100) is
   ready for **T13**.
 
-Build next: **T12** mini-games batch 1.
+Build next: **T13** rewards dashboard + login calendar.
 (**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---
@@ -111,6 +111,8 @@ Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/
 | `learn-categories.html` | `pages::learn-categories` | `learn-categories` | `/learn-categories` |
 | `daily-mission.html` | `pages::daily-mission` | `daily-mission` | `/daily-mission` |
 | `game-multiple-choice.html` | `pages::game-multiple-choice` | `game-multiple-choice` | `/game-multiple-choice/{item?}` |
+| `game-tap-correct.html` | `pages::game-tap-correct` | `game-tap-correct` | `/game-tap-correct/{item?}` |
+| `game-counting.html` | `pages::game-counting` | `game-counting` | `/game-counting/{item?}` |
 | `badges.html` | `pages::badges` | `badges` | `/badges` |
 | `badge-unlock.html` | `pages::badge-unlock` | `badge-unlock` | `/badge-unlock/{slug}` |
 | `forgot-password.html` | `pages::forgot-password` | `forgot-password` | `/forgot-password` |

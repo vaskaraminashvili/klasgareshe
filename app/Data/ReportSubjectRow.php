@@ -16,5 +16,6 @@ final readonly class ReportSubjectRow
         public int $masteryPercent,
         public int $barPercent,
         public ?int $nextItemId,
+        public string $href = '',
     ) {}
 }

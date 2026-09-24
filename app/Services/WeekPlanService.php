@@ -7,6 +7,7 @@ use App\Data\HomeWeekPlan;
 use App\Data\SubjectMasteryRow;
 use App\Data\WeekChecklistItem;
 use App\Data\WeekPlanTaskView;
+use App\Enums\GameType;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 use App\Models\User;
@@ -128,6 +129,27 @@ class WeekPlanService
         return null;
     }
 
+    public function firstIncompleteOfType(User $user, GameType $type): ?WeekPlanItem
+    {
+        $grade = $this->gradeFor($user);
+        $weekNumber = $this->activeWeekNumber($user);
+        $completed = array_flip($this->plans->completedItemIds($user));
+
+        foreach ($this->plans->itemsForGrade($grade, $weekNumber) as $item) {
+            if (isset($completed[$item->id]) || $item->game_slug !== $type) {
+                continue;
+            }
+
+            $next = $this->plans->nextIncomplete($user, $grade, $item->subject, $weekNumber);
+
+            if ($next instanceof WeekPlanItem && $next->id === $item->id) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
     public function nextIncompleteForSubject(User $user, SchoolSubject $subject): ?WeekPlanItem
     {
         return $this->plans->nextIncomplete(
@@ -222,6 +244,7 @@ class WeekPlanService
                 emoji: $task->emoji,
                 completedAt: $completedAtLabel,
                 subtitle: $task->subtitle,
+                href: $task->href,
             );
         }
 
@@ -275,6 +298,7 @@ class WeekPlanService
                 current: $playable,
                 emoji: $item->subject->emoji(),
                 completedAt: $completedAtLabel,
+                href: $playable ? $this->playUrl($item->id) : route('daily-mission'),
             );
         }
 
@@ -283,11 +307,21 @@ class WeekPlanService
 
     public function quizRoute(?int $itemId): string
     {
+        return $this->playUrl($itemId);
+    }
+
+    public function playUrl(?int $itemId, bool $missionIfMissing = false): string
+    {
         if ($itemId === null) {
-            return route('game-multiple-choice');
+            return $missionIfMissing
+                ? route('daily-mission')
+                : route(GameType::MultipleChoice->playerRoute());
         }
 
-        return route('game-multiple-choice', ['item' => $itemId]);
+        $item = $this->plans->find($itemId);
+        $type = $item === null ? GameType::MultipleChoice : $item->game_slug;
+
+        return route($type->playerRoute(), ['item' => $itemId]);
     }
 
     public function hoursLeftUntilSunday(): int
@@ -366,6 +400,7 @@ class WeekPlanService
                 done: $done,
                 total: $total,
                 nextItemId: $next?->id,
+                nextGame: $next?->game_slug,
             );
         }
 
@@ -391,6 +426,7 @@ class WeekPlanService
                 emoji: $subject->emoji(),
                 tile: $subject->tile(),
                 inkClass: $subject->inkClass(),
+                href: route('daily-mission'),
             );
         }
 
@@ -407,6 +443,7 @@ class WeekPlanService
                 emoji: $subject->emoji(),
                 tile: $subject->tile(),
                 inkClass: $subject->inkClass(),
+                href: route('daily-mission'),
             );
         }
 
@@ -422,6 +459,7 @@ class WeekPlanService
             emoji: $subject->emoji(),
             tile: $subject->tile(),
             inkClass: $subject->inkClass(),
+            href: $this->playUrl($item->id),
         );
     }
 }

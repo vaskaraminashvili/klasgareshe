@@ -4,6 +4,8 @@ namespace App\Services;
 
 class SearchService
 {
+    public function __construct(private WeekPlanService $week) {}
+
     /**
      * Static destinations, keyed by their `home.search_to.*` lang entry.
      *
@@ -20,6 +22,7 @@ class SearchService
         'friends' => ['ranking-friends', '👫', 'tile-sky'],
         'settings' => ['settings', '⚙️', 'tile-mint'],
         'streak' => ['streak', '🔥', 'tile-sun'],
+        'counting' => ['game-counting', '🔢', 'tile-sky'],
     ];
 
     /**
@@ -27,7 +30,7 @@ class SearchService
      * appear here; the rest of the template catalog arrives with the live
      * index (see docs/tasks/T17-search.md).
      *
-     * @param  list<array{id: int|null, subject: string, title: string, subtitle: string, completed: bool, playable: bool, emoji: string, tile: string, inkClass: string}>  $planTasks
+     * @param  list<array{id: int|null, subject: string, title: string, subtitle: string, completed: bool, playable: bool, emoji: string, tile: string, inkClass: string, href?: string}>  $planTasks
      * @return list<array{name: string, keys: string, href: string, ico: string, tile: string}>
      */
     public function homeCatalog(array $planTasks, ?int $continueItemId = null): array
@@ -38,7 +41,7 @@ class SearchService
             $entries[] = [
                 'name' => $task['subject'],
                 'keys' => trim($task['subject'].' '.$task['title']),
-                'href' => $this->packUrl($task['playable'] ? $task['id'] : null),
+                'href' => $task['href'] ?? $this->packUrl($task['playable'] ? $task['id'] : null),
                 'ico' => $task['emoji'],
                 'tile' => $task['tile'],
             ];
@@ -67,8 +70,6 @@ class SearchService
 
     private function packUrl(?int $itemId): string
     {
-        return $itemId === null
-            ? route('daily-mission')
-            : route('game-multiple-choice', ['item' => $itemId]);
+        return $this->week->playUrl($itemId, missionIfMissing: true);
     }
 }

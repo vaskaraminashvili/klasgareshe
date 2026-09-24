@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\GameType;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 
@@ -28,6 +29,23 @@ final class WeekPlanQuestionBank
                 SchoolSubject::History => self::history($grade, $weekday),
             },
         ];
+    }
+
+    public static function gameType(
+        SchoolGrade $grade,
+        SchoolSubject $subject,
+        int $weekday,
+        int $weekNumber = 1,
+    ): GameType {
+        if ($subject === SchoolSubject::Math && $weekNumber === 1 && $weekday === 1) {
+            return GameType::TapCorrect;
+        }
+
+        if ($subject === SchoolSubject::Math && $weekNumber === 1 && $weekday === 3 && $grade === SchoolGrade::First) {
+            return GameType::Counting;
+        }
+
+        return GameType::MultipleChoice;
     }
 
     public static function title(SchoolGrade $grade, SchoolSubject $subject, int $weekday): string

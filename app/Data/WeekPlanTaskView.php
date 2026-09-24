@@ -16,5 +16,6 @@ final readonly class WeekPlanTaskView
         public string $emoji,
         public string $tile,
         public string $inkClass,
+        public string $href = '',
     ) {}
 }

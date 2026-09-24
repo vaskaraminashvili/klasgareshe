@@ -68,6 +68,20 @@ enum GameType: string
     }
 
     /**
+     * Live player for this pack. Unbuilt formats fall back to Quick Quiz
+     * until T19 ports them.
+     */
+    public function playerRoute(): string
+    {
+        return match ($this) {
+            self::MultipleChoice,
+            self::TapCorrect,
+            self::Counting => $this->routeName(),
+            default => self::MultipleChoice->routeName(),
+        };
+    }
+
+    /**
      * @return array{lives: int, questions_per_round: int, xp_per_correct: int}
      */
     public function playDefaults(): array

@@ -110,11 +110,48 @@ class Question extends Model
     {
         $key = $this->answer['key'] ?? null;
 
-        if (! is_string($key) || $key === '') {
-            throw new InvalidArgumentException('Question is missing a choice answer key.');
+        if (is_string($key) && $key !== '') {
+            return $key;
         }
 
-        return $key;
+        $value = $this->answer['value'] ?? null;
+
+        if ($value !== null) {
+            $want = (string) $value;
+
+            foreach ($this->choices() as $choice) {
+                if ($choice['label'] === $want) {
+                    return $choice['key'];
+                }
+            }
+        }
+
+        throw new InvalidArgumentException('Question is missing a choice answer key.');
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function countItems(): array
+    {
+        $payload = $this->payload;
+        $emoji = $payload['item_emoji'] ?? $this->mediaEmoji();
+
+        if (! is_string($emoji) || $emoji === '') {
+            return [];
+        }
+
+        $count = isset($payload['count']) ? (int) $payload['count'] : 0;
+
+        if ($count < 1) {
+            $count = (int) ($this->answer['value'] ?? 0);
+        }
+
+        if ($count < 1) {
+            return [];
+        }
+
+        return array_fill(0, min(12, $count), $emoji);
     }
 
     public function mediaEmoji(): string

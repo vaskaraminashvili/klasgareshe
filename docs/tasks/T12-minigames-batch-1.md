@@ -1,7 +1,7 @@
 # T12 — Mini-games batch 1: tap-correct + counting
 
 **Priority:** P1 · core product
-**Status:** not started
+**Status:** done
 **Depends on:** T01 (content model proven)
 
 ## Why now
@@ -17,27 +17,27 @@ Home already has a `game-counting.html` tile neutralized in T02.
 
 The plumbing matters more than the two screens:
 
-- [ ] `QuestionFormat` already exists; confirm `game_question` `payload`/`answer` JSON covers
+- [x] `QuestionFormat` already exists; confirm `game_question` `payload`/`answer` JSON covers
       tap-correct and counting without a schema change
-- [ ] `QuestionPlayModeResolver` routes a pack to the right player component by format
-- [ ] Week plan packs can declare a format, so a week can mix Quick Quiz and counting days
-- [ ] Shared scoring: lives, XP per correct, pack completion, `recordPlay`, badge eval — extracted
+- [x] `QuestionPlayModeResolver` routes a pack to the right player component by format
+- [x] Week plan packs can declare a format, so a week can mix Quick Quiz and counting days
+- [x] Shared scoring: lives, XP per correct, pack completion, `recordPlay`, badge eval — extracted
       once (`GamePlayService`) and reused, not copied per game
 
 ## Scope — the two games
 
-- [ ] `pages::game-tap-correct` from `kidzio/game-tap-correct.html`
-- [ ] `pages::game-counting` from `kidzio/game-counting.html`
-- [ ] Routes `/game-tap-correct/{item?}`, `/game-counting/{item?}` mirroring the existing
+- [x] `pages::game-tap-correct` from `kidzio/game-tap-correct.html`
+- [x] `pages::game-counting` from `kidzio/game-counting.html`
+- [x] Routes `/game-tap-correct/{item?}`, `/game-counting/{item?}` mirroring the existing
       `/game-multiple-choice/{item?}` behaviour (bare URL → next incomplete item)
-- [ ] Georgian question content for both formats, grade-scoped, seeded like T01
-- [ ] Correct/incorrect feedback matching the existing quiz behaviour
-- [ ] Restore the Home featured tile for counting
+- [x] Georgian question content for both formats, grade-scoped, seeded like T01
+- [x] Correct/incorrect feedback matching the existing quiz behaviour
+- [x] Restore the Home featured tile for counting
 
 ## Scope — where these appear
 
-- [ ] Today's plan and subject tiles link to the right player for the pack's format
-- [ ] Daily mission tasks likewise
+- [x] Today's plan and subject tiles link to the right player for the pack's format
+- [x] Daily mission tasks likewise
 
 ## Code touchpoints
 

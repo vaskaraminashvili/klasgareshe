@@ -2,6 +2,7 @@
 
 namespace App\Data;
 
+use App\Enums\GameType;
 use App\Enums\SchoolSubject;
 
 final readonly class SubjectMasteryRow
@@ -16,6 +17,7 @@ final readonly class SubjectMasteryRow
         public int $done,
         public int $total,
         public ?int $nextItemId,
+        public ?GameType $nextGame = null,
     ) {}
 
     /**
@@ -44,9 +46,18 @@ final readonly class SubjectMasteryRow
             'done' => $this->done,
             'total' => $this->total,
             'nextItemId' => $this->nextItemId,
-            'href' => $this->nextItemId !== null
-                ? route('game-multiple-choice', ['item' => $this->nextItemId])
-                : route('daily-mission'),
+            'href' => $this->playHref(),
         ];
+    }
+
+    public function playHref(): string
+    {
+        if ($this->nextItemId === null) {
+            return route('daily-mission');
+        }
+
+        $route = ($this->nextGame ?? GameType::MultipleChoice)->playerRoute();
+
+        return route($route, ['item' => $this->nextItemId]);
     }
 }

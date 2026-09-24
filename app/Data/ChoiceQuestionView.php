@@ -20,10 +20,11 @@ final readonly class ChoiceQuestionView
         public QuestionPlayMode $playMode = QuestionPlayMode::Choice,
         public array $letters = [],
         public array $countItems = [],
+        public string $hint = '',
     ) {}
 
     /**
-     * @return array{id: int, prompt: string, emoji: string, tile: string, playMode: string, letters: list<array{char: string, blank: bool}>, countItems: list<string>, choices: list<array{key: string, label: string, emoji: string}>}
+     * @return array{id: int, prompt: string, emoji: string, tile: string, playMode: string, letters: list<array{char: string, blank: bool}>, countItems: list<string>, choices: list<array{key: string, label: string, emoji: string}>, hint: string}
      */
     public function toArray(): array
     {
@@ -36,6 +37,7 @@ final readonly class ChoiceQuestionView
             'letters' => $this->letters,
             'countItems' => $this->countItems,
             'choices' => $this->choices,
+            'hint' => $this->hint,
         ];
     }
 }

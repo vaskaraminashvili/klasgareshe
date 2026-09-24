@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\GameType;
 use App\Enums\GameVisibility;
-use App\Enums\QuestionFormat;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 use App\Models\Game;
@@ -19,20 +18,9 @@ class WeekPlanSeeder extends Seeder
      */
     public function run(): void
     {
-        $game = Game::query()->updateOrCreate(
-            [
-                'slug' => GameType::MultipleChoice,
-                'user_id' => null,
-            ],
-            [
-                'format' => QuestionFormat::Choice,
-                'lives' => 3,
-                'questions_per_round' => 5,
-                'xp_per_correct' => 8,
-                'is_active' => true,
-                'visibility' => GameVisibility::Public,
-            ],
-        );
+        foreach ([GameType::MultipleChoice, GameType::TapCorrect, GameType::Counting] as $type) {
+            $this->gameFor($type);
+        }
 
         foreach (SchoolGrade::cases() as $grade) {
             $weeks = $grade === SchoolGrade::First ? [1, 2, 3] : [1, 2];
@@ -40,7 +28,7 @@ class WeekPlanSeeder extends Seeder
             foreach ($weeks as $weekNumber) {
                 foreach (SchoolSubject::ordered() as $subject) {
                     for ($weekday = 1; $weekday <= 7; $weekday++) {
-                        $this->seedPack($game, $grade, $subject, $weekday, $weekNumber);
+                        $this->seedPack($grade, $subject, $weekday, $weekNumber);
                     }
                 }
             }
@@ -48,12 +36,13 @@ class WeekPlanSeeder extends Seeder
     }
 
     private function seedPack(
-        Game $game,
         SchoolGrade $grade,
         SchoolSubject $subject,
         int $weekday,
         int $weekNumber = 1,
     ): void {
+        $type = WeekPlanQuestionBank::gameType($grade, $subject, $weekday, $weekNumber);
+        $game = $this->gameFor($type);
         $pack = WeekPlanQuestionBank::pack($grade, $subject, $weekday, $weekNumber);
 
         $item = WeekPlanItem::query()->updateOrCreate(
@@ -66,7 +55,7 @@ class WeekPlanSeeder extends Seeder
             [
                 'level' => (($weekNumber - 1) * 7) + $weekday,
                 'title' => $pack['title'],
-                'game_slug' => GameType::MultipleChoice,
+                'game_slug' => $type,
                 'questions_per_round' => 5,
             ],
         );
@@ -96,20 +85,26 @@ class WeekPlanSeeder extends Seeder
             $question = Question::query()->updateOrCreate(
                 ['code' => $code],
                 [
-                    'format' => QuestionFormat::Choice,
-                    'source' => GameType::MultipleChoice,
+                    'format' => $type->format(),
+                    'source' => $type,
                     'subject' => $subject->favourite(),
                     'age_group' => null,
                     'grade' => $grade->value,
                     'locale' => 'ka',
                     'prompt' => $row['prompt'],
-                    'hint' => null,
+                    'hint' => $type === GameType::TapCorrect
+                        ? 'რიცხვები ციფრებით იწერება, მაგალითად 0–9.'
+                        : null,
                     'media' => [
                         'emoji' => $row['emoji'],
                         'tile' => $subject->tile(),
                     ],
-                    'payload' => ['choices' => $choices],
-                    'answer' => ['key' => $correctKey],
+                    'payload' => $type === GameType::Counting
+                        ? $this->countPayload($row, $choices)
+                        : ['choices' => $choices],
+                    'answer' => $type === GameType::Counting
+                        ? ['key' => $correctKey, 'value' => (int) $row['correct']]
+                        : ['key' => $correctKey],
                     'is_active' => true,
                 ],
             );
@@ -119,6 +114,51 @@ class WeekPlanSeeder extends Seeder
 
         $item->questions()->sync($questionIds);
         $game->questions()->syncWithoutDetaching(array_keys($questionIds));
+    }
+
+    private function gameFor(GameType $type): Game
+    {
+        $defaults = $type->playDefaults();
+
+        return Game::query()->updateOrCreate(
+            [
+                'slug' => $type,
+                'user_id' => null,
+            ],
+            [
+                'format' => $type->format(),
+                'lives' => 3,
+                'questions_per_round' => 5,
+                'xp_per_correct' => $defaults['xp_per_correct'],
+                'is_active' => true,
+                'visibility' => GameVisibility::Public,
+            ],
+        );
+    }
+
+    /**
+     * @param  array{prompt: string, correct: string, wrongs: list<string>, emoji: string}  $row
+     * @param  list<array{key: string, label: string, emoji: string}>  $choices
+     * @return array{item_emoji: string, count: int, choices: list<array{key: string, label: string, emoji: string, value: int}>}
+     */
+    private function countPayload(array $row, array $choices): array
+    {
+        $payloadChoices = [];
+
+        foreach ($choices as $choice) {
+            $payloadChoices[] = [
+                'key' => $choice['key'],
+                'label' => $choice['label'],
+                'emoji' => $choice['emoji'],
+                'value' => (int) $choice['label'],
+            ];
+        }
+
+        return [
+            'item_emoji' => $row['emoji'],
+            'count' => (int) $row['correct'],
+            'choices' => $payloadChoices,
+        ];
     }
 
     /**

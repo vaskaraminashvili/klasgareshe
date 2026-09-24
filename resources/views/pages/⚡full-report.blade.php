@@ -85,9 +85,7 @@ new class extends Component
                 'packs' => $s->packs,
                 'masteryPercent' => $s->masteryPercent,
                 'barPercent' => $s->barPercent,
-                'href' => $s->nextItemId !== null
-                    ? route('game-multiple-choice', ['item' => $s->nextItemId])
-                    : route('daily-mission'),
+                'href' => $s->href,
             ], $full->subjects),
             'kpis' => $full->kpis,
             'timeline' => array_map(fn ($h) => [

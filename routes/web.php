@@ -53,6 +53,8 @@ Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-e
 
     Route::middleware('play.time')->group(function () {
         Route::livewire('/game-multiple-choice/{item?}', 'pages::game-multiple-choice')->name('game-multiple-choice');
+        Route::livewire('/game-tap-correct/{item?}', 'pages::game-tap-correct')->name('game-tap-correct');
+        Route::livewire('/game-counting/{item?}', 'pages::game-counting')->name('game-counting');
     });
 });
 

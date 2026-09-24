@@ -3,10 +3,45 @@
 namespace App\Services;
 
 use App\Data\QuestionPlayShape;
+use App\Enums\GameType;
+use App\Enums\QuestionFormat;
 use App\Enums\QuestionPlayMode;
+use App\Models\Question;
+use InvalidArgumentException;
 
 class QuestionPlayModeResolver
 {
+    public function playerRoute(GameType $type): string
+    {
+        return $type->playerRoute();
+    }
+
+    public function forQuestion(Question $question): QuestionPlayShape
+    {
+        $choices = $question->choices();
+        $labels = [];
+
+        foreach ($choices as $choice) {
+            $labels[] = $choice['label'];
+        }
+
+        $correctLabel = $this->correctLabel($question, $choices);
+
+        if ($question->format === QuestionFormat::Count) {
+            $items = $question->countItems();
+
+            if ($items !== []) {
+                return new QuestionPlayShape(QuestionPlayMode::Count, countItems: $items);
+            }
+        }
+
+        if ($question->source === GameType::TapCorrect) {
+            return new QuestionPlayShape(QuestionPlayMode::TapCorrect);
+        }
+
+        return $this->forPrompt((string) $question->prompt, $correctLabel, $labels);
+    }
+
     /**
      * @param  list<string>  $choiceLabels
      */
@@ -145,5 +180,25 @@ class QuestionPlayModeResolver
         }
 
         return $labels !== [];
+    }
+
+    /**
+     * @param  list<array{key: string, label: string, emoji: string}>  $choices
+     */
+    private function correctLabel(Question $question, array $choices): string
+    {
+        try {
+            $key = $question->correctKey();
+        } catch (InvalidArgumentException) {
+            return (string) ($question->answer['value'] ?? '');
+        }
+
+        foreach ($choices as $choice) {
+            if ($choice['key'] === $key) {
+                return $choice['label'];
+            }
+        }
+
+        return (string) ($question->answer['value'] ?? '');
     }
 }

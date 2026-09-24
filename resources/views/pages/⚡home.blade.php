@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\GameType;
 use App\Repositories\UserRepository;
 use App\Services\BadgeService;
 use App\Services\ProgressReportService;
@@ -31,6 +32,10 @@ new class extends Component
 
     public ?int $continueItemId = null;
 
+    public string $continueHref = '';
+
+    public string $countingHref = '';
+
     public string $continueTitle = '';
 
     public int $weekCompleted = 0;
@@ -38,7 +43,7 @@ new class extends Component
     public int $weekTotal = 0;
 
     /**
-     * @var list<array{id: int|null, subject: string, title: string, subtitle: string, completed: bool, playable: bool, emoji: string, tile: string, inkClass: string}>
+     * @var list<array{id: int|null, subject: string, title: string, subtitle: string, completed: bool, playable: bool, emoji: string, tile: string, inkClass: string, href: string}>
      */
     public array $planTasks = [];
 
@@ -88,6 +93,11 @@ new class extends Component
         $this->hoursLeft = $plan->hoursLeft;
         $this->heroTitle = $plan->heroTitle;
         $this->continueItemId = $plan->continueItemId;
+        $this->continueHref = $week->playUrl($plan->continueItemId, missionIfMissing: true);
+        $counting = $week->firstIncompleteOfType($user, GameType::Counting);
+        $this->countingHref = $counting !== null
+            ? $week->playUrl($counting->id)
+            : route('game-counting');
         $this->continueTitle = $plan->continueTitle;
         $this->weekCompleted = $plan->weekCompleted;
         $this->weekTotal = $plan->weekTotal;
@@ -105,6 +115,7 @@ new class extends Component
                 'emoji' => $task->emoji,
                 'tile' => $task->tile,
                 'inkClass' => $task->inkClass,
+                'href' => $task->href,
             ];
         }
 
@@ -113,15 +124,6 @@ new class extends Component
         $tip = $reports->homeTip($user, $reportWeek);
         $this->parentTipTitle = $tip['title'];
         $this->parentTipBody = $tip['body'];
-    }
-
-    public function quizUrl(?int $itemId): string
-    {
-        if ($itemId === null) {
-            return route('daily-mission');
-        }
-
-        return route('game-multiple-choice', ['item' => $itemId]);
     }
 
     public function missionProgressPercent(): int
@@ -195,7 +197,7 @@ new class extends Component
 
     <!-- =============== CONTINUE + WEEKLY STREAK =============== -->
     <section class="px-5 mt-4 grid grid-cols-2 gap-3">
-        <a href="{{ $this->quizUrl($continueItemId) }}" wire:navigate class="k-card p-4 relative overflow-hidden">
+        <a href="{{ $continueHref }}" wire:navigate class="k-card p-4 relative overflow-hidden">
             <div class="flex items-center gap-2">
                 <div class="size-9 rounded-xl tile-mint grid place-items-center">➗</div>
                 <span class="text-xs font-extrabold text-mint-ink">{{ __('home.continue') }}</span>
@@ -227,7 +229,7 @@ new class extends Component
         <div class="k-card p-0 overflow-hidden">
             @forelse ($planTasks as $task)
                 @if ($task['playable'] && $task['id'] !== null)
-                    <a href="{{ $this->quizUrl($task['id']) }}" wire:navigate class="flex items-center gap-3 p-3{{ ! $loop->first ? ' border-t border-token' : '' }}">
+                    <a href="{{ $task['href'] }}" wire:navigate class="flex items-center gap-3 p-3{{ ! $loop->first ? ' border-t border-token' : '' }}">
                         <div class="size-10 rounded-xl {{ $task['tile'] }} grid place-items-center">{{ $task['emoji'] }}</div>
                         <div class="grow">
                             <p class="font-extrabold text-sm">{{ $task['title'] }}</p>
@@ -268,7 +270,7 @@ new class extends Component
         <div class="swiper subjects-swiper" data-swiper-rail>
             <div class="swiper-wrapper">
                 @foreach ($planTasks as $task)
-                    <a href="{{ $task['playable'] ? $this->quizUrl($task['id']) : route('daily-mission') }}"
+                    <a href="{{ $task['href'] }}"
                         wire:navigate class="swiper-slide tile {{ $task['tile'] }}">
                         <span class="chip chip-on-tile {{ $task['inkClass'] }}">{{ $task['subtitle'] }}</span>
                         <h3 class="mt-3">{{ $task['subject'] }}</h3>
@@ -287,7 +289,7 @@ new class extends Component
             <a href="{{ route('daily-mission') }}" wire:navigate class="link">{{ __('home.more') }}</a>
         </div>
 
-        <a href="{{ $this->quizUrl($continueItemId) }}" wire:navigate class="k-card-lg card-hero-success relative overflow-hidden block">
+        <a href="{{ $continueHref }}" wire:navigate class="k-card-lg card-hero-success relative overflow-hidden block">
             <span class="watermark-emoji" aria-hidden="true">❓</span>
             <div class="relative flex items-center gap-3">
                 <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl">❓</div>
@@ -300,9 +302,14 @@ new class extends Component
             </div>
         </a>
 
-        {{-- Word-search and counting tiles dropped: neither game exists. Re-port them from
-             kidzio/home.html with docs/tasks/T12-minigames-batch-1.md (counting) and
-             docs/tasks/T19-minigames-batch-2.md (word search). --}}
+        <div class="grid grid-cols-2 gap-3 mt-3">
+            {{-- Word-search tile dropped until docs/tasks/T19-minigames-batch-2.md. --}}
+            <a href="{{ $countingHref }}" wire:navigate class="k-card p-4">
+                <div class="size-10 rounded-xl tile-sky grid place-items-center mb-2">🔢</div>
+                <p class="font-extrabold text-sm">{{ __('home.counting_fun') }}</p>
+                <p class="text-xs text-muted">{{ __('home.add_subtract') }}</p>
+            </a>
+        </div>
     </section>
 
     {{-- FRIENDS ACTIVITY dropped: every row was invented (Leo, Ana, their streaks and XP).
@@ -389,7 +396,7 @@ new class extends Component
                     <p class="section-label">{{ __('home.jump_to') }}</p>
                     <div class="mt-2 grid grid-cols-2 gap-2">
                         @foreach ($planTasks as $task)
-                            <a href="{{ $task['playable'] ? $this->quizUrl($task['id']) : route('daily-mission') }}"
+                            <a href="{{ $task['href'] }}"
                                 wire:navigate class="k-card p-3 flex items-center gap-2">
                                 <div class="size-9 rounded-xl {{ $task['tile'] }} grid place-items-center text-base">
                                     {{ $task['emoji'] }}</div>

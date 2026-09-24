@@ -129,7 +129,7 @@ class GamePlayService
         foreach ($ids as $id) {
             $question = $found[$id] ?? null;
 
-            if ($question === null || $question->format !== QuestionFormat::Choice) {
+            if ($question === null || ! $this->isPlayableFormat($question->format)) {
                 throw new InvalidArgumentException('Choice question not found.');
             }
 
@@ -148,6 +148,21 @@ class GamePlayService
             correct: $key === $correctKey,
             correctKey: $correctKey,
         );
+    }
+
+    public function gradeInput(int $questionId, string $input): ChoiceGrade
+    {
+        $question = $this->choiceQuestion($questionId);
+        $key = $this->resolveChoiceKey($question, $input);
+
+        if ($key === null) {
+            return new ChoiceGrade(
+                correct: false,
+                correctKey: $question->correctKey(),
+            );
+        }
+
+        return $this->gradeChoice($questionId, $key);
     }
 
     public function award(
@@ -219,27 +234,23 @@ class GamePlayService
     {
         $question = $this->questions->find($questionId);
 
-        if ($question === null || $question->format !== QuestionFormat::Choice) {
+        if ($question === null || ! $this->isPlayableFormat($question->format)) {
             throw new InvalidArgumentException('Choice question not found.');
         }
 
         return $question;
     }
 
+    private function isPlayableFormat(QuestionFormat $format): bool
+    {
+        return $format === QuestionFormat::Choice || $format === QuestionFormat::Count;
+    }
+
     private function viewFrom(Question $question): ChoiceQuestionView
     {
         $choices = $question->choices();
-        $labels = [];
-
-        foreach ($choices as $choice) {
-            $labels[] = $choice['label'];
-        }
-
-        $shape = $this->playModes->forPrompt(
-            (string) $question->prompt,
-            $this->correctLabel($question, $choices),
-            $labels,
-        );
+        $shape = $this->playModes->forQuestion($question);
+        $hint = $question->hint;
 
         return new ChoiceQuestionView(
             id: $question->id,
@@ -250,22 +261,24 @@ class GamePlayService
             playMode: $shape->mode,
             letters: $shape->letters,
             countItems: $shape->countItems,
+            hint: is_string($hint) ? $hint : '',
         );
     }
 
-    /**
-     * @param  list<array{key: string, label: string, emoji: string}>  $choices
-     */
-    private function correctLabel(Question $question, array $choices): string
+    private function resolveChoiceKey(Question $question, string $input): ?string
     {
-        $key = $question->correctKey();
-
-        foreach ($choices as $choice) {
-            if ($choice['key'] === $key) {
-                return $choice['label'];
+        foreach ($question->choices() as $choice) {
+            if ($choice['key'] === $input) {
+                return $choice['key'];
             }
         }
 
-        return '';
+        foreach ($question->choices() as $choice) {
+            if ($choice['label'] === $input) {
+                return $choice['key'];
+            }
+        }
+
+        return null;
     }
 }
