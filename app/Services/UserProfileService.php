@@ -146,6 +146,37 @@ class UserProfileService
         ]);
     }
 
+    public function toggleFavouriteSubject(User $user, SchoolSubject $subject): bool
+    {
+        $current = is_array($user->favourite_subjects) ? $user->favourite_subjects : [];
+        $value = $subject->value;
+
+        if (in_array($value, $current, true)) {
+            $current = array_values(array_filter(
+                $current,
+                static fn (string $item): bool => $item !== $value,
+            ));
+            $this->users->update($user, ['favourite_subjects' => $current]);
+
+            return false;
+        }
+
+        $current[] = $value;
+        $this->users->update($user, [
+            'favourite_subjects' => array_values(array_unique($current)),
+        ]);
+
+        return true;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function favouriteSubjectValues(User $user): array
+    {
+        return is_array($user->favourite_subjects) ? $user->favourite_subjects : [];
+    }
+
     /**
      * @param  list<string>  $subjects
      */

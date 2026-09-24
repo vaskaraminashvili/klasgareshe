@@ -1,17 +1,58 @@
 <?php
 
+use App\Repositories\UserRepository;
+use App\Services\LearnLibraryService;
+use Illuminate\View\View;
 use Livewire\Component;
 
 new class extends Component
 {
+    public int $subjectCount = 0;
+
+    public int $lessonsDone = 0;
+
+    public int $lessonsTotal = 0;
+
+    public int $gamesCount = 0;
+
+    /** @var list<array{subject: string, label: string, emoji: string, tile: string, inkClass: string, ringClass: string, lessons: int, percent: int, blurb: string, difficulty: string, difficultyClass: string, gradeRange: string, tags: string, diff: string, age: int, status: string, href: string, favourite: bool}> */
+    public array $subjects = [];
+
+    /** @var array{title: string, subtitle: string, href: string, percent: int, progressLabel: string, xp: int, minutes: int, emoji: string}|null */
+    public ?array $spotlight = null;
+
+    /** @var list<array{title: string, subtitle: string, emoji: string, tile: string, href: string, keywords: string, tags: string}> */
+    public array $games = [];
+
+    /** @var list<array{title: string, subtitle: string, emoji: string, tile: string, href: string, keywords: string}> */
+    public array $latest = [];
+
     public function title(): string
     {
         return __('learn.page_title');
     }
 
-    public function rendering(\Illuminate\View\View $view): void
+    public function rendering(View $view): void
     {
         $view->title($this->title());
+    }
+
+    public function mount(LearnLibraryService $learn, UserRepository $users): void
+    {
+        $snap = $learn->library($users->authenticated());
+        $this->subjectCount = $snap->subjectCount;
+        $this->lessonsDone = $snap->lessonsDone;
+        $this->lessonsTotal = $snap->lessonsTotal;
+        $this->gamesCount = $snap->gamesCount;
+        $this->subjects = $snap->subjects;
+        $this->spotlight = $snap->spotlight;
+        $this->games = $snap->games;
+        $this->latest = $snap->latest;
+    }
+
+    public function itemCount(): int
+    {
+        return count($this->subjects) + count($this->games) + count($this->latest);
     }
 };
 ?>
@@ -55,45 +96,51 @@ new class extends Component
     </section>
 
     <!-- =============== LEARN HERO =============== -->
-    <section class="px-5 mt-4">
-        <a href="{{ route('daily-mission') }}" wire:navigate class="k-card-lg hero-learn block relative overflow-hidden">
-            <div class="relative flex items-center gap-3">
-                <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl shrink-0">🎓</div>
-                <div class="grow">
-                    <span class="chip bg-white/20 border-0 text-white">
-                        <i class="ph-fill ph-sparkle"></i> {{ __('learn.todays_spotlight') }}
-                    </span>
-                    <p class="h-display text-xl mt-1 leading-tight">{{ __('learn.learn_5_words') }}</p>
-                    <p class="text-xs text-white/90">{{ __('learn.finish_todays_plan') }}</p>
+    @if ($spotlight)
+        <section class="px-5 mt-4">
+            <a href="{{ $spotlight['href'] }}" wire:navigate class="k-card-lg hero-learn block relative overflow-hidden">
+                <div class="relative flex items-center gap-3">
+                    <div class="size-14 rounded-2xl bg-white/25 grid place-items-center text-3xl shrink-0">{{ $spotlight['emoji'] }}</div>
+                    <div class="grow">
+                        <span class="chip bg-white/20 border-0 text-white">
+                            <i class="ph-fill ph-sparkle"></i> {{ __('learn.todays_spotlight') }}
+                        </span>
+                        <p class="h-display text-xl mt-1 leading-tight">{{ $spotlight['title'] }}</p>
+                        <p class="text-xs text-white/90">{{ $spotlight['subtitle'] }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="relative mt-3 flex items-center gap-2">
-                <div class="progress on-gradient grow"><span class="w-40"></span></div>
-                <span class="text-sm font-extrabold">{{ __('learn.progress_2_of_5') }}</span>
-            </div>
-            <div class="relative mt-3 flex items-center gap-2">
-                <span class="cta-soft">{{ __('learn.start_now') }} <i class="ph-fill ph-arrow-right"></i></span>
-                <span class="chip bg-white/20 border-0 text-white">{{ __('learn.plus_60_xp') }}</span>
-                <span class="chip bg-white/20 border-0 text-white ml-auto"><i class="ph-fill ph-clock"></i>
-                    {{ __('learn.mins_3') }}</span>
-            </div>
-        </a>
-    </section>
+                <div class="relative mt-3 flex items-center gap-2">
+                    <div class="progress on-gradient grow"><span style="width: {{ $spotlight['percent'] }}%"></span></div>
+                    <span class="text-sm font-extrabold">{{ $spotlight['progressLabel'] }}</span>
+                </div>
+                <div class="relative mt-3 flex items-center gap-2">
+                    <span class="cta-soft">{{ __('learn.start_now') }} <i class="ph-fill ph-arrow-right"></i></span>
+                    @if ($spotlight['xp'] > 0)
+                        <span class="chip bg-white/20 border-0 text-white">{{ __('learn.plus_xp', ['xp' => $spotlight['xp']]) }}</span>
+                    @endif
+                    @if ($spotlight['minutes'] > 0)
+                        <span class="chip bg-white/20 border-0 text-white ml-auto"><i class="ph-fill ph-clock"></i>
+                            {{ __('learn.mins_n', ['n' => $spotlight['minutes']]) }}</span>
+                    @endif
+                </div>
+            </a>
+        </section>
+    @endif
 
     <!-- =============== SNAPSHOT STATS =============== -->
     <section class="px-5 mt-4 grid grid-cols-3 gap-2">
         <div class="stat items-start">
             <span class="stat-label">{{ __('learn.subjects') }}</span>
-            <span class="stat-value">{{ __('learn.subjects_count') }}</span>
+            <span class="stat-value">{{ $subjectCount }}</span>
         </div>
         <div class="stat items-start">
             <span class="stat-label">{{ __('learn.lessons') }}</span>
-            <span class="stat-value">{{ __('learn.lessons_progress') }} <span
-                    class="text-xs font-bold text-muted">{{ __('learn.lessons_total') }}</span></span>
+            <span class="stat-value">{{ $lessonsDone }} <span
+                    class="text-xs font-bold text-muted">/ {{ $lessonsTotal }}</span></span>
         </div>
         <div class="stat items-start">
             <span class="stat-label">{{ __('learn.games') }}</span>
-            <span class="stat-value">{{ __('learn.games_count') }}</span>
+            <span class="stat-value">{{ $gamesCount }}</span>
         </div>
     </section>
 
@@ -102,242 +149,83 @@ new class extends Component
     <section class="px-5 mt-4" data-search-section>
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('learn.all_subjects') }}</h2>
-            <span class="link cursor-default" data-section-count>{{ __('learn.total_6') }}</span>
+            <span class="link cursor-default" data-section-count>{{ __('learn.total_n', ['count' => $subjectCount]) }}</span>
         </div>
 
+        {{-- Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) are not v1 — three school subjects only. --}}
         <div class="grid grid-cols-2 gap-3">
-            <!-- Math -->
-            <a href="#" class="tile tile-violet" data-item data-name="{{ __('learn.math') }}"
-                data-keywords="მათემატიკა რიცხვები დათვლა ფორმები შეკრება გამოკლება" data-tags="pop math"
-                data-diff="easy" data-age="5" data-status="inprogress">
-                <div class="flex items-start justify-between">
-                    <span class="tile-meta text-violet-ink">{{ __('learn.lessons_n', ['count' => 24]) }}</span>
-                    <span class="tile-ring tile-ring-violet" style="--pct: 35"
-                        aria-label="{{ __('learn.pct_complete', ['pct' => 35]) }}"><span>35%</span></span>
-                </div>
-                <h3 class="mt-4">{{ __('learn.math') }}</h3>
-                <p class="text-xs mt-1 text-violet-ink opacity-80">{{ __('learn.math_blurb') }}</p>
-                <div class="mt-2 flex items-center gap-1">
-                    <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold">{{ __('learn.easy') }}</span>
-                    <span class="text-violet-ink text-[10px] font-extrabold opacity-80">{{ __('learn.age_5_9') }}</span>
-                </div>
-                <span class="tile-emoji">➗</span>
-            </a>
-
-            <!-- Alphabet -->
-            <a href="#" class="tile tile-sun" data-item data-name="{{ __('learn.alphabet') }}"
-                data-keywords="ანბანი ასოები ბგერები კითხვა" data-tags="pop read" data-diff="easy" data-age="4"
-                data-status="inprogress">
-                <div class="flex items-start justify-between">
-                    <span class="tile-meta text-sun-ink">{{ __('learn.lessons_n', ['count' => 18]) }}</span>
-                    <span class="tile-ring tile-ring-sun" style="--pct: 62"
-                        aria-label="{{ __('learn.pct_complete', ['pct' => 62]) }}"><span>62%</span></span>
-                </div>
-                <h3 class="mt-4">{{ __('learn.alphabet') }}</h3>
-                <p class="text-xs mt-1 text-sun-ink opacity-80">{{ __('learn.alphabet_blurb') }}</p>
-                <div class="mt-2 flex items-center gap-1">
-                    <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold">{{ __('learn.easy') }}</span>
-                    <span class="text-sun-ink text-[10px] font-extrabold opacity-80">{{ __('learn.age_4_7') }}</span>
-                </div>
-                <span class="tile-emoji">🔤</span>
-            </a>
-
-            <!-- Animals -->
-            <a href="#" class="tile tile-mint" data-item data-name="{{ __('learn.animals') }}"
-                data-keywords="ცხოველები ველური ბუნება ჰაბიტატები ლომი ჟირაფი ძაღლი კატა" data-tags="pop"
-                data-diff="medium" data-age="6" data-status="inprogress">
-                <div class="flex items-start justify-between">
-                    <span class="tile-meta text-mint-ink">{{ __('learn.lessons_n', ['count' => 14]) }}</span>
-                    <span class="tile-ring tile-ring-mint" style="--pct: 50"
-                        aria-label="{{ __('learn.pct_complete', ['pct' => 50]) }}"><span>50%</span></span>
-                </div>
-                <h3 class="mt-4">{{ __('learn.animals') }}</h3>
-                <p class="text-xs mt-1 text-mint-ink opacity-80">{{ __('learn.animals_blurb') }}</p>
-                <div class="mt-2 flex items-center gap-1">
-                    <span
-                        class="pill-medium rounded-full px-2 py-0.5 text-[10px] font-extrabold">{{ __('learn.medium') }}</span>
-                    <span class="text-mint-ink text-[10px] font-extrabold opacity-80">{{ __('learn.age_6_plus') }}</span>
-                </div>
-                <span class="tile-emoji">🦁</span>
-            </a>
-
-            <!-- Words -->
-            <a href="#" class="tile tile-coral" data-item data-name="{{ __('learn.words') }}"
-                data-keywords="სიტყვები მართლწერა ლექსიკა კითხვა" data-tags="read" data-diff="medium" data-age="5"
-                data-status="inprogress">
-                <div class="flex items-start justify-between">
-                    <span class="tile-meta text-coral-ink">{{ __('learn.lessons_n', ['count' => 20]) }}</span>
-                    <span class="tile-ring tile-ring-coral" style="--pct: 20"
-                        aria-label="{{ __('learn.pct_complete', ['pct' => 20]) }}"><span>20%</span></span>
-                </div>
-                <h3 class="mt-4">{{ __('learn.words') }}</h3>
-                <p class="text-xs mt-1 text-coral-ink opacity-80">{{ __('learn.words_blurb') }}</p>
-                <div class="mt-2 flex items-center gap-1">
-                    <span
-                        class="pill-medium rounded-full px-2 py-0.5 text-[10px] font-extrabold">{{ __('learn.medium') }}</span>
-                    <span class="text-coral-ink text-[10px] font-extrabold opacity-80">{{ __('learn.age_5_8') }}</span>
-                </div>
-                <span class="tile-emoji">📚</span>
-            </a>
-
-            <!-- Knowledge -->
-            <a href="#" class="tile tile-sky" data-item data-name="{{ __('learn.knowledge') }}"
-                data-keywords="ცოდნა მსოფლიო მეცნიერება კოსმოსი პლანეტები" data-tags="new" data-diff="hard"
-                data-age="8" data-status="new">
-                <div class="flex items-start justify-between">
-                    <span class="tile-meta text-sky-ink">{{ __('learn.lessons_n', ['count' => 12]) }}</span>
-                    <span class="day-badge">{{ __('learn.new') }}</span>
-                </div>
-                <h3 class="mt-4">{{ __('learn.knowledge') }}</h3>
-                <p class="text-xs mt-1 text-sky-ink opacity-80">{{ __('learn.knowledge_blurb') }}</p>
-                <div class="mt-2 flex items-center gap-1">
-                    <span
-                        class="pill-hard rounded-full px-2 py-0.5 text-[10px] font-extrabold">{{ __('learn.challenge') }}</span>
-                    <span class="text-sky-ink text-[10px] font-extrabold opacity-80">{{ __('learn.age_7_plus') }}</span>
-                </div>
-                <span class="tile-emoji">🌍</span>
-            </a>
-
-            <!-- Opposites -->
-            <a href="#" class="tile tile-pink" data-item data-name="{{ __('learn.opposites') }}"
-                data-keywords="საპირისპიროები დიდი პატარა ცხელი ცივი ზევით ქვევით" data-tags="new" data-diff="easy"
-                data-age="4" data-status="new">
-                <div class="flex items-start justify-between">
-                    <span class="tile-meta text-coral-ink">{{ __('learn.lessons_n', ['count' => 10]) }}</span>
-                    <span class="tile-ring tile-ring-pink" style="--pct: 0"
-                        aria-label="{{ __('learn.not_started') }}"><span>0%</span></span>
-                </div>
-                <h3 class="mt-4">{{ __('learn.opposites') }}</h3>
-                <p class="text-xs mt-1 text-coral-ink opacity-80">{{ __('learn.opposites_blurb') }}</p>
-                <div class="mt-2 flex items-center gap-1">
-                    <span class="pill-easy rounded-full px-2 py-0.5 text-[10px] font-extrabold">{{ __('learn.easy') }}</span>
-                    <span class="text-coral-ink text-[10px] font-extrabold opacity-80">{{ __('learn.age_4_6') }}</span>
-                </div>
-                <span class="tile-emoji">⚖️</span>
-            </a>
+            @foreach ($subjects as $tile)
+                <a href="{{ $tile['href'] }}" wire:navigate class="tile {{ $tile['tile'] }}" data-item
+                    data-name="{{ $tile['label'] }}" data-keywords="{{ $tile['label'] }} {{ $tile['blurb'] }}"
+                    data-tags="{{ $tile['tags'] }}" data-diff="{{ $tile['diff'] }}" data-age="{{ $tile['age'] }}"
+                    data-status="{{ $tile['status'] }}">
+                    <div class="flex items-start justify-between">
+                        <span class="tile-meta {{ $tile['inkClass'] }}">{{ __('learn.lessons_n', ['count' => $tile['lessons']]) }}</span>
+                        <span class="tile-ring {{ $tile['ringClass'] }}" style="--pct: {{ $tile['percent'] }}"
+                            aria-label="{{ __('learn.pct_complete', ['pct' => $tile['percent']]) }}"><span>{{ $tile['percent'] }}%</span></span>
+                    </div>
+                    <h3 class="mt-4">{{ $tile['label'] }}</h3>
+                    <p class="text-xs mt-1 {{ $tile['inkClass'] }} opacity-80">{{ $tile['blurb'] }}</p>
+                    <div class="mt-2 flex items-center gap-1">
+                        <span
+                            class="{{ $tile['difficultyClass'] }} rounded-full px-2 py-0.5 text-[10px] font-extrabold">{{ $tile['difficulty'] }}</span>
+                        <span
+                            class="{{ $tile['inkClass'] }} text-[10px] font-extrabold opacity-80">{{ __('learn.age_range', ['range' => $tile['gradeRange']]) }}</span>
+                    </div>
+                    <span class="tile-emoji">{{ $tile['emoji'] }}</span>
+                </a>
+            @endforeach
         </div>
     </section>
 
-    <!-- =============== TRENDING NOW =============== -->
-    <section class="mt-6" data-search-section>
-        <div class="section-head px-5">
-            <h2 class="h-display text-lg">{{ __('learn.trending_now') }}</h2>
-            <a href="#" class="link">{{ __('learn.see_all') }}</a>
-        </div>
-        <div data-swiper-rail class="swiper rail-swiper">
-            <div class="swiper-wrapper">
-                <a href="{{ route('game-multiple-choice') }}" wire:navigate class="swiper-slide trend-card" data-item
-                    data-name="{{ __('learn.quick_quiz') }}" data-keywords="ვიქტორინა კითხვები მრავალარჩევანი"
-                    data-tags="pop games">
-                    <div class="trend-ico tile-violet">❓</div>
-                    <div class="grow">
-                        <p class="font-extrabold text-sm text-ink">{{ __('learn.quick_quiz') }}</p>
-                        <p class="text-xs text-muted">{{ __('learn.played_n_today', ['count' => 240]) }}</p>
-                    </div>
-                    <i class="ph ph-caret-right text-muted"></i>
-                </a>
-                <a href="#" class="swiper-slide trend-card" data-item data-name="{{ __('learn.match_animal') }}"
-                    data-keywords="ცხოველები შესატყვისი ჟირაფი ზებრა ლომი" data-tags="pop games">
-                    <div class="trend-ico tile-mint">🦒</div>
-                    <div class="grow">
-                        <p class="font-extrabold text-sm text-ink">{{ __('learn.match_animal') }}</p>
-                        <p class="text-xs text-muted">{{ __('learn.played_n_today', ['count' => 180]) }}</p>
-                    </div>
-                    <i class="ph ph-caret-right text-muted"></i>
-                </a>
-                <a href="#" class="swiper-slide trend-card" data-item data-name="{{ __('learn.spell_the_word') }}"
-                    data-keywords="მართლწერა სიტყვები ასოები" data-tags="pop games read">
-                    <div class="trend-ico tile-sun">✏️</div>
-                    <div class="grow">
-                        <p class="font-extrabold text-sm text-ink">{{ __('learn.spell_the_word') }}</p>
-                        <p class="text-xs text-muted">{{ __('learn.played_n_today', ['count' => 150]) }}</p>
-                    </div>
-                    <i class="ph ph-caret-right text-muted"></i>
-                </a>
-            </div>
-        </div>
-    </section>
+    {{-- Trending now (fake play counts) — T02. Mini-games rail below is the live formats. --}}
 
     <!-- =============== MINI-GAMES =============== -->
     <section class="mt-5" data-search-section>
         <div class="section-head px-5">
             <h2 class="h-display text-lg">{{ __('learn.minigames') }}</h2>
-            <a href="#" class="link">{{ __('learn.play_learn') }}</a>
+            <span class="link cursor-default">{{ __('learn.play_learn') }}</span>
         </div>
         <div data-swiper-rail class="swiper rail-swiper">
             <div class="swiper-wrapper">
-                <a href="{{ route('game-multiple-choice') }}" wire:navigate class="swiper-slide k-card w-40 text-center"
-                    data-item data-name="{{ __('learn.quick_quiz') }}"
-                    data-keywords="ვიქტორინა კითხვები მრავალარჩევანი" data-tags="games pop">
-                    <div class="size-12 rounded-2xl tile-violet grid place-items-center text-2xl mx-auto mb-2">❓</div>
-                    <p class="font-extrabold text-sm text-ink">{{ __('learn.quick_quiz') }}</p>
-                    <p class="text-xs text-muted">{{ __('learn.quiz_meta') }}</p>
-                </a>
-                <a href="#" class="swiper-slide k-card w-40 text-center" data-item
-                    data-name="{{ __('learn.match_words') }}" data-keywords="შესატყვისი სიტყვები ლექსიკა"
-                    data-tags="games read">
-                    <div class="size-12 rounded-2xl tile-mint grid place-items-center text-2xl mx-auto mb-2">🧩</div>
-                    <p class="font-extrabold text-sm text-ink">{{ __('learn.match_words') }}</p>
-                    <p class="text-xs text-muted">{{ __('learn.drag_drop') }}</p>
-                </a>
-                <a href="#" class="swiper-slide k-card w-40 text-center" data-item
-                    data-name="{{ __('learn.word_search') }}" data-keywords="სიტყვის ძიება ასოები"
-                    data-tags="games read">
-                    <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl mx-auto mb-2">🔎</div>
-                    <p class="font-extrabold text-sm text-ink">{{ __('learn.word_search') }}</p>
-                    <p class="text-xs text-muted">{{ __('learn.find_5_words') }}</p>
-                </a>
-                <a href="{{ route('game-counting') }}" wire:navigate class="swiper-slide k-card w-40 text-center" data-item
-                    data-name="{{ __('learn.counting') }}" data-keywords="დათვლა რიცხვები მათემატიკა"
-                    data-tags="games math">
-                    <div class="size-12 rounded-2xl tile-sky grid place-items-center text-2xl mx-auto mb-2">🔢</div>
-                    <p class="font-extrabold text-sm text-ink">{{ __('learn.counting') }}</p>
-                    <p class="text-xs text-muted">{{ __('learn.counting_range') }}</p>
-                </a>
-                <a href="#" class="swiper-slide k-card w-40 text-center" data-item
-                    data-name="{{ __('learn.trace_letter') }}" data-keywords="ასოს დახაზვა ხელწერა ანბანი"
-                    data-tags="games read">
-                    <div class="size-12 rounded-2xl tile-sun grid place-items-center text-2xl mx-auto mb-2">✍️</div>
-                    <p class="font-extrabold text-sm text-ink">{{ __('learn.trace_letter') }}</p>
-                    <p class="text-xs text-muted">{{ __('learn.follow_dots') }}</p>
-                </a>
+                @foreach ($games as $game)
+                    <a href="{{ $game['href'] }}" wire:navigate class="swiper-slide k-card w-40 text-center"
+                        data-item data-name="{{ $game['title'] }}" data-keywords="{{ $game['keywords'] }}"
+                        data-tags="{{ $game['tags'] }}">
+                        <div class="size-12 rounded-2xl {{ $game['tile'] }} grid place-items-center text-2xl mx-auto mb-2">{{ $game['emoji'] }}</div>
+                        <p class="font-extrabold text-sm text-ink">{{ $game['title'] }}</p>
+                        <p class="text-xs text-muted">{{ $game['subtitle'] }}</p>
+                    </a>
+                @endforeach
             </div>
         </div>
     </section>
 
     <!-- =============== NEW THIS WEEK =============== -->
-    <section class="px-5 mt-5" data-search-section>
-        <div class="section-head">
-            <h2 class="h-display text-lg">{{ __('learn.new_this_week') }}</h2>
-            <span class="link cursor-default">{{ __('learn.fresh') }}</span>
-        </div>
-        <div class="grid grid-cols-1 gap-3">
-            <a href="#" class="k-card flex items-center gap-3" data-item data-name="{{ __('learn.space_planets') }}"
-                data-keywords="კოსმოსი პლანეტები მეცნიერება ცოდნა" data-tags="new">
-                <div class="size-12 rounded-2xl tile-sky grid place-items-center text-2xl shrink-0">🪐</div>
-                <div class="grow">
-                    <div class="flex items-center gap-2">
-                        <p class="font-extrabold text-sm text-ink">{{ __('learn.space_planets') }}</p>
-                        <span class="day-badge">{{ __('learn.new') }}</span>
-                    </div>
-                    <p class="text-xs text-muted">{{ __('learn.space_meta') }}</p>
-                </div>
-                <i class="ph ph-caret-right text-xl text-muted"></i>
-            </a>
-            <a href="#" class="k-card flex items-center gap-3" data-item data-name="{{ __('learn.big_word_hunt') }}"
-                data-keywords="სიტყვის ძიება ნადირობა ასოები" data-tags="new games read">
-                <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl shrink-0">🔎</div>
-                <div class="grow">
-                    <div class="flex items-center gap-2">
-                        <p class="font-extrabold text-sm text-ink">{{ __('learn.big_word_hunt') }}</p>
-                        <span class="chip chip-mint">{{ __('learn.free') }}</span>
-                    </div>
-                    <p class="text-xs text-muted">{{ __('learn.word_hunt_meta') }}</p>
-                </div>
-                <i class="ph ph-caret-right text-xl text-muted"></i>
-            </a>
-        </div>
-    </section>
+    @if ($latest !== [])
+        <section class="px-5 mt-5" data-search-section>
+            <div class="section-head">
+                <h2 class="h-display text-lg">{{ __('learn.new_this_week') }}</h2>
+                <span class="link cursor-default">{{ __('learn.fresh') }}</span>
+            </div>
+            <div class="grid grid-cols-1 gap-3">
+                @foreach ($latest as $row)
+                    <a href="{{ $row['href'] }}" wire:navigate class="k-card flex items-center gap-3" data-item
+                        data-name="{{ $row['title'] }}" data-keywords="{{ $row['keywords'] }}" data-tags="new">
+                        <div class="size-12 rounded-2xl {{ $row['tile'] }} grid place-items-center text-2xl shrink-0">{{ $row['emoji'] }}</div>
+                        <div class="grow">
+                            <div class="flex items-center gap-2">
+                                <p class="font-extrabold text-sm text-ink">{{ $row['title'] }}</p>
+                                <span class="day-badge">{{ __('learn.new') }}</span>
+                            </div>
+                            <p class="text-xs text-muted">{{ $row['subtitle'] }}</p>
+                        </div>
+                        <i class="ph ph-caret-right text-xl text-muted"></i>
+                    </a>
+                @endforeach
+            </div>
+        </section>
+    @endif
 
     <!-- =============== PARENT TIP =============== -->
     <section class="px-5 mt-5 mb-5">
@@ -347,7 +235,7 @@ new class extends Component
                 <p class="font-extrabold text-sm text-ink">{{ __('learn.parent_friendly') }}</p>
                 <p class="text-xs text-muted">{{ __('learn.parent_tip') }}</p>
             </div>
-            <a href="#" class="chip chip-primary">{{ __('learn.controls') }}</a>
+            <a href="{{ route('parent-controls') }}" wire:navigate class="chip chip-primary">{{ __('learn.controls') }}</a>
         </div>
     </section>
 
@@ -376,17 +264,16 @@ new class extends Component
                     <button id="clearBtn" type="button" class="i-right hidden"
                         aria-label="{{ __('learn.clear_search') }}"><i
                             class="ph ph-x-circle text-muted text-xl"></i></button>
-                    <button id="micBtn" type="button" class="i-right" aria-label="{{ __('learn.voice_search') }}"><i
-                            class="ph ph-microphone text-xl text-muted"></i></button>
+                    {{-- Voice search mic — T21. --}}
                 </div>
             </section>
 
             <section class="px-5 mt-4">
                 <p class="section-label">{{ __('learn.recent') }}</p>
                 <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_animals') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_counting') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_alphabet') }}</button>
+                    <button type="button" class="chip" data-recent>{{ __('learn.chip_georgian') }}</button>
+                    <button type="button" class="chip" data-recent>{{ __('learn.chip_math') }}</button>
+                    <button type="button" class="chip" data-recent>{{ __('learn.chip_history') }}</button>
                 </div>
             </section>
 
@@ -394,9 +281,9 @@ new class extends Component
                 <p class="section-label">{{ __('learn.popular_searches') }}</p>
                 <div class="mt-2 flex flex-wrap gap-2">
                     <button type="button" class="chip" data-recent>{{ __('learn.chip_quiz') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_spell') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_space') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_shapes') }}</button>
+                    <button type="button" class="chip" data-recent>{{ __('learn.chip_counting') }}</button>
+                    <button type="button" class="chip" data-recent>{{ __('learn.chip_math') }}</button>
+                    <button type="button" class="chip" data-recent>{{ __('learn.chip_georgian') }}</button>
                 </div>
             </section>
 
@@ -500,7 +387,7 @@ new class extends Component
 
             <div class="px-5 pb-6 pt-3 safe-bottom border-t border-token bg-surface">
                 <button type="button" id="applyFilterBtn" class="btn btn-primary w-full">
-                    <i class="ph-fill ph-check"></i> {{ __('learn.show') }} <span id="applyCount">6</span>
+                    <i class="ph-fill ph-check"></i> {{ __('learn.show') }} <span id="applyCount">{{ $this->itemCount() }}</span>
                     {{ __('learn.results') }}
                 </button>
             </div>

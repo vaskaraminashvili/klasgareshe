@@ -21,7 +21,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ## Where we are (2026-08-31)
 
-**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3 → ქართული · მათემატიკა · ისტორია → daily goal → notifications), parent-verify, logout. Home / Profile / Daily mission / Edit profile / Monthly goals / Friends ranking / Settings / Streak / Rewards dashboard ported and mostly live. Home greeting, streak / XP / league ribbon, week dots from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3) plus **week 3 for class 1** seeded in Georgian; active week = lowest incomplete week. Daily mission = **3 today tasks** (1 pack per subject; done if that subject was played today). Completing a pack → `awardXp` + badge eval. Ranking hub live (Global / Weekly / League / Friends). Profile hero, mastery, week activity, friends strip, monthly-goals chip live. Badges: 21-catalog + unlock celebration (Speed Runner on a sub-2-minute pack); Rewards tab → `/rewards-dashboard`. Learn tab (`/learn-categories`) is a dummy library shell.
+**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3 → ქართული · მათემატიკა · ისტორია → daily goal → notifications), parent-verify, logout. Home / Profile / Daily mission / Edit profile / Monthly goals / Friends ranking / Settings / Streak / Rewards dashboard ported and mostly live. Home greeting, streak / XP / league ribbon, week dots from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3) plus **week 3 for class 1** seeded in Georgian; active week = lowest incomplete week. Daily mission = **3 today tasks** (1 pack per subject; done if that subject was played today). Completing a pack → `awardXp` + badge eval. Ranking hub live (Global / Weekly / League / Friends). Profile hero, mastery, week activity, friends strip, monthly-goals chip live. Badges: 21-catalog + unlock celebration (Speed Runner on a sub-2-minute pack); Rewards tab → `/rewards-dashboard`. Learn tab is live (`/learn-categories` → `/section-list/{subject}` → lesson details / locked → player).
 
 ### Still static / dummy (do not treat as done)
 
@@ -31,10 +31,10 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 
 | Area | Still static |
 |---|---|
-| **Tab bar** | Learn → `/learn-categories` (library shell; dummy catalog). Rewards opens `/rewards-dashboard`. |
+| **Tab bar** | Learn → `/learn-categories` (live three-subject library). Rewards opens `/rewards-dashboard`. |
 | **Home — social** | Friends-today feed removed (was Leo / Ana rows + fake streak chips) — no real activity feed yet. |
 | **Home — games** | Word-search featured tile removed (T19). Counting tile is live. |
-| **Home — search** | Overlay + results are **live** over 16 real destinations (`SearchService`). Recent / popular chips and voice search removed — no query history, no Georgian speech model. |
+| **Home — search** | Overlay + results are **live** over 19 real destinations (`SearchService`). Recent / popular chips and voice search removed — no query history, no Georgian speech model. |
 | **Home — notifications** | Bell, unread badge and the whole sheet removed — no notification backend. |
 | **Home — misc** | PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. Parent tip is live (week figures + link to PIN-gated `/weekly-report`). Streak ribbon / week card open `/streak`. |
 | **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards still markup. **+120 XP** is awarded once when all 3 subjects are done today. |
@@ -44,7 +44,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Badges / rewards** | Social Star never unlocks. Share badge / unlock share = toast markup. Shop / limited bundle deferred (**T20**). Daily box (+40), login calendar, and freeze claims live on `/rewards-dashboard`. |
 | **Ranking / privacy** | Global leaderboard honors `show_on_leaderboard`. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. `/ranking-friends` filter tabs (all / online / streak / near) are inert, and presence (“N online”) was removed as fake. |
 | **XP / streaks** | Streak screen live (`/streak`): month map, best streak, freeze claimed on Rewards after the 7-day milestone. Combo / speed bonus scored on full packs. Mission-complete +120 awarded once/day. Login-calendar XP collected on `/rewards-dashboard` (+10→+100). Difficulty setting not scored. |
-| **Learn library** | Tab shell ported (`pages::learn-categories`); subject screens (math / alphabet / animals / words / …), lessons, chapters — not started. Spotlight / stats / tiles still dummy. |
+| **Learn library** | Three school subjects live (tiles, spotlight, continue, lock). Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) not v1. Search index **T17**. |
 | **Other mini-games** | Trace, spell, word-search, match, habitats, … — **T19**. Tap-correct and counting are live. |
 | **Parent zone** | PIN gate, dashboard week numbers + daily minutes chart, preferred subjects, change/reset PIN, screen time, bedtime lock, weekly/full reports, PDF/JSON export, parent email change, and delete account are live. Monthly goals page is live (system goals); parent custom targets later. |
 | **Settings / legal / PWA** | Settings page live (`/settings`); notification prefs editable but not delivered. FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
@@ -58,9 +58,9 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 
 1. ~~Auth + parent verification + kid profile~~ — auth + verify + edit-profile + live Profile stats done
 2. ~~Onboarding (class, school subjects, daily goal, notifications)~~ — კლასი 1–3 + ქართული / მათემატიკა / ისტორია; class drives week packs
-3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn tab is a dummy library; Rewards → dashboard; Ranking wired; Home search live; notif still dummy
+3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn tab is live; Rewards → dashboard; Ranking wired; Home search live; notif still dummy
 4. ~~XP / levels / scoring~~ — levels + xp-progress + award-from-play done
-5. Learn library + lessons + continue/lock — skipped; week plan stands in for “what next”
+5. ~~Learn library + lessons + continue/lock~~ — three school subjects; weeks as chapters; lock = previous pack
 6. ~~Mini-games + game scoring~~ — Quick Quiz plays the week pack (`startPlanItem`); other shells later
 7. ~~Daily mission + week plan~~ — 3 today tasks + catch-up live; gift box / bonus cards still dummy
 8. ~~Badges + rewards + shop~~ — collection + unlock + dashboard/claim/login calendar live; shop later
@@ -192,33 +192,33 @@ Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Week-plan blocks are
 
 ### School subjects (v1, grades 1–3)
 
-Home week plan — not the Learn tab yet.
+Home week plan and the Learn tab.
 
 - [x] ქართული — letters, syllables, simple words (`locale=ka`; no Latin A–Z)
 - [x] მათემატიკა — numbers, count, +1 / −1 (harder in grades 2–3)
 - [x] ისტორია — საქართველო (flag, თბილისი, holidays, regions); not world history
-- [~] Learn tab library — `pages::learn-categories` shell ported; Kidzio Math / Alphabet / Animals / Words / Knowledge / Opposites screens not built
+- [x] Learn tab library — three school subjects; Kidzio Math / Alphabet / Animals / Words / Knowledge / Opposites hubs not v1
 
 ### Library UX
 
-- [~] Subject tiles with lesson count, % complete, difficulty, age range — markup + dummy numbers
-- [~] Search + filters (difficulty, age, status, tags) — overlay JS on dummy catalog
-- [ ] Favourite / heart a subject or lesson
-- [~] Today's spotlight on Learn tab — markup; links to daily-mission
-- [ ] Per-subject: continue, lessons list, mini-games, subject badges
+- [x] Subject tiles with lesson count, % complete, difficulty, age range — from week plans
+- [~] Search + filters (difficulty, age, status, tags) — overlay JS on live tiles; full index is **T17**
+- [x] Favourite / heart a subject (`users.favourite_subjects`)
+- [x] Today's spotlight on Learn tab — same next incomplete pack as Home
+- [x] Per-subject: continue, lessons list, subject badges
 - [ ] Word / letter / animal / pair of the day
 - [ ] Letter sounds & animal sounds (audio)
 - [ ] Read-along stories (Words)
 
 ### Lessons & chapters
 
-- [ ] Chapter list (e.g. Numbers & counting)
-- [ ] Lesson list with locked / in progress / complete
-- [ ] Lesson details: duration, XP, activities, age, difficulty, kid rating
-- [ ] Lesson progress (e.g. 2 of 5 activities)
-- [ ] Continue lesson (resume where they left off)
-- [ ] Locked lesson: requirements (finish previous + XP threshold)
-- [ ] Chapter rewards when a chapter is finished
+- [x] Chapter list — curriculum weeks for the subject
+- [x] Lesson list with locked / playable / complete
+- [x] Lesson details: duration, XP, activities, class, difficulty (no kid rating)
+- [~] Lesson progress — pack complete or not (no mid-pack resume)
+- [x] Continue lesson — next incomplete pack, same as Home
+- [x] Locked lesson: finish the previous pack (no XP threshold)
+- [~] Chapter rewards — per-subject badges (no chapter-boss quiz)
 
 ---
 
@@ -448,7 +448,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 ## 16. Search
 
 - [ ] Home search: subjects, games, lessons
-- [~] Learn library search + filters — overlay JS on dummy catalog; no live index
+- [~] Learn library search + filters — overlay JS on live tiles; no live index
 - [ ] Leaderboard player search
 - [x] Settings search
 - [ ] Language list search

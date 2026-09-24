@@ -49,6 +49,9 @@ class KidSetupService
             return [
                 'home',
                 'learn-categories',
+                'section-list',
+                'lesson-details',
+                'lesson-locked',
                 'profile',
                 'edit-profile',
                 'settings',

@@ -18,6 +18,7 @@ use App\Services\FriendshipService;
 use App\Services\GamePlayService;
 use App\Services\KidSetupService;
 use App\Services\LeagueSeasonService;
+use App\Services\LearnLibraryService;
 use App\Services\LevelCalculator;
 use App\Services\MonthlyGoalService;
 use App\Services\ParentVerificationService;
@@ -63,6 +64,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(PasswordResetService::class);
         $this->app->singleton(WeekPlanRepository::class);
         $this->app->singleton(WeekPlanService::class);
+        $this->app->singleton(LearnLibraryService::class);
         $this->app->singleton(BadgeRepository::class);
         $this->app->singleton(BadgeService::class);
         $this->app->singleton(RewardRepository::class);

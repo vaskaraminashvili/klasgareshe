@@ -23,11 +23,11 @@ new class extends Component
             <span class="tab-ico">
                 <i class="ph-fill ph-house-simple text-xl"></i>
             </span>{{ __('nav.home') }}</a>
-        <a class="tab {{ request()->routeIs('learn-categories') ? 'active' : '' }}"
+        <a class="tab {{ request()->routeIs('learn-categories', 'section-list', 'lesson-details', 'lesson-locked') ? 'active' : '' }}"
             href="{{ route('learn-categories') }}" wire:navigate>
             <span class="tab-ico">
-                <i class="{{ request()->routeIs('learn-categories') ? 'ph-fill' : 'ph' }} ph-books text-xl"></i>
-            </span>{{ __('nav.learn') }}</a>
+                <i class="{{ request()->routeIs('learn-categories', 'section-list', 'lesson-details', 'lesson-locked') ? 'ph-fill' : 'ph' }} ph-books text-xl"></i>
+            </span>{{ __('nav.learn') }}</a
         <a class="tab {{ request()->routeIs('rewards-dashboard', 'badges', 'badge-unlock') ? 'active' : '' }}" href="{{ route('rewards-dashboard') }}"
             wire:navigate>
             <span class="tab-ico relative">

@@ -117,6 +117,37 @@ class BadgeService
     }
 
     /**
+     * @return list<BadgeCardView>
+     */
+    public function subjectCards(User $user, SchoolSubject $subject, int $limit = 3): array
+    {
+        $rows = $this->badges->forUser($user);
+        $byBadgeId = [];
+
+        foreach ($rows as $row) {
+            $byBadgeId[$row->badge_id] = $row;
+        }
+
+        $cards = [];
+
+        foreach ($this->badges->catalog() as $badge) {
+            $params = $badge->rule_params ?? [];
+
+            if (($params['subject'] ?? null) !== $subject->value) {
+                continue;
+            }
+
+            $cards[] = $this->cardFor($user, $badge, $byBadgeId[$badge->id] ?? null);
+
+            if (count($cards) >= $limit) {
+                break;
+            }
+        }
+
+        return $cards;
+    }
+
+    /**
      * @return list<RecentBadgeView>
      */
     public function recentRail(User $user, int $earnedLimit = 3): array

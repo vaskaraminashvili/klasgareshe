@@ -27,6 +27,35 @@ class WeekPlanRepository
             ->get();
     }
 
+    /**
+     * @return Collection<int, WeekPlanItem>
+     */
+    public function itemsForSubject(SchoolGrade $grade, SchoolSubject $subject): Collection
+    {
+        return WeekPlanItem::query()
+            ->where('grade', $grade)
+            ->where('subject', $subject)
+            ->orderBy('week_number')
+            ->orderBy('weekday')
+            ->orderBy('id')
+            ->get();
+    }
+
+    public function countForGrade(SchoolGrade $grade): int
+    {
+        return WeekPlanItem::query()
+            ->where('grade', $grade)
+            ->count();
+    }
+
+    public function correctCountFor(User $user, int $itemId): int
+    {
+        return (int) UserPlanProgress::query()
+            ->where('user_id', $user->id)
+            ->where('week_plan_item_id', $itemId)
+            ->value('correct_count');
+    }
+
     public function find(int $id): ?WeekPlanItem
     {
         return WeekPlanItem::query()->find($id);

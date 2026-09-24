@@ -31,6 +31,15 @@ enum SchoolSubject: string
         };
     }
 
+    public function ringClass(): string
+    {
+        return match ($this) {
+            self::Georgian => 'tile-ring-sun',
+            self::Math => 'tile-ring-violet',
+            self::History => 'tile-ring-sky',
+        };
+    }
+
     public function inkClass(): string
     {
         return match ($this) {

@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\SchoolSubject;
+
 class SearchService
 {
     public function __construct(private WeekPlanService $week) {}
@@ -63,6 +65,16 @@ class SearchService
                 'href' => route($route),
                 'ico' => $ico,
                 'tile' => $tile,
+            ];
+        }
+
+        foreach (SchoolSubject::ordered() as $subject) {
+            $entries[] = [
+                'name' => (string) __('learn.subject_library', ['subject' => $subject->label()]),
+                'keys' => $subject->label().' '.(string) __('learn.library'),
+                'href' => route('section-list', ['subject' => $subject->value]),
+                'ico' => $subject->emoji(),
+                'tile' => $subject->tile(),
             ];
         }
 

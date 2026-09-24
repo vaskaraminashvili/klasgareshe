@@ -31,6 +31,9 @@ Route::livewire('/weekly-report/opt-out/{user}', 'pages::weekly-report-opt-out')
 Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-exit'])->group(function () {
     Route::livewire('/', 'pages::home')->name('home');
     Route::livewire('/learn-categories', 'pages::learn-categories')->name('learn-categories');
+    Route::livewire('/section-list/{subject}', 'pages::section-list')->name('section-list');
+    Route::livewire('/lesson-details/{item}', 'pages::lesson-details')->name('lesson-details');
+    Route::livewire('/lesson-locked/{item}', 'pages::lesson-locked')->name('lesson-locked');
     Route::livewire('/profile', 'pages::profile')->name('profile');
     Route::livewire('/edit-profile', 'pages::edit-profile')->name('edit-profile');
     Route::livewire('/settings', 'pages::settings')->name('settings');

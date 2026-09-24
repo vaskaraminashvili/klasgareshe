@@ -172,6 +172,32 @@ class WeekPlanService
             throw new InvalidArgumentException('Week plan item is already completed.');
         }
 
+        if (! $this->isPlayable($user, $item)) {
+            throw new InvalidArgumentException('Week plan item is locked until earlier packs are finished.');
+        }
+
+        return $item;
+    }
+
+    public function isCompleted(User $user, WeekPlanItem $item): bool
+    {
+        return $this->plans->isCompleted($user, $item->id);
+    }
+
+    public function isPlayable(User $user, WeekPlanItem $item): bool
+    {
+        if ($item->grade !== $this->gradeFor($user)) {
+            return false;
+        }
+
+        if ($this->plans->isCompleted($user, $item->id)) {
+            return false;
+        }
+
+        if ($item->week_number > $this->activeWeekNumber($user)) {
+            return false;
+        }
+
         $next = $this->plans->nextIncomplete(
             $user,
             $item->grade,
@@ -179,16 +205,33 @@ class WeekPlanService
             $item->week_number,
         );
 
-        if ($next === null || $next->id !== $item->id) {
-            throw new InvalidArgumentException('Week plan item is locked until earlier packs are finished.');
+        return $next instanceof WeekPlanItem && $next->id === $item->id;
+    }
+
+    public function blockingPack(User $user, WeekPlanItem $item): ?WeekPlanItem
+    {
+        $completed = array_flip($this->plans->completedItemIds($user));
+
+        foreach ($this->plans->itemsForSubject($this->gradeFor($user), $item->subject) as $candidate) {
+            if ($candidate->id === $item->id) {
+                break;
+            }
+
+            if (! isset($completed[$candidate->id])) {
+                return $candidate;
+            }
         }
 
-        // Packs from a future curriculum week stay locked until earlier weeks are done.
-        if ($item->week_number > $this->activeWeekNumber($user)) {
-            throw new InvalidArgumentException('Week plan item is locked until earlier packs are finished.');
+        return null;
+    }
+
+    public function packHref(User $user, WeekPlanItem $item): string
+    {
+        if ($this->isCompleted($user, $item) || $this->isPlayable($user, $item)) {
+            return route('lesson-details', ['item' => $item->id]);
         }
 
-        return $item;
+        return route('lesson-locked', ['item' => $item->id]);
     }
 
     /**

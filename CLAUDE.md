@@ -41,7 +41,7 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 - Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired. Password reset is live: `/forgot-password` → 6-digit code at the parent email → `/reset-password`. Login “დაგავიწყდა?” and Edit profile’s reset row both start that flow. Signup consent links open `/terms` and `/privacy` (guest-readable Georgian documents; flagged for legal review).
 - After register: onboarding (**კლასი 1 / 2 / 3** → ქართული / მათემატიკა / ისტორია → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step. Kids without `grade` play class 1 packs.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
-- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (the pack’s player: Quick Quiz, tap-correct, or counting) or `daily-mission`. Featured counting tile opens the next counting pack. Friends, search, and notification list are still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is the Kidzio library shell (search / filter / subject tiles / mini-games); counts and Kidzio extras are still dummy. Spotlight and Quick Quiz link to `daily-mission` / `game-multiple-choice`; counting cards open `/game-counting`.
+- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (the pack’s player: Quick Quiz, tap-correct, or counting) or `daily-mission`. Featured counting tile opens the next counting pack. Friends, search, and notification list are still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is live: three school subjects (pack count / % / grade), spotlight = Home’s next incomplete pack, mini-games rail of the three live players. Subject → `/section-list/{subject}` (weeks as chapters) → `/lesson-details/{item}` or `/lesson-locked/{item}` → player. Heart toggles `favourite_subjects`. Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) are not v1.
 - Profile (`/profile`, `pages::profile`): live name, age · class, XP / streak / badges / global rank, level bar, league shortcut, subject mastery (active curriculum week %), this-week XP / days / packs, recent badge achievements, friends strip, monthly-goals chip, rewards-dashboard row with live claim count. Settings gear + row open `/settings`. Edit profile and friends ranking are live. Parent zone links to `/parent-controls` behind a 4-digit PIN (setup / unlock / change / email recovery). Screen-time chip shows remaining minutes (or off). Screen time (`/screen-time`) and bedtime (`/bedtime-lock`) are PIN-gated; play routes pause at the daily limit or during sleep hours (`/play-paused`). Heartbeat tracks minutes on Quick Quiz. Weekly/full reports (`/weekly-report`, `/full-report`) and PDF export (`/export-progress`) are PIN-gated; figures match Profile. Monday 08:00 Georgian parent email (`reports:send-weekly`) respects `notification_preferences.weekly_report`. Parent email change (`/parent-email`) and delete (`/delete-account`) are PIN-gated; delete also needs a 6-digit code at the parent email, then a 14-day soft-delete grace before `accounts:purge-deleted`.
 - Edit profile (`/edit-profile`): name, nickname, avatar emoji, age, gender, class 1–3, favourite subject, daily goal, privacy toggles. Parent email read-only with a link to PIN-gated `/parent-email` (pending-email re-verify). Password reset is live (parent email code). Delete goes to `/delete-account` (PIN + email code). **`show_on_leaderboard` is enforced** on `/leaderboard` (and weekly XP ranking queries); friends + league stay visible.
 - Monthly goals (`/monthly-goals`): system goals for the calendar month (packs / XP / streak / badges) from live stats. Add/custom goals deferred.
@@ -62,7 +62,7 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
 - Blocks whose backend does not exist were **deleted**, each leaving a one-line Blade comment naming
   the block and the task that re-ports it. Copy the markup back from `kidzio/{screen}.html` when you
   get there. Elements that showed live data but had no link target were kept and made inert.
-- Home search is real: `SearchService::homeCatalog()` renders 16 Georgian destinations into
+- Home search is real: `SearchService::homeCatalog()` renders 19 Georgian destinations into
   `<script type="application/json" id="searchIndex">`, which `public/assets/js/home.js` reads.
 - Settings (`/settings`, `pages::settings`): dark mode (layout JS), notification prefs + reminder
   time, daily goal, favourite subjects, privacy toggles, locked Georgian locale, parent zone, parent
@@ -76,7 +76,7 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
   Runner) apply on a 5-question pack. Daily mission complete is +120 once/day. Login-calendar XP
   (`awardDailyLogin`, +10→+100) is collected on `/rewards-dashboard`. Daily box is +40 XP once/day.
 
-Build next: **T14** Learn library.
+Build next: **T15** Splash, walkthrough, PWA.
 (**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---
@@ -110,6 +110,9 @@ Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/
 | `signup.html` | `pages::user-register` | `user-register` | `/register` |
 | `home.html` | `pages::home` | `home` | `/` |
 | `learn-categories.html` | `pages::learn-categories` | `learn-categories` | `/learn-categories` |
+| `section-list.html` | `pages::section-list` | `section-list` | `/section-list/{subject}` |
+| `lesson-details.html` | `pages::lesson-details` | `lesson-details` | `/lesson-details/{item}` |
+| `lesson-locked.html` | `pages::lesson-locked` | `lesson-locked` | `/lesson-locked/{item}` |
 | `daily-mission.html` | `pages::daily-mission` | `daily-mission` | `/daily-mission` |
 | `game-multiple-choice.html` | `pages::game-multiple-choice` | `game-multiple-choice` | `/game-multiple-choice/{item?}` |
 | `game-tap-correct.html` | `pages::game-tap-correct` | `game-tap-correct` | `/game-tap-correct/{item?}` |
