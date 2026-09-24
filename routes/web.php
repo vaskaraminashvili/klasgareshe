@@ -33,6 +33,7 @@ Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-e
     Route::livewire('/learn-categories', 'pages::learn-categories')->name('learn-categories');
     Route::livewire('/profile', 'pages::profile')->name('profile');
     Route::livewire('/edit-profile', 'pages::edit-profile')->name('edit-profile');
+    Route::livewire('/settings', 'pages::settings')->name('settings');
     Route::livewire('/daily-mission', 'pages::daily-mission')->name('daily-mission');
     Route::livewire('/xp-progress', 'pages::xp-progress')->name('xp-progress');
     Route::livewire('/leaderboard', 'pages::leaderboard')->name('leaderboard');

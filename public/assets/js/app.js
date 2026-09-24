@@ -69,10 +69,18 @@ function syncThemeIcons() {
   document
     .querySelectorAll(".theme-icon-sun")
     .forEach((el) => (el.style.display = isDark ? "block" : "none"));
+  document.querySelectorAll("[data-theme-switch]").forEach((el) => {
+    if (el instanceof HTMLInputElement) el.checked = isDark;
+  });
 }
 
 document.addEventListener("DOMContentLoaded", syncThemeIcons);
 document.addEventListener("livewire:navigated", syncThemeIcons);
+document.addEventListener("livewire:init", () => {
+  if (window.Livewire && typeof Livewire.hook === "function") {
+    Livewire.hook("morph.updated", () => syncThemeIcons());
+  }
+});
 
 window.toggleTheme = toggleTheme;
 

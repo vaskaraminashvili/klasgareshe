@@ -20,7 +20,7 @@ rather than the way anyone finds content — hence P2.
 - [ ] Recent searches, per user
 - [ ] Popular chips from real query counts, not a fixed list
 - [ ] Leaderboard player search by nickname, respecting `show_on_leaderboard` (T04)
-- [ ] Settings search (may already be satisfied by T10's row filter — check first)
+- [x] Settings search (row filter shipped in **T10**)
 
 ## Code touchpoints
 

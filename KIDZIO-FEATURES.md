@@ -38,7 +38,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Home — notifications** | Bell, unread badge and the whole sheet removed — no notification backend. |
 | **Home — misc** | Streak ribbon / card are inert (live numbers, no streak page). PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. Parent tip is live (week figures + link to PIN-gated `/weekly-report`). |
 | **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards, hardcoded **+120 XP** chips — markup only. |
-| **Profile** | Rewards-dashboard row, settings gear + row, share button, streak menu row and the “online” chip all removed pending their tasks. Parent **controls**, **screen time**, and **weekly report** rows are live (PIN-gated). Achievements timeline beyond recent badges not built. |
+| **Profile** | Rewards-dashboard row, share button, streak menu row and the “online” chip all removed pending their tasks. Settings gear + row go to `/settings`. Parent **controls**, **screen time**, and **weekly report** rows are live (PIN-gated). Achievements timeline beyond recent badges not built. |
 | **Edit profile** | Camera / change-avatar badge not built. Password reset is live. Parent email change and delete are PIN-gated. |
 | **Auth** | Phone login, social (Google / Apple / Facebook). Parent-verify “change email” / “get help” chips dead. Password reset is live. Terms / Privacy screens are live. |
 | **Badges / rewards** | Speed Runner + Social Star never unlock. Share badge / unlock share = toast markup. Badges “Rewards” chip → `#`. No Rewards dashboard, claim queue, daily-login calendar, or XP shop. |
@@ -47,7 +47,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Learn library** | Tab shell ported (`pages::learn-categories`); subject screens (math / alphabet / animals / words / …), lessons, chapters — not started. Spotlight / stats / tiles still dummy. |
 | **Other mini-games** | Everything except Quick Quiz (tap-correct, counting, trace, spell, word-search, …) — not started. |
 | **Parent zone** | PIN gate, dashboard week numbers + daily minutes chart, preferred subjects, change/reset PIN, screen time, bedtime lock, weekly/full reports, PDF/JSON export, parent email change, and delete account are live. Monthly goals page is live (system goals); parent custom targets later. |
-| **Settings / legal / PWA** | No Settings page. No push delivery (onboarding prefs stored only). FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
+| **Settings / legal / PWA** | Settings page live (`/settings`); notification prefs editable but not delivered. FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
 | **Content ops** | Week **3** is class 1 only; week 3 for grades 2–3 and week **4+** not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
 
 **Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress` (weeks 1–2 for grades 1–3; week 3 for class 1). Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped.
@@ -379,7 +379,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 ### Appearance
 
-- [ ] Dark mode
+- [x] Dark mode
 - [ ] Accent color
 - [ ] Text size
 
@@ -391,22 +391,22 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 ### Notifications
 
-- [ ] Streak reminders
-- [ ] New lesson alerts
-- [ ] Rewards & rankings
-- [ ] Reminder time
+- [~] Streak reminders — pref stored on Settings; delivery **T16**
+- [~] New lesson alerts — pref stored on Settings; delivery **T16**
+- [~] Rewards & rankings — pref stored on Settings; delivery **T16**
+- [~] Reminder time — stored on Settings; delivery **T16**
 
 ### Learning
 
-- [ ] Daily goal
-- [ ] Favourite subjects
+- [x] Daily goal
+- [x] Favourite subjects
 - [ ] Age group
 - [ ] Difficulty
 
 ### Privacy & safety
 
-- [ ] Show on leaderboard
-- [ ] Friend requests
+- [x] Show on leaderboard
+- [x] Friend requests
 - [x] Privacy policy (COPPA / GDPR-K mentioned in UI) — `/privacy` + `/terms`; technical Georgian copy, not a certification
 
 ### Storage
@@ -417,7 +417,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 ### Language & region
 
-- [~] App language (UI + questions + audio) — product default Georgian (`APP_LOCALE=ka`, `lang/ka`); questions seeded `locale=ka`; `lang/en` kept for future; no language picker yet
+- [~] App language (UI + questions + audio) — product default Georgian (`APP_LOCALE=ka`, `lang/ka`); questions seeded `locale=ka`; `lang/en` kept for future; Settings shows it locked; picker is **T21**
 - [ ] Country (ranking region)
 
 ### Support & about
@@ -429,7 +429,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 - [x] Terms & Privacy
 - [ ] Install app (PWA)
 
-Settings search.
+- [x] Settings search (visible rows on `/settings`)
 
 ---
 
@@ -450,7 +450,7 @@ Settings search.
 - [ ] Home search: subjects, games, lessons
 - [~] Learn library search + filters — overlay JS on dummy catalog; no live index
 - [ ] Leaderboard player search
-- [ ] Settings search
+- [x] Settings search
 - [ ] Language list search
 - [ ] Recent + popular queries
 

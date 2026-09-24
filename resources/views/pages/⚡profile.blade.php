@@ -188,7 +188,7 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         </div>
         <a href="{{ route('edit-profile') }}" wire:navigate class="icon-btn" aria-label="{{ __('profile.edit_profile') }}"><i
                 class="ph ph-pencil-simple text-xl"></i></a>
-        {{-- Settings gear dropped until the screen exists (docs/tasks/T10-settings-screen.md). --}}
+        <a href="{{ route('settings') }}" wire:navigate class="icon-btn" aria-label="{{ __('profile.settings') }}"><i class="ph ph-gear text-xl"></i></a>
         <button class="icon-btn" data-theme-toggle aria-label="{{ __('profile.toggle_theme') }}"><i
                 class="ph ph-moon text-xl"></i></button>
     </header>
@@ -455,7 +455,11 @@ new #[Title('პროფილი · Kidzio')] class extends Component
     <section class="px-5 mt-5 mb-5">
         <p class="section-label">{{ __('profile.account') }}</p>
         <div class="mt-3 space-y-2">
-            {{-- Settings row dropped until the screen exists (docs/tasks/T10-settings-screen.md). --}}
+            <a href="{{ route('settings') }}" wire:navigate class="menu-row">
+                <div class="menu-ico tile-mint">⚙️</div>
+                <p class="menu-text font-extrabold text-sm grow">{{ __('profile.settings') }}</p>
+                <i class="ph ph-caret-right text-muted"></i>
+            </a>
             <button data-install hidden class="menu-row w-full text-left">
                 <div class="menu-ico tile-violet"><i class="ph-fill ph-download-simple"></i></div>
                 <p class="menu-text font-extrabold text-sm grow">{{ __('profile.install_kidzio') }}</p>

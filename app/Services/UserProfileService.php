@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\DailyGoal;
+use App\Enums\ReminderTime;
 use App\Enums\SchoolSubject;
 use App\Models\User;
 use App\Repositories\UserRepository;
@@ -27,7 +29,10 @@ class UserProfileService
         'tile-pink',
     ];
 
-    public function __construct(private UserRepository $users) {}
+    public function __construct(
+        private UserRepository $users,
+        private KidSetupService $setup,
+    ) {}
 
     /**
      * @param  array<string, mixed>  $data
@@ -166,6 +171,28 @@ class UserProfileService
 
         return $this->users->update($user, [
             'favourite_subjects' => $clean,
+        ]);
+    }
+
+    public function updateDailyGoal(User $user, DailyGoal $goal): User
+    {
+        return $this->users->update($user, [
+            'daily_goal' => $goal,
+        ]);
+    }
+
+    /**
+     * @param  array<string, bool>  $preferences
+     */
+    public function updateNotifications(User $user, array $preferences, ReminderTime $reminderTime): User
+    {
+        $current = is_array($user->notification_preferences) ? $user->notification_preferences : [];
+
+        return $this->users->update($user, [
+            'notification_preferences' => $this->setup->normalizeNotificationPreferences(
+                array_merge($current, $preferences),
+            ),
+            'reminder_time' => $reminderTime,
         ]);
     }
 }

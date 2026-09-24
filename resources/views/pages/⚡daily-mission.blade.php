@@ -121,7 +121,7 @@ new class extends Component
       <h1 class="h-display text-lg leading-tight">{{ __('daily-mission.heading') }}</h1>
     </div>
     <button type="button" class="icon-btn" aria-label="{{ __('daily-mission.share') }}"><i class="ph ph-share-fat text-xl"></i></button>
-    <button type="button" class="icon-btn" aria-label="{{ __('daily-mission.settings') }}"><i class="ph ph-gear"></i></button>
+    <a href="{{ route('settings') }}" wire:navigate class="icon-btn" aria-label="{{ __('daily-mission.settings') }}"><i class="ph ph-gear"></i></a>
   </header>
 
   <!-- =============== MISSION HERO =============== -->

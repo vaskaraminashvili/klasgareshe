@@ -1,7 +1,7 @@
 # T10 — Settings screen
 
 **Priority:** P1 · core product
-**Status:** not started
+**Status:** done
 **Depends on:** T02, T05, T06
 
 ## Why now
@@ -13,8 +13,8 @@ reachable.
 
 ## Scope
 
-- [ ] `pages::settings` from `kidzio/settings.html` → `/settings`
-- [ ] Sections, using the ported markup:
+- [x] `pages::settings` from `kidzio/settings.html` → `/settings`
+- [x] Sections, using the ported markup:
   - **Appearance** — dark mode (already works via layout JS; surface the toggle here). Accent color
         and text size are **T21**; hide those rows for now.
   - **Sound** — deferred to **T21**; hide.
@@ -30,11 +30,11 @@ reachable.
   - **Parent zone** — link into `/parent-controls` behind the PIN.
   - **Account** — parent email, delete account (**T09**).
   - **Support & about** — **T21**; hide.
-- [ ] Settings search over the visible rows
-- [ ] Every editable row writes through `UserProfileService` — the same service `/edit-profile` uses,
+- [x] Settings search over the visible rows
+- [x] Every editable row writes through `UserProfileService` — the same service `/edit-profile` uses,
       so the two screens cannot drift
-- [ ] Georgian copy in `lang/ka/settings.php`
-- [ ] Unblock the `settings.html` links neutralized in T02
+- [x] Georgian copy in `lang/ka/settings.php`
+- [x] Unblock the `settings.html` links neutralized in T02
 
 ## Rule
 
@@ -57,3 +57,9 @@ nothing is worse than a short one.
 ## Out of scope
 
 Accent colors, text size, sounds, voice reader, language picker, help/FAQ/about → **T21**.
+
+## Notes
+
+Home’s original `settings.html` links lived in the parent-tip chip (**T08**) and the notification
+sheet footer (**T16**). Those blocks stay with those tasks. Profile gear + row, daily-mission gear,
+and Home search (`SearchService`) now reach `/settings`.

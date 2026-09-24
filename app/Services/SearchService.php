@@ -18,6 +18,7 @@ class SearchService
         'xp' => ['xp-progress', '⭐', 'tile-violet'],
         'monthly_goals' => ['monthly-goals', '🗓️', 'tile-mint'],
         'friends' => ['ranking-friends', '👫', 'tile-sky'],
+        'settings' => ['settings', '⚙️', 'tile-mint'],
     ];
 
     /**

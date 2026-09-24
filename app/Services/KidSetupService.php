@@ -51,6 +51,7 @@ class KidSetupService
                 'learn-categories',
                 'profile',
                 'edit-profile',
+                'settings',
                 'game-multiple-choice',
                 'daily-mission',
                 'xp-progress',

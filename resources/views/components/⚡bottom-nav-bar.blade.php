@@ -29,9 +29,9 @@ new class extends Component
             <span class="tab-ico">
                 <i class="ph ph-trophy text-xl"></i>
             </span>{{ __('nav.ranking') }}</a>
-        <a class="tab {{ request()->routeIs('profile') ? 'active' : '' }}" href="{{ route('profile') }}" wire:navigate>
+        <a class="tab {{ request()->routeIs('profile', 'settings', 'edit-profile') ? 'active' : '' }}" href="{{ route('profile') }}" wire:navigate>
             <span class="tab-ico">
-                <i class="ph ph-user-circle text-xl"></i>
+                <i class="{{ request()->routeIs('profile', 'settings', 'edit-profile') ? 'ph-fill' : 'ph' }} ph-user-circle text-xl"></i>
             </span>{{ __('nav.profile') }}</a>
     </div>
 </nav>

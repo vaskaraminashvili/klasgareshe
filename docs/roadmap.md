@@ -42,7 +42,7 @@ rule in `CLAUDE.md`, not a nice-to-have.
 | T07 | [Screen time + bedtime lock](tasks/T07-screen-time-bedtime.md) | **done** |
 | T08 | [Weekly & full reports](tasks/T08-parent-reports.md) | **done** |
 | T09 | [Account & data control](tasks/T09-account-and-data.md) | **done** |
-| T10 | [Settings screen](tasks/T10-settings-screen.md) | not started |
+| T10 | [Settings screen](tasks/T10-settings-screen.md) | **done** |
 | T11 | [Streaks & XP completeness](tasks/T11-streaks-and-xp.md) | not started |
 | T12 | [Mini-games batch 1 — tap-correct + counting](tasks/T12-minigames-batch-1.md) | not started |
 | T13 | [Rewards dashboard + login calendar](tasks/T13-rewards-dashboard.md) | not started |
