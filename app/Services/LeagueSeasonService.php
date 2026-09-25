@@ -4,19 +4,32 @@ namespace App\Services;
 
 use App\Data\CohortMemberRow;
 use App\Data\WeeklyLeagueSnapshot;
+use App\Enums\League;
 use App\Enums\LeagueOutcome;
 use App\Enums\LeagueWeekStatus;
+use App\Enums\XpSource;
 use App\Models\LeagueGroup;
 use App\Models\LeagueGroupMember;
 use App\Models\LeagueWeek;
 use App\Models\User;
+use App\Repositories\LeaguePayoutRepository;
 use App\Repositories\LeagueRepository;
+use App\Repositories\UserRepository;
 use App\Repositories\UserStatRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
 class LeagueSeasonService
 {
+    public const STAY_BONUS_XP = 200;
+
+    public const CHAMPION_WEEKS = 4;
+
+    /** @var array<int, int> */
+    public const PLACE_PRIZES = [1 => 500, 2 => 300, 3 => 150];
+
+    public const PARTICIPATION_RANK = 7;
+
     /** @var list<string> */
     private const AVATARS = ['🐻', '🦊', '🐰', '🐼', '🐨', '🦄', '🐢', '🦁', '🐸', '🐯'];
 
@@ -25,6 +38,8 @@ class LeagueSeasonService
         private UserStatRepository $stats,
         private LevelCalculator $levels,
         private BadgeService $badges,
+        private LeaguePayoutRepository $payouts,
+        private UserRepository $users,
     ) {}
 
     public function ensureCurrentWeek(?CarbonImmutable $now = null): LeagueWeek
@@ -217,6 +232,7 @@ class LeagueSeasonService
             $relegateCount = min(3, $n - $promoteCount);
         }
 
+        $decisions = [];
         $rank = 0;
         foreach ($ranked as $member) {
             $rank++;
@@ -233,7 +249,26 @@ class LeagueSeasonService
                 'outcome' => $outcome,
             ]);
 
-            $stat = $this->stats->firstOrCreateFor($member->user);
+            $owner = $member->user;
+            $week = $group->week;
+            if ($owner instanceof User && $week instanceof LeagueWeek) {
+                $this->paySeason($owner, $week, $group->tier, $rank, $outcome);
+            }
+
+            $decisions[] = ['member' => $member, 'outcome' => $outcome];
+        }
+
+        foreach ($decisions as $decision) {
+            /** @var LeagueGroupMember $member */
+            $member = $decision['member'];
+            $outcome = $decision['outcome'];
+            $owner = $member->user;
+
+            if (! $owner instanceof User) {
+                continue;
+            }
+
+            $stat = $this->stats->firstOrCreateFor($owner);
             $newLeague = match ($outcome) {
                 LeagueOutcome::Promote => $stat->league->promote(),
                 LeagueOutcome::Relegate => $stat->league->relegate(),
@@ -242,15 +277,11 @@ class LeagueSeasonService
 
             if ($newLeague !== $stat->league) {
                 $this->stats->update($stat, ['league' => $newLeague]);
-                $owner = $member->user;
-
-                if ($owner instanceof User) {
-                    app(NotificationService::class)->leagueMoved(
-                        $owner,
-                        $newLeague,
-                        $outcome === LeagueOutcome::Promote,
-                    );
-                }
+                app(NotificationService::class)->leagueMoved(
+                    $owner,
+                    $newLeague,
+                    $outcome === LeagueOutcome::Promote,
+                );
             }
         }
 
@@ -261,6 +292,68 @@ class LeagueSeasonService
                 $this->badges->evaluate($owner);
             }
         }
+    }
+
+    /**
+     * Record the season payout once, using the league the kid is still in.
+     * Place prizes stay unclaimed. Stay bonus, champion progress, and the
+     * avatar frame are applied here — before promote/relegate.
+     */
+    private function paySeason(User $user, LeagueWeek $week, League $tier, int $rank, LeagueOutcome $outcome): void
+    {
+        if ($this->payouts->exists($user, $week)) {
+            return;
+        }
+
+        $prizeXp = self::PLACE_PRIZES[$rank] ?? ($rank <= self::PARTICIPATION_RANK ? 0 : null);
+        $stayBonus = $outcome === LeagueOutcome::Hold ? self::STAY_BONUS_XP : 0;
+
+        $this->payouts->create($user, $week, $tier, $rank, $outcome, $stayBonus, $prizeXp);
+
+        if ($stayBonus > 0) {
+            app(UserStatService::class)->awardXp(
+                $user,
+                XpSource::LeagueStay,
+                $stayBonus,
+                context: 'league-stay:'.$week->id,
+                countsAsPlay: false,
+                countsTowardLeague: false,
+            );
+            $this->users->update($user, ['avatar_frame' => $tier->value]);
+        }
+
+        $holds = $this->leagues->holdCountInTier($user, $tier);
+
+        if ($outcome === LeagueOutcome::Hold && $holds >= self::CHAMPION_WEEKS) {
+            $stat = $this->stats->firstOrCreateFor($user);
+            $tiers = $stat->champion_tiers ?? [];
+
+            if (! in_array($tier->value, $tiers, true)) {
+                $tiers[] = $tier->value;
+                $this->stats->update($stat, ['champion_tiers' => $tiers]);
+            }
+        }
+    }
+
+    /**
+     * @return array{tierLabel: string, stayXp: int, championCurrent: int, championTarget: int, championEarned: bool, frameEarned: bool}
+     */
+    public function rewardProgress(User $user): array
+    {
+        $stat = $this->stats->firstOrCreateFor($user);
+        $tier = $stat->league;
+        $holds = $this->leagues->holdCountInTier($user, $tier);
+        $champions = $stat->champion_tiers ?? [];
+        $fresh = $this->users->findOrFail($user->id);
+
+        return [
+            'tierLabel' => $tier->label(),
+            'stayXp' => self::STAY_BONUS_XP,
+            'championCurrent' => min(self::CHAMPION_WEEKS, $holds),
+            'championTarget' => self::CHAMPION_WEEKS,
+            'championEarned' => in_array($tier->value, $champions, true),
+            'frameEarned' => $fresh->avatar_frame === $tier->value,
+        ];
     }
 
     /**

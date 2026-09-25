@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\FavouriteSubject;
 use App\Enums\GameType;
+use App\Enums\PlayDifficulty;
 use App\Enums\QuestionFormat;
 use App\Models\Question;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,6 +25,7 @@ class QuestionFactory extends Factory
             'subject' => FavouriteSubject::Math,
             'age_group' => null,
             'grade' => 1,
+            'difficulty' => PlayDifficulty::Medium,
             'code' => fake()->unique()->bothify('test-####-????'),
             'locale' => 'ka',
             'prompt' => 'რა ცხოველი ამბობს „მუ“?',

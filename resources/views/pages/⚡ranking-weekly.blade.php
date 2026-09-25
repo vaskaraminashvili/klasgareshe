@@ -1,8 +1,11 @@
 <?php
 
 use App\Data\CohortMemberRow;
+use App\Enums\RewardClaimType;
+use App\Repositories\LeaguePayoutRepository;
 use App\Repositories\UserRepository;
 use App\Services\LeagueSeasonService;
+use App\Services\RewardService;
 use Livewire\Component;
 
 new class extends Component
@@ -36,6 +39,12 @@ new class extends Component
     /** @var list<array<string, mixed>> */
     public array $members = [];
 
+    public ?int $claimWeekId = null;
+
+    public ?int $claimRank = null;
+
+    public string $prizeFlash = '';
+
     public function title(): string
     {
         return __('ranking.weekly_page_title');
@@ -46,9 +55,11 @@ new class extends Component
         $view->title($this->title());
     }
 
-    public function mount(LeagueSeasonService $leagues, UserRepository $users): void
+    public function mount(LeagueSeasonService $leagues, UserRepository $users, LeaguePayoutRepository $payouts): void
     {
-        $snap = $leagues->weeklySnapshot($users->authenticated());
+        $user = $users->authenticated();
+        $snap = $leagues->weeklySnapshot($user);
+        $this->loadPrize($payouts, $user);
 
         $this->tierLabel = $snap->tierLabel;
         $this->yourRank = $snap->yourRank;
@@ -76,6 +87,27 @@ new class extends Component
             ],
             $snap->members,
         );
+    }
+
+    public function claimPrize(RewardService $rewards, UserRepository $users, LeaguePayoutRepository $payouts): void
+    {
+        if ($this->claimWeekId === null) {
+            return;
+        }
+
+        $user = $users->authenticated();
+        $result = $rewards->claim($user, RewardClaimType::WeeklyPrize, (string) $this->claimWeekId);
+        $this->prizeFlash = $result->paid
+            ? (string) __('rewards.earned_xp', ['xp' => number_format($result->xp)])
+            : '';
+        $this->loadPrize($payouts, $user);
+    }
+
+    private function loadPrize(LeaguePayoutRepository $payouts, \App\Models\User $user): void
+    {
+        $offer = $payouts->unclaimedPrizes($user)->first();
+        $this->claimWeekId = $offer?->league_week_id;
+        $this->claimRank = $offer?->finish_rank;
     }
 };
 ?>
@@ -164,6 +196,52 @@ new class extends Component
             </div>
             <a href="{{ route('game-multiple-choice') }}" wire:navigate
                 class="btn btn-primary h-9 min-h-0 px-3 text-xs shrink-0">{{ __('ranking.mission') }}</a>
+        </div>
+    </section>
+
+    <section class="mt-4">
+        <div class="section-head px-5">
+            <h2 class="h-display text-lg">{{ __('ranking.week_prizes') }}</h2>
+            <span class="link cursor-default">{{ __('ranking.finish_top_3') }}</span>
+        </div>
+        @if ($prizeFlash !== '')
+            <p class="px-5 text-sm" style="color:var(--color-k-mint)">{{ $prizeFlash }}</p>
+        @endif
+        <div data-swiper-rail class="swiper rail-swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide prize-card prize-gold">
+                    <p class="prize-emoji">🥇</p>
+                    <p class="font-extrabold text-sm text-ink">{{ __('ranking.prize_1st') }}</p>
+                    <p class="text-[11px] text-muted">{{ __('ranking.prize_1st_meta') }}</p>
+                    @if ($claimRank === 1)
+                        <button type="button" class="btn btn-primary h-9 min-h-0 px-3 text-xs mt-2" wire:click="claimPrize">{{ __('ranking.claim_prize') }}</button>
+                    @endif
+                </div>
+                <div class="swiper-slide prize-card prize-silver">
+                    <p class="prize-emoji">🥈</p>
+                    <p class="font-extrabold text-sm text-ink">{{ __('ranking.prize_2nd') }}</p>
+                    <p class="text-[11px] text-muted">{{ __('ranking.prize_2nd_meta') }}</p>
+                    @if ($claimRank === 2)
+                        <button type="button" class="btn btn-primary h-9 min-h-0 px-3 text-xs mt-2" wire:click="claimPrize">{{ __('ranking.claim_prize') }}</button>
+                    @endif
+                </div>
+                <div class="swiper-slide prize-card prize-bronze">
+                    <p class="prize-emoji">🥉</p>
+                    <p class="font-extrabold text-sm text-ink">{{ __('ranking.prize_3rd') }}</p>
+                    <p class="text-[11px] text-muted">{{ __('ranking.prize_3rd_meta') }}</p>
+                    @if ($claimRank === 3)
+                        <button type="button" class="btn btn-primary h-9 min-h-0 px-3 text-xs mt-2" wire:click="claimPrize">{{ __('ranking.claim_prize') }}</button>
+                    @endif
+                </div>
+                <div class="swiper-slide prize-card">
+                    <p class="prize-emoji">🎟️</p>
+                    <p class="font-extrabold text-sm text-ink">{{ __('ranking.prize_token') }}</p>
+                    <p class="text-[11px] text-muted">{{ __('ranking.prize_token_meta') }}</p>
+                    @if ($claimRank !== null && $claimRank >= 4 && $claimRank <= 7)
+                        <button type="button" class="btn btn-primary h-9 min-h-0 px-3 text-xs mt-2" wire:click="claimPrize">{{ __('ranking.claim_prize') }}</button>
+                    @endif
+                </div>
+            </div>
         </div>
     </section>
 

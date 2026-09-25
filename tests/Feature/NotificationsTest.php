@@ -103,7 +103,7 @@ class NotificationsTest extends TestCase
 
         $this->assertSame(1, $target->notifications()->count());
         $this->assertSame(0, $from->notifications()->count());
-        $this->assertSame(__('alerts.friend_accepted.body', ['name' => 'ნინო']), $target->notifications()->first()?->data['body']);
+        $this->assertSame(__('alerts.friend_request.body', ['name' => 'ნინო']), $target->notifications()->first()?->data['body']);
     }
 
     public function test_league_promotion_notifies_when_rewards_are_on(): void

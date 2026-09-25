@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Enums\League;
+use App\Enums\LeagueOutcome;
 use App\Enums\LeagueWeekStatus;
 use App\Models\LeagueGroup;
 use App\Models\LeagueGroupMember;
@@ -139,6 +140,17 @@ class LeagueRepository
         $week->update($attributes);
 
         return $week->fresh() ?? $week;
+    }
+
+    public function holdCountInTier(User $user, League $tier): int
+    {
+        return LeagueGroupMember::query()
+            ->where('user_id', $user->id)
+            ->where('outcome', LeagueOutcome::Hold)
+            ->whereHas('group', function ($query) use ($tier): void {
+                $query->where('tier', $tier->value);
+            })
+            ->count();
     }
 
     /**

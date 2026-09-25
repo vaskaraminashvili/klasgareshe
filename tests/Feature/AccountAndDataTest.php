@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Friendship;
 use App\Models\User;
 use App\Notifications\AccountDataExportNotification;
 use App\Notifications\AccountDeletionCodeNotification;
@@ -273,6 +274,9 @@ class AccountAndDataTest extends TestCase
         ]);
 
         app(FriendshipService::class)->request($friend, 'nino_star');
+        session([ParentZoneService::SESSION_UNLOCKED_AT => now()->toIso8601String()]);
+        $pendingId = (int) Friendship::query()->where('friend_id', $kid->id)->value('id');
+        app(FriendshipService::class)->approve($kid, $pendingId);
 
         $this->assertContains($kid->id, app(UserStatRepository::class)->topByXp()->pluck('user_id')->all());
         $this->assertContains($kid->id, app(FriendshipRepository::class)->acceptedFriendIds($friend));

@@ -224,8 +224,8 @@ class BadgeSeeder extends Seeder
                 'category' => BadgeCategory::Milestone,
                 'emoji' => '🌟',
                 'medal' => null,
-                'rule' => BadgeRule::Locked,
-                'params' => [],
+                'rule' => BadgeRule::FriendsCount,
+                'params' => ['count' => 5],
                 'secret' => false,
             ],
             [

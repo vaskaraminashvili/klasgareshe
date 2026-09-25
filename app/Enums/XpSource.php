@@ -12,6 +12,8 @@ enum XpSource: string
     case Combo = 'combo';
     case Speed = 'speed';
     case Badge = 'badge';
+    case LeagueStay = 'league_stay';
+    case WeeklyPrize = 'weekly_prize';
 
     public function label(): string
     {
@@ -29,6 +31,8 @@ enum XpSource: string
             self::Combo => '💥',
             self::Speed => '⚡',
             self::Badge => '🏅',
+            self::LeagueStay => '⭐',
+            self::WeeklyPrize => '🎁',
         };
     }
 
@@ -43,6 +47,8 @@ enum XpSource: string
             self::Combo => 'tile-sky',
             self::Speed => 'tile-sun',
             self::Badge => 'tile-mint',
+            self::LeagueStay => 'tile-sun',
+            self::WeeklyPrize => 'tile-violet',
         };
     }
 }

@@ -35,6 +35,8 @@ class BadgeTest extends TestCase
 
         $component->call('pick', $question->correctKey())
             ->call('next')
+            ->assertSet('showResult', true)
+            ->call('continueFromResult')
             ->assertRedirect(route('badge-unlock', ['slug' => 'first-win']));
 
         $this->assertBadgeCount($user, 'first-win', 1);

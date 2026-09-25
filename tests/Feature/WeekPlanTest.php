@@ -75,6 +75,8 @@ class WeekPlanTest extends TestCase
 
         $component->call('pick', $question->correctKey())
             ->call('next')
+            ->assertSet('showResult', true)
+            ->call('continueFromResult')
             ->assertRedirect(route('home'));
 
         $this->assertSame(8, UserStat::query()->where('user_id', $user->id)->first()?->xp);

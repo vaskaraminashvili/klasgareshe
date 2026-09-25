@@ -13,5 +13,8 @@ final readonly class LeaderboardEntry
         public int $streak,
         public bool $isYou,
         public string $avatar,
+        public string $country = '',
+        public bool $online = false,
+        public string $nickname = '',
     ) {}
 }

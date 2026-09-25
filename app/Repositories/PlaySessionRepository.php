@@ -4,11 +4,39 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Models\UserPlaySession;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 
 class PlaySessionRepository
 {
+    /**
+     * A heartbeat older than this is not "online now". Games poll every 15 seconds.
+     */
+    public const FRESH_SECONDS = 120;
+
+    /**
+     * Kids with an open play session and a recent heartbeat. This is the T07 signal —
+     * there is no separate presence ping, so browsing without a game does not count.
+     *
+     * @return list<int>
+     */
+    public function onlineUserIds(?CarbonInterface $now = null): array
+    {
+        $now ??= now();
+        $since = CarbonImmutable::parse($now)->subSeconds(self::FRESH_SECONDS);
+        $ids = [];
+
+        foreach (UserPlaySession::query()
+            ->whereNull('ended_at')
+            ->where('last_heartbeat_at', '>=', $since)
+            ->pluck('user_id') as $id) {
+            $ids[] = (int) $id;
+        }
+
+        return array_values(array_unique($ids));
+    }
+
     public function create(User $user, CarbonInterface $startedAt): UserPlaySession
     {
         return UserPlaySession::query()->create([

@@ -43,6 +43,19 @@ new class extends Component
     /** @var list<array<string, mixed>> */
     public array $rows = [];
 
+    public string $listTab = 'all';
+
+    public int $onlineCount = 0;
+
+    /** @var list<array{id: int, name: string, avatar: string, when: string}> */
+    public array $incoming = [];
+
+    /** @var list<array{id: int, name: string, avatar: string}> */
+    public array $outgoing = [];
+
+    /** @var list<array{id: int, name: string, avatar: string, level: int, streak: int, nickname: string}> */
+    public array $suggestions = [];
+
     public function title(): string
     {
         return __('friends.page_title');
@@ -70,8 +83,30 @@ new class extends Component
         $friends->request($users->authenticated(), $this->nickname);
 
         $this->nickname = '';
-        $this->flashMessage = (string) __('friends.added');
+        $this->flashMessage = (string) __('friends.request_sent');
         $this->loadSnapshot($friends, $users);
+    }
+
+    public function addSuggested(int $userId, FriendshipService $friends, UserRepository $users): void
+    {
+        $this->flashMessage = '';
+        $friends->requestById($users->authenticated(), $userId);
+        $this->flashMessage = (string) __('friends.request_sent');
+        $this->loadSnapshot($friends, $users);
+    }
+
+    public function reviewRequests(): void
+    {
+        $this->redirectRoute('parent-controls', navigate: true);
+    }
+
+    public function setListTab(string $tab): void
+    {
+        if (! in_array($tab, ['all', 'online', 'streak', 'near'], true)) {
+            return;
+        }
+
+        $this->listTab = $tab;
     }
 
     /**
@@ -81,13 +116,26 @@ new class extends Component
     {
         $q = mb_strtolower(trim($this->filter));
 
-        if ($q === '') {
-            return $this->rows;
-        }
+        $tab = $this->listTab;
 
         return array_values(array_filter(
             $this->rows,
-            static fn (array $row): bool => str_contains(mb_strtolower((string) $row['name']), $q),
+            static function (array $row) use ($q, $tab): bool {
+                if ($q !== '' && ! str_contains(mb_strtolower((string) $row['name']), $q)) {
+                    return false;
+                }
+
+                if (! empty($row['isYou'])) {
+                    return true;
+                }
+
+                return match ($tab) {
+                    'online' => ! empty($row['online']),
+                    'streak' => (int) $row['streak'] > 0,
+                    'near' => ($row['country'] ?? '') !== '' && ($row['country'] ?? '') === ($row['viewerCountry'] ?? ''),
+                    default => true,
+                };
+            },
         ));
     }
 
@@ -104,7 +152,12 @@ new class extends Component
 
     private function loadSnapshot(FriendshipService $friends, UserRepository $users): void
     {
-        $snap = $friends->friendsLeaderboard($users->authenticated());
+        $user = $users->authenticated();
+        $viewerCountry = is_string($user->country) ? $user->country : '';
+        $snap = $friends->friendsLeaderboard($user);
+        $this->incoming = $friends->incomingCards($user);
+        $this->outgoing = $friends->outgoingCards($user);
+        $this->suggestions = $friends->suggestions($user);
 
         $this->friendCount = $snap->friendCount;
         $this->beatingCount = $snap->beatingCount;
@@ -128,22 +181,35 @@ new class extends Component
                 'streak' => $e->streak,
                 'isYou' => $e->isYou,
                 'avatar' => $e->avatar,
+                'online' => $e->online,
+                'country' => $e->country,
             ],
             $snap->podium,
         );
+        $online = 0;
         $this->rows = array_map(
-            fn (LeaderboardEntry $e) => [
-                'rank' => $e->rank,
-                'userId' => $e->userId,
-                'name' => $e->name,
-                'xp' => $e->xp,
-                'level' => $e->level,
-                'streak' => $e->streak,
-                'isYou' => $e->isYou,
-                'avatar' => $e->avatar,
-            ],
+            function (LeaderboardEntry $e) use ($viewerCountry, &$online): array {
+                if ($e->online && ! $e->isYou) {
+                    $online++;
+                }
+
+                return [
+                    'rank' => $e->rank,
+                    'userId' => $e->userId,
+                    'name' => $e->name,
+                    'xp' => $e->xp,
+                    'level' => $e->level,
+                    'streak' => $e->streak,
+                    'isYou' => $e->isYou,
+                    'avatar' => $e->avatar,
+                    'online' => $e->online,
+                    'country' => $e->country,
+                    'viewerCountry' => $viewerCountry,
+                ];
+            },
             $snap->rows,
         );
+        $this->onlineCount = $online;
     }
 };
 ?>
@@ -228,8 +294,11 @@ new class extends Component
                     onclick="document.getElementById('friend-nickname')?.focus()">
                     <i class="ph-fill ph-user-plus"></i> {{ __('friends.invite_friend') }}
                 </button>
-                {{-- "N online" chip dropped: the count was just the friend total. Re-port it
-                     when presence is real (docs/tasks/T07-screen-time-bedtime.md). --}}
+                @if ($onlineCount > 0)
+                    <span class="chip bg-white/20 border-0 text-white ml-auto">
+                        {{ __('friends.online_count', ['count' => $onlineCount]) }}
+                    </span>
+                @endif
             </div>
         </div>
     </section>
@@ -295,13 +364,17 @@ new class extends Component
             </div>
             <div data-swiper-rail-tabs class="swiper rail-swiper mt-3" data-tabs>
                 <div class="swiper-wrapper">
-                    <button type="button" class="swiper-slide chip chip-primary" data-tab="all">
+                    <button type="button" wire:click="setListTab('all')"
+                        class="swiper-slide chip {{ $listTab === 'all' ? 'chip-primary' : '' }}" data-tab="all">
                         {{ __('friends.filter_all', ['count' => $friendCount]) }}</button>
-                    <button type="button" class="swiper-slide chip" data-tab="online">
+                    <button type="button" wire:click="setListTab('online')"
+                        class="swiper-slide chip {{ $listTab === 'online' ? 'chip-primary' : '' }}" data-tab="online">
                         {{ __('friends.filter_online') }}</button>
-                    <button type="button" class="swiper-slide chip" data-tab="streak">
+                    <button type="button" wire:click="setListTab('streak')"
+                        class="swiper-slide chip {{ $listTab === 'streak' ? 'chip-primary' : '' }}" data-tab="streak">
                         {{ __('friends.filter_streak') }}</button>
-                    <button type="button" class="swiper-slide chip" data-tab="near">
+                    <button type="button" wire:click="setListTab('near')"
+                        class="swiper-slide chip {{ $listTab === 'near' ? 'chip-primary' : '' }}" data-tab="near">
                         {{ __('friends.filter_near') }}</button>
                 </div>
             </div>
@@ -326,7 +399,7 @@ new class extends Component
                     @endphp
                     <div class="friend-row {{ $row['isYou'] ? 'you' : '' }}">
                         <span class="rank-num {{ $rankClass }}">{{ $row['rank'] }}</span>
-                        <div class="friend-av {{ $tile }}">{{ $row['avatar'] }}@if (!$row['isYou'])<span
+                        <div class="friend-av {{ $tile }}">{{ $row['avatar'] }}@if (! empty($row['online']))<span
                                 class="live"></span>@endif</div>
                         <div class="grow min-w-0">
                             <p class="font-extrabold text-sm text-ink">
@@ -358,6 +431,68 @@ new class extends Component
                     onclick="document.getElementById('friend-nickname')?.focus()">
                     <i class="ph-fill ph-user-plus"></i> {{ __('friends.add_friend') }}
                 </button>
+            </div>
+        </section>
+    @endif
+
+    @if ($incoming !== [] || $outgoing !== [])
+        <section class="px-5 mt-5">
+            <div class="section-head">
+                <h2 class="h-display text-lg">{{ __('friends.friend_requests') }}</h2>
+                @if ($incoming !== [])
+                    <span class="chip chip-coral">{{ __('friends.new_count', ['count' => count($incoming)]) }}</span>
+                @endif
+            </div>
+            <div class="space-y-2">
+                @foreach ($incoming as $request)
+                    <div class="request-card">
+                        <div class="avatar-ring"><span>{{ $request['avatar'] }}</span></div>
+                        <div class="grow min-w-0">
+                            <p class="font-extrabold text-sm text-ink">{{ $request['name'] }}</p>
+                            <p class="text-[11px] text-muted">{{ __('friends.waiting_parent') }} · {{ $request['when'] }}</p>
+                        </div>
+                        <button type="button" class="btn btn-primary h-9 min-h-0 px-3 text-xs" wire:click="reviewRequests">{{ __('friends.ask_parent') }}</button>
+                    </div>
+                @endforeach
+                @foreach ($outgoing as $request)
+                    <div class="request-card">
+                        <div class="avatar-ring"><span>{{ $request['avatar'] }}</span></div>
+                        <div class="grow min-w-0">
+                            <p class="font-extrabold text-sm text-ink">{{ $request['name'] }}</p>
+                            <p class="text-[11px] text-muted">{{ __('friends.waiting_parent') }}</p>
+                        </div>
+                        <span class="chip">{{ __('friends.ask_parent') }}</span>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
+    @if ($suggestions !== [])
+        <section class="mt-5">
+            <div class="section-head px-5">
+                <h2 class="h-display text-lg">{{ __('friends.suggested') }}</h2>
+                <span class="link cursor-default">{{ __('friends.same_class') }}</span>
+            </div>
+            <div data-swiper-rail class="swiper rail-swiper">
+                <div class="swiper-wrapper">
+                    @foreach ($suggestions as $suggestion)
+                        <div class="swiper-slide k-card w-40 text-center">
+                            <div class="avatar-ring mx-auto"><span>{{ $suggestion['avatar'] }}</span></div>
+                            <p class="font-extrabold text-sm mt-2">{{ $suggestion['name'] }}</p>
+                            <p class="text-[11px] text-muted">
+                                @if ($suggestion['streak'] > 0)
+                                    {{ __('friends.suggestion_meta', ['level' => $suggestion['level'], 'days' => $suggestion['streak']]) }}
+                                @else
+                                    {{ __('friends.suggestion_new', ['level' => $suggestion['level']]) }}
+                                @endif
+                            </p>
+                            <button type="button" class="btn btn-primary h-9 min-h-0 px-3 text-xs w-full mt-2" wire:click="addSuggested({{ $suggestion['id'] }})">
+                                <i class="ph-fill ph-user-plus"></i> {{ __('friends.add') }}
+                            </button>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </section>
     @endif

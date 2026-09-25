@@ -6,6 +6,7 @@ use App\Enums\FriendshipStatus;
 use App\Models\Friendship;
 use App\Models\User;
 use App\Services\FriendshipService;
+use App\Services\ParentZoneService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -14,7 +15,7 @@ class FriendsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_request_by_nickname_creates_accepted_friendship(): void
+    public function test_request_by_nickname_stays_pending_until_a_parent_approves(): void
     {
         $me = User::factory()->fullySetUp()->withStats()->create([
             'nickname' => 'me-kid',
@@ -29,10 +30,10 @@ class FriendsTest extends TestCase
         $this->assertDatabaseHas('friendships', [
             'user_id' => $me->id,
             'friend_id' => $friend->id,
-            'status' => FriendshipStatus::Accepted->value,
+            'status' => FriendshipStatus::Pending->value,
         ]);
 
-        $this->assertTrue(app(FriendshipService::class)->profileStrip($me)->count === 1);
+        $this->assertSame(0, app(FriendshipService::class)->profileStrip($me)->count);
     }
 
     public function test_ranking_friends_shows_friend_xp_order(): void
@@ -112,6 +113,9 @@ class FriendsTest extends TestCase
             ->assertSet('friendsCount', 0);
 
         app(FriendshipService::class)->request($me, 'pal-kid');
+        session([ParentZoneService::SESSION_UNLOCKED_AT => now()->toIso8601String()]);
+        $pendingId = (int) Friendship::query()->where('friend_id', $friend->id)->value('id');
+        app(FriendshipService::class)->approve($friend, $pendingId);
 
         Livewire::actingAs($me)
             ->test('pages::profile')

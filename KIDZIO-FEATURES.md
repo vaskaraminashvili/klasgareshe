@@ -21,7 +21,7 @@ Source UI: splash → walkthrough → signup/login → onboarding → home with 
 
 ## Where we are (2026-08-31)
 
-**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3 → ქართული · მათემატიკა · ისტორია → daily goal → notifications), parent-verify, logout. Home / Profile / Daily mission / Edit profile / Monthly goals / Friends ranking / Settings / Streak / Rewards dashboard ported and mostly live. Home greeting, streak / XP / league ribbon, week dots from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3) plus **week 3 for class 1** seeded in Georgian; active week = lowest incomplete week. Daily mission = **3 today tasks** (1 pack per subject; done if that subject was played today). Completing a pack → `awardXp` + badge eval. Ranking hub live (Global / Weekly / League / Friends). Profile hero, mastery, week activity, friends strip, monthly-goals chip live. Badges: 21-catalog + unlock celebration (Speed Runner on a sub-2-minute pack); Rewards tab → `/rewards-dashboard`. Learn tab is live (`/learn-categories` → `/section-list/{subject}` → lesson details / locked → player).
+**Shipped:** login / register, 4-step onboarding (კლასი 1 / 2 / 3 → ქართული · მათემატიკა · ისტორია → daily goal → notifications), parent-verify, logout. Home / Profile / Daily mission / Edit profile / Monthly goals / Friends ranking / Settings / Streak / Rewards dashboard ported and mostly live. Home greeting, streak / XP / league ribbon, week dots from `user_stats` + `user_activity_days`. **Week plans 1–2** (grades 1–3) plus **week 3 for class 1** seeded in Georgian; active week = lowest incomplete week. Daily mission = **3 today tasks** (1 pack per subject; done if that subject was played today). Completing a pack → `awardXp` + badge eval. Ranking hub live (Global / Weekly / League / Friends), including weekly prize claims, league stay rewards, country filters, and parent-approved friends (**T18**). Profile hero, mastery, week activity, friends strip, monthly-goals chip live. Badges: 21-catalog + unlock celebration (Speed Runner on a sub-2-minute pack; Social Star at 5 accepted friends); Rewards tab → `/rewards-dashboard`. Learn tab is live (`/learn-categories` → `/section-list/{subject}` → lesson details / locked → player).
 
 ### Still static / dummy (do not treat as done)
 
@@ -32,8 +32,8 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | Area | Still static |
 |---|---|
 | **Tab bar** | Learn → `/learn-categories` (live three-subject library). Rewards opens `/rewards-dashboard`. |
-| **Home — social** | Friends-today feed removed (was Leo / Ana rows + fake streak chips) — no real activity feed yet. |
-| **Home — games** | Word-search featured tile removed (T19). Counting tile is live. |
+| **Home — social** | Friends-today feed is live from accepted friends' completed packs and badges today. Empty when nobody played. No chat. |
+| **Home — games** | Word-search and counting featured tiles are live (next incomplete pack of that game). |
 | **Home — search** | Overlay searches the live index (subjects, weeks, packs, games, badges, screens). Recent and popular chips come from real queries. Voice search is still **T21**. |
 | **Home — notifications** | Live bell + unread badge + sheet (T16). |
 | **Home — misc** | PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. Parent tip is live (week figures + link to PIN-gated `/weekly-report`). Streak ribbon / week card open `/streak`. |
@@ -41,12 +41,12 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Profile** | Rewards-dashboard row, share button, and the “online” chip all removed pending their tasks. Streak shortcut + menu row open `/streak`. Settings gear + row go to `/settings`. Parent **controls**, **screen time**, and **weekly report** rows are live (PIN-gated). Achievements timeline beyond recent badges not built. |
 | **Edit profile** | Camera / change-avatar badge not built. Password reset is live. Parent email change and delete are PIN-gated. |
 | **Auth** | Phone login, social (Google / Apple / Facebook). Parent-verify “change email” / “get help” chips dead. Password reset is live. Terms / Privacy screens are live. |
-| **Badges / rewards** | Social Star never unlocks. Share badge / unlock share = toast markup. Shop / limited bundle deferred (**T20**). Daily box (+40), login calendar, and freeze claims live on `/rewards-dashboard`. |
-| **Ranking / privacy** | Global leaderboard honors `show_on_leaderboard`. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. `/ranking-friends` filter tabs (all / online / streak / near) are inert, and presence (“N online”) was removed as fake. |
-| **XP / streaks** | Streak screen live (`/streak`): month map, best streak, freeze claimed on Rewards after the 7-day milestone. Combo / speed bonus scored on full packs. Mission-complete +120 awarded once/day. Login-calendar XP collected on `/rewards-dashboard` (+10→+100). Difficulty setting not scored. |
+| **Badges / rewards** | Social Star unlocks at 5 accepted friends. Share badge / unlock share = toast markup. Shop / limited bundle deferred (**T20**). Daily box (+40), login calendar, freeze, and weekly place-prize claims live on `/rewards-dashboard`. |
+| **Ranking / privacy** | Global leaderboard honors `show_on_leaderboard`. Weekly place prizes are claimed, not granted at close. League stay bonus, champion (4 hold-weeks), and avatar frame pay once before promote/relegate. Friend requests wait for parent PIN approval. Suggested friends match grade and league and respect privacy. Filters: worldwide, country, streak, online (open play-session heartbeat within 2 minutes). Top countries use real learner counts. |
+| **XP / streaks** | Streak screen live (`/streak`): month map, best streak, freeze claimed on Rewards after the 7-day milestone. Combo / speed bonus scored on full packs. Mission-complete +120 awarded once/day. Login-calendar XP collected on `/rewards-dashboard` (+10→+100). Settings difficulty (easy / medium / hard) scales base pack XP and picks that difficulty's questions. |
 | **Learn library** | Three school subjects live (tiles, spotlight, continue, lock). Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) not v1. Search and filters (status, subject, week) use the live index. |
-| **Other mini-games** | Trace, spell, word-search, match, habitats, … — **T19**. Tap-correct and counting are live. |
-| **Parent zone** | PIN gate, dashboard week numbers + daily minutes chart, preferred subjects, change/reset PIN, screen time, bedtime lock, weekly/full reports, PDF/JSON export, parent email change, and delete account are live. Monthly goals page is live (system goals); parent custom targets later. |
+| **Other mini-games** | Trace, fill, spell, match-word, word-search, opposites, knowledge, and connect-pair play week-1 packs. Animal match, guess-animal, body parts, and habitats are out of v1. |
+| **Parent zone** | PIN gate, dashboard week numbers + daily minutes chart, preferred subjects, change/reset PIN, screen time, bedtime lock, weekly/full reports, PDF/JSON export, parent email change, delete account, and friend-request approvals are live. Monthly goals page is live (system goals); parent custom targets later. |
 | **Settings / legal / PWA** | Settings page live (`/settings`); streak / lessons / rewards + reminder time deliver in-app and web push. FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
 | **Content ops** | Week **3** is class 1 only; week 3 for grades 2–3 and week **4+** not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
 
@@ -61,13 +61,13 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn tab is live; Rewards → dashboard; Ranking wired; Home search live; in-app + push notifications live
 4. ~~XP / levels / scoring~~ — levels + xp-progress + award-from-play done
 5. ~~Learn library + lessons + continue/lock~~ — three school subjects; weeks as chapters; lock = previous pack
-6. ~~Mini-games + game scoring~~ — Quick Quiz plays the week pack (`startPlanItem`); other shells later
+6. ~~Mini-games + game scoring~~ — Quick Quiz, tap-correct, counting, and the school-subject batch (trace, fill, spell, match, word search, opposites, knowledge, connect) play week packs
 7. ~~Daily mission + week plan~~ — 3 today tasks + catch-up live; gift box / bonus cards still dummy
 8. ~~Badges + rewards + shop~~ — collection + unlock + dashboard/claim/login calendar live; shop later
 9. ~~Leaderboard + leagues + friends~~ — Global / Weekly / League / Friends ranking live; Home friends feed + prize claim later
 10. Parent zone (PIN, screen time, bedtime, reports)
 11. Settings, PWA, offline, legal, support
-12. Week 3 for grades 2–3 + week 4+ curriculum packs + remaining mini-game shells
+12. Week 3 for grades 2–3 + week 4+ curriculum packs (school-subject mini-games from T19 are in week 1; animal / body / habitat games are out of v1)
 
 ---
 
@@ -122,7 +122,7 @@ Reusable later from Settings.
 ## 4. Kid profile
 
 - [~] Kid display name + nickname — stored (nickname auto from name); home greeting + Profile hero use name
-- [~] Age, class (`users.grade` 1–3), age group stored; country not stored; Profile shows age · class
+- [~] Age, class (`users.grade` 1–3), age group stored; country stored (`users.country`, `/country`); Profile shows age · class
 - [x] Avatar picker (animal/emoji set) — edit-profile emoji sheet; stored on `users.avatar`
 - [ ] Camera / change-avatar badge
 - [ ] Online status
@@ -146,8 +146,8 @@ Core loop: play → earn XP → level up → climb ranks.
 - [x] Level system (e.g. Lv 7 Explorer → Lv 8 Master) with XP-to-next
 - [x] League stored on `user_stats`; weekly seasons with promote/relegate
 - [x] XP history (last 7 days chart + source/subject log from `xp_events`)
-- [ ] Difficulty setting: Easy / Medium / Hard (affects questions and XP)
-- [ ] Kid ratings / score per quiz (correct answers, beat yesterday)
+- [x] Difficulty setting: Easy / Medium / Hard (affects questions and XP) — Settings row; `users.play_difficulty`; base pack XP ×3/4, ×1, or ×3/2
+- [x] Kid ratings / score per quiz (correct answers, beat yesterday) — result sheet after a pack, from `pack_plays`
 - [x] Combo / speed bonus (e.g. 5-in-a-row extra XP)
 
 Suggested XP examples from the template (tune later):
@@ -175,7 +175,7 @@ Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Week-plan blocks are
 - [x] Weekly streak dots (Mon–Sun)
 - [x] Today's plan — next incomplete pack per subject; Play → that pack’s player; “ყველას ნახვა” → `daily-mission`
 - [x] Explore subjects — three tiles only: ქართული, მათემატიკა, ისტორია → that subject’s next pack
-- [~] Featured games — Quick Quiz → next incomplete pack; counting → next counting pack; word-search removed until T19
+- [x] Featured games — Quick Quiz → next incomplete pack; counting → next counting pack; word-search → next word-search pack
 - [ ] Friends activity feed — template rows removed (invented kids); needs a real feed
 - [x] Recent achievements — live badge rail
 - [ ] Parent tip card — removed; copy named a hardcoded kid and invented a study habit
@@ -231,23 +231,20 @@ Quick Quiz is live as the **week-plan player**. Other games will reuse attached 
 - [x] Quick Quiz (multiple choice) — `pages::game-multiple-choice`; `/game-multiple-choice/{item}` plays that pack (5 questions, fixed order); bare URL redirects to the next incomplete item; 3 lives; XP + pack complete on finish
 - [x] Tap the correct answer — `pages::game-tap-correct`; week 1 math Monday (all classes)
 - [x] Counting (count objects) — `pages::game-counting`; week 1 class 1 math Wednesday; Home featured tile
-- [ ] Trace letter (follow dots / handwriting)
-- [ ] Fill missing letter
-- [ ] Spell the word (letter tiles)
-- [ ] Match word to picture
-- [ ] Match animal
-- [ ] Guess the animal (who am I)
-- [ ] Word search
-- [ ] Connect the pair
-- [ ] Opposites
-- [ ] Body parts (tap the named part)
-- [ ] Where do I live (habitats)
-- [ ] Knowledge quiz
+- [x] Trace letter (follow dots / handwriting) — week 1 Georgian Tuesday; pass/fail stays outside `award()`
+- [x] Fill missing letter — week 1 Georgian Thursday
+- [x] Spell the word (letter tiles) — week 1 Georgian Wednesday
+- [x] Match word to picture — week 1 Georgian Saturday
+- [x] Word search — week 1 Georgian Sunday; Home featured tile
+- [x] Connect the pair — week 1 history Saturday
+- [x] Opposites — week 1 Georgian Friday
+- [x] Knowledge quiz — week 1 history Friday; class poll is an empty state (no fake percentages)
+- Match animal, guess the animal, body parts, and where-do-I-live are **out of v1** (not the three school subjects; not ported)
 
 Shared game rules:
 
 - [~] Correct / incorrect feedback + sounds — visual correct/wrong on quiz; no sounds yet
-- [x] Lives or retry (if you want it; template is mostly check-and-continue) — 3 lives on Quick Quiz, tap-correct, and counting
+- [x] Lives or retry (if you want it; template is mostly check-and-continue) — 3 lives on the one-question players (quiz, tap, counting, fill, spell, trace, opposites, knowledge)
 - [ ] Voice reader for questions
 - [x] Grade-appropriate week bank — `users.grade` + `week_plan_items` weeks 1–2 (all classes) and week 3 (class 1); quiz cannot load another class’s pack; catch-up is first incomplete weekday per subject in the active week; finishing week N unlocks week N+1 when seeded
 - [x] Curriculum week advancement — `WeekPlanService::activeWeekNumber()` picks lowest incomplete week (stays on last when all done)
@@ -279,7 +276,7 @@ Shared game rules:
 ## 11. Rewards, badges & shop
 
 - [x] Rewards dashboard: XP wallet, to-claim count, badges, league
-- [x] Claim queue: daily box, new badges, streak freeze (avatar items → **T20**)
+- [x] Claim queue: daily box, new badges, streak freeze, weekly place prizes (avatar items → **T20**)
 - [x] 7-day daily login calendar (increasing XP, bigger prize on day 7)
 - [x] Badge collection (21 from the template grid; hero dummy said 24)
   - [x] Earned / in progress / locked
@@ -303,13 +300,13 @@ Shared game rules:
 ### Rankings
 
 - [x] Global all-time leaderboard
-- [x] Weekly ranking + week prizes — ranking live; prize claiming deferred
+- [x] Weekly ranking + week prizes — claim on `/ranking-weekly` (1st +500, 2nd +300, 3rd +150, top 7 participation token); not granted at close
 - [x] Friends ranking
 - [x] Podium (top 3)
 - [x] “You are here” strip
-- [ ] Filters: worldwide, country, on a streak, online now
+- [x] Filters: worldwide, country, on a streak, online now — online is an open play session with a heartbeat in the last 2 minutes
 - [x] Search players — nickname search on `/leaderboard`, `show_on_leaderboard` enforced
-- [ ] Top countries
+- [x] Top countries — real learner counts; a country appears only when at least one visible kid chose it
 - [x] Hide kid from global ranking (parent + settings toggle) — toggle on edit-profile; public ranking queries filter it (T04). League / friends stay listed.
 - [x] Show on leaderboard toggle — stored and applied to global all-time + weekly XP ranking queries
 
@@ -321,16 +318,16 @@ Tiers: **Bronze → Silver → Gold → Emerald → Sapphire → Diamond**
 - [x] Weekly XP in that group
 - [x] Top 3 promote, bottom 3 relegate, rest stay (tiny groups hold all)
 - [x] Season timer
-- [ ] League rewards (weekly stay bonus, champion badge, avatar frame)
+- [x] League rewards (weekly stay bonus +200 XP, champion after 4 hold-weeks in the same tier, avatar frame on stay) — paid once at season close, before promote/relegate
 - [~] Season journey history — closed weeks listed on League screen
 
 ### Friends
 
 - [x] Friend list — friends ranking page
-- [~] Friend requests (parent approval by default) — nickname add auto-accepts in v1; parent PIN later
-- [ ] Suggested friends
+- [x] Friend requests (parent approval by default) — nickname add stays pending until the other parent approves on PIN-gated `/parent-controls`
+- [x] Suggested friends — same grade and league; skips kids with `show_on_leaderboard` off or `allow_friend_requests` off
 - [x] Add friend — by nickname on `/ranking-friends`
-- [~] Friends-today activity on Home — profile strip live; Home feed later
+- [x] Friends-today activity on Home — accepted friends' completed packs and badges unlocked today; profile strip still live
 - [x] Toggle: allow friend requests — edit-profile
 
 ---
@@ -401,7 +398,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 - [x] Daily goal
 - [x] Favourite subjects
 - [ ] Age group
-- [ ] Difficulty
+- [x] Difficulty — Settings easy / medium / hard; selects questions and scales base pack XP
 
 ### Privacy & safety
 
@@ -418,7 +415,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 ### Language & region
 
 - [~] App language (UI + questions + audio) — product default Georgian (`APP_LOCALE=ka`, `lang/ka`); questions seeded `locale=ka`; `lang/en` kept for future; Settings shows it locked; picker is **T21**
-- [ ] Country (ranking region)
+- [x] Country (ranking region) — `/country` (`pages::country`); stored on `users.country`
 
 ### Support & about
 

@@ -38,6 +38,7 @@ Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-e
     Route::livewire('/profile', 'pages::profile')->name('profile');
     Route::livewire('/edit-profile', 'pages::edit-profile')->name('edit-profile');
     Route::livewire('/settings', 'pages::settings')->name('settings');
+    Route::livewire('/country', 'pages::country')->name('country');
     Route::livewire('/daily-mission', 'pages::daily-mission')->name('daily-mission');
     Route::livewire('/streak', 'pages::streak')->name('streak');
     Route::livewire('/xp-progress', 'pages::xp-progress')->name('xp-progress');
@@ -63,6 +64,14 @@ Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-e
         Route::livewire('/game-multiple-choice/{item?}', 'pages::game-multiple-choice')->name('game-multiple-choice');
         Route::livewire('/game-tap-correct/{item?}', 'pages::game-tap-correct')->name('game-tap-correct');
         Route::livewire('/game-counting/{item?}', 'pages::game-counting')->name('game-counting');
+        Route::livewire('/game-word-search/{item?}', 'pages::game-word-search')->name('game-word-search');
+        Route::livewire('/game-fill-letter/{item?}', 'pages::game-fill-letter')->name('game-fill-letter');
+        Route::livewire('/game-spell-word/{item?}', 'pages::game-spell-word')->name('game-spell-word');
+        Route::livewire('/game-trace-letter/{item?}', 'pages::game-trace-letter')->name('game-trace-letter');
+        Route::livewire('/game-match-word/{item?}', 'pages::game-match-word')->name('game-match-word');
+        Route::livewire('/game-connect-pair/{item?}', 'pages::game-connect-pair')->name('game-connect-pair');
+        Route::livewire('/game-opposites/{item?}', 'pages::game-opposites')->name('game-opposites');
+        Route::livewire('/game-knowledge/{item?}', 'pages::game-knowledge')->name('game-knowledge');
     });
 });
 

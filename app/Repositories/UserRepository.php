@@ -74,6 +74,33 @@ class UserRepository
         return $query->exists();
     }
 
+    /**
+     * Visible kids per ranking country. Hidden kids are not counted.
+     *
+     * @return array<string, int>
+     */
+    public function visibleCountsByCountry(): array
+    {
+        $map = [];
+
+        $rows = User::query()
+            ->visibleOnLeaderboard()
+            ->whereNotNull('country')
+            ->where('country', '!=', '')
+            ->selectRaw('country, COUNT(*) as learners')
+            ->groupBy('country')
+            ->get();
+
+        foreach ($rows as $row) {
+            $code = (string) $row->getAttribute('country');
+            if ($code !== '') {
+                $map[$code] = (int) $row->getAttribute('learners');
+            }
+        }
+
+        return $map;
+    }
+
     public function findByNickname(string $nickname): ?User
     {
         return User::query()->where('nickname', $nickname)->first();

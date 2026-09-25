@@ -4,6 +4,7 @@ use App\Enums\GameType;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\BadgeService;
+use App\Services\FriendshipService;
 use App\Services\NotificationService;
 use App\Services\ProgressReportService;
 use App\Services\SearchService;
@@ -38,6 +39,8 @@ new class extends Component
     public string $continueHref = '';
 
     public string $countingHref = '';
+
+    public string $wordSearchHref = '';
 
     public string $continueTitle = '';
 
@@ -75,19 +78,24 @@ new class extends Component
      */
     public array $alerts = [];
 
-    public function mount(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts): void
+    /**
+     * @var list<array{name: string, avatar: string, kind: string, detail: string, when: string, xp: int, streak: int, chip: string}>
+     */
+    public array $friendActivity = [];
+
+    public function mount(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts, FriendshipService $friends): void
     {
-        $this->syncHome($stats, $week, $users, $badges, $search, $alerts);
+        $this->syncHome($stats, $week, $users, $badges, $search, $alerts, $friends);
     }
 
-    public function hydrate(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts): void
+    public function hydrate(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts, FriendshipService $friends): void
     {
-        $this->syncHome($stats, $week, $users, $badges, $search, $alerts);
+        $this->syncHome($stats, $week, $users, $badges, $search, $alerts, $friends);
     }
 
-    public function refreshHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts): void
+    public function refreshHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts, FriendshipService $friends): void
     {
-        $this->syncHome($stats, $week, $users, $badges, $search, $alerts);
+        $this->syncHome($stats, $week, $users, $badges, $search, $alerts, $friends);
     }
 
     #[Renderless]
@@ -110,9 +118,10 @@ new class extends Component
         $this->redirect($href, navigate: true);
     }
 
-    private function syncHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts): void
+    private function syncHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts, FriendshipService $friends): void
     {
         $user = $users->authenticated();
+        $this->friendActivity = $friends->todayActivity($user);
         $home = $stats->homeSnapshot($user);
         $plan = $week->homePlan($user);
 
@@ -134,6 +143,10 @@ new class extends Component
         $this->countingHref = $counting !== null
             ? $week->playUrl($counting->id)
             : route('game-counting');
+        $wordSearch = $week->firstIncompleteOfType($user, GameType::WordSearch);
+        $this->wordSearchHref = $wordSearch !== null
+            ? $week->playUrl($wordSearch->id)
+            : route('game-word-search');
         $this->continueTitle = $plan->continueTitle;
         $this->weekCompleted = $plan->weekCompleted;
         $this->weekTotal = $plan->weekTotal;
@@ -348,7 +361,11 @@ new class extends Component
         </a>
 
         <div class="grid grid-cols-2 gap-3 mt-3">
-            {{-- Word-search tile dropped until docs/tasks/T19-minigames-batch-2.md. --}}
+            <a href="{{ $wordSearchHref }}" wire:navigate class="k-card p-4">
+                <div class="size-10 rounded-xl tile-pink grid place-items-center mb-2">🔎</div>
+                <p class="font-extrabold text-sm">{{ __('home.word_search') }}</p>
+                <p class="text-xs text-muted">{{ __('home.word_search_desc') }}</p>
+            </a>
             <a href="{{ $countingHref }}" wire:navigate class="k-card p-4">
                 <div class="size-10 rounded-xl tile-sky grid place-items-center mb-2">🔢</div>
                 <p class="font-extrabold text-sm">{{ __('home.counting_fun') }}</p>
@@ -357,9 +374,36 @@ new class extends Component
         </div>
     </section>
 
-    {{-- FRIENDS ACTIVITY dropped: every row was invented (Leo, Ana, their streaks and XP).
-         Re-port the section from kidzio/home.html once a real feed exists
-         (docs/tasks/T18-ranking-depth.md). The /profile friends strip is the live one. --}}
+    <section class="px-5 mt-5">
+        <div class="section-head">
+            <h2 class="h-display text-lg">{{ __('home.friends_today') }}</h2>
+            <a href="{{ route('ranking-friends') }}" wire:navigate class="link">{{ __('home.friends_ranking') }}</a>
+        </div>
+        <div class="k-card p-0 overflow-hidden">
+            @forelse ($friendActivity as $index => $activity)
+                <div class="flex items-center gap-3 p-3 {{ $index > 0 ? 'border-t border-token' : '' }}">
+                    <div class="size-10 rounded-full tile-sun grid place-items-center text-xl">{{ $activity['avatar'] }}</div>
+                    <div class="grow">
+                        <p class="font-extrabold text-sm">{{ $activity['name'] }}
+                            {{ $activity['kind'] === 'badge' ? __('home.friend_earned') : __('home.friend_finished') }}
+                            <span class="text-primary-ink">{{ $activity['detail'] }}</span></p>
+                        <p class="text-xs text-muted">{{ $activity['when'] }}@if ($activity['xp'] > 0) · +{{ $activity['xp'] }} XP @endif</p>
+                    </div>
+                    @if ($activity['chip'] === 'new')
+                        <span class="chip chip-mint">{{ __('home.new_badge') }}</span>
+                    @elseif ($activity['streak'] > 0)
+                        <span class="chip chip-sun">🔥 {{ $activity['streak'] }}</span>
+                    @endif
+                </div>
+            @empty
+                <p class="p-3 text-sm text-muted">{{ __('home.friends_quiet') }}</p>
+            @endforelse
+            <a href="{{ route('ranking-friends') }}" wire:navigate
+                class="flex items-center justify-center gap-2 p-3 border-t border-token text-sm font-extrabold text-primary-ink">
+                {{ __('home.beat_friends') }} <i class="ph ph-arrow-right"></i>
+            </a>
+        </div>
+    </section>
 
     <!-- =============== RECENT ACHIEVEMENTS (Swiper) =============== -->
     <section class="px-5 mt-5 mb-5">

@@ -1,7 +1,7 @@
 # T18 — Ranking depth + league rewards
 
 **Priority:** P2 · depth
-**Status:** not started
+**Status:** done
 **Depends on:** T04 (privacy enforced), T13 (claim mechanics)
 
 ## Why now
@@ -12,24 +12,24 @@ plumbing from T13 exists so prizes can be claimed rather than silently granted.
 
 ## Scope — prizes & rewards
 
-- [ ] Weekly ranking prize claiming (the screen already shows prizes)
-- [ ] League rewards: weekly stay bonus, champion badge, avatar frame
-- [ ] Season close job pays out before promote/relegate, exactly once per season per user
+- [x] Weekly ranking prize claiming (the screen already shows prizes)
+- [x] League rewards: weekly stay bonus, champion badge, avatar frame
+- [x] Season close job pays out before promote/relegate, exactly once per season per user
 
 ## Scope — friends
 
-- [ ] Friend requests behind **parent approval** (the product rule; v1 auto-accepts by nickname)
-- [ ] Suggested friends — same grade/league, respecting privacy toggles
-- [ ] Friends-today activity feed on Home (the Leo/Ana block hidden in T02) from real plays
-- [ ] This unblocks the **Social Star** badge, which currently can never unlock
+- [x] Friend requests behind **parent approval** (the product rule; v1 auto-accepts by nickname)
+- [x] Suggested friends — same grade/league, respecting privacy toggles
+- [x] Friends-today activity feed on Home (the Leo/Ana block hidden in T02) from real plays
+- [x] This unblocks the **Social Star** badge, which currently can never unlock
 
 ## Scope — ranking filters
 
-- [ ] Filters: worldwide, country, on a streak, online now
-- [ ] Country on the account (`kidzio/country.html` → `pages::country`) — needed before a country
+- [x] Filters: worldwide, country, on a streak, online now
+- [x] Country on the account (`kidzio/country.html` → `pages::country`) — needed before a country
       filter means anything
-- [ ] Top countries block
-- [ ] Online-now presence — only if T07's session tracking gives a real signal; otherwise drop the
+- [x] Top countries block
+- [x] Online-now presence — only if T07's session tracking gives a real signal; otherwise drop the
       filter rather than fake it
 
 ## Code touchpoints

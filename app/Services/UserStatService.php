@@ -13,6 +13,7 @@ use App\Enums\SchoolSubject;
 use App\Enums\XpSource;
 use App\Models\User;
 use App\Models\UserStat;
+use App\Repositories\PlaySessionRepository;
 use App\Repositories\UserStatRepository;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -38,6 +39,7 @@ class UserStatService
         private UserStatRepository $stats,
         private LevelCalculator $levels,
         private LeagueSeasonService $leagues,
+        private PlaySessionRepository $sessions,
     ) {}
 
     public function ensureFor(User $user): UserStat
@@ -206,6 +208,7 @@ class UserStatService
             }
         }
 
+        $online = array_flip($this->sessions->onlineUserIds());
         $entries = [];
         $rank = 0;
         foreach ($this->stats->topByXp($limit) as $row) {
@@ -223,6 +226,9 @@ class UserStatService
                 streak: $row->current_streak,
                 isYou: $owner->id === $user->id,
                 avatar: $this->avatarFor($owner),
+                country: is_string($owner->country) ? $owner->country : '',
+                online: isset($online[$owner->id]),
+                nickname: $owner->nickname,
             );
         }
 
@@ -264,6 +270,7 @@ class UserStatService
         ?SchoolSubject $subject = null,
         ?string $context = null,
         bool $countsAsPlay = true,
+        bool $countsTowardLeague = true,
     ): UserStat {
         if ($amount < 0) {
             throw new InvalidArgumentException('XP cannot be negative.');
@@ -288,7 +295,9 @@ class UserStatService
         if ($amount > 0) {
             $this->stats->createXpEvent($user, $source, $amount, $subject, $context, $at);
             $this->stats->addDayXp($user, $onDate, $amount);
-            $this->leagues->addWeekXp($user, $amount);
+            if ($countsTowardLeague) {
+                $this->leagues->addWeekXp($user, $amount);
+            }
         } elseif ($countsAsPlay) {
             $this->stats->addDayXp($user, $onDate, 0);
         }

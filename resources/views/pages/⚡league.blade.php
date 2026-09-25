@@ -35,6 +35,18 @@ new class extends Component
     /** @var list<array{value: string, label: string, emoji: string, state: string}> */
     public array $tiers = [];
 
+    public string $rewardTier = '';
+
+    public int $stayXp = 200;
+
+    public int $championCurrent = 0;
+
+    public int $championTarget = 4;
+
+    public bool $championEarned = false;
+
+    public bool $frameEarned = false;
+
     public function title(): string
     {
         return __('ranking.league_page_title');
@@ -47,7 +59,15 @@ new class extends Component
 
     public function mount(LeagueSeasonService $leagues, UserRepository $users): void
     {
-        $snap = $leagues->weeklySnapshot($users->authenticated());
+        $user = $users->authenticated();
+        $snap = $leagues->weeklySnapshot($user);
+        $rewards = $leagues->rewardProgress($user);
+        $this->rewardTier = $rewards['tierLabel'];
+        $this->stayXp = $rewards['stayXp'];
+        $this->championCurrent = $rewards['championCurrent'];
+        $this->championTarget = $rewards['championTarget'];
+        $this->championEarned = $rewards['championEarned'];
+        $this->frameEarned = $rewards['frameEarned'];
 
         $this->tier = $snap->tier->value;
         $this->tierLabel = $snap->tierLabel;
@@ -200,6 +220,43 @@ new class extends Component
                         </p>
                     </div>
                 @endforeach
+            </div>
+        </div>
+    </section>
+
+    <section class="px-5 mt-5">
+        <div class="section-head">
+            <h2 class="h-display text-lg">{{ __('ranking.league_rewards') }}</h2>
+            <span class="link cursor-default">{{ __('ranking.for_staying', ['tier' => $rewardTier]) }}</span>
+        </div>
+        <div class="space-y-2">
+            <div class="season-prize">
+                <div class="prize-emoji">⭐</div>
+                <div class="grow">
+                    <p class="font-extrabold text-sm text-ink">{{ __('ranking.stay_bonus', ['xp' => $stayXp]) }}</p>
+                    <p class="text-[11px] text-muted">{{ __('ranking.stay_bonus_meta', ['tier' => $rewardTier]) }}</p>
+                </div>
+                <span class="chip chip-mint">{{ __('ranking.stay_weekly') }}</span>
+            </div>
+            <div class="season-prize">
+                <div class="prize-emoji">🏅</div>
+                <div class="grow">
+                    <p class="font-extrabold text-sm text-ink">{{ __('ranking.champion_badge', ['tier' => $rewardTier]) }}</p>
+                    <p class="text-[11px] text-muted">{{ __('ranking.champion_meta', ['current' => $championCurrent, 'target' => $championTarget, 'tier' => $rewardTier]) }}</p>
+                </div>
+                <span class="chip {{ $championEarned ? 'chip-mint' : 'chip-sun' }}">
+                    {{ $championEarned ? __('ranking.champion_earned') : $championCurrent.' / '.$championTarget }}
+                </span>
+            </div>
+            <div class="season-prize">
+                <div class="prize-emoji">🎨</div>
+                <div class="grow">
+                    <p class="font-extrabold text-sm text-ink">{{ __('ranking.avatar_frame', ['tier' => $rewardTier]) }}</p>
+                    <p class="text-[11px] text-muted">{{ __('ranking.avatar_frame_meta') }}</p>
+                </div>
+                <span class="chip {{ $frameEarned ? 'chip-mint' : '' }}">
+                    {{ $frameEarned ? __('ranking.frame_earned') : __('ranking.frame_reward') }}
+                </span>
             </div>
         </div>
     </section>

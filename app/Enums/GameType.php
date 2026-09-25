@@ -68,15 +68,22 @@ enum GameType: string
     }
 
     /**
-     * Live player for this pack. Unbuilt formats fall back to Quick Quiz
-     * until T19 ports them.
+     * Live player for this pack. Kidzio extras still fall back to Quick Quiz.
      */
     public function playerRoute(): string
     {
         return match ($this) {
             self::MultipleChoice,
             self::TapCorrect,
-            self::Counting => $this->routeName(),
+            self::Counting,
+            self::TraceLetter,
+            self::FillLetter,
+            self::SpellWord,
+            self::MatchWord,
+            self::WordSearch,
+            self::ConnectPair,
+            self::Opposites,
+            self::Knowledge => $this->routeName(),
             default => self::MultipleChoice->routeName(),
         };
     }

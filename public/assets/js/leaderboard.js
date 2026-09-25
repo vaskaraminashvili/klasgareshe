@@ -36,8 +36,10 @@
         const online = row.getAttribute('data-online') === '1';
         const isMe = row.hasAttribute('data-me');
 
+        const viewerCountry = norm(document.querySelector('[data-viewer-country]')?.getAttribute('data-viewer-country'));
+        const countryTokens = country.split(/\s+/);
         let passFilter = true;
-        if (activeFilter === 'country') passFilter = country.includes('usa') || country.includes('us') || country.includes('united states') || isMe;
+        if (activeFilter === 'country') passFilter = viewerCountry !== '' && (countryTokens.indexOf(viewerCountry) !== -1 || isMe);
         else if (activeFilter === 'streak') passFilter = streak || isMe;
         else if (activeFilter === 'online') passFilter = online || isMe;
 

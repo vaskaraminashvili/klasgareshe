@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Badge;
 use App\Models\User;
 use App\Models\UserBadge;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 
 class BadgeRepository
@@ -154,6 +155,25 @@ class BadgeRepository
         $row->update(['seen_at' => now()]);
 
         return $row->fresh() ?? $row;
+    }
+
+    /**
+     * @param  list<int>  $userIds
+     * @return Collection<int, UserBadge>
+     */
+    public function unlockedSinceForUsers(array $userIds, CarbonInterface $since): Collection
+    {
+        if ($userIds === []) {
+            return collect();
+        }
+
+        return UserBadge::query()
+            ->with(['user', 'badge'])
+            ->whereIn('user_id', $userIds)
+            ->where('unlocked_at', '>=', $since)
+            ->orderByDesc('unlocked_at')
+            ->limit(8)
+            ->get();
     }
 
     public function holderCount(Badge $badge): int

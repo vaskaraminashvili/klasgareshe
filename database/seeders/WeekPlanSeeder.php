@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\GameType;
 use App\Enums\GameVisibility;
+use App\Enums\PlayDifficulty;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 use App\Models\Game;
@@ -73,6 +74,15 @@ class WeekPlanSeeder extends Seeder
             );
 
             $choices = $this->choices($row['correct'], $row['wrongs']);
+
+            if (isset($row['match_emoji'])) {
+                foreach ($choices as $index => $choice) {
+                    if ($choice['label'] === $row['correct']) {
+                        $choices[$index]['emoji'] = $row['match_emoji'];
+                    }
+                }
+            }
+
             $correctKey = 'A';
 
             foreach ($choices as $choice) {
@@ -90,6 +100,7 @@ class WeekPlanSeeder extends Seeder
                     'subject' => $subject->favourite(),
                     'age_group' => null,
                     'grade' => $grade->value,
+                    'difficulty' => PlayDifficulty::tryFrom((string) ($row['difficulty'] ?? 'medium')) ?? PlayDifficulty::Medium,
                     'locale' => 'ka',
                     'prompt' => $row['prompt'],
                     'hint' => $type === GameType::TapCorrect
@@ -99,9 +110,7 @@ class WeekPlanSeeder extends Seeder
                         'emoji' => $row['emoji'],
                         'tile' => $subject->tile(),
                     ],
-                    'payload' => $type === GameType::Counting
-                        ? $this->countPayload($row, $choices)
-                        : ['choices' => $choices],
+                    'payload' => $this->payloadFor($type, $row, $choices),
                     'answer' => $type === GameType::Counting
                         ? ['key' => $correctKey, 'value' => (int) $row['correct']]
                         : ['key' => $correctKey],
@@ -134,6 +143,34 @@ class WeekPlanSeeder extends Seeder
                 'visibility' => GameVisibility::Public,
             ],
         );
+    }
+
+    /**
+     * @param  array{prompt: string, correct: string, wrongs: list<string>, emoji: string, difficulty?: string, match_emoji?: string, keyboard?: list<string>, strokes?: list<list<array{0: float, 1: float}>>, slots?: int}  $row
+     * @param  list<array{key: string, label: string, emoji: string}>  $choices
+     * @return array<string, mixed>
+     */
+    private function payloadFor(GameType $type, array $row, array $choices): array
+    {
+        if ($type === GameType::Counting) {
+            return $this->countPayload($row, $choices);
+        }
+
+        $payload = ['choices' => $choices];
+
+        if (isset($row['keyboard'])) {
+            $payload['keyboard'] = $row['keyboard'];
+        }
+
+        if (isset($row['strokes'])) {
+            $payload['strokes'] = $row['strokes'];
+        }
+
+        if (isset($row['slots'])) {
+            $payload['slots'] = $row['slots'];
+        }
+
+        return $payload;
     }
 
     /**

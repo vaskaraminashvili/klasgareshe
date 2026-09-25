@@ -257,7 +257,7 @@ class LearnLibraryService
         }
 
         $state = $this->state($user, $item);
-        $ids = $this->week->questionIds($item);
+        $ids = $this->week->questionIds($item, $user);
         $questions = [];
         $n = 1;
         $allDone = $state === 'done';
@@ -426,6 +426,14 @@ class LearnLibraryService
             [GameType::MultipleChoice, '❓', 'tile-violet', 'pop games'],
             [GameType::TapCorrect, '👆', 'tile-mint', 'games math'],
             [GameType::Counting, '🔢', 'tile-sky', 'games math'],
+            [GameType::WordSearch, '🔎', 'tile-pink', 'games georgian'],
+            [GameType::FillLetter, '✏️', 'tile-coral', 'games georgian'],
+            [GameType::SpellWord, '🔤', 'tile-sun', 'games georgian'],
+            [GameType::TraceLetter, '✍️', 'tile-violet', 'games georgian'],
+            [GameType::MatchWord, '🧩', 'tile-mint', 'games georgian'],
+            [GameType::Opposites, '🔁', 'tile-coral', 'games georgian'],
+            [GameType::Knowledge, '🌍', 'tile-sky', 'games history'],
+            [GameType::ConnectPair, '🔗', 'tile-sky', 'games history'],
         ] as [$type, $emoji, $tile, $tags]) {
             $item = $this->week->firstIncompleteOfType($user, $type);
             $title = $type->title();

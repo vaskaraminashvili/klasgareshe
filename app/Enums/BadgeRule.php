@@ -18,4 +18,5 @@ enum BadgeRule: string
     case SubjectAllPerfect = 'subject_all_perfect';
     case SpeedBonus = 'speed_bonus';
     case Locked = 'locked';
+    case FriendsCount = 'friends_count';
 }

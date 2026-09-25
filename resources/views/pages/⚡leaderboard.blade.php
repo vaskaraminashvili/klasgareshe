@@ -3,8 +3,10 @@
 use App\Data\LeaderboardEntry;
 use App\Data\LeaderboardSnapshot;
 use App\Repositories\UserRepository;
+use App\Services\CountryService;
 use App\Services\SearchService;
 use App\Services\UserStatService;
+use App\Support\CountryCatalog;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;
 
@@ -42,6 +44,11 @@ new class extends Component
     /** @var list<string> */
     public array $popularSearches = [];
 
+    public string $viewerCountry = '';
+
+    /** @var list<array{code: string, emoji: string, name: string, learners: int}> */
+    public array $topCountries = [];
+
     public function title(): string
     {
         return __('ranking.page_title');
@@ -52,9 +59,11 @@ new class extends Component
         $view->title($this->title());
     }
 
-    public function mount(UserStatService $stats, UserRepository $users, SearchService $search): void
+    public function mount(UserStatService $stats, UserRepository $users, SearchService $search, CountryService $countries): void
     {
         $user = $users->authenticated();
+        $this->viewerCountry = is_string($user->country) ? $user->country : '';
+        $this->topCountries = $countries->topByLearners();
         $this->recentSearches = $search->recent($user);
         $this->popularSearches = $search->popular();
         $this->fillRanking($stats->leaderboardSnapshot($user));
@@ -90,6 +99,8 @@ new class extends Component
                 'streak' => $hit['streak'],
                 'isYou' => $hit['userId'] === $user->id,
                 'avatar' => $hit['avatar'],
+                'country' => $hit['country'] ?? '',
+                'online' => (bool) ($hit['online'] ?? false),
             ];
         }
     }
@@ -123,6 +134,8 @@ new class extends Component
                 'streak' => $e->streak,
                 'isYou' => $e->isYou,
                 'avatar' => $e->avatar,
+                'country' => $e->country,
+                'online' => $e->online,
             ],
             $snap->podium,
         );
@@ -131,12 +144,14 @@ new class extends Component
                 'rank' => $e->rank,
                 'userId' => $e->userId,
                 'name' => $e->name,
-                'nickname' => '',
+                'nickname' => $e->nickname,
                 'xp' => $e->xp,
                 'level' => $e->level,
                 'streak' => $e->streak,
                 'isYou' => $e->isYou,
                 'avatar' => $e->avatar,
+                'country' => $e->country,
+                'online' => $e->online,
             ],
             $snap->rows,
         );
@@ -163,7 +178,7 @@ new class extends Component
     $rankLabel = $yourRank !== null ? '#'.$yourRank : __('ranking.unranked');
 @endphp
 
-<main class="device-frame min-h-screen flex flex-col">
+<main class="device-frame min-h-screen flex flex-col" data-viewer-country="{{ $viewerCountry }}">
 
     <header class="appbar safe-top">
         <div class="grow">
@@ -335,9 +350,11 @@ new class extends Component
                     data-name="{{ ($row['nickname'] ?? '') !== '' ? $row['nickname'] : $row['name'] }}"
                     data-nickname="{{ $row['nickname'] ?? '' }}"
                     data-streak="{{ $row['streak'] > 0 ? '1' : '0' }}"
+                    data-online="{{ ! empty($row['online']) ? '1' : '0' }}"
+                    data-country="{{ CountryCatalog::keywords($row['country'] ?? '') }}"
                     @if ($row['isYou']) data-me @endif>
                     <span class="rank-num {{ $medal }}">{{ $row['rank'] }}</span>
-                    <div class="rank-av tile-sun">{{ $row['avatar'] }}</div>
+                    <div class="rank-av tile-sun">{{ $row['avatar'] }}@if (! empty($row['online']))<span class="live"></span>@endif</div>
                     <div class="grow min-w-0">
                         <p class="font-extrabold text-sm text-ink">
                             {{ $row['isYou'] ? __('ranking.you', ['name' => $row['name']]) : $row['name'] }}</p>
@@ -345,6 +362,9 @@ new class extends Component
                             <span>{{ __('ranking.lv', ['level' => $row['level']]) }}</span>
                             @if ($row['streak'] > 0)
                                 ·<span class="text-sun-ink">{{ __('ranking.streak_days', ['days' => $row['streak']]) }}</span>
+                            @endif
+                            @if (($row['country'] ?? '') !== '')
+                                ·<span>{{ CountryCatalog::emoji($row['country']) }}</span>
                             @endif
                         </div>
                     </div>
@@ -358,6 +378,27 @@ new class extends Component
             @endforeach
         </div>
     </section>
+
+    @if ($topCountries !== [])
+        <section class="px-5 mt-5">
+            <div class="section-head">
+                <h2 class="h-display text-lg">{{ __('ranking.top_countries') }}</h2>
+                <span class="link cursor-default">{{ __('ranking.by_learners') }}</span>
+            </div>
+            <div class="k-card p-0 overflow-hidden">
+                @foreach ($topCountries as $index => $country)
+                    <a href="{{ route('country') }}" wire:navigate
+                        class="flex items-center gap-3 p-3 {{ $index > 0 ? 'border-t border-token' : '' }}">
+                        <span class="w-7 text-center font-extrabold text-ink">{{ $index + 1 }}</span>
+                        <span class="text-2xl">{{ $country['emoji'] }}</span>
+                        <p class="font-extrabold text-sm grow text-ink">{{ $country['name'] }}</p>
+                        <span class="chip {{ $index === 0 ? 'chip-primary' : '' }}">{{ number_format($country['learners']) }}</span>
+                        <i class="ph ph-caret-right text-muted"></i>
+                    </a>
+                @endforeach
+            </div>
+        </section>
+    @endif
 
     @if ($xpToNextRank > 0)
         <section class="px-5 mt-5">

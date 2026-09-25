@@ -156,6 +156,9 @@ class QuickQuizTest extends TestCase
             ->assertSet('correctCount', 1)
             ->assertSet('lives', 3)
             ->call('next')
+            ->assertSet('showResult', true)
+            ->assertSee(__('quiz.no_yesterday'), false)
+            ->call('continueFromResult')
             ->assertRedirect(route('home'));
 
         $this->assertSame(8, UserStat::query()->where('user_id', $user->id)->first()?->xp);

@@ -6,6 +6,7 @@ use App\Enums\AgeGroup;
 use App\Enums\DailyGoal;
 use App\Enums\Gender;
 use App\Enums\OnboardingStep;
+use App\Enums\PlayDifficulty;
 use App\Enums\ReminderTime;
 use App\Enums\SchoolGrade;
 use Database\Factories\UserFactory;
@@ -31,6 +32,7 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
  * @property Gender|null $gender
  * @property AgeGroup|null $age_group
  * @property SchoolGrade|null $grade
+ * @property PlayDifficulty|null $play_difficulty
  * @property list<string>|null $favourite_subjects
  * @property DailyGoal|null $daily_goal
  * @property OnboardingStep|null $onboarding_step
@@ -39,6 +41,8 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
  * @property ReminderTime|null $reminder_time
  * @property bool $show_on_leaderboard
  * @property bool $allow_friend_requests
+ * @property string|null $country
+ * @property string|null $avatar_frame
  * @property Carbon|null $email_verified_at
  * @property string|null $pending_parent_email
  * @property string|null $pending_parent_email_token
@@ -73,6 +77,7 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
     'gender',
     'age_group',
     'grade',
+    'play_difficulty',
     'favourite_subjects',
     'daily_goal',
     'onboarding_step',
@@ -81,6 +86,8 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
     'reminder_time',
     'show_on_leaderboard',
     'allow_friend_requests',
+    'country',
+    'avatar_frame',
     'pending_parent_email',
     'pending_parent_email_token',
     'pending_parent_email_sent_at',
@@ -130,6 +137,7 @@ class User extends Authenticatable
             'gender' => Gender::class,
             'age_group' => AgeGroup::class,
             'grade' => SchoolGrade::class,
+            'play_difficulty' => PlayDifficulty::class,
             'favourite_subjects' => 'array',
             'daily_goal' => DailyGoal::class,
             'onboarding_step' => OnboardingStep::class,

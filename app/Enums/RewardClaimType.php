@@ -8,4 +8,5 @@ enum RewardClaimType: string
     case DailyLogin = 'daily_login';
     case Badge = 'badge';
     case Freeze = 'freeze';
+    case WeeklyPrize = 'weekly_prize';
 }

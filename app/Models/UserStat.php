@@ -21,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property int $streak_freezes
  * @property Carbon|null $last_played_on
  * @property League $league
+ * @property list<string>|null $champion_tiers
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
@@ -33,6 +34,7 @@ use Illuminate\Support\Carbon;
     'streak_freezes',
     'last_played_on',
     'league',
+    'champion_tiers',
 ])]
 class UserStat extends Model
 {
@@ -68,6 +70,7 @@ class UserStat extends Model
             'streak_freezes' => 'integer',
             'last_played_on' => 'date',
             'league' => League::class,
+            'champion_tiers' => 'array',
         ];
     }
 

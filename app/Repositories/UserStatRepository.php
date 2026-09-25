@@ -109,6 +109,82 @@ class UserStatRepository
             ->get();
     }
 
+    public function xpForContext(User $user, XpSource $source, string $context): int
+    {
+        return (int) XpEvent::query()
+            ->where('user_id', $user->id)
+            ->where('source', $source)
+            ->where('context', $context)
+            ->sum('amount');
+    }
+
+    /**
+     * Week XP earned by visible kids, grouped by ranking country.
+     *
+     * @return array<string, int>
+     */
+    public function weekXpByCountry(string $from, string $to): array
+    {
+        $map = [];
+
+        $rows = UserActivityDay::query()
+            ->join('users', 'users.id', '=', 'user_activity_days.user_id')
+            ->where('users.show_on_leaderboard', true)
+            ->whereNull('users.deleted_at')
+            ->whereNotNull('users.country')
+            ->where('users.country', '!=', '')
+            ->whereDate('user_activity_days.played_on', '>=', $from)
+            ->whereDate('user_activity_days.played_on', '<=', $to)
+            ->groupBy('users.country')
+            ->selectRaw('users.country as country, SUM(user_activity_days.xp_earned) as week_xp')
+            ->get();
+
+        foreach ($rows as $row) {
+            $code = (string) $row->getAttribute('country');
+            if ($code !== '') {
+                $map[$code] = (int) $row->getAttribute('week_xp');
+            }
+        }
+
+        return $map;
+    }
+
+    public function rankInCountry(User $user): ?int
+    {
+        $country = $user->country;
+
+        if (! is_string($country) || $country === '' || ! $user->show_on_leaderboard) {
+            return null;
+        }
+
+        $stat = $this->firstOrCreateFor($user);
+        $pool = $this->publicRankingQuery()->whereIn(
+            'user_id',
+            User::query()->where('country', $country)->select('id'),
+        );
+
+        return 1 + (int) (clone $pool)
+            ->where(function ($query) use ($stat): void {
+                $query->where('xp', '>', $stat->xp)
+                    ->orWhere(function ($inner) use ($stat): void {
+                        $inner->where('xp', $stat->xp)
+                            ->where('user_id', '<', $stat->user_id);
+                    });
+            })
+            ->count();
+    }
+
+    public function countInCountry(string $country): int
+    {
+        if ($country === '') {
+            return 0;
+        }
+
+        return $this->publicRankingQuery()
+            ->whereIn('user_id', User::query()->where('country', $country)->select('id'))
+            ->count();
+    }
+
     public function countXpEvents(User $user, XpSource $source): int
     {
         return XpEvent::query()

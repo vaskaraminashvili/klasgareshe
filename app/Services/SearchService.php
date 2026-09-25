@@ -7,6 +7,7 @@ use App\Enums\SchoolSubject;
 use App\Models\User;
 use App\Models\WeekPlanItem;
 use App\Repositories\BadgeRepository;
+use App\Repositories\PlaySessionRepository;
 use App\Repositories\SearchQueryRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserStatRepository;
@@ -22,6 +23,7 @@ class SearchService
         private UserRepository $users,
         private UserStatRepository $stats,
         private LevelCalculator $levels,
+        private PlaySessionRepository $sessions,
     ) {}
 
     /**
@@ -53,6 +55,14 @@ class SearchService
         GameType::MultipleChoice,
         GameType::TapCorrect,
         GameType::Counting,
+        GameType::WordSearch,
+        GameType::FillLetter,
+        GameType::SpellWord,
+        GameType::TraceLetter,
+        GameType::MatchWord,
+        GameType::ConnectPair,
+        GameType::Opposites,
+        GameType::Knowledge,
     ];
 
     /**
@@ -254,16 +264,8 @@ class SearchService
                 'name' => $type->title(),
                 'keys' => $type->title().' '.$type->value,
                 'href' => $this->week->playUrl($next?->id, missionIfMissing: true),
-                'ico' => match ($type) {
-                    GameType::TapCorrect => '👆',
-                    GameType::Counting => '🔢',
-                    default => '❓',
-                },
-                'tile' => match ($type) {
-                    GameType::TapCorrect => 'tile-mint',
-                    GameType::Counting => 'tile-sky',
-                    default => 'tile-violet',
-                },
+                'ico' => self::gameIcon($type),
+                'tile' => self::gameTile($type),
                 'kind' => 'game',
                 'subject' => null,
                 'week' => null,
@@ -340,7 +342,7 @@ class SearchService
     /**
      * Public leaderboard hits. Kids with show_on_leaderboard off are excluded.
      *
-     * @return list<array{userId: int, nickname: string, name: string, xp: int, level: int, streak: int, rank: int|null, avatar: string}>
+     * @return list<array{userId: int, nickname: string, name: string, xp: int, level: int, streak: int, rank: int|null, avatar: string, country: string, online: bool}>
      */
     public function players(string $query): array
     {
@@ -353,6 +355,7 @@ class SearchService
         $users = $this->users->searchVisibleByNickname($fragment);
         $ids = array_values($users->pluck('id')->map(fn ($id) => (int) $id)->all());
         $summaries = $this->stats->summaryByUserId($ids);
+        $online = array_flip($this->sessions->onlineUserIds());
         $hits = [];
 
         foreach ($users as $user) {
@@ -371,6 +374,8 @@ class SearchService
                 'streak' => $summary['streak'],
                 'rank' => $this->stats->rankFor($user),
                 'avatar' => is_string($user->avatar) && $user->avatar !== '' ? $user->avatar : '🐻',
+                'country' => is_string($user->country) ? $user->country : '',
+                'online' => isset($online[$user->id]),
             ];
         }
 
@@ -396,5 +401,35 @@ class SearchService
         }
 
         return 'new';
+    }
+
+    private static function gameIcon(GameType $type): string
+    {
+        return match ($type) {
+            GameType::TapCorrect => '👆',
+            GameType::Counting => '🔢',
+            GameType::WordSearch => '🔎',
+            GameType::FillLetter => '✏️',
+            GameType::SpellWord => '🔤',
+            GameType::TraceLetter => '✍️',
+            GameType::MatchWord => '🧩',
+            GameType::ConnectPair => '🔗',
+            GameType::Opposites => '🔁',
+            GameType::Knowledge => '🌍',
+            default => '❓',
+        };
+    }
+
+    private static function gameTile(GameType $type): string
+    {
+        return match ($type) {
+            GameType::TapCorrect => 'tile-mint',
+            GameType::Counting => 'tile-sky',
+            GameType::WordSearch => 'tile-pink',
+            GameType::FillLetter => 'tile-coral',
+            GameType::SpellWord => 'tile-sun',
+            GameType::Knowledge, GameType::ConnectPair => 'tile-sky',
+            default => 'tile-violet',
+        };
     }
 }

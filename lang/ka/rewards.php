@@ -25,6 +25,10 @@ return [
     'open_now' => 'გახსენი ახლა',
     'badge_just_earned' => 'ნიშანი · ახლახან მიიღე!',
     'claim' => 'მოითხოვე',
+    'weekly_prize' => 'კვირის პრიზი',
+    'weekly_prize_xp' => 'ადგილი #:rank · +:xp XP',
+    'weekly_prize_token' => 'ადგილი #:rank · მონაწილეობის ნიშანი',
+    'claimed' => 'მიღებულია',
     'streak_freeze' => 'სერიის ფარი',
     'streak_freeze_sub' => 'ძალა · +1 ფარი',
 

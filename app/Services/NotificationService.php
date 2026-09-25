@@ -115,6 +115,16 @@ class NotificationService
         );
     }
 
+    public function friendRequested(User $target, User $from): void
+    {
+        $this->dispatch(
+            $target,
+            AlertType::FriendRequest,
+            ['name' => $from->name],
+            dedupe: 'friend-request:'.$from->id,
+        );
+    }
+
     public function friendAccepted(User $target, User $from): void
     {
         $this->dispatch(

@@ -8,10 +8,12 @@ use App\Data\RewardsDashboardSnapshot;
 use App\Enums\RewardClaimType;
 use App\Enums\XpSource;
 use App\Models\Badge;
+use App\Models\LeagueSeasonPayout;
 use App\Models\User;
 use App\Models\UserBadge;
 use App\Models\XpEvent;
 use App\Repositories\BadgeRepository;
+use App\Repositories\LeaguePayoutRepository;
 use App\Repositories\RewardRepository;
 use App\Repositories\UserStatRepository;
 use Carbon\CarbonImmutable;
@@ -27,6 +29,7 @@ class RewardService
         private UserStatRepository $statRows,
         private BadgeRepository $badges,
         private LevelCalculator $levels,
+        private LeaguePayoutRepository $payouts,
     ) {}
 
     public function pendingCount(User $user): int
@@ -75,6 +78,7 @@ class RewardService
             RewardClaimType::DailyLogin => $this->claimLogin($user, $reference),
             RewardClaimType::Badge => $this->claimBadge($user, $reference),
             RewardClaimType::Freeze => $this->claimFreeze($user, $reference),
+            RewardClaimType::WeeklyPrize => $this->claimWeeklyPrize($user, $reference),
         };
     }
 
@@ -113,6 +117,18 @@ class RewardService
                 subtitle: (string) __('rewards.badge_just_earned'),
                 action: (string) __('rewards.claim'),
                 buttonClass: 'btn-secondary',
+            );
+        }
+
+        foreach ($this->payouts->unclaimedPrizes($user) as $payout) {
+            $cards[] = new RewardClaimCard(
+                type: RewardClaimType::WeeklyPrize->value,
+                reference: (string) $payout->league_week_id,
+                emoji: '🎁',
+                title: (string) __('rewards.weekly_prize'),
+                subtitle: $this->weeklyPrizeSubtitle($payout),
+                action: (string) __('rewards.claim'),
+                buttonClass: 'btn-primary',
             );
         }
 
@@ -344,6 +360,51 @@ class RewardService
         $this->claims->recordOnce($user, RewardClaimType::Badge, $slug);
 
         return new RewardClaimResult(paid: false, redirectSlug: $slug);
+    }
+
+    private function claimWeeklyPrize(User $user, string $reference): RewardClaimResult
+    {
+        if (! ctype_digit($reference)) {
+            return RewardClaimResult::ignored();
+        }
+
+        $payout = $this->payouts->findForWeek($user, (int) $reference);
+
+        if (! $payout instanceof LeagueSeasonPayout || ! $payout->hasPrize() || $payout->prizeClaimed()) {
+            return RewardClaimResult::ignored();
+        }
+
+        if (! $this->claims->recordOnce($user, RewardClaimType::WeeklyPrize, $reference)) {
+            return RewardClaimResult::ignored();
+        }
+
+        $xp = (int) $payout->prize_xp;
+
+        if ($xp > 0) {
+            $this->stats->awardXp(
+                $user,
+                XpSource::WeeklyPrize,
+                $xp,
+                context: 'weekly-prize:'.$reference,
+                countsAsPlay: false,
+                countsTowardLeague: false,
+            );
+        }
+
+        $this->payouts->markPrizeClaimed($payout);
+
+        return new RewardClaimResult(paid: true, xp: $xp);
+    }
+
+    private function weeklyPrizeSubtitle(LeagueSeasonPayout $payout): string
+    {
+        $xp = (int) $payout->prize_xp;
+
+        if ($xp > 0) {
+            return (string) __('rewards.weekly_prize_xp', ['xp' => $xp, 'rank' => $payout->finish_rank]);
+        }
+
+        return (string) __('rewards.weekly_prize_token', ['rank' => $payout->finish_rank]);
     }
 
     private function claimFreeze(User $user, string $reference): RewardClaimResult

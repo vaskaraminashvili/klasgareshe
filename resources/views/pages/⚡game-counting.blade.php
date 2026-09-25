@@ -154,6 +154,8 @@ new class extends PlaysWeekPlanPackComponent
         @endif
     </div>
 
+    @include('partials.pack-result')
+
     @if ($showBreak)
         <div class="fixed inset-0 z-50" role="dialog" aria-modal="true">
             <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>

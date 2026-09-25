@@ -187,6 +187,14 @@ return [
         ],
     ],
 
+    'friends_today' => 'მეგობრები დღეს',
+    'friends_ranking' => 'რეიტინგი',
+    'friend_finished' => 'დაასრულა',
+    'friend_earned' => 'მიიღო',
+    'friends_quiet' => 'დღეს მეგობრებს ჯერ არ უთამაშიათ.',
+    'beat_friends' => 'დაამარცხე მეგობრები',
+    'new_badge' => 'ახალი',
+
     // Notifications
     'notifications' => 'შეტყობინებები',
     'new_today' => '3 ახალი დღეს',

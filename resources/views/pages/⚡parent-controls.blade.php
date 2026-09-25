@@ -2,6 +2,7 @@
 
 use App\Enums\ParentPinAttempt;
 use App\Repositories\UserRepository;
+use App\Services\FriendshipService;
 use App\Services\ParentZoneService;
 use App\Services\ScreenTimeService;
 use App\Services\UserProfileService;
@@ -69,6 +70,9 @@ new class extends Component
     public array $weekBars = [];
 
     public int $daysHitGoal = 0;
+
+    /** @var list<array{id: int, name: string, avatar: string, when: string}> */
+    public array $friendRequests = [];
 
     public function title(): string
     {
@@ -152,6 +156,32 @@ new class extends Component
 
         $this->toast(__('parent-zone.code_sent'));
         $this->redirectRoute('parent-pin-otp', navigate: true);
+    }
+
+    public function approveFriend(int $id, FriendshipService $friends, UserRepository $users, ParentZoneService $zone): void
+    {
+        if (! $this->unlocked) {
+            return;
+        }
+
+        $user = $users->authenticated();
+        $friends->approve($user, $id);
+        $this->friendRequests = $friends->incomingCards($user);
+        $this->toast(__('friends.parent_approved'));
+        $zone->touch();
+    }
+
+    public function declineFriend(int $id, FriendshipService $friends, UserRepository $users, ParentZoneService $zone): void
+    {
+        if (! $this->unlocked) {
+            return;
+        }
+
+        $user = $users->authenticated();
+        $friends->decline($user, $id);
+        $this->friendRequests = $friends->incomingCards($user);
+        $this->toast(__('friends.parent_declined'));
+        $zone->touch();
     }
 
     public function updatedAllowFriendRequests(): void
@@ -274,6 +304,7 @@ new class extends Component
             : (string) __('parent-zone.bedtime_off_hint');
         $this->breakReminders = $time->breakReminders;
         $this->daysHitGoal = $time->daysHitGoal;
+        $this->friendRequests = app(FriendshipService::class)->incomingCards($user);
         $this->weekBars = [];
 
         foreach ($time->weekBars as $bar) {
@@ -391,6 +422,28 @@ new class extends Component
             <button id="lockBtn" type="button" class="icon-btn" wire:click="lockZone" aria-label="{{ __('parent-zone.lock_aria') }}"><i class="ph ph-lock-simple-open text-xl"></i></button>
             <button type="button" class="icon-btn" data-theme-toggle aria-label="{{ __('parent-zone.toggle_theme') }}"><i class="ph ph-moon text-xl"></i></button>
         </header>
+
+        @if ($friendRequests !== [])
+            <section class="px-5 mt-2">
+                <div class="section-head">
+                    <h2 class="h-display text-lg">{{ __('parent-zone.friend_requests_heading') }}</h2>
+                    <span class="chip chip-coral">{{ __('friends.new_count', ['count' => count($friendRequests)]) }}</span>
+                </div>
+                <div class="space-y-2">
+                    @foreach ($friendRequests as $request)
+                        <div class="request-card">
+                            <div class="avatar-ring"><span>{{ $request['avatar'] }}</span></div>
+                            <div class="grow min-w-0">
+                                <p class="font-extrabold text-sm text-ink">{{ $request['name'] }}</p>
+                                <p class="text-[11px] text-muted">{{ $request['when'] }}</p>
+                            </div>
+                            <button type="button" class="btn btn-secondary h-9 min-h-0 px-3 text-xs" wire:click="declineFriend({{ $request['id'] }})">{{ __('friends.ignore') }}</button>
+                            <button type="button" class="btn btn-primary h-9 min-h-0 px-3 text-xs" wire:click="approveFriend({{ $request['id'] }})">{{ __('friends.accept') }}</button>
+                        </div>
+                    @endforeach
+                </div>
+            </section>
+        @endif
 
         <section class="px-5">
             <div class="k-card-lg hero-profile text-center">

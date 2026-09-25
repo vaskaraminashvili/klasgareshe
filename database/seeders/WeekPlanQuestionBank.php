@@ -6,13 +6,22 @@ use App\Enums\GameType;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 
+/**
+ * @phpstan-type PlanQuestion array{prompt: string, correct: string, wrongs: list<string>, emoji: string, difficulty?: string, match_emoji?: string, keyboard?: list<string>, strokes?: list<list<array{0: float, 1: float}>>, slots?: int}
+ */
 final class WeekPlanQuestionBank
 {
     /**
-     * @return array{title: string, questions: list<array{prompt: string, correct: string, wrongs: list<string>, emoji: string}>}
+     * @return array{title: string, questions: list<PlanQuestion>}
      */
     public static function pack(SchoolGrade $grade, SchoolSubject $subject, int $weekday, int $weekNumber = 1): array
     {
+        $mini = WeekPlanMiniGameBank::pack($grade, $subject, $weekday, $weekNumber);
+
+        if ($mini !== null) {
+            return $mini;
+        }
+
         if ($weekNumber === 3) {
             return WeekPlanQuestionBankWeek3::pack($grade, $subject, $weekday);
         }
@@ -37,6 +46,12 @@ final class WeekPlanQuestionBank
         int $weekday,
         int $weekNumber = 1,
     ): GameType {
+        $mini = WeekPlanMiniGameBank::gameType($grade, $subject, $weekday, $weekNumber);
+
+        if ($mini !== null) {
+            return $mini;
+        }
+
         if ($subject === SchoolSubject::Math && $weekNumber === 1 && $weekday === 1) {
             return GameType::TapCorrect;
         }

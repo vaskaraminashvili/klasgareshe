@@ -19,7 +19,7 @@ trait PlaysWeekPlanPack
     public array $questionIds = [];
 
     /**
-     * @var list<array{id: int, prompt: string, emoji: string, tile: string, playMode: string, letters: list<array{char: string, blank: bool}>, countItems: list<string>, choices: list<array{key: string, label: string, emoji: string}>, hint: string}>
+     * @var list<array{id: int, prompt: string, emoji: string, tile: string, playMode: string, letters: list<array{char: string, blank: bool}>, countItems: list<string>, choices: list<array{key: string, label: string, emoji: string}>, hint: string, keyboard: list<string>, strokes: list<list<array{0: float, 1: float}>>, pairLabel: string, pairEmoji: string, slots: int}>
      */
     #[Locked]
     public array $deck = [];
@@ -47,6 +47,27 @@ trait PlaysWeekPlanPack
 
     #[Locked]
     public string $gameSlug = 'multiple-choice';
+
+    #[Locked]
+    public ?string $pendingBadge = null;
+
+    public bool $showResult = false;
+
+    public int $resultXp = 0;
+
+    public int $resultTotal = 0;
+
+    public ?int $yesterdayCorrect = null;
+
+    public bool $beatYesterday = false;
+
+    /** @var list<string> */
+    public array $keyboard = [];
+
+    /** @var list<list<array{0: float, 1: float}>> */
+    public array $strokes = [];
+
+    public int $letterSlots = 0;
 
     public ?int $item = null;
 
@@ -138,27 +159,7 @@ trait PlaysWeekPlanPack
         $last = $this->index >= count($this->questionIds) - 1;
 
         if ($last || $this->lives === 0) {
-            $this->settled = true;
-            $elapsed = max(0, (int) now()->diffInSeconds($this->startedAt));
-            $play->award(
-                $users->authenticated(),
-                GameType::from($this->gameSlug),
-                $this->correctCount,
-                $this->planItemId,
-                $this->maxCombo,
-                $elapsed,
-                count($this->questionIds),
-                $last,
-            );
-            $slug = $badges->firstUnseenSlug($users->authenticated());
-
-            if (is_string($slug)) {
-                $this->redirectRoute('badge-unlock', ['slug' => $slug]);
-
-                return;
-            }
-
-            $this->redirectRoute('home');
+            $this->finishPack($play, $users, $badges, $last);
 
             return;
         }
@@ -168,6 +169,21 @@ trait PlaysWeekPlanPack
         $this->pickedKey = null;
         $this->correctKey = null;
         $this->showCurrent();
+    }
+
+    public function continueFromResult(): void
+    {
+        if (! $this->showResult) {
+            return;
+        }
+
+        if (is_string($this->pendingBadge) && $this->pendingBadge !== '') {
+            $this->redirectRoute('badge-unlock', ['slug' => $this->pendingBadge]);
+
+            return;
+        }
+
+        $this->redirectRoute('home');
     }
 
     public function progressPercent(): int
@@ -256,7 +272,10 @@ trait PlaysWeekPlanPack
         $this->showCurrent();
         $time->tick($user);
         $this->refreshPlayGates($time, $user);
+        $this->afterPackReady();
     }
+
+    protected function afterPackReady(): void {}
 
     protected function applyGrade(ChoiceGrade $grade, ?string $pickedKey): void
     {
@@ -292,7 +311,37 @@ trait PlaysWeekPlanPack
         $this->playMode = $view['playMode'];
         $this->letters = $view['letters'];
         $this->countItems = $view['countItems'];
+        $this->keyboard = $view['keyboard'];
+        $this->strokes = $view['strokes'];
+        $this->letterSlots = $view['slots'];
         $this->afterShowCurrent();
+    }
+
+    protected function finishPack(GamePlayService $play, UserRepository $users, BadgeService $badges, bool $completedAll = true): void
+    {
+        if ($this->showResult || $this->questionIds === []) {
+            return;
+        }
+
+        $this->settled = true;
+        $user = $users->authenticated();
+        $this->yesterdayCorrect = $play->yesterdayCorrect($user, $this->planItemId);
+        $this->beatYesterday = $this->yesterdayCorrect !== null && $this->correctCount > $this->yesterdayCorrect;
+        $elapsed = $this->startedAt === '' ? 0 : max(0, (int) now()->diffInSeconds($this->startedAt));
+        $this->resultTotal = count($this->questionIds);
+        $this->resultXp = $play->award(
+            $user,
+            GameType::from($this->gameSlug),
+            $this->correctCount,
+            $this->planItemId,
+            $this->maxCombo,
+            $elapsed,
+            $this->resultTotal,
+            $completedAll,
+        );
+        $slug = $badges->firstUnseenSlug($user);
+        $this->pendingBadge = is_string($slug) ? $slug : null;
+        $this->showResult = true;
     }
 
     protected function afterShowCurrent(): void

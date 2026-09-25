@@ -1,10 +1,12 @@
 <?php
 
 use App\Enums\DailyGoal;
+use App\Enums\PlayDifficulty;
 use App\Enums\ReminderTime;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 use App\Repositories\UserRepository;
+use App\Support\CountryCatalog;
 use App\Services\KidSetupService;
 use App\Services\ParentZoneService;
 use App\Services\ProgressReportService;
@@ -41,6 +43,8 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
 
     public string $dailyGoal = 'regular';
 
+    public string $playDifficulty = 'medium';
+
     /** @var list<string> */
     public array $subjects = [];
 
@@ -55,6 +59,8 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
     public string $screenTimeChip = '';
 
     public string $bedtimeChip = '';
+
+    public string $countryLabel = '';
 
     public function mount(
         UserProfileService $profiles,
@@ -80,6 +86,7 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         $this->rewards = $prefs['rewards'];
         $this->reminderTime = $setup->defaultReminderTime($user)->value;
         $this->dailyGoal = ($user->daily_goal ?? DailyGoal::Regular)->value;
+        $this->playDifficulty = ($user->play_difficulty ?? PlayDifficulty::Medium)->value;
         $this->subjects = $setup->selectedSubjects($user);
         $this->showOnLeaderboard = (bool) ($user->show_on_leaderboard ?? true);
         $this->allowFriendRequests = (bool) ($user->allow_friend_requests ?? true);
@@ -91,6 +98,7 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         $this->bedtimeChip = $clock->bedtimeEnabled
             ? $clock->bedtimeStart.' — '.$clock->bedtimeEnd
             : (string) __('settings.bedtime_off');
+        $this->countryLabel = CountryCatalog::emoji($user->country).' '.CountryCatalog::name($user->country);
     }
 
     public function updatedStreak(UserProfileService $profiles, UserRepository $users): void
@@ -126,6 +134,16 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         ]);
 
         $profiles->updateDailyGoal($users->authenticated(), DailyGoal::from($this->dailyGoal));
+    }
+
+    public function selectDifficulty(string $difficulty, UserProfileService $profiles, UserRepository $users): void
+    {
+        $this->playDifficulty = $difficulty;
+        $this->validate([
+            'playDifficulty' => ['required', Rule::enum(PlayDifficulty::class)],
+        ]);
+
+        $profiles->updatePlayDifficulty($users->authenticated(), PlayDifficulty::from($this->playDifficulty));
     }
 
     public function selectReminderTime(string $time, UserProfileService $profiles, UserRepository $users): void
@@ -254,6 +272,7 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
             __('settings.privacy_policy').' '.__('settings.privacy_policy_hint'),
             __('settings.terms').' '.__('settings.terms_hint'),
             __('settings.app_language').' '.__('settings.language_value'),
+            __('settings.country').' '.__('settings.country_hint'),
             __('settings.parent_email').' '.$this->email,
             __('settings.delete_account').' '.__('settings.delete_account_hint'),
             __('settings.log_out'),
@@ -409,7 +428,7 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
   @endif
 
   <!-- =============== LEARNING =============== -->
-  @if ($this->matches(__('settings.learning'), __('settings.daily_goal'), __('settings.favourite_subjects'), $this->subjectsLine()))
+  @if ($this->matches(__('settings.learning'), __('settings.daily_goal'), __('settings.favourite_subjects'), $this->subjectsLine(), __('settings.difficulty'), __('settings.difficulty_hint'), __('settings.difficulty_easy'), __('settings.difficulty_medium'), __('settings.difficulty_hard')))
   <section class="px-5 mt-5">
     <p class="section-label">{{ __('settings.learning') }}</p>
     <div class="mt-3 space-y-2">
@@ -438,7 +457,20 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         <p class="text-sm" style="color:var(--color-k-coral)">{{ $message }}</p>
       @enderror
       @endif
-      {{-- Age group lives on edit-profile. Difficulty → docs/tasks/T19-minigames-batch-2.md --}}
+      @if ($this->matches(__('settings.difficulty'), __('settings.difficulty_hint'), __('settings.difficulty_easy'), __('settings.difficulty_medium'), __('settings.difficulty_hard')))
+      <div class="setting-row">
+        <div class="setting-ico tile-sky">🎚️</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.difficulty') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.difficulty_hint') }}</p>
+        </div>
+        <div class="segmented">
+          @foreach (PlayDifficulty::cases() as $level)
+            <button type="button" class="{{ $playDifficulty === $level->value ? 'is-active' : '' }}" wire:click="selectDifficulty('{{ $level->value }}')">{{ $level->label() }}</button>
+          @endforeach
+        </div>
+      </div>
+      @endif
     </div>
   </section>
   @endif
@@ -555,7 +587,7 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
   {{-- Storage & data (offline / cache) → docs/tasks/T21-sound-voice-appearance.md. Export is on parent reports. --}}
 
   <!-- =============== LANGUAGE =============== -->
-  @if ($this->matches(__('settings.language'), __('settings.app_language'), __('settings.language_value'), __('settings.language_locked')))
+  @if ($this->matches(__('settings.language'), __('settings.app_language'), __('settings.language_value'), __('settings.language_locked'), __('settings.country'), __('settings.country_hint')))
   <section class="px-5 mt-5">
     <p class="section-label">{{ __('settings.language') }}</p>
     <div class="mt-3 space-y-2">
@@ -567,7 +599,17 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         </div>
         <span class="chip">{{ __('settings.language_value') }}</span>
       </div>
-      {{-- Country picker → docs/tasks/T21-sound-voice-appearance.md --}}
+      @if ($this->matches(__('settings.country'), __('settings.country_hint')))
+      <a href="{{ route('country') }}" wire:navigate class="setting-row">
+        <div class="setting-ico tile-sky">🌎</div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.country') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.country_hint') }}</p>
+        </div>
+        <span class="chip">{{ $countryLabel }}</span>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      @endif
     </div>
   </section>
   @endif

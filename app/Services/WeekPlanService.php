@@ -8,6 +8,7 @@ use App\Data\SubjectMasteryRow;
 use App\Data\WeekChecklistItem;
 use App\Data\WeekPlanTaskView;
 use App\Enums\GameType;
+use App\Enums\PlayDifficulty;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 use App\Models\User;
@@ -237,13 +238,50 @@ class WeekPlanService
     /**
      * @return list<int>
      */
-    public function questionIds(WeekPlanItem $item): array
+    public function questionIds(WeekPlanItem $item, ?User $user = null): array
     {
-        return array_slice(
-            $this->plans->questionIds($item),
-            0,
-            $item->questions_per_round,
-        );
+        $rows = $this->plans->questionRows($item);
+        $difficulty = PlayDifficulty::Medium;
+
+        if ($user?->play_difficulty instanceof PlayDifficulty) {
+            $difficulty = $user->play_difficulty;
+        }
+
+        $want = $difficulty->value;
+        $picked = $this->rowsForDifficulty($rows, $want);
+
+        if ($picked === []) {
+            $picked = $this->rowsForDifficulty($rows, PlayDifficulty::Medium->value);
+        }
+
+        if ($picked === []) {
+            $picked = $rows;
+        }
+
+        $ids = [];
+
+        foreach ($picked as $row) {
+            $ids[] = $row['id'];
+        }
+
+        return array_slice($ids, 0, $item->questions_per_round);
+    }
+
+    /**
+     * @param  list<array{id: int, difficulty: string}>  $rows
+     * @return list<array{id: int, difficulty: string}>
+     */
+    private function rowsForDifficulty(array $rows, string $difficulty): array
+    {
+        $picked = [];
+
+        foreach ($rows as $row) {
+            if ($row['difficulty'] === $difficulty) {
+                $picked[] = $row;
+            }
+        }
+
+        return $picked;
     }
 
     public function completeItem(User $user, int $itemId, int $correctCount): void

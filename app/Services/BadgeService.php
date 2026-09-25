@@ -15,6 +15,7 @@ use App\Models\Badge;
 use App\Models\User;
 use App\Models\UserBadge;
 use App\Repositories\BadgeRepository;
+use App\Repositories\FriendshipRepository;
 use App\Repositories\LeagueRepository;
 use App\Repositories\UserStatRepository;
 use App\Repositories\WeekPlanRepository;
@@ -27,6 +28,7 @@ class BadgeService
         private WeekPlanRepository $plans,
         private UserStatRepository $stats,
         private LeagueRepository $leagues,
+        private FriendshipRepository $friendships,
     ) {}
 
     /**
@@ -365,6 +367,9 @@ class BadgeService
             case BadgeRule::Locked:
                 $current = 0;
                 $target = 1;
+                break;
+            case BadgeRule::FriendsCount:
+                $current = $this->friendships->countAccepted($user);
                 break;
         }
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\AgeGroup;
 use App\Enums\FavouriteSubject;
 use App\Enums\GameType;
+use App\Enums\PlayDifficulty;
 use App\Enums\QuestionFormat;
 use Database\Factories\QuestionFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -22,6 +23,7 @@ use InvalidArgumentException;
  * @property FavouriteSubject $subject
  * @property AgeGroup|null $age_group
  * @property int|null $grade
+ * @property PlayDifficulty $difficulty
  * @property string $locale
  * @property string|null $prompt
  * @property string|null $hint
@@ -39,6 +41,7 @@ use InvalidArgumentException;
     'subject',
     'age_group',
     'grade',
+    'difficulty',
     'locale',
     'prompt',
     'hint',
@@ -63,6 +66,7 @@ class Question extends Model
             'subject' => FavouriteSubject::class,
             'age_group' => AgeGroup::class,
             'grade' => 'integer',
+            'difficulty' => PlayDifficulty::class,
             'media' => 'array',
             'payload' => 'array',
             'answer' => 'array',

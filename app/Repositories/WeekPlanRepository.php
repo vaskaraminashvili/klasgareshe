@@ -89,11 +89,30 @@ class WeekPlanRepository
     {
         $ids = [];
 
-        foreach ($item->questions()->orderByPivot('sort_order')->pluck('questions.id') as $id) {
-            $ids[] = (int) $id;
+        foreach ($this->questionRows($item) as $row) {
+            $ids[] = $row['id'];
         }
 
         return $ids;
+    }
+
+    /**
+     * @return list<array{id: int, difficulty: string}>
+     */
+    public function questionRows(WeekPlanItem $item): array
+    {
+        $rows = [];
+
+        $questions = $item->questions()->orderByPivot('sort_order')->get();
+
+        foreach ($questions as $question) {
+            $rows[] = [
+                'id' => (int) $question->id,
+                'difficulty' => $question->difficulty->value,
+            ];
+        }
+
+        return $rows;
     }
 
     /**
@@ -281,6 +300,28 @@ class WeekPlanRepository
             ->where('week_plan_item_id', $itemId)
             ->where('status', PlanProgressStatus::Completed)
             ->exists();
+    }
+
+    /**
+     * Packs friends finished since $since. Used by the Home activity feed.
+     *
+     * @param  list<int>  $userIds
+     * @return Collection<int, UserPlanProgress>
+     */
+    public function completedSinceForUsers(array $userIds, CarbonInterface $since): Collection
+    {
+        if ($userIds === []) {
+            return collect();
+        }
+
+        return UserPlanProgress::query()
+            ->with(['user', 'item'])
+            ->whereIn('user_id', $userIds)
+            ->where('status', PlanProgressStatus::Completed)
+            ->where('completed_at', '>=', $since)
+            ->orderByDesc('completed_at')
+            ->limit(8)
+            ->get();
     }
 
     public function markCompleted(User $user, int $itemId, int $correctCount): void

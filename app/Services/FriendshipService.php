@@ -5,9 +5,19 @@ namespace App\Services;
 use App\Data\FriendsLeaderboardSnapshot;
 use App\Data\FriendsProfileStrip;
 use App\Data\LeaderboardEntry;
+use App\Enums\League;
+use App\Enums\SchoolGrade;
+use App\Enums\XpSource;
+use App\Models\Badge;
 use App\Models\User;
+use App\Models\WeekPlanItem;
+use App\Repositories\BadgeRepository;
 use App\Repositories\FriendshipRepository;
+use App\Repositories\PlaySessionRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\UserStatRepository;
+use App\Repositories\WeekPlanRepository;
+use Carbon\CarbonInterface;
 use Illuminate\Validation\ValidationException;
 
 class FriendshipService
@@ -17,13 +27,15 @@ class FriendshipService
         private UserRepository $users,
         private UserStatService $userStats,
         private LevelCalculator $levels,
+        private PlaySessionRepository $sessions,
+        private WeekPlanRepository $plans,
+        private BadgeRepository $badgeRows,
+        private UserStatRepository $statRows,
+        private BadgeService $badges,
     ) {}
 
     /**
-     * Send a friend request by nickname.
-     *
-     * v1: auto-accept immediately so kids can play together without a parent PIN.
-     * Parent approval for friend requests comes later.
+     * Send a friend request by nickname. It stays pending until the other kid's parent approves.
      */
     public function request(User $from, string $nickname): void
     {
@@ -61,10 +73,54 @@ class FriendshipService
             ]);
         }
 
-        $friendship = $this->friendships->createPending($from, $target);
-        // v1 auto-accept — parent PIN approval will replace this later.
+        $this->friendships->createPending($from, $target);
+        app(NotificationService::class)->friendRequested($target, $from);
+    }
+
+    public function approve(User $parent, int $friendshipId): void
+    {
+        $this->assertParentUnlocked();
+        $friendship = $this->friendships->findIncomingPending($parent, $friendshipId);
+
+        if ($friendship === null) {
+            throw ValidationException::withMessages([
+                'friend' => (string) __('friends.errors.not_found'),
+            ]);
+        }
+
         $this->friendships->accept($friendship);
-        app(NotificationService::class)->friendAccepted($target, $from);
+        $from = $friendship->user;
+
+        if ($from instanceof User) {
+            app(NotificationService::class)->friendAccepted($from, $parent);
+            $this->badges->evaluate($from);
+        }
+
+        $this->badges->evaluate($parent);
+    }
+
+    public function decline(User $parent, int $friendshipId): void
+    {
+        $this->assertParentUnlocked();
+        $friendship = $this->friendships->findIncomingPending($parent, $friendshipId);
+
+        if ($friendship === null) {
+            throw ValidationException::withMessages([
+                'friend' => (string) __('friends.errors.not_found'),
+            ]);
+        }
+
+        $this->friendships->decline($friendship);
+    }
+
+    private function assertParentUnlocked(): void
+    {
+        // Resolved lazily: ParentZoneService → ProgressReportService → FriendshipService.
+        if (! app(ParentZoneService::class)->isUnlocked()) {
+            throw ValidationException::withMessages([
+                'friend' => (string) __('friends.errors.parent_required'),
+            ]);
+        }
     }
 
     public function friendsLeaderboard(User $user): FriendsLeaderboardSnapshot
@@ -74,6 +130,7 @@ class FriendshipService
         $friendCount = $friends->count();
 
         $participants = collect([$user])->merge($friends)->unique('id')->values();
+        $online = array_flip($this->sessions->onlineUserIds());
 
         $entries = [];
         foreach ($participants as $member) {
@@ -120,6 +177,9 @@ class FriendshipService
                 streak: $entry['streak'],
                 isYou: $isYou,
                 avatar: $this->userStats->avatarFor($member),
+                country: is_string($member->country) ? $member->country : '',
+                online: isset($online[$member->id]),
+                nickname: $member->nickname,
             );
 
             if ($isYou) {
@@ -249,5 +309,174 @@ class FriendshipService
         }
 
         return $flames;
+    }
+
+    /**
+     * @return list<array{id: int, name: string, avatar: string, when: string}>
+     */
+    public function incomingCards(User $user): array
+    {
+        $cards = [];
+
+        foreach ($this->friendships->pendingIncoming($user) as $row) {
+            $from = $row->user;
+
+            if (! $from instanceof User) {
+                continue;
+            }
+
+            $cards[] = [
+                'id' => $row->id,
+                'name' => $from->name,
+                'avatar' => $this->userStats->avatarFor($from),
+                'when' => $this->ago($row->created_at ?? now()),
+            ];
+        }
+
+        return $cards;
+    }
+
+    /**
+     * @return list<array{id: int, name: string, avatar: string}>
+     */
+    public function outgoingCards(User $user): array
+    {
+        $cards = [];
+
+        foreach ($this->friendships->pendingOutgoing($user) as $row) {
+            $to = $row->friend;
+
+            if (! $to instanceof User) {
+                continue;
+            }
+
+            $cards[] = [
+                'id' => $row->id,
+                'name' => $to->name,
+                'avatar' => $this->userStats->avatarFor($to),
+            ];
+        }
+
+        return $cards;
+    }
+
+    /**
+     * @return list<array{id: int, name: string, avatar: string, level: int, streak: int}>
+     */
+    public function suggestions(User $user): array
+    {
+        $grade = $user->grade ?? SchoolGrade::First;
+        $league = $this->userStats->ensureFor($user)->league ?? League::Bronze;
+        $cards = [];
+
+        foreach ($this->friendships->suggested($user, $grade, $league) as $candidate) {
+            $stat = $this->userStats->ensureFor($candidate);
+            $cards[] = [
+                'id' => $candidate->id,
+                'name' => $candidate->name,
+                'avatar' => $this->userStats->avatarFor($candidate),
+                'level' => $this->levels->forXp($stat->xp)->level,
+                'streak' => $stat->current_streak,
+                'nickname' => $candidate->nickname,
+            ];
+        }
+
+        return $cards;
+    }
+
+    public function requestById(User $from, int $userId): void
+    {
+        $target = $this->users->findOrFail($userId);
+        $this->request($from, $target->nickname);
+    }
+
+    /**
+     * @return list<array{name: string, avatar: string, kind: string, detail: string, when: string, xp: int, streak: int, chip: string}>
+     */
+    public function todayActivity(User $user): array
+    {
+        $ids = $this->friendships->acceptedFriendIds($user);
+
+        if ($ids === []) {
+            return [];
+        }
+
+        $since = now()->startOfDay();
+        $rows = [];
+
+        foreach ($this->plans->completedSinceForUsers($ids, $since) as $progress) {
+            $friend = $progress->user;
+            $item = $progress->item;
+
+            if (! $friend instanceof User || ! $item instanceof WeekPlanItem || $progress->completed_at === null) {
+                continue;
+            }
+
+            $stat = $this->userStats->ensureFor($friend);
+            $rows[] = [
+                'at' => $progress->completed_at->getTimestamp(),
+                'name' => $friend->name,
+                'avatar' => $this->userStats->avatarFor($friend),
+                'kind' => 'pack',
+                'detail' => $item->subject->label(),
+                'when' => $this->ago($progress->completed_at),
+                'xp' => $this->statRows->xpForContext($friend, XpSource::Pack, 'pack-'.$item->id),
+                'streak' => $stat->current_streak,
+                'chip' => 'streak',
+            ];
+        }
+
+        foreach ($this->badgeRows->unlockedSinceForUsers($ids, $since) as $award) {
+            $friend = $award->user;
+            $badge = $award->badge;
+
+            if (! $friend instanceof User || ! $badge instanceof Badge || $award->unlocked_at === null) {
+                continue;
+            }
+
+            $rows[] = [
+                'at' => $award->unlocked_at->getTimestamp(),
+                'name' => $friend->name,
+                'avatar' => $this->userStats->avatarFor($friend),
+                'kind' => 'badge',
+                'detail' => (string) __('badges.items.'.$badge->slug.'.name'),
+                'when' => $this->ago($award->unlocked_at),
+                'xp' => 0,
+                'streak' => 0,
+                'chip' => 'new',
+            ];
+        }
+
+        usort($rows, static fn (array $a, array $b): int => $b['at'] <=> $a['at']);
+        $rows = array_slice($rows, 0, 6);
+        $feed = [];
+
+        foreach ($rows as $row) {
+            unset($row['at']);
+            $feed[] = $row;
+        }
+
+        return $feed;
+    }
+
+    private function ago(CarbonInterface $at): string
+    {
+        $minutes = (int) $at->diffInMinutes(now());
+
+        if ($minutes < 1) {
+            return (string) __('alerts.just_now');
+        }
+
+        if ($minutes < 60) {
+            return (string) __('alerts.minutes_ago', ['n' => $minutes]);
+        }
+
+        $hours = (int) $at->diffInHours(now());
+
+        if ($hours < 24) {
+            return (string) __('alerts.hours_ago', ['n' => $hours]);
+        }
+
+        return (string) __('alerts.days_ago', ['n' => max(1, (int) $at->diffInDays(now()))]);
     }
 }

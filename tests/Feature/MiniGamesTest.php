@@ -46,7 +46,8 @@ class MiniGamesTest extends TestCase
     {
         $this->assertSame('game-tap-correct', GameType::TapCorrect->playerRoute());
         $this->assertSame('game-counting', GameType::Counting->playerRoute());
-        $this->assertSame('game-multiple-choice', GameType::WordSearch->playerRoute());
+        $this->assertSame('game-word-search', GameType::WordSearch->playerRoute());
+        $this->assertSame('game-multiple-choice', GameType::MatchAnimal->playerRoute());
     }
 
     public function test_count_questions_read_payload_items_and_value_answers(): void
@@ -101,6 +102,8 @@ class MiniGamesTest extends TestCase
             ->assertSet('answered', true)
             ->assertSet('correctCount', 1)
             ->call('next')
+            ->assertSet('showResult', true)
+            ->call('continueFromResult')
             ->assertRedirect(route('home'));
 
         $this->assertSame(8, UserStat::query()->where('user_id', $user->id)->first()?->xp);
@@ -135,6 +138,8 @@ class MiniGamesTest extends TestCase
             ->assertSet('correctCount', 1)
             ->assertSet('lives', 3)
             ->call('next')
+            ->assertSet('showResult', true)
+            ->call('continueFromResult')
             ->assertRedirect(route('home'));
 
         $this->assertSame(8, UserStat::query()->where('user_id', $user->id)->first()?->xp);

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\DailyGoal;
+use App\Enums\PlayDifficulty;
 use App\Enums\ReminderTime;
 use App\Enums\SchoolSubject;
 use App\Models\User;
@@ -209,6 +210,13 @@ class UserProfileService
     {
         return $this->users->update($user, [
             'daily_goal' => $goal,
+        ]);
+    }
+
+    public function updatePlayDifficulty(User $user, PlayDifficulty $difficulty): User
+    {
+        return $this->users->update($user, [
+            'play_difficulty' => $difficulty,
         ]);
     }
 

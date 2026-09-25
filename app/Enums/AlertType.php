@@ -11,6 +11,7 @@ enum AlertType: string
     case MissionReady = 'mission_ready';
     case NewWeek = 'new_week';
     case FriendAccepted = 'friend_accepted';
+    case FriendRequest = 'friend_request';
 
     public function preferenceKey(): string
     {
@@ -19,7 +20,7 @@ enum AlertType: string
             self::StreakAtRisk => 'streak',
             self::MissionReady => 'daily_mission',
             self::NewWeek => 'new_lessons',
-            self::FriendAccepted => 'friend_activity',
+            self::FriendAccepted, self::FriendRequest => 'friend_activity',
         };
     }
 
@@ -31,7 +32,7 @@ enum AlertType: string
             self::StreakAtRisk => 'ph-fire',
             self::MissionReady => 'ph-target',
             self::NewWeek => 'ph-book-open',
-            self::FriendAccepted => 'ph-user-plus',
+            self::FriendAccepted, self::FriendRequest => 'ph-user-plus',
         };
     }
 
@@ -44,7 +45,7 @@ enum AlertType: string
             self::StreakAtRisk => 'tile-sun',
             self::MissionReady => 'tile-sky',
             self::NewWeek => 'tile-violet',
-            self::FriendAccepted => 'tile-mint',
+            self::FriendAccepted, self::FriendRequest => 'tile-mint',
         };
     }
 
@@ -57,6 +58,7 @@ enum AlertType: string
             self::MissionReady => 'daily-mission',
             self::NewWeek => 'learn-categories',
             self::FriendAccepted => 'ranking-friends',
+            self::FriendRequest => 'parent-controls',
         };
     }
 }

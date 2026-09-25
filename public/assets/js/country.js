@@ -2,19 +2,12 @@
 // Loaded via <script src="./assets/js/country.js"></script>.
 
   (function () {
-    const countries = document.querySelectorAll('[data-country]');
-    countries.forEach(function (c) {
-      c.addEventListener('click', function () {
-        toast('Country updated · ranking refreshed');
-        setTimeout(function () { location.href = 'settings.html'; }, 900);
-      });
-    });
-
     const input = document.getElementById('countrySearch');
     const clearBtn = document.getElementById('countryClear');
+    if (!input || !clearBtn) return;
     const noResults = document.getElementById('noResults');
     const sections = document.querySelectorAll('[data-search-section]');
-    const continentTabs = document.querySelectorAll('[data-continent]');
+    const continentTabs = document.querySelectorAll('[role="tablist"] [data-continent]');
     const originalLabels = new Map();
     sections.forEach(function (sec) {
       const el = sec.querySelector('[data-label-text]');

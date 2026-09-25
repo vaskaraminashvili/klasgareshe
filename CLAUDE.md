@@ -41,15 +41,15 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 - Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired. Password reset is live: `/forgot-password` → 6-digit code at the parent email → `/reset-password`. Login “დაგავიწყდა?” and Edit profile’s reset row both start that flow. Signup consent links open `/terms` and `/privacy` (guest-readable Georgian documents; flagged for legal review).
 - After register: onboarding (**კლასი 1 / 2 / 3** → ქართული / მათემატიკა / ისტორია → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step. Kids without `grade` play class 1 packs.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
-- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (the pack’s player: Quick Quiz, tap-correct, or counting) or `daily-mission`. Featured counting tile opens the next counting pack. Home search and the notification bell/sheet are live. Friends feed is still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is live: three school subjects (pack count / % / grade), spotlight = Home’s next incomplete pack, mini-games rail of the three live players. Subject → `/section-list/{subject}` (weeks as chapters) → `/lesson-details/{item}` or `/lesson-locked/{item}` → player. Heart toggles `favourite_subjects`. Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) are not v1.
+- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (the pack’s player: Quick Quiz, tap-correct, or counting) or `daily-mission`. Featured counting and word-search tiles open the next pack of that game. Home search and the notification bell/sheet are live. Friends-today feed lists accepted friends’ completed packs and badges from today. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is live: three school subjects (pack count / % / grade), spotlight = Home’s next incomplete pack, mini-games rail of the live school-subject players. Subject → `/section-list/{subject}` (weeks as chapters) → `/lesson-details/{item}` or `/lesson-locked/{item}` → player. Heart toggles `favourite_subjects`. Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) are not v1.
 - Profile (`/profile`, `pages::profile`): live name, age · class, XP / streak / badges / global rank, level bar, league shortcut, subject mastery (active curriculum week %), this-week XP / days / packs, recent badge achievements, friends strip, monthly-goals chip, rewards-dashboard row with live claim count. Settings gear + row open `/settings`. Edit profile and friends ranking are live. Parent zone links to `/parent-controls` behind a 4-digit PIN (setup / unlock / change / email recovery). Screen-time chip shows remaining minutes (or off). Screen time (`/screen-time`) and bedtime (`/bedtime-lock`) are PIN-gated; play routes pause at the daily limit or during sleep hours (`/play-paused`). Heartbeat tracks minutes on Quick Quiz. Weekly/full reports (`/weekly-report`, `/full-report`) and PDF export (`/export-progress`) are PIN-gated; figures match Profile. Monday 08:00 Georgian parent email (`reports:send-weekly`) respects `notification_preferences.weekly_report`. Parent email change (`/parent-email`) and delete (`/delete-account`) are PIN-gated; delete also needs a 6-digit code at the parent email, then a 14-day soft-delete grace before `accounts:purge-deleted`.
 - Edit profile (`/edit-profile`): name, nickname, avatar emoji, age, gender, class 1–3, favourite subject, daily goal, privacy toggles. Parent email read-only with a link to PIN-gated `/parent-email` (pending-email re-verify). Password reset is live (parent email code). Delete goes to `/delete-account` (PIN + email code). **`show_on_leaderboard` is enforced** on `/leaderboard` (and weekly XP ranking queries); friends + league stay visible.
 - Monthly goals (`/monthly-goals`): system goals for the calendar month (packs / XP / streak / badges) from live stats. Add/custom goals deferred.
-- Friends ranking (`/ranking-friends`): add by nickname (auto-accept v1), XP podium + list among friends. Parent approval later.
+- Friends ranking (`/ranking-friends`): add by nickname stays **pending** until the other kid’s parent approves on PIN-gated `/parent-controls`. Suggestions are the same grade and league, and skip kids with `show_on_leaderboard` or `allow_friend_requests` off. XP podium + list among accepted friends. List tabs: all / online / streak / near. No chat.
 - Daily mission (`/daily-mission`, `pages::daily-mission`): **3 today tasks** (next pack per subject, or done if already played today). Completing all 3 subjects today awards +120 XP once. Gift box / share / bonus markup only. Each playable task opens that pack’s player.
 - Week plan: `week_plan_items` + `user_plan_progress`. Curriculum weeks 1–2 seeded for grades 1–3; **week 3** for class 1 (`WeekPlanSeeder`, `locale=ka`). Active week = lowest week with incomplete packs; advances to N+1 when N is fully done; stays on last seeded week when all complete. Catch-up: first incomplete weekday per subject within the active week; progress is not wiped on Monday. Completing a pack calls `UserStatService::awardXp()`.
-- Quick Quiz (`/game-multiple-choice/{item}`), tap-correct (`/game-tap-correct/{item}`), and counting (`/game-counting/{item}`): that pack’s 5 Georgian questions, 3 lives, XP on finish. Bare URLs redirect to the next incomplete pack of that format (or the next pack of any format). Week 1 math Monday is tap-correct (all classes); week 1 class 1 math Wednesday is counting. Scoring is shared (`GamePlayService` + `PlaysWeekPlanPack`). Finishing a pack evaluates badges and may redirect to `/badge-unlock/{slug}`.
-- Badges (`/badges`, `pages::badges`) + unlock (`/badge-unlock/{slug}`): 21 Kidzio badges, Georgian names, immediate unlock + one-time celebration. Speed Runner unlocks on a full pack finished under 2 minutes. Social Star stays locked. Rewards tab opens `/rewards-dashboard` (wallet, claim queue, 7-day login calendar). Shop / limited bundle are **T20**.
+- Quick Quiz (`/game-multiple-choice/{item}`), tap-correct, counting, word search, fill-letter, spell, trace, match-word, opposites, knowledge, and connect-pair: that pack’s 5 Georgian questions, XP on finish through `GamePlayService` + `PlaysWeekPlanPack`. One-question players have 3 lives. Bare URLs redirect to the next incomplete pack of that format (or the next pack of any format). Week 1 math Monday is tap-correct (all classes); week 1 class 1 math Wednesday is counting. Week 1 Georgian Tuesday–Sunday is trace, spell, fill-letter, opposites, match-word, word search. Week 1 history Friday is knowledge and Saturday is connect-pair. Each of those packs has 15 grade-scoped `locale=ka` questions (5 easy / 5 medium / 5 hard); the round is the 5 that match `users.play_difficulty` (medium, then any, if that band is empty). Easy scales base pack XP by 3/4 and hard by 3/2; combo, speed, and the daily-mission bonus are not scaled. Finish shows a result sheet (correct count, XP, beat yesterday from `pack_plays`) and then continues home or to `/badge-unlock/{slug}`. Trace scores the drawn path in `TraceStrokeService` (pass at 60%) and then grades the letter through the same `award()`. Animal match, guess-animal, body parts, and habitats are not v1.
+- Badges (`/badges`, `pages::badges`) + unlock (`/badge-unlock/{slug}`): 21 Kidzio badges, Georgian names, immediate unlock + one-time celebration. Speed Runner unlocks on a full pack finished under 2 minutes. Social Star unlocks at 5 accepted friends. Rewards tab opens `/rewards-dashboard` (wallet, claim queue, 7-day login calendar, weekly place prizes). Shop / limited bundle are **T20**.
 
 **Ordered plan: `docs/roadmap.md`** — 22 tasks in build order, one brief per task in `docs/tasks/`.
 Read it before starting work; update the task's status and this section when one ships.
@@ -62,11 +62,11 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
 - Blocks whose backend does not exist were **deleted**, each leaving a one-line Blade comment naming
   the block and the task that re-ports it. Copy the markup back from `kidzio/{screen}.html` when you
   get there. Elements that showed live data but had no link target were kept and made inert.
-- Home search is a live index (`SearchService::indexFor()`): destinations, subjects, weeks, packs, the three live games, and non-secret badges. Georgian matching is case-folded and partial-word. Recent chips are per user; popular chips are counted in `search_queries`. Learn filters by status, subject, and week. Leaderboard search is by nickname and skips kids with `show_on_leaderboard` off.
+- Home search is a live index (`SearchService::indexFor()`): destinations, subjects, weeks, packs, the live school-subject games, and non-secret badges. Georgian matching is case-folded and partial-word. Recent chips are per user; popular chips are counted in `search_queries`. Learn filters by status, subject, and week. Leaderboard search is by nickname and skips kids with `show_on_leaderboard` off.
 - Settings (`/settings`, `pages::settings`): dark mode (layout JS), notification prefs + reminder
   time, daily goal, favourite subjects, privacy toggles, locked Georgian locale, parent zone, parent
-  email, delete account. Search filters the visible rows. Accent / sound / difficulty / support are
-  hidden until **T21** / **T19**. Streak / new-lesson / rewards switches and reminder time
+  email, delete account, country (`/country`), and difficulty (easy / medium / hard → `users.play_difficulty`). Search filters the visible rows. Accent / sound / support stay
+  hidden until **T21**. Streak / new-lesson / rewards switches and reminder time
   deliver in-app + web push (**T16**).
 - Streaks & XP (`/streak`, `pages::streak`): current / best streak, week dots, month map from
   `user_activity_days`, milestones 3 / 7 / 14 / 30 / 100, freeze claimed on the Rewards dashboard
@@ -76,12 +76,13 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
   Runner) apply on a 5-question pack. Daily mission complete is +120 once/day. Login-calendar XP
   (`awardDailyLogin`, +10→+100) is collected on `/rewards-dashboard`. Daily box is +40 XP once/day.
 - Notifications (**T16**): Home bell + sheet list real rows (badge, league, streak, mission, new
-  week, friend accepted). Prefs and reminder time from Settings/onboarding gate in-app and web
+  week, friend request, friend accepted). Prefs and reminder time from Settings/onboarding gate in-app and web
   push. `alerts:send-reminders` runs every 15 minutes in the account timezone; bedtime quiet
   hours skip scheduled sends. Web push uses `laravel-notification-channels/webpush`
   (`php artisan webpush:vapid` writes `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY`).
+- Ranking depth (**T18**): `/leaderboard` filters worldwide, the kid’s country, on a streak, and online now. Online means an open play session whose heartbeat is under 2 minutes old (`user_play_sessions.last_heartbeat_at`); there is no fake presence count. Top countries use real learner counts. Country is stored on `users.country` via `/country`. Weekly place prizes (1st +500 / 2nd +300 / 3rd +150 XP, top 7 a participation token) are **claimed** on `/ranking-weekly` and on the rewards queue — the Monday close job does not grant them. That job writes `league_season_payouts` once per user per week **before** promote/relegate: stay bonus +200 XP and the current tier as `users.avatar_frame` on a hold, champion progress after 4 holds in the same tier (`user_stats.champion_tiers`).
 
-Build next: **T15** Splash, walkthrough, PWA (still skipped) or **T18** Ranking depth.
+Build next: **T15** Splash, walkthrough, PWA (still skipped) or **T20** Reward shop.
 (**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---
@@ -122,6 +123,14 @@ Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/
 | `game-multiple-choice.html` | `pages::game-multiple-choice` | `game-multiple-choice` | `/game-multiple-choice/{item?}` |
 | `game-tap-correct.html` | `pages::game-tap-correct` | `game-tap-correct` | `/game-tap-correct/{item?}` |
 | `game-counting.html` | `pages::game-counting` | `game-counting` | `/game-counting/{item?}` |
+| `game-word-search.html` | `pages::game-word-search` | `game-word-search` | `/game-word-search/{item?}` |
+| `game-fill-letter.html` | `pages::game-fill-letter` | `game-fill-letter` | `/game-fill-letter/{item?}` |
+| `game-spell-word.html` | `pages::game-spell-word` | `game-spell-word` | `/game-spell-word/{item?}` |
+| `game-trace-letter.html` | `pages::game-trace-letter` | `game-trace-letter` | `/game-trace-letter/{item?}` |
+| `game-match-word.html` | `pages::game-match-word` | `game-match-word` | `/game-match-word/{item?}` |
+| `game-connect-pair.html` | `pages::game-connect-pair` | `game-connect-pair` | `/game-connect-pair/{item?}` |
+| `game-opposites.html` | `pages::game-opposites` | `game-opposites` | `/game-opposites/{item?}` |
+| `game-knowledge.html` | `pages::game-knowledge` | `game-knowledge` | `/game-knowledge/{item?}` |
 | `rewards-dashboard.html` | `pages::rewards-dashboard` | `rewards-dashboard` | `/rewards-dashboard` |
 | `badges.html` | `pages::badges` | `badges` | `/badges` |
 | `badge-unlock.html` | `pages::badge-unlock` | `badge-unlock` | `/badge-unlock/{slug}` |
@@ -141,6 +150,7 @@ Do **not** copy `<head>`, HTTrack comments, or template `<script src="assets/js/
 | `parent-email.html` | `pages::parent-email` | `parent-email` | `/parent-email` |
 | — | `pages::delete-account` | `delete-account` | `/delete-account` |
 | `settings.html` | `pages::settings` | `settings` | `/settings` |
+| `country.html` | `pages::country` | `country` | `/country` |
 | `streak.html` | `pages::streak` | `streak` | `/streak` |
 | `index.html` (splash) | not built yet; back buttons use `home` | `home` | `/` |
 | any other `{name}.html` | `pages::{name}` (kebab-case) | `{name}` | `/{name}` unless a name already exists |

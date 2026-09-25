@@ -3,8 +3,11 @@
 namespace App\Repositories;
 
 use App\Enums\FriendshipStatus;
+use App\Enums\League;
+use App\Enums\SchoolGrade;
 use App\Models\Friendship;
 use App\Models\User;
+use App\Models\UserStat;
 use Illuminate\Support\Collection;
 
 class FriendshipRepository
@@ -118,6 +121,59 @@ class FriendshipRepository
         }
 
         return User::query()->whereIn('id', $ids)->get();
+    }
+
+    public function findIncomingPending(User $user, int $id): ?Friendship
+    {
+        return Friendship::query()
+            ->with('user')
+            ->whereKey($id)
+            ->where('friend_id', $user->id)
+            ->where('status', FriendshipStatus::Pending)
+            ->first();
+    }
+
+    /**
+     * Anyone already connected (pending, accepted, or declined) plus self.
+     *
+     * @return list<int>
+     */
+    public function connectedIds(User $user): array
+    {
+        $asRequester = Friendship::query()->where('user_id', $user->id)->pluck('friend_id');
+        $asFriend = Friendship::query()->where('friend_id', $user->id)->pluck('user_id');
+        $ids = [$user->id];
+
+        foreach ($asRequester->merge($asFriend)->unique()->values() as $id) {
+            $ids[] = (int) $id;
+        }
+
+        return array_values(array_unique($ids));
+    }
+
+    /**
+     * Same class and league, visible on the leaderboard, and still accepting requests.
+     *
+     * @return Collection<int, User>
+     */
+    public function suggested(User $user, SchoolGrade $grade, League $league, int $limit = 8): Collection
+    {
+        $blocked = $this->connectedIds($user);
+
+        return User::query()
+            ->visibleOnLeaderboard()
+            ->where('allow_friend_requests', true)
+            ->where(function ($query) use ($grade): void {
+                $query->where('grade', $grade->value);
+                if ($grade === SchoolGrade::First) {
+                    $query->orWhereNull('grade');
+                }
+            })
+            ->whereNotIn('id', $blocked)
+            ->whereIn('id', UserStat::query()->where('league', $league->value)->select('user_id'))
+            ->orderBy('id')
+            ->limit($limit)
+            ->get();
     }
 
     public function deleteAllFor(User $user): void
