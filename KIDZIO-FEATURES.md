@@ -35,7 +35,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Home — social** | Friends-today feed removed (was Leo / Ana rows + fake streak chips) — no real activity feed yet. |
 | **Home — games** | Word-search featured tile removed (T19). Counting tile is live. |
 | **Home — search** | Overlay + results are **live** over 19 real destinations (`SearchService`). Recent / popular chips and voice search removed — no query history, no Georgian speech model. |
-| **Home — notifications** | Bell, unread badge and the whole sheet removed — no notification backend. |
+| **Home — notifications** | Live bell + unread badge + sheet (T16). |
 | **Home — misc** | PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. Parent tip is live (week figures + link to PIN-gated `/weekly-report`). Streak ribbon / week card open `/streak`. |
 | **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards still markup. **+120 XP** is awarded once when all 3 subjects are done today. |
 | **Profile** | Rewards-dashboard row, share button, and the “online” chip all removed pending their tasks. Streak shortcut + menu row open `/streak`. Settings gear + row go to `/settings`. Parent **controls**, **screen time**, and **weekly report** rows are live (PIN-gated). Achievements timeline beyond recent badges not built. |
@@ -47,7 +47,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Learn library** | Three school subjects live (tiles, spotlight, continue, lock). Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) not v1. Search index **T17**. |
 | **Other mini-games** | Trace, spell, word-search, match, habitats, … — **T19**. Tap-correct and counting are live. |
 | **Parent zone** | PIN gate, dashboard week numbers + daily minutes chart, preferred subjects, change/reset PIN, screen time, bedtime lock, weekly/full reports, PDF/JSON export, parent email change, and delete account are live. Monthly goals page is live (system goals); parent custom targets later. |
-| **Settings / legal / PWA** | Settings page live (`/settings`); notification prefs editable but not delivered. FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
+| **Settings / legal / PWA** | Settings page live (`/settings`); streak / lessons / rewards + reminder time deliver in-app and web push. FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
 | **Content ops** | Week **3** is class 1 only; week 3 for grades 2–3 and week **4+** not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
 
 **Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress` (weeks 1–2 for grades 1–3; week 3 for class 1). Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped.
@@ -58,7 +58,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 
 1. ~~Auth + parent verification + kid profile~~ — auth + verify + edit-profile + live Profile stats done
 2. ~~Onboarding (class, school subjects, daily goal, notifications)~~ — კლასი 1–3 + ქართული / მათემატიკა / ისტორია; class drives week packs
-3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn tab is live; Rewards → dashboard; Ranking wired; Home search live; notif still dummy
+3. ~~Home shell (tabs, search, theme, notifications)~~ — shell ported; Learn tab is live; Rewards → dashboard; Ranking wired; Home search live; in-app + push notifications live
 4. ~~XP / levels / scoring~~ — levels + xp-progress + award-from-play done
 5. ~~Learn library + lessons + continue/lock~~ — three school subjects; weeks as chapters; lock = previous pack
 6. ~~Mini-games + game scoring~~ — Quick Quiz plays the week pack (`startPlanItem`); other shells later
@@ -184,7 +184,7 @@ Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Week-plan blocks are
   - [ ] Recent searches — chips removed until query history exists
   - [ ] Popular chips — removed until real query counts exist
   - [ ] Voice search (mic) — removed, was `en-US` only
-- [ ] In-app notification sheet (bell + unread badge) — removed in T02; needs a real backend (T16)
+- [x] In-app notification sheet (bell + unread badge)
 
 ---
 
@@ -272,7 +272,7 @@ Shared game rules:
 - [x] Best streak — `longest_streak` shown on `/streak`
 - [x] Milestones: 3, 7, 14, 30, 100 days (XP + badges)
 - [x] Streak freeze / streak shield (save flame 1×; claimed on Rewards after the 7-day milestone, shop later)
-- [ ] Streak reminder notification (default ~6 PM, configurable)
+- [x] Streak reminder notification (default ~6 PM, configurable)
 
 ---
 
@@ -391,10 +391,10 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 ### Notifications
 
-- [~] Streak reminders — pref stored on Settings; delivery **T16**
-- [~] New lesson alerts — pref stored on Settings; delivery **T16**
-- [~] Rewards & rankings — pref stored on Settings; delivery **T16**
-- [~] Reminder time — stored on Settings; delivery **T16**
+- [x] Streak reminders — in-app + push at the saved reminder time
+- [x] New lesson alerts — in-app when a new curriculum week unlocks
+- [x] Rewards & rankings — badge unlocks and league promote/relegate
+- [x] Reminder time — drives streak and daily-mission scheduled sends
 
 ### Learning
 
@@ -435,13 +435,13 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 ## 15. Notifications (in-app + push)
 
-- [ ] In-app notification list (bell)
-- [ ] Unread badge
-- [ ] Push: streak about to expire
-- [ ] Push: daily mission ready
-- [ ] Push: new lessons
-- [ ] Push: rewards / league moves
-- [ ] Configurable reminder clock time
+- [x] In-app notification list (bell)
+- [x] Unread badge
+- [x] Push: streak about to expire
+- [x] Push: daily mission ready
+- [x] Push: new lessons
+- [x] Push: rewards / league moves
+- [x] Configurable reminder clock time
 
 ---
 

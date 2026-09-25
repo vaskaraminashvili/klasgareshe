@@ -55,7 +55,7 @@ Real features, but the app is usable and sellable without them.
 |---|---|---|
 | T14 | [Learn library — live](tasks/T14-learn-library.md) | **done** |
 | T15 | [Splash, walkthrough, PWA](tasks/T15-splash-walkthrough-pwa.md) | not started |
-| T16 | [Notifications — in-app + push](tasks/T16-notifications.md) | not started |
+| T16 | [Notifications — in-app + push](tasks/T16-notifications.md) | **done** |
 | T17 | [Search — live index](tasks/T17-search.md) | not started |
 | T18 | [Ranking depth + league rewards](tasks/T18-ranking-depth.md) | not started |
 | T19 | [Mini-games batch 2 — the rest](tasks/T19-minigames-batch-2.md) | not started |

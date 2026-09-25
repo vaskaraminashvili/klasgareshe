@@ -81,6 +81,8 @@ class KidSetupService
                 'export-progress',
                 'parent-email',
                 'delete-account',
+                'push-subscribe',
+                'push-unsubscribe',
             ];
         }
 

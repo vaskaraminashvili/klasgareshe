@@ -53,6 +53,7 @@ class BadgeService
 
             $this->badges->award($user, $badge);
             $awarded[] = $badge->slug;
+            app(NotificationService::class)->badgeUnlocked($user, $badge);
 
             if ($badge->xp_bonus > 0) {
                 app(UserStatService::class)->awardXp(

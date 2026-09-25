@@ -30,6 +30,17 @@
     </script>
 
     <title>{{ $title ?? config('app.name') }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    @auth
+        @if (filled(config('webpush.vapid.public_key')))
+            @php
+                $pushUser = auth()->user();
+            @endphp
+            @if ($pushUser instanceof \App\Models\User && app(\App\Services\KidSetupService::class)->isFullySetUp($pushUser) && app(\App\Services\NotificationService::class)->wantsAnyDelivery($pushUser))
+                <meta name="vapid-public-key" content="{{ config('webpush.vapid.public_key') }}" />
+            @endif
+        @endif
+    @endauth
     <link rel="stylesheet" href="{{ asset('assets/icons/regular/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/icons/fill/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/fonts/fonts.css') }}" />
@@ -54,6 +65,9 @@
     {{-- index.js exposes window.Swiper; load it before app.js so rails can init. --}}
     <script src="{{ asset('assets/js/index.js') }}" data-navigate-once></script>
     <script src="{{ asset('assets/js/app.js') }}" data-navigate-once></script>
+    @if (filled(config('webpush.vapid.public_key')))
+        <script src="{{ asset('assets/js/push.js') }}" data-navigate-once></script>
+    @endif
     @stack('scripts')
 </body>
 

@@ -242,6 +242,15 @@ class LeagueSeasonService
 
             if ($newLeague !== $stat->league) {
                 $this->stats->update($stat, ['league' => $newLeague]);
+                $owner = $member->user;
+
+                if ($owner instanceof User) {
+                    app(NotificationService::class)->leagueMoved(
+                        $owner,
+                        $newLeague,
+                        $outcome === LeagueOutcome::Promote,
+                    );
+                }
             }
         }
 

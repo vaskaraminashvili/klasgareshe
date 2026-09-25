@@ -18,6 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 
 /**
  * @property int $id
@@ -101,7 +102,7 @@ use Illuminate\Support\Str;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, HasPushSubscriptions, Notifiable, SoftDeletes;
 
     /**
      * Get the attributes that should be cast.

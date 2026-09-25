@@ -23,4 +23,14 @@ enum ReminderTime: string
             self::Bedtime => '19:30',
         };
     }
+
+    public function minutesPastMidnight(): int
+    {
+        return match ($this) {
+            self::Morning => 8 * 60,
+            self::Afternoon => 16 * 60,
+            self::Evening => 18 * 60,
+            self::Bedtime => 19 * 60 + 30,
+        };
+    }
 }

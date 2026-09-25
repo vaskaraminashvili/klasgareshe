@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Repositories\AppNotificationRepository;
 use App\Repositories\BadgeRepository;
 use App\Repositories\FriendshipRepository;
 use App\Repositories\GameRepository;
 use App\Repositories\LeagueRepository;
 use App\Repositories\PlaySessionRepository;
+use App\Repositories\PushSubscriptionRepository;
 use App\Repositories\QuestionRepository;
 use App\Repositories\RewardRepository;
 use App\Repositories\UserRepository;
@@ -21,6 +23,7 @@ use App\Services\LeagueSeasonService;
 use App\Services\LearnLibraryService;
 use App\Services\LevelCalculator;
 use App\Services\MonthlyGoalService;
+use App\Services\NotificationService;
 use App\Services\ParentVerificationService;
 use App\Services\ParentZoneService;
 use App\Services\PasswordResetService;
@@ -46,6 +49,9 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->singleton(UserRepository::class);
         $this->app->singleton(UserStatRepository::class);
+        $this->app->singleton(AppNotificationRepository::class);
+        $this->app->singleton(PushSubscriptionRepository::class);
+        $this->app->singleton(NotificationService::class);
         $this->app->singleton(FriendshipRepository::class);
         $this->app->singleton(LeagueRepository::class);
         $this->app->singleton(GameRepository::class);

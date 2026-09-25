@@ -239,9 +239,9 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         return [
             $this->name.' '.$this->email.' '.__('settings.edit'),
             __('settings.dark_mode').' '.__('settings.dark_mode_hint'),
-            __('settings.streak').' '.__('settings.delivery_later'),
-            __('settings.lessons').' '.__('settings.delivery_later'),
-            __('settings.rewards').' '.__('settings.delivery_later'),
+            __('settings.streak').' '.__('settings.streak_hint'),
+            __('settings.lessons').' '.__('settings.lessons_hint'),
+            __('settings.rewards').' '.__('settings.rewards_hint'),
             __('settings.reminder_time').' '.__('settings.reminder_time_hint'),
             __('settings.daily_goal').' '.__('settings.daily_goal_hint'),
             __('settings.favourite_subjects').' '.$this->subjectsLine(),
@@ -347,16 +347,16 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
   {{-- Sound & music → docs/tasks/T21-sound-voice-appearance.md --}}
 
   <!-- =============== NOTIFICATIONS =============== -->
-  @if ($this->matches(__('settings.notifications'), __('settings.streak'), __('settings.lessons'), __('settings.rewards'), __('settings.reminder_time'), __('settings.delivery_later')))
+  @if ($this->matches(__('settings.notifications'), __('settings.streak'), __('settings.lessons'), __('settings.rewards'), __('settings.reminder_time'), __('settings.streak_hint'), __('settings.lessons_hint'), __('settings.rewards_hint')))
   <section class="px-5 mt-5">
     <p class="section-label">{{ __('settings.notifications') }}</p>
     <div class="mt-3 space-y-2">
-      @if ($this->matches(__('settings.streak'), __('settings.delivery_later')))
+      @if ($this->matches(__('settings.streak'), __('settings.streak_hint')))
       <label class="setting-row cursor-pointer">
         <div class="setting-ico tile-sun"><i class="ph-fill ph-fire"></i></div>
         <div class="grow min-w-0">
           <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.streak') }}</p>
-          <p class="text-[11px] text-muted">{{ __('settings.delivery_later') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.streak_hint') }}</p>
         </div>
         <span class="ks-switch">
           <input type="checkbox" wire:model.live="streak"/>
@@ -365,12 +365,12 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         </span>
       </label>
       @endif
-      @if ($this->matches(__('settings.lessons'), __('settings.delivery_later')))
+      @if ($this->matches(__('settings.lessons'), __('settings.lessons_hint')))
       <label class="setting-row cursor-pointer">
         <div class="setting-ico tile-mint"><i class="ph-fill ph-book-open"></i></div>
         <div class="grow min-w-0">
           <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.lessons') }}</p>
-          <p class="text-[11px] text-muted">{{ __('settings.delivery_later') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.lessons_hint') }}</p>
         </div>
         <span class="ks-switch">
           <input type="checkbox" wire:model.live="newLessons"/>
@@ -379,12 +379,12 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         </span>
       </label>
       @endif
-      @if ($this->matches(__('settings.rewards'), __('settings.delivery_later')))
+      @if ($this->matches(__('settings.rewards'), __('settings.rewards_hint')))
       <label class="setting-row cursor-pointer">
         <div class="setting-ico tile-coral"><i class="ph-fill ph-trophy"></i></div>
         <div class="grow min-w-0">
           <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.rewards') }}</p>
-          <p class="text-[11px] text-muted">{{ __('settings.delivery_later') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.rewards_hint') }}</p>
         </div>
         <span class="ks-switch">
           <input type="checkbox" wire:model.live="rewards"/>

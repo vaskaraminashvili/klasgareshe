@@ -1,8 +1,10 @@
 <?php
 
 use App\Enums\GameType;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\BadgeService;
+use App\Services\NotificationService;
 use App\Services\ProgressReportService;
 use App\Services\SearchService;
 use App\Services\UserStatService;
@@ -59,22 +61,43 @@ new class extends Component
 
     public string $parentTipBody = '';
 
-    public function mount(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search): void
+    public int $unreadAlertCount = 0;
+
+    /**
+     * @var list<array{id: string, title: string, body: string, href: string, icon: string, tile: string, when: string, unread: bool}>
+     */
+    public array $alerts = [];
+
+    public function mount(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts): void
     {
-        $this->syncHome($stats, $week, $users, $badges, $search);
+        $this->syncHome($stats, $week, $users, $badges, $search, $alerts);
     }
 
-    public function hydrate(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search): void
+    public function hydrate(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts): void
     {
-        $this->syncHome($stats, $week, $users, $badges, $search);
+        $this->syncHome($stats, $week, $users, $badges, $search, $alerts);
     }
 
-    public function refreshHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search): void
+    public function refreshHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts): void
     {
-        $this->syncHome($stats, $week, $users, $badges, $search);
+        $this->syncHome($stats, $week, $users, $badges, $search, $alerts);
     }
 
-    private function syncHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search): void
+    public function markAllAlertsRead(NotificationService $alerts, UserRepository $users): void
+    {
+        $alerts->markAllRead($users->authenticated());
+        $this->reloadAlerts($alerts, $users->authenticated());
+        $this->dispatch('alerts-changed');
+    }
+
+    public function openAlert(string $id, NotificationService $alerts, UserRepository $users): void
+    {
+        $href = $alerts->markRead($users->authenticated(), $id) ?? route('home');
+        $this->dispatch('alerts-changed');
+        $this->redirect($href, navigate: true);
+    }
+
+    private function syncHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts): void
     {
         $user = $users->authenticated();
         $home = $stats->homeSnapshot($user);
@@ -124,6 +147,13 @@ new class extends Component
         $tip = $reports->homeTip($user, $reportWeek);
         $this->parentTipTitle = $tip['title'];
         $this->parentTipBody = $tip['body'];
+        $this->reloadAlerts($alerts, $user);
+    }
+
+    private function reloadAlerts(NotificationService $alerts, User $user): void
+    {
+        $this->unreadAlertCount = $alerts->unreadCount($user);
+        $this->alerts = array_map(fn ($card) => $card->toArray(), $alerts->latest($user));
     }
 
     public function missionProgressPercent(): int
@@ -425,9 +455,58 @@ new class extends Component
         </div>
     </div>
 
-    {{-- NOTIFICATIONS SHEET dropped: five invented notifications and a fixed "3 new today".
-         Re-port it from kidzio/home.html together with the bell in
-         ⚡profile-header.blade.php (docs/tasks/T16-notifications.md). --}}
+    <!-- =============== NOTIFICATIONS BOTTOM SHEET =============== -->
+    <div id="notifSheet" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="notifTitle" wire:ignore.self>
+        <button type="button" data-sheet="notifSheet" class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm"
+            aria-label="{{ __('alerts.close') }}"></button>
+        <div
+            class="absolute left-0 right-0 bottom-0 mx-auto max-w-[430px] bg-surface rounded-t-3xl border-t border-token shadow-2xl safe-bottom">
+            <div class="flex justify-center pt-3">
+                <span class="block w-10 h-1.5 rounded-full bg-[var(--color-k-border)]"></span>
+            </div>
+            <div class="px-5 pt-4 pb-6">
+                <div class="flex items-start gap-3">
+                    <div class="size-12 rounded-2xl tile-coral grid place-items-center text-2xl shrink-0">🔔</div>
+                    <div class="grow min-w-0">
+                        <p id="notifTitle" class="h-display text-xl leading-tight text-ink">{{ __('alerts.sheet_title') }}</p>
+                        <p class="text-xs text-muted mt-1"><span id="notifCount">{{ $unreadAlertCount }}</span> {{ __('alerts.new_suffix') }}</p>
+                    </div>
+                    <button type="button" id="markAllBtn" wire:click="markAllAlertsRead" class="chip chip-primary shrink-0" aria-label="{{ __('alerts.mark_all_aria') }}">
+                        <i class="ph ph-check"></i> {{ __('alerts.mark_all') }}
+                    </button>
+                    <button type="button" class="icon-btn shrink-0" data-sheet="notifSheet" aria-label="{{ __('alerts.close') }}">
+                        <i class="ph ph-x"></i>
+                    </button>
+                </div>
+
+                <div class="mt-4 space-y-2 max-h-[55vh] overflow-y-auto" id="notifList">
+                    @forelse ($alerts as $alert)
+                        <a href="{{ $alert['href'] }}" wire:click.prevent="openAlert('{{ $alert['id'] }}')"
+                            class="setting-row{{ $alert['unread'] ? '' : ' opacity-70' }}" data-notif
+                            @if (! $alert['unread']) data-read @endif>
+                            <div class="setting-ico {{ $alert['tile'] }}"><i class="ph-fill {{ $alert['icon'] }}"></i></div>
+                            <div class="grow min-w-0">
+                                <p class="setting-text font-extrabold text-sm text-ink">{{ $alert['title'] }}</p>
+                                <p class="text-[11px] text-muted">{{ $alert['body'] }}</p>
+                                <p class="text-[10px] text-muted mt-0.5">{{ $alert['when'] }}</p>
+                            </div>
+                            @if ($alert['unread'])
+                                <span class="size-2 rounded-full bg-[var(--color-k-coral)] shrink-0" aria-label="{{ __('alerts.unread') }}"></span>
+                            @endif
+                        </a>
+                    @empty
+                        <div class="k-card text-center p-6">
+                            <div class="w-16 h-16 mx-auto rounded-2xl tile-sky grid place-items-center text-3xl">🔔</div>
+                            <p class="h-display text-lg mt-3 text-ink">{{ __('alerts.empty_title') }}</p>
+                            <p class="text-xs text-muted mt-1">{{ __('alerts.empty_hint') }}</p>
+                        </div>
+                    @endforelse
+                </div>
+
+                <a href="{{ route('settings') }}" wire:navigate class="btn btn-ghost w-full mt-4"><i class="ph ph-gear"></i> {{ __('alerts.settings') }}</a>
+            </div>
+        </div>
+    </div>
 </main>
 
 @push('scripts')

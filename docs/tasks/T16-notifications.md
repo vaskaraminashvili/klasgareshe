@@ -1,7 +1,7 @@
 # T16 — Notifications: in-app + push
 
 **Priority:** P2 · depth
-**Status:** not started
+**Status:** done
 **Depends on:** T10 (settings), T11 (streak events)
 
 ## Why now
@@ -12,21 +12,21 @@ lever, but it needs the events from T11 to have anything worth sending.
 
 ## Scope — in-app
 
-- [ ] `notifications` storage (Laravel's notifications table is fine) with a Georgian title/body and
+- [x] `notifications` storage (Laravel's notifications table is fine) with a Georgian title/body and
       a target route per row
-- [ ] Bell sheet lists real rows, newest first; rows deep-link into the app (no `.html`)
-- [ ] Real unread count; marking read on open
-- [ ] Emitters: badge unlocked, league promoted/relegated, streak at risk, mission ready, new week
+- [x] Bell sheet lists real rows, newest first; rows deep-link into the app (no `.html`)
+- [x] Real unread count; marking read on open
+- [x] Emitters: badge unlocked, league promoted/relegated, streak at risk, mission ready, new week
       unlocked, friend request accepted
 
 ## Scope — push
 
-- [ ] Web push subscription (VAPID), stored per device, respecting the onboarding opt-in
-- [ ] Respect the per-type switches from Settings: streak, new lessons, rewards & rankings
-- [ ] Scheduled sends: streak-about-to-expire, daily mission ready at the configured reminder time
+- [x] Web push subscription (VAPID), stored per device, respecting the onboarding opt-in
+- [x] Respect the per-type switches from Settings: streak, new lessons, rewards & rankings
+- [x] Scheduled sends: streak-about-to-expire, daily mission ready at the configured reminder time
       (default ~18:00), in the account timezone from T07
-- [ ] Quiet during bedtime hours (T07)
-- [ ] Unsubscribe, and stop sending to dead subscriptions
+- [x] Quiet during bedtime hours (T07)
+- [x] Unsubscribe, and stop sending to dead subscriptions
 
 ## Code touchpoints
 

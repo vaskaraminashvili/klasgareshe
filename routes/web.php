@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ParentEmailConfirmController;
 use App\Http\Controllers\ParentVerificationController;
+use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Middleware\RedirectToKidSetup;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,9 @@ Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-e
     Route::livewire('/onboarding-goals', 'pages::onboarding-goals')->name('onboarding-goals');
     Route::livewire('/onboarding-notifications', 'pages::onboarding-notifications')->name('onboarding-notifications');
     Route::livewire('/parent-verify', 'pages::parent-verify')->name('parent-verify');
+
+    Route::post('/push/subscribe', [PushSubscriptionController::class, 'store'])->name('push-subscribe');
+    Route::delete('/push/subscribe', [PushSubscriptionController::class, 'destroy'])->name('push-unsubscribe');
 
     Route::middleware('play.time')->group(function () {
         Route::livewire('/game-multiple-choice/{item?}', 'pages::game-multiple-choice')->name('game-multiple-choice');

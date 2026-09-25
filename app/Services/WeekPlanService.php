@@ -254,7 +254,13 @@ class WeekPlanService
             return;
         }
 
+        $weekBefore = $this->activeWeekNumber($user);
         $this->plans->markCompleted($user, $item->id, $correctCount);
+        $weekAfter = $this->activeWeekNumber($user);
+
+        if ($weekAfter > $weekBefore) {
+            app(NotificationService::class)->newWeekUnlocked($user, $weekAfter);
+        }
     }
 
     public function dailyMission(User $user): DailyMissionSnapshot

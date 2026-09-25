@@ -64,6 +64,7 @@ class FriendshipService
         $friendship = $this->friendships->createPending($from, $target);
         // v1 auto-accept — parent PIN approval will replace this later.
         $this->friendships->accept($friendship);
+        app(NotificationService::class)->friendAccepted($target, $from);
     }
 
     public function friendsLeaderboard(User $user): FriendsLeaderboardSnapshot

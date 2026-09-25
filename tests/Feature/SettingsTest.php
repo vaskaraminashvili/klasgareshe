@@ -54,7 +54,7 @@ class SettingsTest extends TestCase
             ->assertSet('reminderTime', ReminderTime::Morning->value)
             ->assertSee('ნინო', false)
             ->assertSee(__('settings.dark_mode'), false)
-            ->assertSee(__('settings.delivery_later'), false)
+            ->assertSee(__('settings.streak_hint'), false)
             ->assertSee(__('settings.language_value'), false)
             ->assertSee(route('privacy-policy'), false)
             ->assertSee(route('terms-privacy'), false)

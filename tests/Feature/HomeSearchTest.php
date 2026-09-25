@@ -76,10 +76,8 @@ class HomeSearchTest extends TestCase
             ->assertSeeHtml('id="searchIndex"')
             ->assertSeeHtml('id="searchOverlay"')
             ->assertSee(__('home.search_to.library.name'), false)
-            // Hardcoded unread count, invented notifications and the "ლუნა" parent tip
-            // all left with docs/tasks/T02-dead-links-sweep.md.
-            ->assertDontSeeHtml('id="bellBadge"')
-            ->assertDontSeeHtml('id="notifSheet"')
+            ->assertSeeHtml('id="bellBadge"')
+            ->assertSeeHtml('id="notifSheet"')
             ->assertDontSee(__('home.parent_tip_text'), false)
             ->assertDontSee(__('home.leo_finished_math'), false);
     }

@@ -41,7 +41,7 @@ Started, not product-ready. Checklist: `KIDZIO-FEATURES.md`.
 - Auth: `/login` (`pages::user-login`), `/register` (`pages::user-register`). Phone and social login are not wired. Password reset is live: `/forgot-password` → 6-digit code at the parent email → `/reset-password`. Login “დაგავიწყდა?” and Edit profile’s reset row both start that flow. Signup consent links open `/terms` and `/privacy` (guest-readable Georgian documents; flagged for legal review).
 - After register: onboarding (**კლასი 1 / 2 / 3** → ქართული / მათემატიკა / ისტორია → daily goal → notifications) then parent-verify (magic link + 6-digit code). Home is blocked until both are done. Login resumes the unfinished step. Kids without `grade` play class 1 packs.
 - One `User` for v1 (parent email + kid fields). Avatar/nickname picker and paid plans are later.
-- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (the pack’s player: Quick Quiz, tap-correct, or counting) or `daily-mission`. Featured counting tile opens the next counting pack. Friends, search, and notification list are still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is live: three school subjects (pack count / % / grade), spotlight = Home’s next incomplete pack, mini-games rail of the three live players. Subject → `/section-list/{subject}` (weeks as chapters) → `/lesson-details/{item}` or `/lesson-locked/{item}` → player. Heart toggles `favourite_subjects`. Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) are not v1.
+- Home (`/`, `pages::home`) is the Kidzio shell: greeting, live streak / XP / league, week dots, **live week plan**. Mission hero, continue, today’s plan, 3 subject tiles, and featured Quick Quiz all link to the next incomplete pack (the pack’s player: Quick Quiz, tap-correct, or counting) or `daily-mission`. Featured counting tile opens the next counting pack. Home search and the notification bell/sheet are live. Friends feed is still dummy. Recent badges on Home and Profile are live. Logout works. Learn tab (`/learn-categories`, `pages::learn-categories`) is live: three school subjects (pack count / % / grade), spotlight = Home’s next incomplete pack, mini-games rail of the three live players. Subject → `/section-list/{subject}` (weeks as chapters) → `/lesson-details/{item}` or `/lesson-locked/{item}` → player. Heart toggles `favourite_subjects`. Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) are not v1.
 - Profile (`/profile`, `pages::profile`): live name, age · class, XP / streak / badges / global rank, level bar, league shortcut, subject mastery (active curriculum week %), this-week XP / days / packs, recent badge achievements, friends strip, monthly-goals chip, rewards-dashboard row with live claim count. Settings gear + row open `/settings`. Edit profile and friends ranking are live. Parent zone links to `/parent-controls` behind a 4-digit PIN (setup / unlock / change / email recovery). Screen-time chip shows remaining minutes (or off). Screen time (`/screen-time`) and bedtime (`/bedtime-lock`) are PIN-gated; play routes pause at the daily limit or during sleep hours (`/play-paused`). Heartbeat tracks minutes on Quick Quiz. Weekly/full reports (`/weekly-report`, `/full-report`) and PDF export (`/export-progress`) are PIN-gated; figures match Profile. Monday 08:00 Georgian parent email (`reports:send-weekly`) respects `notification_preferences.weekly_report`. Parent email change (`/parent-email`) and delete (`/delete-account`) are PIN-gated; delete also needs a 6-digit code at the parent email, then a 14-day soft-delete grace before `accounts:purge-deleted`.
 - Edit profile (`/edit-profile`): name, nickname, avatar emoji, age, gender, class 1–3, favourite subject, daily goal, privacy toggles. Parent email read-only with a link to PIN-gated `/parent-email` (pending-email re-verify). Password reset is live (parent email code). Delete goes to `/delete-account` (PIN + email code). **`show_on_leaderboard` is enforced** on `/leaderboard` (and weekly XP ranking queries); friends + league stay visible.
 - Monthly goals (`/monthly-goals`): system goals for the calendar month (packs / XP / streak / badges) from live stats. Add/custom goals deferred.
@@ -67,7 +67,8 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
 - Settings (`/settings`, `pages::settings`): dark mode (layout JS), notification prefs + reminder
   time, daily goal, favourite subjects, privacy toggles, locked Georgian locale, parent zone, parent
   email, delete account. Search filters the visible rows. Accent / sound / difficulty / support are
-  hidden until **T21** / **T19**. Delivery of the saved notification prefs is **T16**.
+  hidden until **T21** / **T19**. Streak / new-lesson / rewards switches and reminder time
+  deliver in-app + web push (**T16**).
 - Streaks & XP (`/streak`, `pages::streak`): current / best streak, week dots, month map from
   `user_activity_days`, milestones 3 / 7 / 14 / 30 / 100, freeze claimed on the Rewards dashboard
   after the 7-day milestone (auto-consumed on a 1-day gap). Home, Profile, and Daily mission link
@@ -75,8 +76,13 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
   decreases). `/xp-progress` lists real sources and subjects. Combo (+20) and speed (+20, Speed
   Runner) apply on a 5-question pack. Daily mission complete is +120 once/day. Login-calendar XP
   (`awardDailyLogin`, +10→+100) is collected on `/rewards-dashboard`. Daily box is +40 XP once/day.
+- Notifications (**T16**): Home bell + sheet list real rows (badge, league, streak, mission, new
+  week, friend accepted). Prefs and reminder time from Settings/onboarding gate in-app and web
+  push. `alerts:send-reminders` runs every 15 minutes in the account timezone; bedtime quiet
+  hours skip scheduled sends. Web push uses `laravel-notification-channels/webpush`
+  (`php artisan webpush:vapid` writes `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY`).
 
-Build next: **T15** Splash, walkthrough, PWA.
+Build next: **T15** Splash, walkthrough, PWA (still skipped) or **T17** Search.
 (**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---
