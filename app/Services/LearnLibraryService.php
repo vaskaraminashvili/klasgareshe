@@ -72,7 +72,7 @@ class LearnLibraryService
                 'tags' => $this->filterTags($subject),
                 'diff' => $this->difficultyKey($level),
                 'age' => $age,
-                'status' => $percent === 0 ? 'new' : 'inprogress',
+                'status' => $percent === 0 ? 'new' : ($percent === 100 ? 'done' : 'inprogress'),
                 'href' => route('section-list', ['subject' => $subject->value]),
                 'favourite' => in_array($subject->value, $favourites, true),
             ];
@@ -466,6 +466,11 @@ class LearnLibraryService
                 'tile' => $item->subject->tile(),
                 'href' => $this->week->packHref($user, $item),
                 'keywords' => $item->title.' '.$item->subject->label(),
+                'subject' => $item->subject->value,
+                'week' => $week,
+                'status' => $this->week->isCompleted($user, $item)
+                    ? 'done'
+                    : ($this->week->isPlayable($user, $item) ? 'inprogress' : 'new'),
             ];
 
             if (count($rows) >= 3) {

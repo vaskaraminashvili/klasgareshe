@@ -115,10 +115,15 @@
       }, 280);
     }
 
+    function rankingComponent() {
+      const root = document.querySelector('main[wire\\:id]');
+      return root && window.Livewire ? Livewire.find(root.getAttribute('wire:id')) : null;
+    }
+
     function renderResults() {
       const q = norm(rankInput.value);
       clearBtn.classList.toggle('hidden', q.length === 0);
-      micBtn.classList.toggle('hidden', q.length > 0);
+      if (micBtn) micBtn.classList.toggle('hidden', q.length > 0);
       const hasQuery = q.length > 0;
       suggestBlock.classList.toggle('hidden', hasQuery);
       resultsBlock.classList.toggle('hidden', !hasQuery);
@@ -127,47 +132,47 @@
 
       if (!hasQuery) return;
 
-      resultsBlock.innerHTML = '';
-      let hits = 0;
-      document.querySelectorAll('[data-row]').forEach(function (row) {
-        const name = norm(row.getAttribute('data-name'));
-        const country = norm(row.getAttribute('data-country'));
-        if (!(name.includes(q) || country.includes(q))) return;
-        hits++;
-        const fullName = row.getAttribute('data-name');
-        const countryFull = row.getAttribute('data-country') || '';
-        const streak = row.getAttribute('data-streak') === '1';
-        const avatarEl = row.querySelector('.rank-av');
-        const rankNum = row.querySelector('.rank-num')?.textContent?.trim() || '';
-        const xp = row.querySelector('.chip')?.textContent?.trim() || '';
-        const avatar = avatarEl ? (avatarEl.firstChild?.textContent?.trim() || '👤') : '👤';
-        const tile = avatarEl ? Array.from(avatarEl.classList).find(function (c) { return c.startsWith('tile-'); }) || 'tile-violet' : 'tile-violet';
-
-        const node = document.createElement('div');
-        node.className = 'setting-row opacity-0 translate-y-1 transition-all duration-300';
-        node.innerHTML = '<div class="setting-ico ' + tile + ' text-xl">' + avatar + '</div>'
-          + '<div class="grow min-w-0">'
-          +   '<p class="setting-text font-extrabold text-sm text-ink">#' + rankNum + ' · ' + fullName + '</p>'
-          +   '<p class="text-[11px] text-muted">' + countryFull + (streak ? ' · 🔥 streak' : '') + '</p>'
-          + '</div>'
-          + '<span class="chip shrink-0">' + xp + '</span>';
-        node.addEventListener('click', function () {
-          currentQuery = fullName;
-          rankInput.value = fullName;
-          applyFilter();
-          closeSearch();
+      const live = rankingComponent();
+      if (!live) return;
+      const typed = rankInput.value.trim();
+      live.call('searchPlayers', typed).then(function (hits) {
+        if (norm(rankInput.value) !== q) return;
+        resultsBlock.innerHTML = '';
+        const list = Array.isArray(hits) ? hits : [];
+        list.forEach(function (hit, i) {
+          const node = document.createElement('button');
+          node.type = 'button';
+          node.className = 'setting-row opacity-0 translate-y-1 transition-all duration-300 w-full text-left';
+          node.innerHTML = '<div class="setting-ico tile-sun text-xl"></div>'
+            + '<div class="grow min-w-0">'
+            +   '<p class="setting-text font-extrabold text-sm text-ink"></p>'
+            +   '<p class="text-[11px] text-muted"></p>'
+            + '</div>'
+            + '<span class="chip shrink-0"></span>';
+          node.querySelector('.setting-ico').textContent = hit.avatar || '🐻';
+          const text = node.querySelectorAll('p');
+          text[0].textContent = (hit.rank ? '#' + hit.rank + ' · ' : '') + hit.nickname;
+          text[1].textContent = hit.name || '';
+          node.querySelector('.chip').textContent = (hit.xp || 0) + ' XP';
+          node.addEventListener('click', function () {
+            rankInput.value = hit.nickname;
+            const component = rankingComponent();
+            if (component) component.call('applyPlayerSearch', hit.nickname);
+          });
+          resultsBlock.appendChild(node);
+          setTimeout(function () { node.classList.remove('opacity-0', 'translate-y-1'); }, i * 40);
         });
-        resultsBlock.appendChild(node);
-        setTimeout(function () { node.classList.remove('opacity-0', 'translate-y-1'); }, hits * 40);
+        if (list.length === 0) {
+          resultsBlock.innerHTML = '<div class="k-card text-center p-6">'
+            + '<div class="w-16 h-16 mx-auto rounded-2xl tile-sky grid place-items-center text-3xl">🔍</div>'
+            + '<p class="h-display text-lg mt-3 text-ink"></p>'
+            + '<p class="text-xs text-muted mt-1"></p>'
+            + '</div>';
+          const lines = resultsBlock.querySelectorAll('p');
+          lines[0].textContent = resultsBlock.dataset.emptyTitle || '';
+          lines[1].textContent = resultsBlock.dataset.emptyHint || '';
+        }
       });
-
-      if (hits === 0) {
-        resultsBlock.innerHTML = '<div class="k-card text-center p-6">'
-          + '<div class="w-16 h-16 mx-auto rounded-2xl tile-sky grid place-items-center text-3xl">🔍</div>'
-          + '<p class="h-display text-lg mt-3 text-ink">No matches</p>'
-          + '<p class="text-xs text-muted mt-1">Try a name like "Leo" or a country like "Brazil".</p>'
-          + '</div>';
-      }
     }
 
     if (searchIcon && searchOverlay && searchPanel && searchBackdrop && searchClose && rankInput && clearBtn && suggestBlock && resultsBlock && applySearchBtn) {
@@ -196,9 +201,8 @@
     });
 
     applySearchBtn.addEventListener('click', function () {
-      currentQuery = rankInput.value.trim();
-      applyFilter();
-      closeSearch();
+      const component = rankingComponent();
+      if (component) component.call('applyPlayerSearch', rankInput.value.trim());
     });
 
     // Voice search

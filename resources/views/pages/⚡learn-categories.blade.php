@@ -1,8 +1,11 @@
 <?php
 
+use App\Enums\SchoolSubject;
 use App\Repositories\UserRepository;
 use App\Services\LearnLibraryService;
+use App\Services\SearchService;
 use Illuminate\View\View;
+use Livewire\Attributes\Renderless;
 use Livewire\Component;
 
 new class extends Component
@@ -24,8 +27,23 @@ new class extends Component
     /** @var list<array{title: string, subtitle: string, emoji: string, tile: string, href: string, keywords: string, tags: string}> */
     public array $games = [];
 
-    /** @var list<array{title: string, subtitle: string, emoji: string, tile: string, href: string, keywords: string}> */
+    /** @var list<array{title: string, subtitle: string, emoji: string, tile: string, href: string, keywords: string, subject?: string, week?: int, status?: string}> */
     public array $latest = [];
+
+    /** @var list<array{name: string, keys: string, href: string, ico: string, tile: string, kind: string, subject: string|null, week: int|null, status: string|null}> */
+    public array $searchIndex = [];
+
+    /** @var list<string> */
+    public array $recentSearches = [];
+
+    /** @var list<string> */
+    public array $popularSearches = [];
+
+    /** @var list<int> */
+    public array $weeks = [];
+
+    /** @var list<array{value: string, label: string}> */
+    public array $subjectFilters = [];
 
     public function title(): string
     {
@@ -37,9 +55,10 @@ new class extends Component
         $view->title($this->title());
     }
 
-    public function mount(LearnLibraryService $learn, UserRepository $users): void
+    public function mount(LearnLibraryService $learn, UserRepository $users, SearchService $search): void
     {
-        $snap = $learn->library($users->authenticated());
+        $user = $users->authenticated();
+        $snap = $learn->library($user);
         $this->subjectCount = $snap->subjectCount;
         $this->lessonsDone = $snap->lessonsDone;
         $this->lessonsTotal = $snap->lessonsTotal;
@@ -48,6 +67,24 @@ new class extends Component
         $this->spotlight = $snap->spotlight;
         $this->games = $snap->games;
         $this->latest = $snap->latest;
+        $this->searchIndex = $search->indexFor($user);
+        $this->recentSearches = $search->recent($user);
+        $this->popularSearches = $search->popular();
+        $this->weeks = $search->weekNumbers($user);
+        $this->subjectFilters = [];
+
+        foreach (SchoolSubject::ordered() as $subject) {
+            $this->subjectFilters[] = [
+                'value' => $subject->value,
+                'label' => $subject->emoji().' '.$subject->label(),
+            ];
+        }
+    }
+
+    #[Renderless]
+    public function recordSearch(string $query, SearchService $search, UserRepository $users): void
+    {
+        $search->record($users->authenticated(), $query);
     }
 
     public function itemCount(): int
@@ -158,7 +195,7 @@ new class extends Component
                 <a href="{{ $tile['href'] }}" wire:navigate class="tile {{ $tile['tile'] }}" data-item
                     data-name="{{ $tile['label'] }}" data-keywords="{{ $tile['label'] }} {{ $tile['blurb'] }}"
                     data-tags="{{ $tile['tags'] }}" data-diff="{{ $tile['diff'] }}" data-age="{{ $tile['age'] }}"
-                    data-status="{{ $tile['status'] }}">
+                    data-subject="{{ $tile['subject'] }}" data-week="" data-status="{{ $tile['status'] }}">
                     <div class="flex items-start justify-between">
                         <span class="tile-meta {{ $tile['inkClass'] }}">{{ __('learn.lessons_n', ['count' => $tile['lessons']]) }}</span>
                         <span class="tile-ring {{ $tile['ringClass'] }}" style="--pct: {{ $tile['percent'] }}"
@@ -191,7 +228,7 @@ new class extends Component
                 @foreach ($games as $game)
                     <a href="{{ $game['href'] }}" wire:navigate class="swiper-slide k-card w-40 text-center"
                         data-item data-name="{{ $game['title'] }}" data-keywords="{{ $game['keywords'] }}"
-                        data-tags="{{ $game['tags'] }}">
+                        data-tags="{{ $game['tags'] }}" data-subject="" data-week="" data-status="">
                         <div class="size-12 rounded-2xl {{ $game['tile'] }} grid place-items-center text-2xl mx-auto mb-2">{{ $game['emoji'] }}</div>
                         <p class="font-extrabold text-sm text-ink">{{ $game['title'] }}</p>
                         <p class="text-xs text-muted">{{ $game['subtitle'] }}</p>
@@ -211,7 +248,9 @@ new class extends Component
             <div class="grid grid-cols-1 gap-3">
                 @foreach ($latest as $row)
                     <a href="{{ $row['href'] }}" wire:navigate class="k-card flex items-center gap-3" data-item
-                        data-name="{{ $row['title'] }}" data-keywords="{{ $row['keywords'] }}" data-tags="new">
+                        data-name="{{ $row['title'] }}" data-keywords="{{ $row['keywords'] }}" data-tags="new"
+                        data-subject="{{ $row['subject'] ?? '' }}" data-week="{{ $row['week'] ?? '' }}"
+                        data-status="{{ $row['status'] ?? 'new' }}">
                         <div class="size-12 rounded-2xl {{ $row['tile'] }} grid place-items-center text-2xl shrink-0">{{ $row['emoji'] }}</div>
                         <div class="grow">
                             <div class="flex items-center gap-2">
@@ -268,26 +307,33 @@ new class extends Component
                 </div>
             </section>
 
-            <section class="px-5 mt-4">
-                <p class="section-label">{{ __('learn.recent') }}</p>
-                <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_georgian') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_math') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_history') }}</button>
-                </div>
-            </section>
+            @if ($recentSearches !== [])
+                <section class="px-5 mt-4">
+                    <p class="section-label">{{ __('learn.recent') }}</p>
+                    <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
+                        @foreach ($recentSearches as $chip)
+                            <button type="button" class="chip" data-recent>{{ $chip }}</button>
+                        @endforeach
+                    </div>
+                </section>
+            @else
+                <div id="recentChips" class="hidden"></div>
+            @endif
 
-            <section class="px-5 mt-4">
-                <p class="section-label">{{ __('learn.popular_searches') }}</p>
-                <div class="mt-2 flex flex-wrap gap-2">
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_quiz') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_counting') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_math') }}</button>
-                    <button type="button" class="chip" data-recent>{{ __('learn.chip_georgian') }}</button>
-                </div>
-            </section>
+            @if ($popularSearches !== [])
+                <section class="px-5 mt-4">
+                    <p class="section-label">{{ __('learn.popular_searches') }}</p>
+                    <div class="mt-2 flex flex-wrap gap-2">
+                        @foreach ($popularSearches as $chip)
+                            <button type="button" class="chip" data-recent>{{ $chip }}</button>
+                        @endforeach
+                    </div>
+                </section>
+            @endif
 
-            <section id="searchResults" class="px-5 mt-4 overflow-y-auto grow space-y-2"></section>
+            <section id="searchResults" class="px-5 mt-4 overflow-y-auto grow space-y-2"
+                data-empty="{{ __('learn.nothing_found') }}"></section>
+            <script type="application/json" id="searchIndex">@json($searchIndex, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE)</script>
 
             <div class="px-5 pb-6 safe-bottom">
                 <button type="button" id="applySearchBtn" class="btn btn-primary w-full" disabled>
@@ -317,48 +363,26 @@ new class extends Component
 
             <div class="overflow-y-auto grow">
                 <section class="px-5 mt-2">
-                    <p class="section-label">{{ __('learn.category') }}</p>
-                    <div class="mt-2 flex flex-wrap gap-2" id="catChips">
-                        <button type="button" class="chip chip-primary" data-filter="all"
+                    <p class="section-label">{{ __('learn.subject') }}</p>
+                    <div class="mt-2 flex flex-wrap gap-2" id="subjectChips">
+                        <button type="button" class="chip chip-primary" data-subject="all"
                             aria-selected="true">{{ __('learn.all') }}</button>
-                        <button type="button" class="chip" data-filter="pop"
-                            aria-selected="false">{{ __('learn.popular') }}</button>
-                        <button type="button" class="chip" data-filter="new"
-                            aria-selected="false">{{ __('learn.new_chip') }}</button>
-                        <button type="button" class="chip" data-filter="games"
-                            aria-selected="false">{{ __('learn.games_chip') }}</button>
-                        <button type="button" class="chip" data-filter="read"
-                            aria-selected="false">{{ __('learn.reading') }}</button>
-                        <button type="button" class="chip" data-filter="math"
-                            aria-selected="false">{{ __('learn.math_chip') }}</button>
+                        @foreach ($subjectFilters as $subject)
+                            <button type="button" class="chip" data-subject="{{ $subject['value'] }}"
+                                aria-selected="false">{{ $subject['label'] }}</button>
+                        @endforeach
                     </div>
                 </section>
 
                 <section class="px-5 mt-5">
-                    <p class="section-label">{{ __('learn.difficulty') }}</p>
-                    <div class="mt-2 flex flex-wrap gap-2" id="diffChips">
-                        <button type="button" class="chip chip-primary" data-diff="all"
+                    <p class="section-label">{{ __('learn.week') }}</p>
+                    <div class="mt-2 flex flex-wrap gap-2" id="weekChips">
+                        <button type="button" class="chip chip-primary" data-week="all"
                             aria-selected="true">{{ __('learn.any') }}</button>
-                        <button type="button" class="chip" data-diff="easy"
-                            aria-selected="false">{{ __('learn.easy_chip') }}</button>
-                        <button type="button" class="chip" data-diff="medium"
-                            aria-selected="false">{{ __('learn.medium_chip') }}</button>
-                        <button type="button" class="chip" data-diff="hard"
-                            aria-selected="false">{{ __('learn.hard_chip') }}</button>
-                    </div>
-                </section>
-
-                <section class="px-5 mt-5">
-                    <p class="section-label">{{ __('learn.age') }}</p>
-                    <div class="mt-2 flex flex-wrap gap-2" id="ageChips">
-                        <button type="button" class="chip chip-primary" data-age="all"
-                            aria-selected="true">{{ __('learn.any') }}</button>
-                        <button type="button" class="chip" data-age="4"
-                            aria-selected="false">{{ __('learn.age_4_6_chip') }}</button>
-                        <button type="button" class="chip" data-age="6"
-                            aria-selected="false">{{ __('learn.age_6_8_chip') }}</button>
-                        <button type="button" class="chip" data-age="8"
-                            aria-selected="false">{{ __('learn.age_8_plus_chip') }}</button>
+                        @foreach ($weeks as $number)
+                            <button type="button" class="chip" data-week="{{ $number }}"
+                                aria-selected="false">{{ __('learn.week_n', ['n' => $number]) }}</button>
+                        @endforeach
                     </div>
                 </section>
 
@@ -371,6 +395,8 @@ new class extends Component
                             aria-selected="false">{{ __('learn.in_progress') }}</button>
                         <button type="button" class="chip" data-status="new"
                             aria-selected="false">{{ __('learn.not_started_chip') }}</button>
+                        <button type="button" class="chip" data-status="done"
+                            aria-selected="false">{{ __('learn.done') }}</button>
                     </div>
                 </section>
 
@@ -398,5 +424,6 @@ new class extends Component
 </main>
 
 @push('scripts')
+    <script src="{{ asset('assets/js/search.js') }}"></script>
     <script defer src="{{ asset('assets/js/learn-categories.js') }}"></script>
 @endpush

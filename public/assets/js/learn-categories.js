@@ -17,13 +17,22 @@
     // ---------- State ----------
     const state = {
       query: '',
-      filter: 'all',    // category tag
-      diff: 'all',
-      age: 'all',
+      subject: 'all',
+      week: 'all',
       status: 'all'
     };
-    // draft state is for the filter overlay until Apply is pressed
-    const draft = { filter: 'all', diff: 'all', age: 'all', status: 'all' };
+    const draft = { subject: 'all', week: 'all', status: 'all' };
+
+    const INDEX = (function () {
+      const node = document.getElementById('searchIndex');
+      if (!node) return [];
+      try {
+        const parsed = JSON.parse(node.textContent || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    })();
 
     const items = document.querySelectorAll('[data-item]');
     const sections = document.querySelectorAll('[data-search-section]');
@@ -34,29 +43,19 @@
     const filterDot = document.getElementById('filterDot');
     const clearAllBtn = document.getElementById('clearAllBtn');
 
-    function norm(s) { return (s || '').toLowerCase().trim(); }
+    function norm(s) { return window.KidzioSearch ? KidzioSearch.norm(s) : (s || '').toLowerCase().trim(); }
 
     function matchItem(el, s) {
-      const name = norm(el.getAttribute('data-name'));
-      const keys = norm(el.getAttribute('data-keywords'));
-      const tags = (el.getAttribute('data-tags') || '').split(/\s+/);
-      const diff = el.getAttribute('data-diff') || 'all';
-      const ageAttr = parseInt(el.getAttribute('data-age'), 10);
-      const status = el.getAttribute('data-status') || 'all';
-      const q = norm(s.query);
+      const name = el.getAttribute('data-name') || '';
+      const keys = el.getAttribute('data-keywords') || '';
+      const subject = el.getAttribute('data-subject') || '';
+      const week = el.getAttribute('data-week') || '';
+      const status = el.getAttribute('data-status') || '';
 
-      if (s.filter !== 'all' && tags.indexOf(s.filter) === -1) return false;
-      if (s.diff !== 'all' && diff !== s.diff) return false;
+      if (s.subject !== 'all' && subject !== s.subject) return false;
+      if (s.week !== 'all' && week !== String(s.week)) return false;
       if (s.status !== 'all' && status !== s.status) return false;
-      if (s.age !== 'all') {
-        const minAge = parseInt(s.age, 10);
-        if (isNaN(ageAttr)) return true; // unknown age passes
-        // bucket: 4 → 4–6, 6 → 6–8, 8 → 8+
-        if (minAge === 4 && !(ageAttr >= 4 && ageAttr <= 6)) return false;
-        if (minAge === 6 && !(ageAttr >= 6 && ageAttr <= 8)) return false;
-        if (minAge === 8 && ageAttr < 8) return false;
-      }
-      if (q && !(name.includes(q) || keys.includes(q))) return false;
+      if (s.query && !(window.KidzioSearch ? KidzioSearch.matches(name + ' ' + keys, s.query) : (norm(name).includes(norm(s.query)) || norm(keys).includes(norm(s.query))))) return false;
       return true;
     }
 
@@ -64,9 +63,8 @@
       queryChips.innerHTML = '';
       const parts = [];
       if (state.query) parts.push({ k: 'query', l: '"' + state.query + '"' });
-      if (state.filter !== 'all') parts.push({ k: 'filter', l: labelFor('filter', state.filter) });
-      if (state.diff !== 'all') parts.push({ k: 'diff', l: labelFor('diff', state.diff) });
-      if (state.age !== 'all') parts.push({ k: 'age', l: labelFor('age', state.age) });
+      if (state.subject !== 'all') parts.push({ k: 'subject', l: labelFor('subject', state.subject) });
+      if (state.week !== 'all') parts.push({ k: 'week', l: labelFor('week', state.week) });
       if (state.status !== 'all') parts.push({ k: 'status', l: labelFor('status', state.status) });
 
       parts.forEach(function (p) {
@@ -77,7 +75,7 @@
         b.addEventListener('click', function () {
           if (p.k === 'query') state.query = '';
           else state[p.k] = 'all';
-          draft[p.k === 'query' ? 'filter' : p.k] = state[p.k === 'query' ? 'filter' : p.k];
+          if (p.k !== 'query') draft[p.k] = state[p.k];
           paintAll();
         });
         queryChips.appendChild(b);
@@ -85,17 +83,18 @@
 
       const active = parts.length > 0;
       queryStrip.classList.toggle('hidden', !active);
-      filterDot.classList.toggle('hidden', !(state.filter !== 'all' || state.diff !== 'all' || state.age !== 'all' || state.status !== 'all'));
+      filterDot.classList.toggle('hidden', !(state.subject !== 'all' || state.week !== 'all' || state.status !== 'all'));
     }
 
     function labelFor(kind, v) {
       const maps = {
-        filter: { pop: '🔥 პოპულარული', new: '🆕 ახალი', games: '🎮 თამაშები', read: '📖 კითხვა', math: '➗ მათემატიკა' },
-        diff: { easy: '🌱 მარტივი', medium: '🌿 საშუალო', hard: '🌳 გამოწვევა' },
-        age: { '4': 'ასაკი 4–6', '6': 'ასაკი 6–8', '8': 'ასაკი 8+' },
-        status: { inprogress: '⏳ მიმდინარე', new: '🆕 დაუწყებელი' }
+        subject: {},
+        week: {},
+        status: { inprogress: '⏳ მიმდინარე', new: '🆕 დაუწყებელი', done: 'მზადაა' }
       };
-      return (maps[kind] && maps[kind][v]) || v;
+      if (maps[kind] && maps[kind][v]) return maps[kind][v];
+      const chip = document.querySelector('[data-' + kind + '="' + v + '"]');
+      return chip ? chip.textContent.trim() : v;
     }
 
     function paintAll() {
@@ -118,7 +117,7 @@
         sec.classList.toggle('hidden', visibleHere === 0);
       });
       if (sectionCount) {
-        const filtering = state.query || state.filter !== 'all' || state.diff !== 'all' || state.age !== 'all' || state.status !== 'all';
+        const filtering = state.query || state.subject !== 'all' || state.week !== 'all' || state.status !== 'all';
         sectionCount.textContent = filtering ? subjectVisible + ' ნაჩვენები' : '6 სულ';
       }
       noResults.classList.toggle('hidden', visible !== 0);
@@ -128,18 +127,17 @@
     function draftCount() {
       let n = 0;
       items.forEach(function (el) {
-        if (matchItem(el, { query: state.query, filter: draft.filter, diff: draft.diff, age: draft.age, status: draft.status })) n++;
+        if (matchItem(el, { query: state.query, subject: draft.subject, week: draft.week, status: draft.status })) n++;
       });
       return n;
     }
 
     clearAllBtn.addEventListener('click', function () {
       state.query = '';
-      state.filter = 'all';
-      state.diff = 'all';
-      state.age = 'all';
+      state.subject = 'all';
+      state.week = 'all';
       state.status = 'all';
-      draft.filter = 'all'; draft.diff = 'all'; draft.age = 'all'; draft.status = 'all';
+      draft.subject = 'all'; draft.week = 'all'; draft.status = 'all';
       resetOverlayChips();
       paintAll();
     });
@@ -194,7 +192,7 @@
     function renderResults() {
       const q = norm(libSearch.value);
       clearBtn.classList.toggle('hidden', q.length === 0);
-      micBtn.classList.toggle('hidden', q.length > 0);
+      if (micBtn) micBtn.classList.toggle('hidden', q.length > 0);
       applySearchBtn.disabled = q.length === 0;
       applySearchBtn.classList.toggle('opacity-50', applySearchBtn.disabled);
 
@@ -202,23 +200,36 @@
       if (!q) return;
 
       let hits = 0;
-      items.forEach(function (el) {
-        const name = norm(el.getAttribute('data-name'));
-        const keys = norm(el.getAttribute('data-keywords'));
-        if (!(name.includes(q) || keys.includes(q))) return;
+      INDEX.forEach(function (entry) {
+        if (!(window.KidzioSearch ? KidzioSearch.matches((entry.name || '') + ' ' + (entry.keys || ''), libSearch.value) : (norm(entry.name).includes(q) || norm(entry.keys).includes(q)))) return;
+        if (state.subject !== 'all' && entry.subject !== state.subject) return;
+        if (state.week !== 'all' && String(entry.week) !== String(state.week)) return;
+        if (state.status !== 'all' && entry.status !== state.status) return;
         hits++;
         const row = document.createElement('a');
-        row.href = el.getAttribute('href');
+        row.href = entry.href;
         row.className = 'setting-row';
-        row.innerHTML = '<div class="setting-ico tile-violet"><i class="ph-fill ph-magnifying-glass"></i></div>'
+        row.addEventListener('click', function () {
+          if (window.KidzioSearch) KidzioSearch.record(libSearch.value.trim());
+        });
+        row.innerHTML = '<div class="setting-ico text-xl"></div>'
           + '<div class="grow min-w-0">'
-          + '<p class="setting-text font-extrabold text-sm text-ink">' + el.getAttribute('data-name') + '</p>'
-          + '<p class="text-[11px] text-muted">' + (el.getAttribute('data-keywords') || '').slice(0, 60) + '</p>'
+          + '<p class="setting-text font-extrabold text-sm text-ink"></p>'
+          + '<p class="text-[11px] text-muted"></p>'
           + '</div><i class="ph ph-caret-right text-muted"></i>';
+        const ico = row.querySelector('.setting-ico');
+        ico.classList.add(entry.tile || 'tile-violet');
+        ico.textContent = entry.ico || '🔍';
+        const text = row.querySelectorAll('p');
+        text[0].textContent = entry.name;
+        text[1].textContent = (entry.keys || '').slice(0, 60);
         searchResults.appendChild(row);
       });
       if (hits === 0) {
-        searchResults.innerHTML = '<p class="text-xs text-muted text-center py-8">ვერაფერი მოიძებნა: "' + q + '"</p>';
+        const empty = document.createElement('p');
+        empty.className = 'text-xs text-muted text-center py-8';
+        empty.textContent = (searchResults.dataset.empty || '') + ' "' + libSearch.value.trim() + '"';
+        searchResults.appendChild(empty);
       }
     }
 
@@ -238,6 +249,7 @@
 
     applySearchBtn.addEventListener('click', function () {
       state.query = libSearch.value.trim();
+      if (window.KidzioSearch && state.query) KidzioSearch.record(state.query);
       paintAll();
       closeSearch();
     });
@@ -272,24 +284,18 @@
     const filterReset = document.getElementById('filterReset');
     const applyFilterBtn = document.getElementById('applyFilterBtn');
     const applyCountEl = document.getElementById('applyCount');
-    const catChips = document.querySelectorAll('#catChips [data-filter]');
-    const diffChips = document.querySelectorAll('#diffChips [data-diff]');
-    const ageChips = document.querySelectorAll('#ageChips [data-age]');
+    const subjectChips = document.querySelectorAll('#subjectChips [data-subject]');
+    const weekChips = document.querySelectorAll('#weekChips [data-week]');
     const statusChips = document.querySelectorAll('#statusChips [data-status]');
 
     function syncOverlayChipsToDraft() {
-      catChips.forEach(function (o) {
-        const active = o.getAttribute('data-filter') === draft.filter;
+      subjectChips.forEach(function (o) {
+        const active = o.getAttribute('data-subject') === draft.subject;
         o.classList.toggle('chip-primary', active);
         o.setAttribute('aria-selected', active ? 'true' : 'false');
       });
-      diffChips.forEach(function (o) {
-        const active = o.getAttribute('data-diff') === draft.diff;
-        o.classList.toggle('chip-primary', active);
-        o.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-      ageChips.forEach(function (o) {
-        const active = o.getAttribute('data-age') === draft.age;
+      weekChips.forEach(function (o) {
+        const active = o.getAttribute('data-week') === String(draft.week);
         o.classList.toggle('chip-primary', active);
         o.setAttribute('aria-selected', active ? 'true' : 'false');
       });
@@ -301,15 +307,14 @@
       applyCountEl.textContent = draftCount();
     }
     function resetOverlayChips() {
-      draft.filter = 'all'; draft.diff = 'all'; draft.age = 'all'; draft.status = 'all';
+      draft.subject = 'all'; draft.week = 'all'; draft.status = 'all';
       syncOverlayChipsToDraft();
     }
 
     function openFilter() {
       // seed draft from current state
-      draft.filter = state.filter;
-      draft.diff = state.diff;
-      draft.age = state.age;
+      draft.subject = state.subject;
+      draft.week = state.week;
       draft.status = state.status;
       syncOverlayChipsToDraft();
       openOverlay(filterOverlay, filterPanel, filterBackdrop);
@@ -328,17 +333,15 @@
         });
       });
     }
-    wireChipGroup(catChips, 'data-filter', 'filter');
-    wireChipGroup(diffChips, 'data-diff', 'diff');
-    wireChipGroup(ageChips, 'data-age', 'age');
+    wireChipGroup(subjectChips, 'data-subject', 'subject');
+    wireChipGroup(weekChips, 'data-week', 'week');
     wireChipGroup(statusChips, 'data-status', 'status');
 
     filterReset.addEventListener('click', resetOverlayChips);
 
     applyFilterBtn.addEventListener('click', function () {
-      state.filter = draft.filter;
-      state.diff = draft.diff;
-      state.age = draft.age;
+      state.subject = draft.subject;
+      state.week = draft.week;
       state.status = draft.status;
       paintAll();
       closeFilter();

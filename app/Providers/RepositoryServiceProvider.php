@@ -11,6 +11,7 @@ use App\Repositories\PlaySessionRepository;
 use App\Repositories\PushSubscriptionRepository;
 use App\Repositories\QuestionRepository;
 use App\Repositories\RewardRepository;
+use App\Repositories\SearchQueryRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserStatRepository;
 use App\Repositories\WeekPlanRepository;
@@ -76,6 +77,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(RewardRepository::class);
         $this->app->singleton(RewardService::class);
         $this->app->singleton(MonthlyGoalService::class);
+        $this->app->singleton(SearchQueryRepository::class);
         $this->app->singleton(SearchService::class);
         $this->app->singleton(ParentZoneService::class);
         $this->app->singleton(PlaySessionRepository::class);

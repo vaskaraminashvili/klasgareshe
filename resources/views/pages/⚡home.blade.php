@@ -7,6 +7,7 @@ use App\Services\BadgeService;
 use App\Services\NotificationService;
 use App\Services\ProgressReportService;
 use App\Services\SearchService;
+use Livewire\Attributes\Renderless;
 use App\Services\UserStatService;
 use App\Services\WeekPlanService;
 use Livewire\Component;
@@ -54,8 +55,14 @@ new class extends Component
      */
     public array $recentBadges = [];
 
-    /** @var list<array{name: string, keys: string, href: string, ico: string, tile: string}> */
+    /** @var list<array{name: string, keys: string, href: string, ico: string, tile: string, kind?: string, subject?: string|null, week?: int|null, status?: string|null}> */
     public array $searchIndex = [];
+
+    /** @var list<string> */
+    public array $recentSearches = [];
+
+    /** @var list<string> */
+    public array $popularSearches = [];
 
     public string $parentTipTitle = '';
 
@@ -81,6 +88,12 @@ new class extends Component
     public function refreshHome(UserStatService $stats, WeekPlanService $week, UserRepository $users, BadgeService $badges, SearchService $search, NotificationService $alerts): void
     {
         $this->syncHome($stats, $week, $users, $badges, $search, $alerts);
+    }
+
+    #[Renderless]
+    public function recordSearch(string $query, SearchService $search, UserRepository $users): void
+    {
+        $search->record($users->authenticated(), $query);
     }
 
     public function markAllAlertsRead(NotificationService $alerts, UserRepository $users): void
@@ -142,7 +155,9 @@ new class extends Component
             ];
         }
 
-        $this->searchIndex = $search->homeCatalog($this->planTasks, $this->continueItemId);
+        $this->searchIndex = $search->indexFor($user, $this->planTasks, $this->continueItemId);
+        $this->recentSearches = $search->recent($user);
+        $this->popularSearches = $search->popular();
 
         $tip = $reports->homeTip($user, $reportWeek);
         $this->parentTipTitle = $tip['title'];
@@ -418,9 +433,27 @@ new class extends Component
 
             <!-- Suggestions (shown when query is empty) -->
             <div id="searchSuggest" class="overflow-y-auto grow">
-                {{-- "Recent" and "popular" chip rows dropped: recents were three hardcoded
-                     English words and the popular chips searched for games that do not
-                     exist. Both come back with real query data in docs/tasks/T17-search.md. --}}
+                @if ($recentSearches !== [])
+                    <section class="px-5 mt-4">
+                        <p class="section-label">{{ __('home.recent') }}</p>
+                        <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
+                            @foreach ($recentSearches as $chip)
+                                <button type="button" class="chip" data-recent>{{ $chip }}</button>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+
+                @if ($popularSearches !== [])
+                    <section class="px-5 mt-4">
+                        <p class="section-label">{{ __('home.popular_right_now') }}</p>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            @foreach ($popularSearches as $chip)
+                                <button type="button" class="chip" data-recent>{{ $chip }}</button>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
 
                 <section class="px-5 mt-5">
                     <p class="section-label">{{ __('home.jump_to') }}</p>
@@ -510,5 +543,6 @@ new class extends Component
 </main>
 
 @push('scripts')
+    <script src="{{ asset('assets/js/search.js') }}"></script>
     <script defer src="{{ asset('assets/js/home.js') }}"></script>
 @endpush

@@ -116,4 +116,17 @@ return [
     'outcome_hold' => 'შენარჩუნება',
     'outcome_relegate' => 'დაქვეითება',
     'hold' => 'შენარჩუნება',
+
+    'search' => 'ძიება',
+    'find_learner' => 'იპოვე მოსწავლე',
+    'search_ranking' => 'რეიტინგის ძიება',
+    'search_placeholder' => 'მეტსახელი…',
+    'close' => 'დახურვა',
+    'clear_search' => 'ძიების გასუფთავება',
+    'recent' => 'ბოლო',
+    'popular' => 'პოპულარული',
+    'searching' => 'იძებნება:',
+    'no_learners' => 'მოსწავლე ვერ მოიძებნა',
+    'no_learners_hint' => 'სცადე სხვა მეტსახელი.',
+    'apply' => 'გამოიყენე რეიტინგში',
 ];

@@ -79,6 +79,29 @@ class UserRepository
         return User::query()->where('nickname', $nickname)->first();
     }
 
+    /**
+     * Visible kids whose nickname contains the fragment. Hidden accounts stay out.
+     *
+     * @return Collection<int, User>
+     */
+    public function searchVisibleByNickname(string $fragment, int $limit = 12): Collection
+    {
+        $fragment = trim($fragment);
+
+        if (mb_strlen($fragment) < 2) {
+            return new Collection;
+        }
+
+        $like = '%'.addcslashes($fragment, '%_\\').'%';
+
+        return User::query()
+            ->visibleOnLeaderboard()
+            ->where('nickname', 'like', $like)
+            ->orderBy('nickname')
+            ->limit($limit)
+            ->get();
+    }
+
     public function findByEmail(string $email): ?User
     {
         return User::query()

@@ -34,7 +34,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Tab bar** | Learn → `/learn-categories` (live three-subject library). Rewards opens `/rewards-dashboard`. |
 | **Home — social** | Friends-today feed removed (was Leo / Ana rows + fake streak chips) — no real activity feed yet. |
 | **Home — games** | Word-search featured tile removed (T19). Counting tile is live. |
-| **Home — search** | Overlay + results are **live** over 19 real destinations (`SearchService`). Recent / popular chips and voice search removed — no query history, no Georgian speech model. |
+| **Home — search** | Overlay searches the live index (subjects, weeks, packs, games, badges, screens). Recent and popular chips come from real queries. Voice search is still **T21**. |
 | **Home — notifications** | Live bell + unread badge + sheet (T16). |
 | **Home — misc** | PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. Parent tip is live (week figures + link to PIN-gated `/weekly-report`). Streak ribbon / week card open `/streak`. |
 | **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards still markup. **+120 XP** is awarded once when all 3 subjects are done today. |
@@ -44,7 +44,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Badges / rewards** | Social Star never unlocks. Share badge / unlock share = toast markup. Shop / limited bundle deferred (**T20**). Daily box (+40), login calendar, and freeze claims live on `/rewards-dashboard`. |
 | **Ranking / privacy** | Global leaderboard honors `show_on_leaderboard`. Weekly prize claiming deferred. League stay/champion rewards not paid. Friends: no parent-approval gate, no suggested friends, no Home activity feed. `/ranking-friends` filter tabs (all / online / streak / near) are inert, and presence (“N online”) was removed as fake. |
 | **XP / streaks** | Streak screen live (`/streak`): month map, best streak, freeze claimed on Rewards after the 7-day milestone. Combo / speed bonus scored on full packs. Mission-complete +120 awarded once/day. Login-calendar XP collected on `/rewards-dashboard` (+10→+100). Difficulty setting not scored. |
-| **Learn library** | Three school subjects live (tiles, spotlight, continue, lock). Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) not v1. Search index **T17**. |
+| **Learn library** | Three school subjects live (tiles, spotlight, continue, lock). Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) not v1. Search and filters (status, subject, week) use the live index. |
 | **Other mini-games** | Trace, spell, word-search, match, habitats, … — **T19**. Tap-correct and counting are live. |
 | **Parent zone** | PIN gate, dashboard week numbers + daily minutes chart, preferred subjects, change/reset PIN, screen time, bedtime lock, weekly/full reports, PDF/JSON export, parent email change, and delete account are live. Monthly goals page is live (system goals); parent custom targets later. |
 | **Settings / legal / PWA** | Settings page live (`/settings`); streak / lessons / rewards + reminder time deliver in-app and web push. FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
@@ -180,9 +180,9 @@ Shell: `pages::home` + `profile-header` + `bottom-nav-bar`. Week-plan blocks are
 - [x] Recent achievements — live badge rail
 - [ ] Parent tip card — removed; copy named a hardcoded kid and invented a study habit
 - [ ] Install PWA prompt — removed; no manifest or service worker, so it never fired
-- [~] Search overlay (subjects, games, lessons) — overlay + `home.js` live over `SearchService::homeCatalog()`: 16 Georgian destinations, real routes, subjects open their next pack. No lesson-level index yet (T17)
-  - [ ] Recent searches — chips removed until query history exists
-  - [ ] Popular chips — removed until real query counts exist
+- [x] Search overlay (subjects, games, lessons) — live index of destinations, subjects, weeks, packs, games, and badges. Results are real routes.
+  - [x] Recent searches — per user, from `search_queries`
+  - [x] Popular chips — counted from `search_queries`, empty until someone searches
   - [ ] Voice search (mic) — removed, was `en-US` only
 - [x] In-app notification sheet (bell + unread badge)
 
@@ -202,7 +202,7 @@ Home week plan and the Learn tab.
 ### Library UX
 
 - [x] Subject tiles with lesson count, % complete, difficulty, age range — from week plans
-- [~] Search + filters (difficulty, age, status, tags) — overlay JS on live tiles; full index is **T17**
+- [x] Search + filters (status, subject, week) — live index. Difficulty / age chips from the template are not used.
 - [x] Favourite / heart a subject (`users.favourite_subjects`)
 - [x] Today's spotlight on Learn tab — same next incomplete pack as Home
 - [x] Per-subject: continue, lessons list, subject badges
@@ -308,7 +308,7 @@ Shared game rules:
 - [x] Podium (top 3)
 - [x] “You are here” strip
 - [ ] Filters: worldwide, country, on a streak, online now
-- [ ] Search players
+- [x] Search players — nickname search on `/leaderboard`, `show_on_leaderboard` enforced
 - [ ] Top countries
 - [x] Hide kid from global ranking (parent + settings toggle) — toggle on edit-profile; public ranking queries filter it (T04). League / friends stay listed.
 - [x] Show on leaderboard toggle — stored and applied to global all-time + weekly XP ranking queries
@@ -447,12 +447,12 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 ## 16. Search
 
-- [ ] Home search: subjects, games, lessons
-- [~] Learn library search + filters — overlay JS on live tiles; no live index
-- [ ] Leaderboard player search
+- [x] Home search: subjects, games, lessons
+- [x] Learn library search + filters — status, subject, week on the live index
+- [x] Leaderboard player search
 - [x] Settings search
 - [ ] Language list search
-- [ ] Recent + popular queries
+- [x] Recent + popular queries
 
 ---
 

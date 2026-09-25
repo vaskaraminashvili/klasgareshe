@@ -203,6 +203,28 @@ class UserStatRepository
             : CarbonImmutable::parse((string) $date)->toDateString();
     }
 
+    /**
+     * @param  list<int>  $userIds
+     * @return array<int, array{xp: int, streak: int}>
+     */
+    public function summaryByUserId(array $userIds): array
+    {
+        if ($userIds === []) {
+            return [];
+        }
+
+        $map = [];
+
+        foreach (UserStat::query()->whereIn('user_id', $userIds)->get(['user_id', 'xp', 'current_streak']) as $row) {
+            $map[(int) $row->user_id] = [
+                'xp' => (int) $row->xp,
+                'streak' => (int) $row->current_streak,
+            ];
+        }
+
+        return $map;
+    }
+
     public function countLearners(): int
     {
         return $this->publicRankingQuery()->count();

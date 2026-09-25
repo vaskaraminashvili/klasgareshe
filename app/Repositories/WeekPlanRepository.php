@@ -17,6 +17,19 @@ class WeekPlanRepository
     /**
      * @return Collection<int, WeekPlanItem>
      */
+    public function allForGrade(SchoolGrade $grade): Collection
+    {
+        return WeekPlanItem::query()
+            ->where('grade', $grade)
+            ->orderBy('week_number')
+            ->orderBy('weekday')
+            ->orderBy('id')
+            ->get();
+    }
+
+    /**
+     * @return Collection<int, WeekPlanItem>
+     */
     public function itemsForGrade(SchoolGrade $grade, int $weekNumber = 1): Collection
     {
         return WeekPlanItem::query()

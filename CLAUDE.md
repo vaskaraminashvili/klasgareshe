@@ -62,8 +62,7 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
 - Blocks whose backend does not exist were **deleted**, each leaving a one-line Blade comment naming
   the block and the task that re-ports it. Copy the markup back from `kidzio/{screen}.html` when you
   get there. Elements that showed live data but had no link target were kept and made inert.
-- Home search is real: `SearchService::homeCatalog()` renders 19 Georgian destinations into
-  `<script type="application/json" id="searchIndex">`, which `public/assets/js/home.js` reads.
+- Home search is a live index (`SearchService::indexFor()`): destinations, subjects, weeks, packs, the three live games, and non-secret badges. Georgian matching is case-folded and partial-word. Recent chips are per user; popular chips are counted in `search_queries`. Learn filters by status, subject, and week. Leaderboard search is by nickname and skips kids with `show_on_leaderboard` off.
 - Settings (`/settings`, `pages::settings`): dark mode (layout JS), notification prefs + reminder
   time, daily goal, favourite subjects, privacy toggles, locked Georgian locale, parent zone, parent
   email, delete account. Search filters the visible rows. Accent / sound / difficulty / support are
@@ -82,7 +81,7 @@ longer link to template `.html` files or show invented numbers. Two rules now ho
   hours skip scheduled sends. Web push uses `laravel-notification-channels/webpush`
   (`php artisan webpush:vapid` writes `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY`).
 
-Build next: **T15** Splash, walkthrough, PWA (still skipped) or **T17** Search.
+Build next: **T15** Splash, walkthrough, PWA (still skipped) or **T18** Ranking depth.
 (**T01**, the week 3–8 curriculum packs, is parked at the user's request.)
 
 ---

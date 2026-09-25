@@ -1,8 +1,11 @@
 <?php
 
 use App\Data\LeaderboardEntry;
+use App\Data\LeaderboardSnapshot;
 use App\Repositories\UserRepository;
+use App\Services\SearchService;
 use App\Services\UserStatService;
+use Livewire\Attributes\Renderless;
 use Livewire\Component;
 
 new class extends Component
@@ -31,6 +34,14 @@ new class extends Component
     /** @var list<array<string, mixed>> */
     public array $rows = [];
 
+    public string $nicknameQuery = '';
+
+    /** @var list<string> */
+    public array $recentSearches = [];
+
+    /** @var list<string> */
+    public array $popularSearches = [];
+
     public function title(): string
     {
         return __('ranking.page_title');
@@ -41,10 +52,57 @@ new class extends Component
         $view->title($this->title());
     }
 
-    public function mount(UserStatService $stats, UserRepository $users): void
+    public function mount(UserStatService $stats, UserRepository $users, SearchService $search): void
     {
-        $snap = $stats->leaderboardSnapshot($users->authenticated());
+        $user = $users->authenticated();
+        $this->recentSearches = $search->recent($user);
+        $this->popularSearches = $search->popular();
+        $this->fillRanking($stats->leaderboardSnapshot($user));
+    }
 
+    #[Renderless]
+    public function searchPlayers(string $query, SearchService $search): array
+    {
+        return $search->players($query);
+    }
+
+    public function applyPlayerSearch(string $query, SearchService $search, UserRepository $users): void
+    {
+        $query = trim($query);
+        $this->nicknameQuery = $query;
+        $user = $users->authenticated();
+
+        if ($query === '') {
+            return;
+        }
+
+        $search->record($user, $query);
+        $this->rows = [];
+
+        foreach ($search->players($query) as $hit) {
+            $this->rows[] = [
+                'rank' => $hit['rank'] ?? 0,
+                'userId' => $hit['userId'],
+                'name' => $hit['name'],
+                'nickname' => $hit['nickname'],
+                'xp' => $hit['xp'],
+                'level' => $hit['level'],
+                'streak' => $hit['streak'],
+                'isYou' => $hit['userId'] === $user->id,
+                'avatar' => $hit['avatar'],
+            ];
+        }
+    }
+
+    public function clearPlayerSearch(UserStatService $stats, UserRepository $users): void
+    {
+        $this->nicknameQuery = '';
+        $user = $users->authenticated();
+        $this->fillRanking($stats->leaderboardSnapshot($user));
+    }
+
+    private function fillRanking(LeaderboardSnapshot $snap): void
+    {
         $this->totalPlayers = $snap->totalPlayers;
         $this->yourRank = $snap->yourRank;
         $this->yourXp = $snap->yourXp;
@@ -59,6 +117,7 @@ new class extends Component
                 'rank' => $e->rank,
                 'userId' => $e->userId,
                 'name' => $e->name,
+                'nickname' => '',
                 'xp' => $e->xp,
                 'level' => $e->level,
                 'streak' => $e->streak,
@@ -72,6 +131,7 @@ new class extends Component
                 'rank' => $e->rank,
                 'userId' => $e->userId,
                 'name' => $e->name,
+                'nickname' => '',
                 'xp' => $e->xp,
                 'level' => $e->level,
                 'streak' => $e->streak,
@@ -110,7 +170,7 @@ new class extends Component
             <p class="text-xs text-muted">{{ __('ranking.compete_worldwide') }}</p>
             <h1 class="h-display text-2xl leading-tight">{{ __('ranking.ranking') }}</h1>
         </div>
-        <button id="searchIconBtn" type="button" class="icon-btn" aria-label="Search"><i
+        <button id="searchIconBtn" type="button" class="icon-btn" aria-label="{{ __('ranking.search') }}"><i
                 class="ph ph-magnifying-glass text-xl"></i></button>
         <a href="{{ route('league') }}" wire:navigate class="icon-btn" aria-label="{{ __('ranking.league') }}"><i
                 class="ph-fill ph-trophy text-xl"></i></a>
@@ -234,6 +294,27 @@ new class extends Component
         </div>
     </section>
 
+    @if ($nicknameQuery !== '')
+        <section id="queryStrip" class="px-5 mt-3">
+            <div class="k-card p-2 flex items-center gap-2">
+                <span class="text-xs text-muted shrink-0">{{ __('ranking.searching') }}</span>
+                <span class="chip chip-primary grow truncate">{{ $nicknameQuery }}</span>
+                <button type="button" class="icon-btn shrink-0" wire:click="clearPlayerSearch"
+                    aria-label="{{ __('ranking.clear_search') }}"><i class="ph ph-x"></i></button>
+            </div>
+        </section>
+    @endif
+
+    @if ($nicknameQuery !== '' && $rows === [])
+        <section class="px-5 mt-4">
+            <div class="k-card text-center p-6">
+                <div class="size-16 mx-auto rounded-2xl tile-sky grid place-items-center text-3xl">🔍</div>
+                <p class="h-display text-lg mt-3 text-ink">{{ __('ranking.no_learners') }}</p>
+                <p class="text-xs text-muted mt-1">{{ __('ranking.no_learners_hint') }}</p>
+            </div>
+        </section>
+    @endif
+
     <section class="px-5 mt-4">
         <div class="section-head">
             <h2 class="h-display text-lg">{{ __('ranking.full_ranking') }}</h2>
@@ -251,7 +332,9 @@ new class extends Component
                     };
                 @endphp
                 <div class="rank-row {{ $row['isYou'] ? 'you' : '' }}" data-row
-                    data-name="{{ $row['name'] }}" data-streak="{{ $row['streak'] > 0 ? '1' : '0' }}"
+                    data-name="{{ ($row['nickname'] ?? '') !== '' ? $row['nickname'] : $row['name'] }}"
+                    data-nickname="{{ $row['nickname'] ?? '' }}"
+                    data-streak="{{ $row['streak'] > 0 ? '1' : '0' }}"
                     @if ($row['isYou']) data-me @endif>
                     <span class="rank-num {{ $medal }}">{{ $row['rank'] }}</span>
                     <div class="rank-av tile-sun">{{ $row['avatar'] }}</div>
@@ -298,9 +381,72 @@ new class extends Component
 
     <div class="mb-5"></div>
 
+    <div id="searchOverlay" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true"
+        aria-labelledby="searchTitle">
+        <button type="button" id="searchBackdrop"
+            class="absolute inset-0 size-full bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+            aria-label="{{ __('ranking.close') }}"></button>
+        <div id="searchPanel"
+            class="absolute inset-x-0 top-0 bottom-0 mx-auto max-w-[430px] bg-surface translate-y-full transition-transform duration-300 ease-out flex flex-col">
+            <header class="appbar safe-top">
+                <button type="button" id="searchClose" class="icon-btn" aria-label="{{ __('ranking.close') }}"><i
+                        class="ph ph-caret-left text-xl"></i></button>
+                <div class="grow">
+                    <p class="text-xs text-muted">{{ __('ranking.find_learner') }}</p>
+                    <h2 id="searchTitle" class="h-display text-lg leading-tight">{{ __('ranking.search_ranking') }}</h2>
+                </div>
+            </header>
+
+            <section class="px-5">
+                <div class="input-wrap">
+                    <i class="ph ph-magnifying-glass i-left"></i>
+                    <input id="rankSearchInput" class="input has-left" placeholder="{{ __('ranking.search_placeholder') }}"
+                        aria-label="{{ __('ranking.search') }}" autocomplete="off" />
+                    <button id="clearBtn" type="button" class="i-right hidden"
+                        aria-label="{{ __('ranking.clear_search') }}"><i
+                            class="ph ph-x-circle text-muted text-xl"></i></button>
+                </div>
+            </section>
+
+            <div id="searchSuggest" class="overflow-y-auto grow">
+                @if ($recentSearches !== [])
+                    <section class="px-5 mt-4">
+                        <p class="section-label">{{ __('ranking.recent') }}</p>
+                        <div class="mt-2 flex flex-wrap gap-2" id="recentChips">
+                            @foreach ($recentSearches as $chip)
+                                <button type="button" class="chip" data-recent>{{ $chip }}</button>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+                @if ($popularSearches !== [])
+                    <section class="px-5 mt-4">
+                        <p class="section-label">{{ __('ranking.popular') }}</p>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            @foreach ($popularSearches as $chip)
+                                <button type="button" class="chip" data-recent>{{ $chip }}</button>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+            </div>
+
+            <div id="searchResults" class="overflow-y-auto grow px-5 mt-4 space-y-2 hidden"
+                data-empty-title="{{ __('ranking.no_learners') }}"
+                data-empty-hint="{{ __('ranking.no_learners_hint') }}"></div>
+
+            <div class="px-5 pb-6 pt-3 safe-bottom">
+                <button type="button" id="applySearchBtn" class="btn btn-primary w-full" disabled>
+                    <i class="ph-fill ph-check"></i> {{ __('ranking.apply') }}
+                </button>
+            </div>
+        </div>
+    </div>
+
     <livewire:bottom-nav-bar />
 </main>
 
 @push('scripts')
+    <script src="{{ asset('assets/js/search.js') }}"></script>
     <script src="{{ asset('assets/js/leaderboard.js') }}"></script>
 @endpush

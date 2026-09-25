@@ -1,7 +1,7 @@
 # T17 — Search: live index
 
 **Priority:** P2 · depth
-**Status:** not started
+**Status:** done
 **Depends on:** T14 (library content to search)
 
 ## Why now
@@ -12,14 +12,14 @@ rather than the way anyone finds content — hence P2.
 
 ## Scope
 
-- [ ] One search service over real records: subjects, weeks, packs, games, badges
-- [ ] Georgian matching that actually works — normalize case and handle partial words; test with
+- [x] One search service over real records: subjects, weeks, packs, games, badges
+- [x] Georgian matching that actually works — normalize case and handle partial words; test with
       Georgian input, not English
-- [ ] Home search overlay results link to real routes
-- [ ] Learn library search + filters (status, subject, week) against the live index
-- [ ] Recent searches, per user
-- [ ] Popular chips from real query counts, not a fixed list
-- [ ] Leaderboard player search by nickname, respecting `show_on_leaderboard` (T04)
+- [x] Home search overlay results link to real routes
+- [x] Learn library search + filters (status, subject, week) against the live index
+- [x] Recent searches, per user
+- [x] Popular chips from real query counts, not a fixed list
+- [x] Leaderboard player search by nickname, respecting `show_on_leaderboard` (T04)
 - [x] Settings search (row filter shipped in **T10**)
 
 ## Code touchpoints
