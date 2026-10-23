@@ -97,7 +97,7 @@ new class extends Component
             style="background:rgba(255,255,255,.16);color:white;border:1px solid rgba(255,255,255,.28);"><i
                 class="ph ph-caret-left"></i></a>
         <p class="font-extrabold text-white">{{ __('badges.new_badge') }}</p>
-        <button type="button" class="icon-btn"
+        <button type="button" class="icon-btn" data-kidzio-share aria-label="{{ __('share.action') }}"
             style="background:rgba(255,255,255,.16);color:white;border:1px solid rgba(255,255,255,.28);"><i
                 class="ph ph-share-fat"></i></button>
     </header>
@@ -135,7 +135,7 @@ new class extends Component
     </section>
 
     <div class="mt-auto relative z-10 px-6 pb-8 pt-10 safe-bottom space-y-3">
-        <button type="button" class="btn w-full"
+        <button type="button" class="btn w-full" data-kidzio-share
             style="background:#FFE27A;color:#4B2FD6;box-shadow:0 10px 24px -10px rgba(255,214,107,.6), inset 0 -3px 0 rgba(0,0,0,.12);">
             <i class="ph-fill ph-share-fat"></i> {{ __('badges.share_friends') }}
         </button>

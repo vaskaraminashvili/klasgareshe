@@ -8,6 +8,7 @@ use App\Repositories\UserRepository;
 use App\Services\BadgeService;
 use App\Services\UserProfileService;
 use App\Services\UserStatService;
+use App\Services\ShopService;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -29,6 +30,12 @@ new #[Title('პროფილის რედაქტირება · Kidzi
     public string $dailyGoal = 'regular';
 
     public string $avatar = '🐻';
+
+    public string $hat = '';
+
+    public string $background = '';
+
+    public string $boostUntil = '';
 
     public string $email = '';
 
@@ -58,9 +65,11 @@ new #[Title('პროფილის რედაქტირება · Kidzi
         UserStatService $stats,
         BadgeService $badges,
         UserRepository $users,
+        ShopService $shop,
     ): void {
         $user = $users->authenticated();
         $snap = $stats->profileSnapshot($user);
+        $look = $shop->look($user);
 
         $this->name = $user->name;
         $this->nickname = $user->nickname;
@@ -70,6 +79,9 @@ new #[Title('პროფილის რედაქტირება · Kidzi
         $this->favouriteSubject = $this->favouriteFrom($user->favourite_subjects);
         $this->dailyGoal = ($user->daily_goal ?? DailyGoal::Regular)->value;
         $this->avatar = $profiles->defaultAvatar($user->avatar);
+        $this->hat = $look->hat;
+        $this->background = $look->background;
+        $this->boostUntil = $look->boostUntil;
         $this->email = $user->email;
         $this->emailVerified = $user->email_verified_at !== null;
         $this->showOnLeaderboard = (bool) ($user->show_on_leaderboard ?? true);
@@ -78,7 +90,7 @@ new #[Title('პროფილის რედაქტირება · Kidzi
         $this->streak = $snap->streak;
         $this->badgeCount = $badges->earnedCount($user);
         $this->quickAvatars = $profiles->quickAvatars();
-        $this->allAvatars = $profiles->avatarChoices();
+        $this->allAvatars = $profiles->avatarChoicesFor($user);
         $this->avatarTiles = [];
 
         foreach ($this->allAvatars as $emoji) {
@@ -129,7 +141,7 @@ new #[Title('პროფილის რედაქტირება · Kidzi
             'grade' => ['required', Rule::enum(SchoolGrade::class)],
             'favouriteSubject' => ['required', Rule::enum(SchoolSubject::class)],
             'dailyGoal' => ['required', Rule::enum(DailyGoal::class)],
-            'avatar' => ['required', 'string', Rule::in($profiles->avatarChoices())],
+            'avatar' => ['required', 'string', Rule::in($profiles->avatarChoicesFor($users->authenticated()))],
             'showOnLeaderboard' => ['boolean'],
             'allowFriendRequests' => ['boolean'],
         ]);
@@ -210,9 +222,9 @@ new #[Title('პროფილის რედაქტირება · Kidzi
 
   <!-- =============== HERO PREVIEW =============== -->
   <section class="px-5">
-    <div class="k-card-lg hero-profile text-center">
+    <div class="k-card-lg hero-profile text-center" @if ($background !== '') style="background: {{ $background }}" @endif>
       <div class="relative inline-grid place-items-center">
-        <div class="size-28 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-6xl" id="heroAvatar">{{ $avatar }}</div>
+        <div class="relative size-28 rounded-3xl bg-white/20 backdrop-blur-sm grid place-items-center text-6xl" id="heroAvatar">{{ $avatar }}@if ($hat !== '')<span class="absolute -top-4 left-1/2 -translate-x-1/2 text-4xl leading-none pointer-events-none" aria-hidden="true">{{ $hat }}</span>@endif</div>
         <button type="button" class="absolute -bottom-1 -right-1 size-10 rounded-full tile-sun grid place-items-center shadow-lg" data-sheet="avatarSheet" aria-label="{{ __('edit-profile.change_avatar') }}">
           <i class="ph-fill ph-camera text-lg text-sun-ink"></i>
         </button>

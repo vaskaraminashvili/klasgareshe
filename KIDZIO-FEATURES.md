@@ -37,17 +37,17 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 | **Home — search** | Overlay searches the live index (subjects, weeks, packs, games, badges, screens). Recent and popular chips come from real queries. Voice search is still **T21**. |
 | **Home — notifications** | Live bell + unread badge + sheet (T16). |
 | **Home — misc** | PWA install row removed. Header avatar is **live** (`users.avatar`); online dot removed. Parent tip is live (week figures + link to PIN-gated `/weekly-report`). Streak ribbon / week card open `/streak`. |
-| **Daily mission** | Gift box hero, share button, locked speed-bonus / “kids playing” / bonus-mission cards still markup. **+120 XP** is awarded once when all 3 subjects are done today. |
-| **Profile** | Rewards-dashboard row, share button, and the “online” chip all removed pending their tasks. Streak shortcut + menu row open `/streak`. Settings gear + row go to `/settings`. Parent **controls**, **screen time**, and **weekly report** rows are live (PIN-gated). Achievements timeline beyond recent badges not built. |
+| **Daily mission** | Gift box hero, locked speed-bonus / “kids playing” / bonus-mission cards still markup. Share sends a generic app invite (no kid stats). **+120 XP** is awarded once when all 3 subjects are done today. |
+| **Profile** | Share sends a generic app invite (no public kid page). The “online” chip stays removed. Streak shortcut + menu row open `/streak`. Settings gear + row go to `/settings`. Parent **controls**, **screen time**, and **weekly report** rows are live (PIN-gated). Achievements timeline beyond recent badges not built. |
 | **Edit profile** | Camera / change-avatar badge not built. Password reset is live. Parent email change and delete are PIN-gated. |
-| **Auth** | Phone login, social (Google / Apple / Facebook). Parent-verify “change email” / “get help” chips dead. Password reset is live. Terms / Privacy screens are live. |
-| **Badges / rewards** | Social Star unlocks at 5 accepted friends. Share badge / unlock share = toast markup. Shop / limited bundle deferred (**T20**). Daily box (+40), login calendar, freeze, and weekly place-prize claims live on `/rewards-dashboard`. |
+| **Auth** | Phone login sends a code (mail/log until `SMS_DRIVER` is a real gateway). Google and Apple sign-in are live and link to the existing parent email. Facebook stays on the login screen and explains it is not enabled. Parent-verify “change email” / “get help” chips dead. Password reset is live, including accounts with no password. Terms / Privacy screens are live. |
+| **Badges / rewards** | Social Star unlocks at 5 accepted friends. Share badge / unlock share sends a generic app invite. Equipped sound packs play. Reward shop is live on `/rewards-dashboard` (spendable coins, cosmetics on Profile, 2× XP boost, streak shield, limited bundle). Daily box (+40), login calendar, freeze, and weekly place-prize claims live on `/rewards-dashboard`. |
 | **Ranking / privacy** | Global leaderboard honors `show_on_leaderboard`. Weekly place prizes are claimed, not granted at close. League stay bonus, champion (4 hold-weeks), and avatar frame pay once before promote/relegate. Friend requests wait for parent PIN approval. Suggested friends match grade and league and respect privacy. Filters: worldwide, country, streak, online (open play-session heartbeat within 2 minutes). Top countries use real learner counts. |
 | **XP / streaks** | Streak screen live (`/streak`): month map, best streak, freeze claimed on Rewards after the 7-day milestone. Combo / speed bonus scored on full packs. Mission-complete +120 awarded once/day. Login-calendar XP collected on `/rewards-dashboard` (+10→+100). Settings difficulty (easy / medium / hard) scales base pack XP and picks that difficulty's questions. |
 | **Learn library** | Three school subjects live (tiles, spotlight, continue, lock). Kidzio extras (Alphabet / Animals / Words / Knowledge / Opposites) not v1. Search and filters (status, subject, week) use the live index. |
 | **Other mini-games** | Trace, fill, spell, match-word, word-search, opposites, knowledge, and connect-pair play week-1 packs. Animal match, guess-animal, body parts, and habitats are out of v1. |
 | **Parent zone** | PIN gate, dashboard week numbers + daily minutes chart, preferred subjects, change/reset PIN, screen time, bedtime lock, weekly/full reports, PDF/JSON export, parent email change, delete account, and friend-request approvals are live. Monthly goals page is live (system goals); parent custom targets later. |
-| **Settings / legal / PWA** | Settings page live (`/settings`); streak / lessons / rewards + reminder time deliver in-app and web push. FAQ / contact / about still later. Splash + walkthrough not built. Accent / text-size themes not built. Terms + Privacy are live. |
+| **Settings / legal / PWA** | Settings page live (`/settings`): accent, text size, sound, music, voice, language picker, FAQ, contact, about, clear cache, rate-via-contact. Splash + walkthrough + PWA install not built. Terms + Privacy are live. |
 | **Content ops** | Week **3** is class 1 only; week 3 for grades 2–3 and week **4+** not seeded. Admin assign UI TODO. Demo `GameSeeder` / `game_question` path unused by Home. |
 
 **Week plan + games bank:** `week_plan_items` + `week_plan_item_question` + `user_plan_progress` (weeks 1–2 for grades 1–3; week 3 for class 1). Play is pack-based (`/game-multiple-choice/{item}`), not a random catalog. Shared `games` + `questions` still exist (`game_question`); demo `GameSeeder` items are not the week path. Content is `locale=ka`, grade-scoped.
@@ -63,7 +63,7 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 5. ~~Learn library + lessons + continue/lock~~ — three school subjects; weeks as chapters; lock = previous pack
 6. ~~Mini-games + game scoring~~ — Quick Quiz, tap-correct, counting, and the school-subject batch (trace, fill, spell, match, word search, opposites, knowledge, connect) play week packs
 7. ~~Daily mission + week plan~~ — 3 today tasks + catch-up live; gift box / bonus cards still dummy
-8. ~~Badges + rewards + shop~~ — collection + unlock + dashboard/claim/login calendar live; shop later
+8. ~~Badges + rewards + shop~~ — collection + unlock + dashboard/claim/login calendar + shop live
 9. ~~Leaderboard + leagues + friends~~ — Global / Weekly / League / Friends ranking live; Home friends feed + prize claim later
 10. Parent zone (PIN, screen time, bedtime, reports)
 11. Settings, PWA, offline, legal, support
@@ -76,8 +76,8 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 - [ ] Splash screen
 - [ ] PWA install (Add to Home Screen, standalone, offline cache)
 - [x] Light / dark theme (system default + toggle, persist)
-- [ ] Theme accent colors (violet, pink, mint, sky, sun)
-- [ ] Text size (small / medium / large)
+- [x] Theme accent colors (violet, pink, mint, sky, sun)
+- [x] Text size (small / medium / large)
 - [~] Bottom tab bar: Home · Learn · Rewards · Ranking · Profile — all five routed; Rewards → badges; Learn is a dummy library shell
 - [ ] Walkthrough (3 slides): play, streak, rewards — with Skip
 
@@ -87,10 +87,10 @@ Inventory of template markup or stored prefs with no runtime effect. Checklist s
 
 Parent owns the account. Kid is a profile on that account.
 
-- [x] Login (email + password UI; phone not wired) — `pages::user-login`
+- [x] Login (email + password, and phone code via the mail channel until an SMS driver exists) — `pages::user-login`
 - [x] Remember me
 - [x] Show / hide password
-- [ ] Social login: Google, Apple, Facebook
+- [~] Social login: Google and Apple live; Facebook is not enabled (button explains that in Georgian)
 - [x] Sign up: kid name, age (3–14), gender, parent email, password — `pages::user-register`
 - [x] Parent/guardian consent checkbox (Terms + Privacy)
 - [x] Forgot password → send 6-digit code to parent email only — `pages::forgot-password`
@@ -207,7 +207,7 @@ Home week plan and the Learn tab.
 - [x] Today's spotlight on Learn tab — same next incomplete pack as Home
 - [x] Per-subject: continue, lessons list, subject badges
 - [ ] Word / letter / animal / pair of the day
-- [ ] Letter sounds & animal sounds (audio)
+- [~] Letter sounds & animal sounds (audio) — Georgian letters and questions use `speechSynthesis` (`ka-GE`); animal sounds stay out (extras are not v1)
 - [ ] Read-along stories (Words)
 
 ### Lessons & chapters
@@ -243,9 +243,9 @@ Quick Quiz is live as the **week-plan player**. Other games will reuse attached 
 
 Shared game rules:
 
-- [~] Correct / incorrect feedback + sounds — visual correct/wrong on quiz; no sounds yet
+- [x] Correct / incorrect feedback + sounds — visual states plus correct / incorrect / level-up cues
 - [x] Lives or retry (if you want it; template is mostly check-and-continue) — 3 lives on the one-question players (quiz, tap, counting, fill, spell, trace, opposites, knowledge)
-- [ ] Voice reader for questions
+- [x] Voice reader for questions — speaker on every live game; `speechSynthesis` `ka-GE`
 - [x] Grade-appropriate week bank — `users.grade` + `week_plan_items` weeks 1–2 (all classes) and week 3 (class 1); quiz cannot load another class’s pack; catch-up is first incomplete weekday per subject in the active week; finishing week N unlocks week N+1 when seeded
 - [x] Curriculum week advancement — `WeekPlanService::activeWeekNumber()` picks lowest incomplete week (stays on last when all done)
 
@@ -257,7 +257,7 @@ Shared game rules:
 - [x] 3 Home tasks = same daily set; mission `n/3` = subjects finished today
 - [x] Hours left until end of day on Daily mission; Home week hero still uses hours until Sunday
 - [x] Catch-up: missed weekday packs stay until finished (progress not wiped Monday); next pack opens after today’s subject slot is done
-- [~] Locked bonus / gift box / share / “kids playing” — markup only, no backend
+- [~] Locked bonus / gift box / “kids playing” — markup only. Share sends a generic invite.
 
 ---
 
@@ -268,7 +268,7 @@ Shared game rules:
 - [x] Month calendar (streak map)
 - [x] Best streak — `longest_streak` shown on `/streak`
 - [x] Milestones: 3, 7, 14, 30, 100 days (XP + badges)
-- [x] Streak freeze / streak shield (save flame 1×; claimed on Rewards after the 7-day milestone, shop later)
+- [x] Streak freeze / streak shield (save flame 1×; claimed on Rewards after the 7-day milestone, or bought in the shop — same counter)
 - [x] Streak reminder notification (default ~6 PM, configurable)
 
 ---
@@ -276,22 +276,22 @@ Shared game rules:
 ## 11. Rewards, badges & shop
 
 - [x] Rewards dashboard: XP wallet, to-claim count, badges, league
-- [x] Claim queue: daily box, new badges, streak freeze, weekly place prizes (avatar items → **T20**)
+- [x] Claim queue: daily box, new badges, streak freeze, weekly place prizes (avatar items live in the shop)
 - [x] 7-day daily login calendar (increasing XP, bigger prize on day 7)
 - [x] Badge collection (21 from the template grid; hero dummy said 24)
   - [x] Earned / in progress / locked
   - [x] Rarity: Common · Rare · Epic · Legend
   - [x] Gold / silver / bronze medal styles
   - [x] Badge unlock celebration screen
-  - [~] Share badge — markup + toast only; no backend
-- [ ] Reward shop (spend XP)
-  - [ ] Avatars
-  - [ ] Hats
-  - [ ] Backgrounds / themes
-  - [ ] Boosts (e.g. 2× XP for 1 day)
-  - [ ] Sound packs
-  - [ ] Streak shield
-  - [ ] Sales / HOT / NEW tags
+  - [x] Share badge — generic invite; no public kid page
+- [x] Reward shop (spend spendable coins, not ranking XP)
+  - [x] Avatars
+  - [x] Hats
+  - [x] Backgrounds / themes
+  - [x] Boosts (e.g. 2× XP for 1 day)
+  - [x] Sound packs (buy, equip, and play; `fun` pack swaps the cues)
+  - [x] Streak shield
+  - [x] Sales / HOT / NEW tags
 
 ---
 
@@ -377,14 +377,14 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 ### Appearance
 
 - [x] Dark mode
-- [ ] Accent color
-- [ ] Text size
+- [x] Accent color
+- [x] Text size
 
 ### Sound
 
-- [ ] Sound effects
-- [ ] Background music
-- [ ] Voice reader
+- [x] Sound effects
+- [x] Background music
+- [x] Voice reader
 
 ### Notifications
 
@@ -408,21 +408,21 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 
 ### Storage
 
-- [ ] Offline lessons cache
-- [ ] Clear cache
-- [ ] Export progress PDF
+- [ ] Offline lessons cache — **T15**
+- [x] Clear cache — browser cache and preloaded sounds; no invented lesson cache
+- [x] Export progress PDF — settings row opens the PIN-gated export
 
 ### Language & region
 
-- [~] App language (UI + questions + audio) — product default Georgian (`APP_LOCALE=ka`, `lang/ka`); questions seeded `locale=ka`; `lang/en` kept for future; Settings shows it locked; picker is **T21**
+- [x] App language (UI + questions + audio) — picker at `/app-language` lists Georgian only; `lang/en` stays fallback-only until question content exists
 - [x] Country (ranking region) — `/country` (`pages::country`); stored on `users.country`
 
 ### Support & about
 
-- [ ] Help & FAQ
-- [ ] Contact us
-- [ ] Rate the app
-- [ ] About (version)
+- [x] Help & FAQ
+- [x] Contact us
+- [x] Rate the app — no store listing; the row opens the contact form on the rate topic
+- [x] About (version)
 - [x] Terms & Privacy
 - [ ] Install app (PWA)
 
@@ -448,7 +448,7 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 - [x] Learn library search + filters — status, subject, week on the live index
 - [x] Leaderboard player search
 - [x] Settings search
-- [ ] Language list search
+- [x] Language list search
 - [x] Recent + popular queries
 
 ---
@@ -456,11 +456,11 @@ All of this is behind a **4-digit parent PIN**. Forgot PIN → parent verify.
 ## 17. Platform extras
 
 - [ ] Offline / airplane-mode lessons
-- [ ] Clear cache
-- [ ] Share: profile, badge, mission, weekly report
-- [ ] Voice search
+- [x] Clear cache
+- [x] Share: profile, badge, mission, weekly report — generic invite to the login page; no public kid profile
+- [ ] Voice search — no Georgian recognizer; hear-aloud uses speech synthesis instead
 - [x] Legal: Terms, Privacy
-- [ ] Help FAQ + contact form/email
+- [x] Help FAQ + contact form/email
 
 ---
 

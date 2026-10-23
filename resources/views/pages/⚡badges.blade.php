@@ -96,9 +96,7 @@ new class extends Component
             <p class="text-xs text-muted">{{ __('badges.your_collection') }}</p>
             <h1 class="h-display text-lg leading-tight">{{ __('badges.badges') }}</h1>
         </div>
-        <button class="icon-btn" type="button" aria-label="{{ __('badges.share') }}" id="shareBtn"
-            data-share-text="{{ __('badges.share_text', ['name' => $kidName, 'count' => $earnedCount]) }}"
-            data-share-copied="{{ __('badges.link_copied') }}"><i class="ph ph-share-fat text-xl"></i></button>
+        <button class="icon-btn" type="button" aria-label="{{ __('badges.share') }}" data-kidzio-share><i class="ph ph-share-fat text-xl"></i></button>
         <button class="icon-btn" data-theme-toggle aria-label="{{ __('badges.toggle_theme') }}"><i
                 class="ph ph-moon text-xl"></i></button>
     </header>

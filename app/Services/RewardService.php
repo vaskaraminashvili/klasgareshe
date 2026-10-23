@@ -9,12 +9,13 @@ use App\Enums\RewardClaimType;
 use App\Enums\XpSource;
 use App\Models\Badge;
 use App\Models\LeagueSeasonPayout;
+use App\Models\ShopItem;
 use App\Models\User;
 use App\Models\UserBadge;
-use App\Models\XpEvent;
 use App\Repositories\BadgeRepository;
 use App\Repositories\LeaguePayoutRepository;
 use App\Repositories\RewardRepository;
+use App\Repositories\ShopRepository;
 use App\Repositories\UserStatRepository;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -30,6 +31,7 @@ class RewardService
         private BadgeRepository $badges,
         private LevelCalculator $levels,
         private LeaguePayoutRepository $payouts,
+        private ShopRepository $shop,
     ) {}
 
     public function pendingCount(User $user): int
@@ -265,29 +267,63 @@ class RewardService
     {
         $rows = [];
 
-        foreach ($this->statRows->recentXpEvents($user, 5) as $event) {
+        foreach ($this->statRows->recentXpEvents($user, 8) as $event) {
+            $at = $event->created_at ?? CarbonImmutable::now();
             $rows[] = [
+                'at' => $at,
                 'title' => (string) __('rewards.earned_xp', ['xp' => $event->amount]),
                 'subtitle' => $event->source->label(),
                 'emoji' => $event->source->emoji(),
                 'tile' => $event->source->tile(),
                 'amount' => $event->amount,
                 'spent' => false,
-                'when' => $this->relativeWhen($event),
+                'when' => $this->when($at),
             ];
         }
 
-        return $rows;
-    }
+        foreach ($this->shop->recentSpends($user, 8) as $purchase) {
+            $item = $purchase->item;
 
-    private function relativeWhen(XpEvent $event): string
-    {
-        $at = $event->created_at;
+            if (! $item instanceof ShopItem) {
+                continue;
+            }
 
-        if (! $at instanceof CarbonInterface) {
-            return (string) __('rewards.today');
+            $at = $purchase->created_at ?? CarbonImmutable::now();
+            $rows[] = [
+                'at' => $at,
+                'title' => (string) __('shop.bought', ['name' => __('shop.items.'.$item->slug.'.name')]),
+                'subtitle' => (string) __('shop.activity_sub'),
+                'emoji' => '🛒',
+                'tile' => 'tile-violet',
+                'amount' => $purchase->price_paid,
+                'spent' => true,
+                'when' => $this->when($at),
+            ];
         }
 
+        usort($rows, function (array $left, array $right): int {
+            return $right['at']->getTimestamp() <=> $left['at']->getTimestamp();
+        });
+
+        $visible = [];
+
+        foreach (array_slice($rows, 0, 5) as $row) {
+            $visible[] = [
+                'title' => $row['title'],
+                'subtitle' => $row['subtitle'],
+                'emoji' => $row['emoji'],
+                'tile' => $row['tile'],
+                'amount' => $row['amount'],
+                'spent' => $row['spent'],
+                'when' => $row['when'],
+            ];
+        }
+
+        return $visible;
+    }
+
+    private function when(CarbonInterface $at): string
+    {
         $days = (int) CarbonImmutable::parse($at)->startOfDay()->diffInDays(CarbonImmutable::now()->startOfDay());
 
         return match (true) {

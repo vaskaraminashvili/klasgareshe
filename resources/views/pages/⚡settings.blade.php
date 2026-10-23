@@ -257,6 +257,17 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         return [
             $this->name.' '.$this->email.' '.__('settings.edit'),
             __('settings.dark_mode').' '.__('settings.dark_mode_hint'),
+            __('settings.theme_color').' '.__('settings.theme_color_hint'),
+            __('settings.text_size').' '.__('settings.text_size_hint'),
+            __('settings.sound_effects').' '.__('settings.sound_effects_hint'),
+            __('settings.music').' '.__('settings.music_hint'),
+            __('settings.voice').' '.__('settings.voice_hint'),
+            __('settings.clear_cache').' '.__('settings.clear_cache_hint'),
+            __('settings.export_progress').' '.__('settings.export_progress_hint'),
+            __('settings.help_faq').' '.__('settings.help_faq_hint'),
+            __('settings.contact').' '.__('settings.contact_hint'),
+            __('settings.rate').' '.__('settings.rate_hint'),
+            __('settings.about').' '.__('settings.about_hint', ['version' => config('kidzio.version')]),
             __('settings.streak').' '.__('settings.streak_hint'),
             __('settings.lessons').' '.__('settings.lessons_hint'),
             __('settings.rewards').' '.__('settings.rewards_hint'),
@@ -342,7 +353,7 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
   @endif
 
   <!-- =============== APPEARANCE =============== -->
-  @if ($this->matches(__('settings.appearance'), __('settings.dark_mode'), __('settings.dark_mode_hint')))
+  @if ($this->matches(__('settings.appearance'), __('settings.dark_mode'), __('settings.dark_mode_hint'), __('settings.theme_color'), __('settings.theme_color_hint'), __('settings.text_size'), __('settings.text_size_hint'), __('settings.accent_violet'), __('settings.accent_pink'), __('settings.accent_mint'), __('settings.accent_sky'), __('settings.accent_sun'), __('settings.text_small'), __('settings.text_medium'), __('settings.text_large')))
   <section class="px-5 mt-5">
     <p class="section-label">{{ __('settings.appearance') }}</p>
     <div class="mt-3 space-y-2">
@@ -358,12 +369,89 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
           <span class="thumb"></span>
         </span>
       </label>
-      {{-- Theme color + text size → docs/tasks/T21-sound-voice-appearance.md --}}
+      @if ($this->matches(__('settings.theme_color'), __('settings.theme_color_hint'), __('settings.accent_violet'), __('settings.accent_pink'), __('settings.accent_mint'), __('settings.accent_sky'), __('settings.accent_sun')))
+      <div class="setting-row">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-palette"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.theme_color') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.theme_color_hint') }}</p>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button type="button" class="size-6 rounded-full bg-[#7C5CFF]" data-accent-pick="violet" aria-label="{{ __('settings.accent_violet') }}"></button>
+          <button type="button" class="size-6 rounded-full bg-[#FF8FC5]" data-accent-pick="pink" aria-label="{{ __('settings.accent_pink') }}"></button>
+          <button type="button" class="size-6 rounded-full bg-[#4ED6A8]" data-accent-pick="mint" aria-label="{{ __('settings.accent_mint') }}"></button>
+          <button type="button" class="size-6 rounded-full bg-[#49B8FF]" data-accent-pick="sky" aria-label="{{ __('settings.accent_sky') }}"></button>
+          <button type="button" class="size-6 rounded-full bg-[#FFB547]" data-accent-pick="sun" aria-label="{{ __('settings.accent_sun') }}"></button>
+        </div>
+      </div>
+      @endif
+      @if ($this->matches(__('settings.text_size'), __('settings.text_size_hint'), __('settings.text_small'), __('settings.text_medium'), __('settings.text_large')))
+      <div class="setting-row">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-text-aa"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.text_size') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.text_size_hint') }}</p>
+        </div>
+        <div class="segmented">
+          <button type="button" data-text-size="sm" aria-label="{{ __('settings.text_small') }}">A</button>
+          <button type="button" data-text-size="md" aria-label="{{ __('settings.text_medium') }}">A</button>
+          <button type="button" data-text-size="lg" aria-label="{{ __('settings.text_large') }}">A</button>
+        </div>
+      </div>
+      @endif
     </div>
   </section>
   @endif
 
-  {{-- Sound & music → docs/tasks/T21-sound-voice-appearance.md --}}
+  @if ($this->matches(__('settings.sound'), __('settings.sound_effects'), __('settings.sound_effects_hint'), __('settings.music'), __('settings.music_hint'), __('settings.voice'), __('settings.voice_hint')))
+  <section class="px-5 mt-5">
+    <p class="section-label">{{ __('settings.sound') }}</p>
+    <div class="mt-3 space-y-2">
+      @if ($this->matches(__('settings.sound_effects'), __('settings.sound_effects_hint')))
+      <label class="setting-row cursor-pointer" wire:ignore>
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-speaker-high"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.sound_effects') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.sound_effects_hint') }}</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" data-sfx-switch onchange="KidzioAudio.setSfx(this.checked)"/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      @endif
+      @if ($this->matches(__('settings.music'), __('settings.music_hint')))
+      <label class="setting-row cursor-pointer" wire:ignore>
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-music-note"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.music') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.music_hint') }}</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" data-music-switch onchange="KidzioAudio.setMusic(this.checked)"/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      @endif
+      @if ($this->matches(__('settings.voice'), __('settings.voice_hint')))
+      <label class="setting-row cursor-pointer" wire:ignore>
+        <div class="setting-ico tile-coral"><i class="ph-fill ph-microphone"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.voice') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.voice_hint') }}</p>
+        </div>
+        <span class="ks-switch">
+          <input type="checkbox" data-voice-switch onchange="KidzioAudio.setVoice(this.checked)"/>
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </span>
+      </label>
+      @endif
+    </div>
+  </section>
+  @endif
 
   <!-- =============== NOTIFICATIONS =============== -->
   @if ($this->matches(__('settings.notifications'), __('settings.streak'), __('settings.lessons'), __('settings.rewards'), __('settings.reminder_time'), __('settings.streak_hint'), __('settings.lessons_hint'), __('settings.rewards_hint')))
@@ -584,21 +672,49 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
   </section>
   @endif
 
-  {{-- Storage & data (offline / cache) → docs/tasks/T21-sound-voice-appearance.md. Export is on parent reports. --}}
+  @if ($this->matches(__('settings.storage'), __('settings.clear_cache'), __('settings.clear_cache_hint'), __('settings.export_progress'), __('settings.export_progress_hint')))
+  <section class="px-5 mt-5">
+    <p class="section-label">{{ __('settings.storage') }}</p>
+    <div class="mt-3 space-y-2">
+      @if ($this->matches(__('settings.clear_cache'), __('settings.clear_cache_hint')))
+      <a href="{{ route('clear-cache') }}" wire:navigate class="setting-row">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-arrows-clockwise"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.clear_cache') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.clear_cache_hint') }}</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      @endif
+      @if ($this->matches(__('settings.export_progress'), __('settings.export_progress_hint')))
+      <a href="{{ route('export-progress') }}" wire:navigate class="setting-row">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-download-simple"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.export_progress') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.export_progress_hint') }}</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      @endif
+    </div>
+  </section>
+  @endif
+  {{-- Offline lesson cache stays with T15. No megabyte figure until that cache exists. --}}
 
   <!-- =============== LANGUAGE =============== -->
   @if ($this->matches(__('settings.language'), __('settings.app_language'), __('settings.language_value'), __('settings.language_locked'), __('settings.country'), __('settings.country_hint')))
   <section class="px-5 mt-5">
     <p class="section-label">{{ __('settings.language') }}</p>
     <div class="mt-3 space-y-2">
-      <div class="setting-row">
+      <a href="{{ route('app-language') }}" wire:navigate class="setting-row">
         <div class="setting-ico tile-sun">🌐</div>
         <div class="grow min-w-0">
           <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.app_language') }}</p>
           <p class="text-[11px] text-muted">{{ __('settings.language_locked') }}</p>
         </div>
         <span class="chip">{{ __('settings.language_value') }}</span>
-      </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
       @if ($this->matches(__('settings.country'), __('settings.country_hint')))
       <a href="{{ route('country') }}" wire:navigate class="setting-row">
         <div class="setting-ico tile-sky">🌎</div>
@@ -614,13 +730,60 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
   </section>
   @endif
 
-  {{-- Support & about / PWA install → docs/tasks/T21-sound-voice-appearance.md and T15 --}}
+  @if ($this->matches(__('settings.support'), __('settings.help_faq'), __('settings.help_faq_hint'), __('settings.contact'), __('settings.contact_hint'), __('settings.rate'), __('settings.rate_hint')))
+  <section class="px-5 mt-5">
+    <p class="section-label">{{ __('settings.support') }}</p>
+    <div class="mt-3 space-y-2">
+      @if ($this->matches(__('settings.help_faq'), __('settings.help_faq_hint')))
+      <a href="{{ route('help-faq') }}" wire:navigate class="setting-row">
+        <div class="setting-ico tile-mint"><i class="ph-fill ph-chat-circle-dots"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.help_faq') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.help_faq_hint') }}</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      @endif
+      @if ($this->matches(__('settings.contact'), __('settings.contact_hint')))
+      <a href="{{ route('contact-us') }}" wire:navigate class="setting-row">
+        <div class="setting-ico tile-violet"><i class="ph-fill ph-envelope-simple"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.contact') }}</p>
+          <p class="text-[11px] text-muted">{{ config('kidzio.support_email') }}</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      @endif
+      @if ($this->matches(__('settings.rate'), __('settings.rate_hint')))
+      <a href="{{ route('contact-us', ['topic' => 'rate']) }}" wire:navigate class="setting-row">
+        <div class="setting-ico tile-sun"><i class="ph-fill ph-star"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.rate') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.rate_hint') }}</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      @endif
+    </div>
+  </section>
+  @endif
+  {{-- Install app (PWA) stays with T15. --}}
 
   <!-- =============== ABOUT / ACCOUNT =============== -->
-  @if ($this->matches(__('settings.account'), __('settings.parent_email'), $email, __('settings.delete_account'), __('settings.log_out')))
+  @if ($this->matches(__('settings.account'), __('settings.about'), __('settings.parent_email'), $email, __('settings.delete_account'), __('settings.log_out')))
   <section class="px-5 mt-5 mb-5">
     <p class="section-label">{{ __('settings.account') }}</p>
     <div class="mt-3 space-y-2">
+      @if ($this->matches(__('settings.about'), __('settings.about_hint', ['version' => config('kidzio.version')])))
+      <a href="{{ route('about') }}" wire:navigate class="setting-row">
+        <div class="setting-ico tile-sky"><i class="ph-fill ph-info"></i></div>
+        <div class="grow min-w-0">
+          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.about') }}</p>
+          <p class="text-[11px] text-muted">{{ __('settings.about_hint', ['version' => config('kidzio.version')]) }}</p>
+        </div>
+        <i class="ph ph-caret-right text-muted"></i>
+      </a>
+      @endif
       @if ($this->matches(__('settings.parent_email'), $email, __('settings.parent_email_hint')))
       <a href="{{ route('parent-email') }}" wire:navigate class="setting-row">
         <div class="setting-ico tile-violet"><i class="ph-fill ph-envelope-simple"></i></div>
@@ -648,7 +811,7 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
       </button>
       @endif
     </div>
-    <p class="text-[11px] text-center text-muted mt-5">{{ __('settings.footer_version') }}</p>
+    <p class="text-[11px] text-center text-muted mt-5">{{ __('settings.footer_version', ['version' => config('kidzio.version')]) }}</p>
   </section>
   @endif
 

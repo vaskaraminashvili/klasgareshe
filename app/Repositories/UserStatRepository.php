@@ -12,6 +12,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class UserStatRepository
 {
@@ -21,6 +22,58 @@ class UserStatRepository
             ['user_id' => $user->id],
             UserStat::defaults(),
         );
+    }
+
+    public function xpOf(User $user): int
+    {
+        $xp = UserStat::query()->where('user_id', $user->id)->value('xp');
+
+        return is_numeric($xp) ? (int) $xp : 0;
+    }
+
+    public function lockForUser(User $user): UserStat
+    {
+        $stat = UserStat::query()
+            ->where('user_id', $user->id)
+            ->lockForUpdate()
+            ->first();
+
+        if ($stat instanceof UserStat) {
+            return $stat;
+        }
+
+        return $this->firstOrCreateFor($user);
+    }
+
+    public function spendCoins(int $userId, int $price): bool
+    {
+        if ($price < 1) {
+            return false;
+        }
+
+        return UserStat::query()
+            ->where('user_id', $userId)
+            ->where('coins', '>=', $price)
+            ->decrement('coins', $price) > 0;
+    }
+
+    /**
+     * Spend coins and add one streak freeze in a single update.
+     * Ranking XP is left untouched. Fails when the balance or the freeze cap cannot cover it.
+     */
+    public function spendForShield(int $userId, int $price, int $cap): bool
+    {
+        if ($price < 1) {
+            return false;
+        }
+
+        return UserStat::query()
+            ->where('user_id', $userId)
+            ->where('coins', '>=', $price)
+            ->where('streak_freezes', '<', $cap)
+            ->decrement('coins', $price, [
+                'streak_freezes' => DB::raw('streak_freezes + 1'),
+            ]) > 0;
     }
 
     /**

@@ -470,8 +470,8 @@ new class extends Component
                     <button id="clearBtn" type="button" class="i-right hidden"
                         aria-label="{{ __('home.clear_search') }}"><i
                             class="ph ph-x-circle text-muted text-xl"></i></button>
-                    {{-- Mic dropped: voice search recognised en-US only, with no Georgian
-                         model (docs/tasks/T21-sound-voice-appearance.md). --}}
+                    {{-- Mic stays out: browser speech recognition has no Georgian model.
+                         Hear-aloud uses speechSynthesis (ka) instead. --}}
                 </div>
             </section>
 

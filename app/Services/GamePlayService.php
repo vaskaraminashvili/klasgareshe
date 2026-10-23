@@ -191,6 +191,7 @@ class GamePlayService
         $packKey = (string) ($weekPlanItemId ?? 'open');
 
         $this->stats->awardXp($user, XpSource::Pack, $xp, subject: $subject, context: $weekPlanItemId !== null ? 'pack-'.$weekPlanItemId : null);
+        $xp = $this->stats->grantedAmount($user, $xp);
 
         if ($weekPlanItemId !== null) {
             $this->weekPlan->completeItem($user, $weekPlanItemId, $correctCount);
@@ -204,7 +205,7 @@ class GamePlayService
                 subject: $subject,
                 context: 'combo-'.$packKey.'-'.$date,
             );
-            $xp += 20;
+            $xp += $this->stats->grantedAmount($user, 20);
         }
 
         if ($questionTotal >= 5 && $completedAll && $elapsedSeconds !== null && $elapsedSeconds < 120) {
@@ -215,7 +216,7 @@ class GamePlayService
                 subject: $subject,
                 context: 'speed-'.$packKey.'-'.$date,
             );
-            $xp += 20;
+            $xp += $this->stats->grantedAmount($user, 20);
         }
 
         if ($weekPlanItemId !== null && $this->weekPlan->dailyMissionJustCompleted($user)) {
@@ -225,7 +226,7 @@ class GamePlayService
                 120,
                 context: $date,
             );
-            $xp += 120;
+            $xp += $this->stats->grantedAmount($user, 120);
         }
 
         $this->badges->evaluate($user);

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             GameSeeder::class,
             WeekPlanSeeder::class,
             BadgeSeeder::class,
+            ShopItemSeeder::class,
         ]);
     }
 }

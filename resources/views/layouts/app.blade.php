@@ -17,6 +17,13 @@
                 else document.documentElement.classList.remove('dark');
                 var meta = document.querySelector('meta[name="theme-color"]');
                 if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F0B22' : '#FFF8F1');
+                var accents = { violet: 1, pink: 1, mint: 1, sky: 1, sun: 1 };
+                var accent = localStorage.getItem('accent') || 'violet';
+                if (!accents[accent]) accent = 'violet';
+                document.documentElement.setAttribute('data-accent', accent);
+                var size = localStorage.getItem('textSize') || 'md';
+                if (size !== 'sm' && size !== 'md' && size !== 'lg') size = 'md';
+                document.documentElement.setAttribute('data-text', size);
             }
 
             applyTheme();
@@ -28,6 +35,24 @@
             });
         })();
     </script>
+
+    @php
+        $kidzioSoundPack = 'default';
+        $kidzioLayoutUser = auth()->user();
+        if ($kidzioLayoutUser instanceof \App\Models\User) {
+            $kidzioSoundPack = app(\App\Services\ShopService::class)->equippedSoundPack($kidzioLayoutUser);
+        }
+    @endphp
+    <meta name="kidzio-audio-base" content="{{ asset('assets/audio') }}" />
+    <meta name="kidzio-sound-pack" content="{{ $kidzioSoundPack }}" />
+    <meta name="kidzio-share-url" content="{{ route('user-login') }}" />
+    <meta name="kidzio-share-text" content="{{ __('share.text') }}" />
+    <meta name="kidzio-share-title" content="{{ __('share.title') }}" />
+    <meta name="kidzio-share-copied" content="{{ __('share.copied') }}" />
+    <meta name="kidzio-speak-unavailable" content="{{ __('share.unavailable') }}" />
+    <link rel="preload" href="{{ asset('assets/audio/'.$kidzioSoundPack.'/correct.wav') }}" as="audio" />
+    <link rel="preload" href="{{ asset('assets/audio/'.$kidzioSoundPack.'/incorrect.wav') }}" as="audio" />
+    <link rel="preload" href="{{ asset('assets/audio/'.$kidzioSoundPack.'/levelup.wav') }}" as="audio" />
 
     <title>{{ $title ?? config('app.name') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}" />

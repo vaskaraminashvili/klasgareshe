@@ -8239,4 +8239,31 @@ body {
 }
 
 
+html[data-accent="violet"] {
+  --color-k-primary: #7c5cff;
+  --color-k-primary-ink: #4b2fd6;
+}
+html[data-accent="pink"] {
+  --color-k-primary: #ff8fc5;
+  --color-k-primary-ink: #c2186a;
+}
+html[data-accent="mint"] {
+  --color-k-primary: #4ed6a8;
+  --color-k-primary-ink: #0e7a56;
+}
+html[data-accent="sky"] {
+  --color-k-primary: #49b8ff;
+  --color-k-primary-ink: #0b6eab;
+}
+html[data-accent="sun"] {
+  --color-k-primary: #ffb547;
+  --color-k-primary-ink: #a86a00;
+}
+html[data-text="sm"] {
+  font-size: 14px;
+}
+html[data-text="lg"] {
+  font-size: 19px;
+}
+
 /*# sourceMappingURL=index.css.map*/

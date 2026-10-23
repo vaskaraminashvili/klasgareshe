@@ -9,6 +9,7 @@ use App\Repositories\UserRepository;
 use App\Services\BadgeService;
 use App\Services\GamePlayService;
 use App\Services\ScreenTimeService;
+use App\Services\UserStatService;
 use App\Services\WeekPlanService;
 use Livewire\Attributes\Locked;
 
@@ -287,12 +288,14 @@ trait PlaysWeekPlanPack
             $this->correctCount++;
             $this->combo++;
             $this->maxCombo = max($this->maxCombo, $this->combo);
+            $this->dispatch('kidzio-sfx', kind: 'correct');
 
             return;
         }
 
         $this->lives = max(0, $this->lives - 1);
         $this->combo = 0;
+        $this->dispatch('kidzio-sfx', kind: 'incorrect');
     }
 
     protected function showCurrent(): void
@@ -325,6 +328,7 @@ trait PlaysWeekPlanPack
 
         $this->settled = true;
         $user = $users->authenticated();
+        $levelBefore = app(UserStatService::class)->levelOf($user);
         $this->yesterdayCorrect = $play->yesterdayCorrect($user, $this->planItemId);
         $this->beatYesterday = $this->yesterdayCorrect !== null && $this->correctCount > $this->yesterdayCorrect;
         $elapsed = $this->startedAt === '' ? 0 : max(0, (int) now()->diffInSeconds($this->startedAt));
@@ -339,6 +343,10 @@ trait PlaysWeekPlanPack
             $this->resultTotal,
             $completedAll,
         );
+        if (app(UserStatService::class)->levelOf($user) > $levelBefore) {
+            $this->dispatch('kidzio-sfx', kind: 'levelup');
+        }
+
         $slug = $badges->firstUnseenSlug($user);
         $this->pendingBadge = is_string($slug) ? $slug : null;
         $this->showResult = true;

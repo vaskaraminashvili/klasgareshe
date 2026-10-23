@@ -14,6 +14,7 @@ use App\Enums\XpSource;
 use App\Models\User;
 use App\Models\UserStat;
 use App\Repositories\PlaySessionRepository;
+use App\Repositories\ShopRepository;
 use App\Repositories\UserStatRepository;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -24,7 +25,7 @@ class UserStatService
     /** @var list<string> */
     private const AVATARS = ['🐻', '🦊', '🐰', '🐼', '🐨', '🦄', '🐢', '🦁', '🐸', '🐯'];
 
-    private const FREEZE_CAP = 3;
+    public const FREEZE_CAP = 3;
 
     /** @var array<int, int> */
     private const MILESTONE_XP = [3 => 20, 7 => 50, 14 => 100];
@@ -40,11 +41,17 @@ class UserStatService
         private LevelCalculator $levels,
         private LeagueSeasonService $leagues,
         private PlaySessionRepository $sessions,
+        private ShopRepository $shopItems,
     ) {}
 
     public function ensureFor(User $user): UserStat
     {
         return $this->stats->firstOrCreateFor($user);
+    }
+
+    public function levelOf(User $user): int
+    {
+        return $this->levels->forXp($this->stats->xpOf($user))->level;
     }
 
     public function homeSnapshot(User $user): HomeStats
@@ -293,6 +300,7 @@ class UserStatService
         }
 
         if ($amount > 0) {
+            $amount = $this->grantedAmount($user, $amount, $at);
             $this->stats->createXpEvent($user, $source, $amount, $subject, $context, $at);
             $this->stats->addDayXp($user, $onDate, $amount);
             if ($countsTowardLeague) {
@@ -333,6 +341,15 @@ class UserStatService
         return $this->ensureFor($user);
     }
 
+    public function grantedAmount(User $user, int $amount, ?CarbonInterface $at = null): int
+    {
+        if ($amount < 1) {
+            return 0;
+        }
+
+        return $amount * $this->shopItems->activeMultiplier($user, $at);
+    }
+
     public function awardDailyLogin(User $user, ?CarbonInterface $on = null): int
     {
         $at = CarbonImmutable::parse($on ?? now());
@@ -345,7 +362,7 @@ class UserStatService
         $amount = self::LOGIN_XP[min(7, $this->loginStreakLength($user, $at))];
         $this->awardXp($user, XpSource::DailyLogin, $amount, $at, context: $date, countsAsPlay: false);
 
-        return $amount;
+        return $this->grantedAmount($user, $amount, $at);
     }
 
     public function nextDailyLoginXp(User $user, ?CarbonInterface $on = null): int

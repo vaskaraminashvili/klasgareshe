@@ -59,9 +59,11 @@ Real features, but the app is usable and sellable without them.
 | T17 | [Search — live index](tasks/T17-search.md) | **done** |
 | T18 | [Ranking depth + league rewards](tasks/T18-ranking-depth.md) | **done** |
 | T19 | [Mini-games batch 2 — the rest](tasks/T19-minigames-batch-2.md) | **done** |
-| T20 | [Reward shop](tasks/T20-reward-shop.md) | not started |
-| T21 | [Sound, voice & appearance](tasks/T21-sound-voice-appearance.md) | not started |
-| T22 | [Social & phone login](tasks/T22-social-phone-login.md) | not started |
+| T20 | [Reward shop](tasks/T20-reward-shop.md) | **done** |
+| T21 | [Sound, voice & appearance](tasks/T21-sound-voice-appearance.md) | **done** |
+| T22 | [Social & phone login](tasks/T22-social-phone-login.md) | **done** |
+
+T22 shipped Google, Apple, and phone-code login. Facebook is the one checkbox left open: it was not confirmed as wanted, so the button stays and explains in Georgian that Facebook is not enabled. No Facebook provider was built.
 
 ---
 

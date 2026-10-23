@@ -3,12 +3,19 @@
 use App\Http\Controllers\ParentEmailConfirmController;
 use App\Http\Controllers\ParentVerificationController;
 use App\Http\Controllers\PushSubscriptionController;
+use App\Http\Controllers\SocialAuthController;
 use App\Http\Middleware\RedirectToKidSetup;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::livewire('/login', 'pages::user-login')->name('user-login');
     Route::livewire('/register', 'pages::user-register')->name('user-register');
+    Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])
+        ->whereIn('provider', ['google', 'apple'])
+        ->name('social.redirect');
+    Route::match(['get', 'post'], '/auth/{provider}/callback', [SocialAuthController::class, 'callback'])
+        ->whereIn('provider', ['google', 'apple'])
+        ->name('social.callback');
 });
 
 Route::livewire('/forgot-password', 'pages::forgot-password')->name('forgot-password');
@@ -38,7 +45,12 @@ Route::middleware(['auth:web', RedirectToKidSetup::class, 'parent.zone.lock-on-e
     Route::livewire('/profile', 'pages::profile')->name('profile');
     Route::livewire('/edit-profile', 'pages::edit-profile')->name('edit-profile');
     Route::livewire('/settings', 'pages::settings')->name('settings');
+    Route::livewire('/app-language', 'pages::app-language')->name('app-language');
     Route::livewire('/country', 'pages::country')->name('country');
+    Route::livewire('/help-faq', 'pages::help-faq')->name('help-faq');
+    Route::livewire('/contact-us', 'pages::contact-us')->name('contact-us');
+    Route::livewire('/about', 'pages::about')->name('about');
+    Route::livewire('/clear-cache', 'pages::clear-cache')->name('clear-cache');
     Route::livewire('/daily-mission', 'pages::daily-mission')->name('daily-mission');
     Route::livewire('/streak', 'pages::streak')->name('streak');
     Route::livewire('/xp-progress', 'pages::xp-progress')->name('xp-progress');

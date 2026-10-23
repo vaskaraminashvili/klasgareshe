@@ -14,10 +14,15 @@ use App\Repositories\PushSubscriptionRepository;
 use App\Repositories\QuestionRepository;
 use App\Repositories\RewardRepository;
 use App\Repositories\SearchQueryRepository;
+use App\Repositories\ShopRepository;
+use App\Repositories\SocialIdentityRepository;
+use App\Repositories\SupportMessageRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserStatRepository;
 use App\Repositories\WeekPlanRepository;
+use App\Services\AboutService;
 use App\Services\AccountService;
+use App\Services\AppLocaleService;
 use App\Services\BadgeService;
 use App\Services\CountryService;
 use App\Services\FriendshipService;
@@ -31,12 +36,17 @@ use App\Services\NotificationService;
 use App\Services\ParentVerificationService;
 use App\Services\ParentZoneService;
 use App\Services\PasswordResetService;
+use App\Services\PhoneLoginService;
 use App\Services\ProgressPdfService;
 use App\Services\ProgressReportService;
 use App\Services\QuestionPlayModeResolver;
 use App\Services\RewardService;
 use App\Services\ScreenTimeService;
 use App\Services\SearchService;
+use App\Services\ShareService;
+use App\Services\ShopService;
+use App\Services\SocialAuthService;
+use App\Services\SupportService;
 use App\Services\TraceStrokeService;
 use App\Services\UserProfileService;
 use App\Services\UserRegistrationService;
@@ -54,6 +64,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(UserRepository::class);
+        $this->app->singleton(SocialIdentityRepository::class);
         $this->app->singleton(UserStatRepository::class);
         $this->app->singleton(AppNotificationRepository::class);
         $this->app->singleton(PushSubscriptionRepository::class);
@@ -68,6 +79,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(TraceStrokeService::class);
         $this->app->singleton(LevelCalculator::class);
         $this->app->singleton(UserRegistrationService::class);
+        $this->app->singleton(SocialAuthService::class);
+        $this->app->singleton(PhoneLoginService::class);
         $this->app->singleton(UserProfileService::class);
         $this->app->singleton(FriendshipService::class);
         $this->app->singleton(LeagueSeasonService::class);
@@ -85,7 +98,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(BadgeRepository::class);
         $this->app->singleton(BadgeService::class);
         $this->app->singleton(RewardRepository::class);
+        $this->app->singleton(ShopRepository::class);
         $this->app->singleton(RewardService::class);
+        $this->app->singleton(ShopService::class);
         $this->app->singleton(MonthlyGoalService::class);
         $this->app->singleton(SearchQueryRepository::class);
         $this->app->singleton(SearchService::class);
@@ -95,5 +110,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(ProgressReportService::class);
         $this->app->singleton(ProgressPdfService::class);
         $this->app->singleton(AccountService::class);
+        $this->app->singleton(SupportMessageRepository::class);
+        $this->app->singleton(SupportService::class);
+        $this->app->singleton(ShareService::class);
+        $this->app->singleton(AppLocaleService::class);
+        $this->app->singleton(AboutService::class);
     }
 }

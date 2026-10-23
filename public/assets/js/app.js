@@ -491,3 +491,297 @@ window.toggleTheme = toggleTheme;
   }
   document.addEventListener("livewire:navigated", startResendCountdown);
 })();
+
+// ── Accent, text size, audio, voice, share ───────────────────────
+(function () {
+  const ACCENTS = ["violet", "pink", "mint", "sky", "sun"];
+  const SIZES = ["sm", "md", "lg"];
+  const RING = ["ring-2", "ring-[color:var(--color-k-primary)]", "ring-offset-2", "ring-offset-[color:var(--color-k-surface)]"];
+  let clips = {};
+  let music = null;
+  let lastSpoken = "";
+
+  function meta(name) {
+    return document.querySelector('meta[name="' + name + '"]')?.getAttribute("content") || "";
+  }
+
+  function flag(key, fallback) {
+    const saved = localStorage.getItem(key);
+    if (saved === "0") return false;
+    if (saved === "1") return true;
+    return fallback;
+  }
+
+  function packName() {
+    return meta("kidzio-sound-pack") === "fun" ? "fun" : "default";
+  }
+
+  function audioUrl(kind) {
+    const base = meta("kidzio-audio-base").replace(/\/$/, "");
+    return base + "/" + packName() + "/" + kind + ".wav";
+  }
+
+  function clip(kind) {
+    const key = packName() + ":" + kind;
+    if (!clips[key]) {
+      const audio = new Audio(audioUrl(kind));
+      audio.preload = "auto";
+      clips[key] = audio;
+    }
+    return clips[key];
+  }
+
+  function play(kind) {
+    if (!flag("kidzio-sfx", true)) return;
+    const audio = clip(kind);
+    try {
+      audio.currentTime = 0;
+      audio.play().catch(function () {});
+    } catch (e) {}
+  }
+
+  function ensureMusic() {
+    if (!music || music.dataset.pack !== packName()) {
+      if (music) {
+        music.pause();
+      }
+      music = new Audio(audioUrl("music"));
+      music.loop = true;
+      music.preload = "none";
+      music.volume = 0.22;
+      music.dataset.pack = packName();
+    }
+    return music;
+  }
+
+  function syncMusic() {
+    if (!flag("kidzio-music", false) || document.hidden) {
+      if (music) music.pause();
+      return;
+    }
+    ensureMusic().play().catch(function () {});
+  }
+
+  function speak(text) {
+    if (!text) return;
+    const synth = window.speechSynthesis;
+    if (!synth || typeof SpeechSynthesisUtterance === "undefined") {
+      if (window.toast) window.toast(meta("kidzio-speak-unavailable"));
+      return;
+    }
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "ka-GE";
+    synth.cancel();
+    synth.speak(utter);
+    lastSpoken = text;
+  }
+
+  function autoSpeak() {
+    if (!flag("kidzio-voice", true)) return;
+    const el = document.querySelector("[data-speak-auto]");
+    if (!el) return;
+    const text = el.getAttribute("data-speak-auto") || "";
+    if (text === "" || text === lastSpoken) return;
+    speak(text);
+  }
+
+  function setChecked(selector, on) {
+    document.querySelectorAll(selector).forEach(function (el) {
+      if (el instanceof HTMLInputElement) el.checked = on;
+    });
+  }
+
+  function syncAppearance() {
+    const accent = document.documentElement.getAttribute("data-accent") || "violet";
+    document.querySelectorAll("[data-accent-pick]").forEach(function (btn) {
+      const on = btn.getAttribute("data-accent-pick") === accent;
+      RING.forEach(function (cls) {
+        btn.classList.toggle(cls, on);
+      });
+    });
+    const size = document.documentElement.getAttribute("data-text") || "md";
+    document.querySelectorAll("[data-text-size]").forEach(function (btn) {
+      btn.classList.toggle("is-active", btn.getAttribute("data-text-size") === size);
+    });
+    setChecked("[data-sfx-switch]", flag("kidzio-sfx", true));
+    setChecked("[data-music-switch]", flag("kidzio-music", false));
+    setChecked("[data-voice-switch]", flag("kidzio-voice", true));
+  }
+
+  function share() {
+    const url = meta("kidzio-share-url");
+    const text = meta("kidzio-share-text");
+    const title = meta("kidzio-share-title");
+    const copied = meta("kidzio-share-copied");
+    if (navigator.share) {
+      navigator.share({ title: title, text: text, url: url }).catch(function () {});
+      return;
+    }
+    const payload = text + " " + url;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(payload).then(function () {
+        if (window.toast) window.toast(copied);
+      });
+      return;
+    }
+    if (window.toast) window.toast(copied);
+  }
+
+  window.KidzioAudio = {
+    play: play,
+    release: function () {
+      Object.keys(clips).forEach(function (key) {
+        clips[key].pause();
+        clips[key].removeAttribute("src");
+        clips[key].load();
+      });
+      clips = {};
+      if (music) {
+        music.pause();
+        music.removeAttribute("src");
+        music.load();
+        music = null;
+      }
+    },
+    setSfx: function (on) {
+      localStorage.setItem("kidzio-sfx", on ? "1" : "0");
+      if (on) play("correct");
+    },
+    setMusic: function (on) {
+      localStorage.setItem("kidzio-music", on ? "1" : "0");
+      syncMusic();
+    },
+    setVoice: function (on) {
+      localStorage.setItem("kidzio-voice", on ? "1" : "0");
+    },
+  };
+  window.kidzioShare = share;
+
+  document.addEventListener("kidzio-sfx", function (event) {
+    const detail = event.detail || {};
+    const kind = detail.kind || (Array.isArray(detail) ? detail[0] : "");
+    if (kind === "correct" || kind === "incorrect" || kind === "levelup") play(kind);
+  });
+
+  document.addEventListener("click", function (event) {
+    const accent = event.target.closest("[data-accent-pick]");
+    if (accent) {
+      const name = accent.getAttribute("data-accent-pick");
+      if (ACCENTS.indexOf(name) !== -1) {
+        localStorage.setItem("accent", name);
+        document.documentElement.setAttribute("data-accent", name);
+        syncAppearance();
+      }
+    }
+    const size = event.target.closest("[data-text-size]");
+    if (size) {
+      const value = size.getAttribute("data-text-size");
+      if (SIZES.indexOf(value) !== -1) {
+        localStorage.setItem("textSize", value);
+        document.documentElement.setAttribute("data-text", value);
+        syncAppearance();
+      }
+    }
+    const speakBtn = event.target.closest("[data-speak]");
+    if (speakBtn) speak(speakBtn.getAttribute("data-speak") || "");
+    if (event.target.closest("[data-kidzio-share]")) share();
+  });
+
+  document.addEventListener("change", function (event) {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement)) return;
+    if (input.matches("[data-sfx-switch]")) window.KidzioAudio.setSfx(input.checked);
+    if (input.matches("[data-music-switch]")) window.KidzioAudio.setMusic(input.checked);
+    if (input.matches("[data-voice-switch]")) window.KidzioAudio.setVoice(input.checked);
+  });
+
+  document.addEventListener("visibilitychange", syncMusic);
+  document.addEventListener("pointerdown", function () {
+    if (flag("kidzio-music", false)) syncMusic();
+  }, { once: false });
+
+  function boot() {
+    syncAppearance();
+    ["correct", "incorrect", "levelup"].forEach(function (kind) {
+      clip(kind);
+    });
+    autoSpeak();
+  }
+
+  document.addEventListener("DOMContentLoaded", boot);
+  document.addEventListener("livewire:navigated", function () {
+    lastSpoken = "";
+    syncAppearance();
+    syncMusic();
+    autoSpeak();
+  });
+  document.addEventListener("livewire:init", function () {
+    if (window.Livewire && typeof Livewire.hook === "function") {
+      Livewire.hook("morph.updated", function () {
+        syncAppearance();
+        autoSpeak();
+      });
+    }
+  });
+})();
+
+// Clear-cache screen. Offline lessons stay disabled until the PWA cache exists.
+(function () {
+  function page() {
+    return document.getElementById("clearCache");
+  }
+
+  function sheet(id, open) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle("hidden", !open);
+  }
+
+  function chosen() {
+    return Array.from(document.querySelectorAll("#clearCache [data-clear]")).filter(function (el) {
+      return el instanceof HTMLInputElement && el.checked && !el.disabled;
+    });
+  }
+
+  function syncCount() {
+    if (!page()) return;
+    const count = document.getElementById("heroItems");
+    if (count) count.textContent = String(chosen().length);
+    const button = document.getElementById("clearBtn");
+    if (button instanceof HTMLButtonElement) button.disabled = chosen().length === 0;
+  }
+
+  document.addEventListener("change", function (event) {
+    if (event.target instanceof HTMLInputElement && event.target.matches("#clearCache [data-clear]")) syncCount();
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!page()) return;
+    if (event.target.closest("#selectAll")) {
+      document.querySelectorAll("#clearCache [data-clear]").forEach(function (el) {
+        if (el instanceof HTMLInputElement && !el.disabled) el.checked = true;
+      });
+      syncCount();
+    }
+    if (event.target.closest("#clearBtn")) sheet("confirmSheet", true);
+    if (event.target.closest("#confirmClose") || event.target.closest("#confirmCancel") || event.target.closest("#confirmBackdrop")) {
+      sheet("confirmSheet", false);
+    }
+    if (event.target.closest("#doneStay") || event.target.closest("#doneBackdrop")) sheet("doneSheet", false);
+    if (!event.target.closest("#confirmYes")) return;
+    const keys = chosen().map(function (el) { return el.getAttribute("data-clear"); });
+    const finish = function () {
+      sheet("confirmSheet", false);
+      sheet("doneSheet", true);
+    };
+    if (keys.indexOf("audio") !== -1 && window.KidzioAudio) window.KidzioAudio.release();
+    if (window.caches && (keys.indexOf("audio") !== -1 || keys.indexOf("image") !== -1)) {
+      caches.keys().then(function (names) {
+        return Promise.all(names.map(function (name) { return caches.delete(name); }));
+      }).then(finish).catch(finish);
+      return;
+    }
+    finish();
+  });
+
+  document.addEventListener("livewire:navigated", syncCount);
+})();

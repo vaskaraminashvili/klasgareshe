@@ -113,7 +113,7 @@ new class extends Component
       <p class="text-xs text-muted">{{ __('streak.learning_flame') }}</p>
       <h1 class="h-display text-lg leading-tight">{{ __('streak.daily_streak') }}</h1>
     </div>
-    <button type="button" class="icon-btn" aria-label="{{ __('streak.share') }}"><i class="ph ph-share-fat text-xl"></i></button>
+    <button type="button" class="icon-btn" data-kidzio-share aria-label="{{ __('streak.share') }}"><i class="ph ph-share-fat text-xl"></i></button>
     <button type="button" class="icon-btn" data-theme-toggle aria-label="{{ __('streak.toggle_theme') }}"><i class="ph ph-moon text-xl"></i></button>
   </header>
 

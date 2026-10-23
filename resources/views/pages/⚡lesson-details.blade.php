@@ -143,7 +143,7 @@ new class extends Component
         </div>
         <button class="icon-btn" type="button" wire:click="toggleFavourite" aria-label="{{ __('learn.favourite') }}"><i
                 class="{{ $favourite ? 'ph-fill ph-heart text-[var(--color-k-coral)]' : 'ph ph-heart' }}"></i></button>
-        <button class="icon-btn" type="button" aria-label="{{ __('learn.share') }}"><i class="ph ph-share-fat"></i></button>
+        <button class="icon-btn" type="button" data-kidzio-share aria-label="{{ __('learn.share') }}"><i class="ph ph-share-fat"></i></button>
     </header>
 
     <!-- =============== HERO =============== -->
@@ -326,7 +326,9 @@ new class extends Component
     <div class="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
         <div class="mx-auto max-w-[430px] pointer-events-auto">
             <div class="bg-surface border-t border-token safe-bottom px-5 pt-3 pb-3 flex items-center gap-2">
-                {{-- Preview audio — T21. --}}
+                <button type="button" class="icon-btn shrink-0" data-speak="{{ $titleText }}" aria-label="{{ __('learn.preview_audio') }}">
+                    <i class="ph-fill ph-speaker-high text-xl"></i>
+                </button>
                 @if ($state === 'playable')
                     <a href="{{ $playHref }}" wire:navigate class="btn btn-primary grow">
                         <i class="ph-fill ph-play"></i> {{ __('learn.continue_lesson') }}

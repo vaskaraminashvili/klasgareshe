@@ -7,6 +7,7 @@ use App\Services\MonthlyGoalService;
 use App\Services\ProgressReportService;
 use App\Services\RewardService;
 use App\Services\ScreenTimeService;
+use App\Services\ShopService;
 use App\Services\UserStatService;
 use App\Services\WeekPlanService;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,12 @@ new #[Title('პროფილი · Kidzio')] class extends Component
     public string $displayName = '';
 
     public string $avatar = '🐻';
+
+    public string $hat = '';
+
+    public string $background = '';
+
+    public string $boostUntil = '';
 
     public string $metaLine = '';
 
@@ -94,15 +101,20 @@ new #[Title('პროფილი · Kidzio')] class extends Component
         ScreenTimeService $time,
         ProgressReportService $reports,
         RewardService $rewards,
+        ShopService $shop,
     ): void {
         $user = $users->authenticated();
         $week = $reports->weekSnapshot($user);
         $snap = $stats->profileSnapshot($user, $week->figures->packs);
         $monthly = $monthlyGoals->snapshot($user);
         $friendsStrip = $friendships->profileStrip($user);
+        $look = $shop->look($user);
 
         $this->displayName = $snap->name;
         $this->avatar = $snap->avatar;
+        $this->hat = $look->hat;
+        $this->background = $look->background;
+        $this->boostUntil = $look->boostUntil;
         $this->metaLine = $snap->age !== null
             ? (string) __('profile.age_grade', ['age' => $snap->age, 'grade' => $snap->gradeLabel])
             : $snap->gradeLabel;
@@ -200,10 +212,13 @@ new #[Title('პროფილი · Kidzio')] class extends Component
 
     <!-- =============== PROFILE HERO =============== -->
     <section class="px-5">
-        <div class="k-card-lg hero-profile text-center">
+        <div class="k-card-lg hero-profile text-center" @if ($background !== '') style="background: {{ $background }}" @endif>
             <div class="relative">
                 <span class="profile-avatar">
                     <span>{{ $avatar }}</span>
+                    @if ($hat !== '')
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 text-3xl leading-none pointer-events-none" aria-hidden="true">{{ $hat }}</span>
+                    @endif
                     <a href="{{ route('edit-profile') }}" wire:navigate class="camera-badge" aria-label="{{ __('profile.change_avatar') }}">
                         <i class="ph-fill ph-camera text-sm"></i>
                     </a>
@@ -218,6 +233,9 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                     <i class="ph-fill ph-crown-simple"></i>
                     {{ __('profile.level_rank', ['level' => $level, 'rank' => $levelTitle]) }}
                 </span>
+                @if ($boostUntil !== '')
+                <span class="chip bg-white/20 border-0 text-white">{{ __('shop.boost_active', ['until' => $boostUntil]) }}</span>
+                @endif
                 {{-- "Online" chip dropped: nothing tracks presence, so it was always on.
                      Re-port it when sessions exist (docs/tasks/T07-screen-time-bedtime.md). --}}
             </div>
@@ -253,8 +271,9 @@ new #[Title('პროფილი · Kidzio')] class extends Component
                 <a href="{{ route('edit-profile') }}" wire:navigate class="cta-soft">
                     <i class="ph-fill ph-pencil-simple"></i> {{ __('profile.edit_profile') }}
                 </a>
-                {{-- Share button dropped: no share backend, the button did nothing
-                     (docs/tasks/T21-sound-voice-appearance.md). --}}
+                <button type="button" class="chip bg-white/20 border-0 text-white" data-kidzio-share>
+                    <i class="ph-fill ph-share-fat"></i> {{ __('share.action') }}
+                </button>
             </div>
         </div>
     </section>

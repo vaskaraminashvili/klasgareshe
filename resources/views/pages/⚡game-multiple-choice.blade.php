@@ -30,6 +30,7 @@ new class extends PlaysWeekPlanPackComponent
         <div class="grow">
             <div class="progress"><span style="width:{{ $this->progressPercent() }}%"></span></div>
         </div>
+        <button type="button" class="icon-btn" aria-label="{{ __('quiz.hear') }}" data-speak="{{ $prompt }}"><i class="ph-fill ph-speaker-high"></i></button>
         <span class="chip chip-coral">❤️ {{ $lives }}</span>
     </header>
 
@@ -56,7 +57,7 @@ new class extends PlaysWeekPlanPackComponent
                 {{ __('quiz.question_n_of', ['current' => $index + 1, 'total' => count($questionIds)]) }}
             @endif
         </p>
-        <h1 class="h-display text-2xl mt-2">{{ $prompt }}</h1>
+        <h1 class="h-display text-2xl mt-2" data-speak-auto="{{ $prompt }}">{{ $prompt }}</h1>
     </section>
 
     @if ($playMode === 'fill' && $emoji !== '')

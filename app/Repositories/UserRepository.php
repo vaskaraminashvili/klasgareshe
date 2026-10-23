@@ -129,11 +129,33 @@ class UserRepository
             ->get();
     }
 
+    public function find(int $id): ?User
+    {
+        return User::query()->find($id);
+    }
+
     public function findByEmail(string $email): ?User
     {
         return User::query()
             ->whereRaw('lower(email) = ?', [mb_strtolower($email)])
             ->first();
+    }
+
+    public function findWithTrashedByEmail(string $email): ?User
+    {
+        return User::withTrashed()
+            ->whereRaw('lower(email) = ?', [mb_strtolower(trim($email))])
+            ->first();
+    }
+
+    public function findByPhone(string $phone): ?User
+    {
+        return User::query()->where('phone', $phone)->first();
+    }
+
+    public function findWithTrashedByPhone(string $phone): ?User
+    {
+        return User::withTrashed()->where('phone', $phone)->first();
     }
 
     public function rotateRememberToken(User $user): User

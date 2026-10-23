@@ -2,9 +2,11 @@
 
 use App\Data\RewardClaimCard;
 use App\Data\RewardsDashboardSnapshot;
+use App\Data\ShopBundleCard;
 use App\Enums\RewardClaimType;
 use App\Repositories\UserRepository;
 use App\Services\RewardService;
+use App\Services\ShopService;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -49,6 +51,31 @@ new class extends Component
     /** @var list<array{title: string, subtitle: string, emoji: string, tile: string, amount: int, spent: bool, when: string}> */
     public array $activity = [];
 
+    public string $shopFilter = 'all';
+
+    public string $shopNotice = '';
+
+    public int $shopCount = 0;
+
+    public string $boostUntil = '';
+
+    /** @var list<array{slug: string, category: string, emoji: string, tile: string, name: string, description: string, price: int, listPrice: int|null, tag: string, tagClass: string, tagLabel: string, owned: bool, equipped: bool, action: string, enabled: bool, click: string}> */
+    public array $shopItems = [];
+
+    public ?string $bundleSlug = null;
+
+    public string $bundleEmoji = '';
+
+    public string $bundleName = '';
+
+    public string $bundleKicker = '';
+
+    public string $bundleBody = '';
+
+    public int $bundlePrice = 0;
+
+    public bool $bundleOwned = false;
+
     public function title(): string
     {
         return __('rewards.page_title');
@@ -59,12 +86,12 @@ new class extends Component
         $view->title($this->title());
     }
 
-    public function mount(RewardService $rewards, UserRepository $users): void
+    public function mount(RewardService $rewards, ShopService $shop, UserRepository $users): void
     {
-        $this->fillFrom($rewards->dashboard($users->authenticated()));
+        $this->reload($rewards, $shop, $users);
     }
 
-    public function claim(string $type, string $reference, RewardService $rewards, UserRepository $users): void
+    public function claim(string $type, string $reference, RewardService $rewards, ShopService $shop, UserRepository $users): void
     {
         $claimType = RewardClaimType::tryFrom($type);
 
@@ -80,7 +107,63 @@ new class extends Component
             return;
         }
 
-        $this->fillFrom($rewards->dashboard($users->authenticated()));
+        $this->reload($rewards, $shop, $users);
+    }
+
+    public function setFilter(string $filter): void
+    {
+        $allowed = ['all', 'avatar', 'hat', 'background', 'boost', 'sound', 'shield', 'sale'];
+
+        if (in_array($filter, $allowed, true)) {
+            $this->shopFilter = $filter;
+        }
+    }
+
+    public function buy(string $slug, RewardService $rewards, ShopService $shop, UserRepository $users): void
+    {
+        if (preg_match('/^[a-z0-9-]{1,64}$/', $slug) !== 1) {
+            return;
+        }
+
+        $result = $shop->purchase($users->authenticated(), $slug);
+        $this->shopNotice = match ($result->status) {
+            'insufficient' => (string) __('shop.insufficient'),
+            'capped' => (string) __('shop.capped'),
+            default => '',
+        };
+        $this->reload($rewards, $shop, $users);
+    }
+
+    public function equip(string $slug, RewardService $rewards, ShopService $shop, UserRepository $users): void
+    {
+        if (preg_match('/^[a-z0-9-]{1,64}$/', $slug) !== 1) {
+            return;
+        }
+
+        $shop->equip($users->authenticated(), $slug);
+        $this->shopNotice = '';
+        $this->reload($rewards, $shop, $users);
+    }
+
+    /**
+     * @return list<array{slug: string, category: string, emoji: string, tile: string, name: string, description: string, price: int, listPrice: int|null, tag: string, tagClass: string, tagLabel: string, owned: bool, equipped: bool, action: string, enabled: bool, click: string}>
+     */
+    public function visibleShopItems(): array
+    {
+        return array_values(array_filter(
+            $this->shopItems,
+            function (array $item): bool {
+                if ($this->shopFilter === 'all') {
+                    return true;
+                }
+
+                if ($this->shopFilter === 'sale') {
+                    return $item['tag'] === 'sale';
+                }
+
+                return $item['category'] === $this->shopFilter;
+            },
+        ));
     }
 
     private function fillFrom(RewardsDashboardSnapshot $snap): void
@@ -107,6 +190,40 @@ new class extends Component
         $this->today = $snap->today;
         $this->activity = $snap->activity;
     }
+
+    private function reload(RewardService $rewards, ShopService $shop, UserRepository $users): void
+    {
+        $user = $users->authenticated();
+        $this->fillFrom($rewards->dashboard($user));
+        $page = $shop->page($user);
+        $this->shopItems = $page['items'];
+        $this->shopCount = $page['count'];
+        $this->boostUntil = $page['boostUntil'];
+        $this->fillBundle($page['bundle']);
+    }
+
+    private function fillBundle(?ShopBundleCard $bundle): void
+    {
+        if (! $bundle instanceof ShopBundleCard) {
+            $this->bundleSlug = null;
+            $this->bundleEmoji = '';
+            $this->bundleName = '';
+            $this->bundleKicker = '';
+            $this->bundleBody = '';
+            $this->bundlePrice = 0;
+            $this->bundleOwned = false;
+
+            return;
+        }
+
+        $this->bundleSlug = $bundle->slug;
+        $this->bundleEmoji = $bundle->emoji;
+        $this->bundleName = $bundle->name;
+        $this->bundleKicker = $bundle->kicker;
+        $this->bundleBody = $bundle->body;
+        $this->bundlePrice = $bundle->price;
+        $this->bundleOwned = $bundle->owned;
+    }
 };
 ?>
 
@@ -131,7 +248,7 @@ new class extends Component
           <span class="chip bg-white/20 border-0 text-white">
             <i class="ph-fill ph-wallet"></i> {{ __('rewards.your_balance') }}
           </span>
-          <p class="h-display text-4xl mt-1 leading-none">{{ number_format($xp) }} <span class="text-xl opacity-80">{{ __('rewards.xp') }}</span></p>
+          <p class="h-display text-4xl mt-1 leading-none">{{ number_format($coins) }} <span class="text-xl opacity-80">{{ __('rewards.xp') }}</span></p>
           <p class="text-xs text-white/90 mt-1"><i class="ph-fill ph-trend-up"></i> {{ __('rewards.today_keep', ['xp' => $todayXp]) }}</p>
         </div>
       </div>
@@ -153,6 +270,9 @@ new class extends Component
 
       <div class="relative mt-4 flex items-center gap-2">
         <a href="{{ route('xp-progress') }}" wire:navigate class="cta-soft">{{ __('rewards.view_xp') }} <i class="ph-fill ph-arrow-right"></i></a>
+        @if ($boostUntil !== '')
+        <span class="chip bg-white/20 border-0 text-white">{{ __('shop.boost_active', ['until' => $boostUntil]) }}</span>
+        @endif
         <span class="chip bg-white/20 border-0 text-white ml-auto">
           {{ __('rewards.level_to_next', ['level' => $level, 'xp' => number_format($xpToNext), 'next' => $nextLevel]) }}
         </span>
@@ -223,8 +343,61 @@ new class extends Component
     @endif
   </section>
 
-  {{-- Reward shop filters, grid, and limited bundle: dummy catalog.
-       Re-port from the template in docs/tasks/T20-reward-shop.md. --}}
+  <!-- =============== SHOP FILTERS =============== -->
+  <section class="px-5 mt-5">
+    <div class="section-head">
+      <h2 class="h-display text-lg">{{ __('shop.heading') }}</h2>
+      <button type="button" wire:click="setFilter('all')" class="link">{{ __('shop.all_count', ['count' => $shopCount]) }}</button>
+    </div>
+    <div class="swiper rail-swiper" data-swiper-rail-tabs data-tabs>
+      <div class="swiper-wrapper">
+        @foreach (['all', 'avatar', 'hat', 'background', 'boost', 'sound', 'shield', 'sale'] as $filter)
+        <button type="button" wire:click="setFilter('{{ $filter }}')" wire:key="shop-filter-{{ $filter }}" class="swiper-slide chip{{ $shopFilter === $filter ? ' chip-primary' : '' }}">{{ __('shop.filters.'.$filter) }}</button>
+        @endforeach
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== SHOP GRID =============== -->
+  <section class="px-5 mt-3">
+    @if ($shopNotice !== '')
+    <p class="text-sm mb-3" style="color:var(--color-k-coral)">{{ $shopNotice }}</p>
+    @endif
+    <div class="grid grid-cols-2 gap-3">
+      @forelse ($this->visibleShopItems() as $item)
+      <div wire:key="shop-{{ $item['slug'] }}" class="shop-card">
+        @if ($item['tagClass'] !== '')
+        <span class="shop-tag {{ $item['tagClass'] }}">{{ $item['tagLabel'] }}</span>
+        @endif
+        <div class="shop-emoji {{ $item['tile'] }}">{{ $item['emoji'] }}</div>
+        <p class="shop-name">{{ $item['name'] }}</p>
+        <p class="shop-desc">{{ $item['description'] }}</p>
+        <p class="shop-price">⭐ {{ $item['price'] }} {{ __('rewards.xp') }}@if ($item['listPrice'] !== null) <span class="text-muted line-through font-normal">{{ $item['listPrice'] }}</span>@endif</p>
+        <button type="button" class="btn btn-soft h-9 min-h-0 w-full mt-3 text-xs" @disabled(! $item['enabled']) @if ($item['click'] !== '') wire:click="{{ $item['click'] }}" wire:loading.attr="disabled" @endif>{{ $item['action'] }}</button>
+      </div>
+      @empty
+      <p class="text-xs text-muted col-span-2">{{ __('shop.empty') }}</p>
+      @endforelse
+    </div>
+  </section>
+
+  <!-- =============== LIMITED-TIME BUNDLE =============== -->
+  @if ($bundleSlug !== null)
+  <section class="px-5 mt-5">
+    <button type="button" class="k-card-lg card-hero-flame relative overflow-hidden block w-full text-left" @if (! $bundleOwned) wire:click="buy('{{ $bundleSlug }}')" wire:loading.attr="disabled" @else disabled @endif>
+      <span class="watermark-emoji" aria-hidden="true">{{ $bundleEmoji }}</span>
+      <div class="relative flex items-center gap-3">
+        <div class="text-4xl">{{ $bundleEmoji }}</div>
+        <div class="grow">
+          <p class="text-xs uppercase font-extrabold tracking-wider opacity-90">{{ $bundleKicker }}</p>
+          <p class="h-display text-lg leading-tight">{{ $bundleName }}</p>
+          <p class="text-xs text-white/90">{{ $bundleBody }}</p>
+        </div>
+        <span class="cta-soft shrink-0">{{ $bundleOwned ? __('shop.equipped') : $bundlePrice.' '.__('rewards.xp') }}</span>
+      </div>
+    </button>
+  </section>
+  @endif
 
   <!-- =============== RECENT ACTIVITY =============== -->
   <section class="px-5 mt-5">

@@ -16,7 +16,7 @@ class UserRegistrationService
         private UserStatRepository $stats,
     ) {}
 
-    public function register(string $name, string $email, string $password, int $age, string $gender): User
+    public function register(string $name, string $email, ?string $password, int $age, string $gender, ?string $phone = null): User
     {
         $user = $this->users->create([
             'name' => $name,
@@ -24,6 +24,7 @@ class UserRegistrationService
             'nickname' => $this->uniqueNickname($name),
             'email' => $email,
             'password' => $password,
+            'phone' => $phone,
             'age' => $age,
             'gender' => Gender::from($gender),
             'onboarding_step' => OnboardingStep::Age,

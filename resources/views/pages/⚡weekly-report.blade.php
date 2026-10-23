@@ -2,6 +2,7 @@
 
 use App\Repositories\UserRepository;
 use App\Services\ProgressReportService;
+use App\Services\ShareService;
 use Livewire\Component;
 
 new class extends Component
@@ -162,7 +163,7 @@ new class extends Component
             'selectedActivities' => $snap->selectedActivities,
             'totalMinutesLabel' => $snap->totalMinutesLabel,
             'minutesHint' => $snap->minutesHint,
-            'shareText' => $snap->headline.' · '.$snap->subline,
+            'shareText' => app(ShareService::class)->outbound(),
         ];
     }
 };
@@ -447,7 +448,7 @@ new class extends Component
                     <div class="size-10 mx-auto rounded-2xl tile-sky grid place-items-center"><i class="ph-fill ph-chat-circle text-xl"></i></div>
                     <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">{{ __('reports.share_messages') }}</p>
                 </a>
-                <button type="button" class="k-card p-3 text-center" onclick="navigator.clipboard.writeText(location.href)">
+                <button type="button" class="k-card p-3 text-center" data-kidzio-share>
                     <div class="size-10 mx-auto rounded-2xl tile-sun grid place-items-center"><i class="ph-fill ph-link text-xl"></i></div>
                     <p class="text-[11px] font-extrabold text-ink mt-2 leading-tight">{{ __('reports.share_copy') }}</p>
                 </button>

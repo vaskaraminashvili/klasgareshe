@@ -28,6 +28,7 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
  * @property string $nickname
  * @property string|null $avatar
  * @property string $email
+ * @property string|null $phone
  * @property int|null $age
  * @property Gender|null $gender
  * @property AgeGroup|null $age_group
@@ -48,7 +49,7 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
  * @property string|null $pending_parent_email_token
  * @property Carbon|null $pending_parent_email_sent_at
  * @property Carbon|null $deletion_requested_at
- * @property string $password
+ * @property string|null $password
  * @property string|null $parent_pin
  * @property Carbon|null $parent_pin_set_at
  * @property int|null $daily_limit_minutes
@@ -72,6 +73,7 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
     'nickname',
     'avatar',
     'email',
+    'phone',
     'password',
     'age',
     'gender',

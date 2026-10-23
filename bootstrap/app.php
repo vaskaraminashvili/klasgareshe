@@ -25,6 +25,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'play.time' => EnforceScreenTime::class,
         ]);
 
+        $middleware->validateCsrfTokens(except: [
+            'auth/apple/callback',
+        ]);
+
         $middleware->redirectGuestsTo(fn (Request $request) => route('user-login'));
 
         $middleware->redirectUsersTo(function (Request $request): string {

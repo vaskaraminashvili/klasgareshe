@@ -12,6 +12,7 @@ use App\Notifications\ParentEmailVerifyNotification;
 use App\Repositories\BadgeRepository;
 use App\Repositories\FriendshipRepository;
 use App\Repositories\LeagueRepository;
+use App\Repositories\SocialIdentityRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserStatRepository;
 use Carbon\CarbonInterface;
@@ -29,6 +30,7 @@ class AccountService
 
     public function __construct(
         private UserRepository $users,
+        private SocialIdentityRepository $identities,
         private FriendshipRepository $friends,
         private LeagueRepository $leagues,
         private UserStatRepository $stats,
@@ -196,6 +198,7 @@ class AccountService
         ]);
 
         $this->users->deleteSessions($updated);
+        $this->identities->softDeleteForUser($updated->id);
         $deleted = $this->users->softDelete($updated);
 
         $purgeOn = now()->addDays(self::GRACE_DAYS)->timezone($deleted->timezone ?: 'Asia/Tbilisi');
@@ -217,6 +220,7 @@ class AccountService
         foreach ($this->users->dueForPurge($cutoff) as $user) {
             $this->friends->deleteAllFor($user);
             $this->leagues->removeUser($user);
+            $this->identities->forceDeleteForUser($user->id);
             $this->users->forceDelete($user);
             $purged++;
         }

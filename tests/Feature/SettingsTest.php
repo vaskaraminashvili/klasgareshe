@@ -61,9 +61,15 @@ class SettingsTest extends TestCase
             ->assertSee(route('parent-controls'), false)
             ->assertSee(route('parent-email'), false)
             ->assertSee(route('delete-account'), false)
-            ->assertDontSeeHtml('ph-palette')
-            ->assertDontSeeHtml('ph-speaker-high')
-            ->assertDontSeeHtml('ph-chat-circle-dots');
+            ->assertSeeHtml('ph-palette')
+            ->assertSeeHtml('ph-speaker-high')
+            ->assertSeeHtml('ph-chat-circle-dots')
+            ->assertSee(route('app-language'), false)
+            ->assertSee(route('help-faq'), false)
+            ->assertSee(route('contact-us'), false)
+            ->assertSee(route('about'), false)
+            ->assertSee(route('clear-cache'), false)
+            ->assertSee(route('country'), false);
     }
 
     public function test_toggles_persist_through_the_profile_service(): void

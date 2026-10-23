@@ -33,6 +33,7 @@ class UserProfileService
     public function __construct(
         private UserRepository $users,
         private KidSetupService $setup,
+        private ShopService $shop,
     ) {}
 
     /**
@@ -49,12 +50,13 @@ class UserProfileService
         }
 
         $avatar = $data['avatar'];
+        $allowed = $this->avatarChoicesFor($user);
 
-        if (! in_array($avatar, $this->avatarChoices(), true)) {
-            $avatar = $this->avatarChoices()[0];
+        if (! in_array($avatar, $allowed, true)) {
+            $avatar = $allowed[0];
         }
 
-        return $this->users->update($user, [
+        $updated = $this->users->update($user, [
             'name' => trim($data['name']),
             'nickname' => $nickname,
             'age' => $data['age'],
@@ -66,6 +68,10 @@ class UserProfileService
             'show_on_leaderboard' => $data['show_on_leaderboard'],
             'allow_friend_requests' => $data['allow_friend_requests'],
         ]);
+
+        $this->shop->syncAvatarChoice($updated, $avatar);
+
+        return $updated;
     }
 
     /**
@@ -74,6 +80,19 @@ class UserProfileService
     public function avatarChoices(): array
     {
         return self::AVATARS;
+    }
+
+    /**
+     * Free avatars plus any shop avatars this kid owns.
+     *
+     * @return list<string>
+     */
+    public function avatarChoicesFor(User $user): array
+    {
+        return array_values(array_unique([
+            ...self::AVATARS,
+            ...$this->shop->ownedAvatars($user),
+        ]));
     }
 
     /**
@@ -86,7 +105,7 @@ class UserProfileService
 
     public function defaultAvatar(?string $avatar = null): string
     {
-        if (is_string($avatar) && in_array($avatar, $this->avatarChoices(), true)) {
+        if (is_string($avatar) && $this->isAllowedAvatar($avatar)) {
             return $avatar;
         }
 
@@ -98,10 +117,15 @@ class UserProfileService
         $index = array_search($avatar, $this->avatarChoices(), true);
 
         if ($index === false) {
-            return self::AVATAR_TILES[0];
+            return $this->shop->tileForAvatar($avatar);
         }
 
         return self::AVATAR_TILES[$index % count(self::AVATAR_TILES)];
+    }
+
+    private function isAllowedAvatar(string $avatar): bool
+    {
+        return in_array($avatar, self::AVATARS, true) || $this->shop->isCatalogAvatar($avatar);
     }
 
     /**

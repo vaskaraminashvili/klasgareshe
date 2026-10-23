@@ -100,6 +100,7 @@ new class extends PlaysWeekPlanPackComponent
         }
 
         $this->correctCount = $correct;
+        $this->dispatch('kidzio-sfx', kind: $correct === count($this->deck) ? 'correct' : 'incorrect');
         $this->combo = $correct;
         $this->maxCombo = $correct;
         $this->answered = true;
@@ -120,6 +121,7 @@ new class extends PlaysWeekPlanPackComponent
             <p class="text-xs text-muted">{{ __('quiz.connect_help') }}</p>
             <h1 class="h-display text-lg leading-tight">{{ __('quiz.connect_title') }}</h1>
         </div>
+        <button type="button" class="icon-btn" aria-label="{{ __('quiz.hear') }}" data-speak="{{ collect($deck)->pluck('prompt')->implode(', ') }}" data-speak-auto="{{ collect($deck)->pluck('prompt')->implode(', ') }}"><i class="ph-fill ph-speaker-high"></i></button>
         <span class="chip chip-sun" id="scoreChip">⭐ {{ count($links) }} / {{ count($deck) }}</span>
     </header>
 

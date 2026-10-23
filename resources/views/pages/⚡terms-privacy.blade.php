@@ -36,7 +36,7 @@ new class extends Component
             <p class="text-xs text-muted">{{ __('legal.updated', ['date' => __('legal.updated_on')]) }}</p>
             <h1 class="h-display text-lg leading-tight">{{ __('legal.heading_terms') }}</h1>
         </div>
-        <button type="button" class="icon-btn" aria-label="{{ __('legal.share') }}"><i
+        <button type="button" class="icon-btn" data-kidzio-share aria-label="{{ __('legal.share') }}"><i
                 class="ph ph-share-fat text-xl"></i></button>
     </header>
 

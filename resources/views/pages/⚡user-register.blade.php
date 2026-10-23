@@ -1,5 +1,9 @@
 <?php
 
+use App\Exceptions\AuthProviderException;
+use App\Services\KidSetupService;
+use App\Services\PhoneLoginService;
+use App\Services\SocialAuthService;
 use App\Services\UserRegistrationService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -18,6 +22,24 @@ new class extends Component
 
     public bool $agreed = false;
 
+    public bool $socialPending = false;
+
+    public bool $phonePending = false;
+
+    public function mount(SocialAuthService $social, PhoneLoginService $phones): void
+    {
+        $pending = $social->pending();
+
+        if ($pending !== null) {
+            $this->socialPending = true;
+            $this->email = $pending->email;
+        }
+
+        if ($phones->verifiedPhone() !== null) {
+            $this->phonePending = true;
+        }
+    }
+
     public function title(): string
     {
         return __('register.page_title');
@@ -28,29 +50,66 @@ new class extends Component
         $view->title($this->title());
     }
 
-    public function register(UserRegistrationService $registration): void
-    {
-        $this->validate([
+    public function register(
+        UserRegistrationService $registration,
+        SocialAuthService $social,
+        PhoneLoginService $phones,
+        KidSetupService $setup,
+    ): void {
+        $pending = $social->pending();
+
+        if ($pending !== null) {
+            $this->socialPending = true;
+            $this->email = $pending->email;
+        }
+
+        $this->phonePending = $phones->verifiedPhone() !== null;
+        $optionalPassword = $this->socialPending || $this->phonePending;
+
+        $rules = [
             'name' => 'required|string|max:255',
             'age' => 'required|integer|min:3|max:14',
             'gender' => 'required|in:Girl,Boy,Other',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|max:20',
+            'email' => $pending !== null ? 'required|email' : 'required|email|unique:users,email',
             'agreed' => 'accepted',
-        ]);
+        ];
 
-        $user = $registration->register(
-            $this->name,
-            $this->email,
-            $this->password,
-            (int) $this->age,
-            $this->gender,
-        );
+        if ($optionalPassword && $this->password === '') {
+            $rules['password'] = 'nullable|string|max:20';
+        } elseif ($optionalPassword) {
+            $rules['password'] = 'string|min:8|max:20';
+        } else {
+            $rules['password'] = 'required|string|min:8|max:20';
+        }
+
+        $this->validate($rules);
+
+        $password = $this->password === '' ? null : $this->password;
+
+        try {
+            if ($pending !== null) {
+                $user = $social->registerPending($this->name, $password, (int) $this->age, $this->gender);
+            } elseif ($this->phonePending) {
+                $user = $phones->registerPending($this->name, $this->email, $password, (int) $this->age, $this->gender);
+            } else {
+                $user = $registration->register(
+                    $this->name,
+                    $this->email,
+                    $password ?? '',
+                    (int) $this->age,
+                    $this->gender,
+                );
+            }
+        } catch (AuthProviderException $exception) {
+            $this->addError('email', $exception->getMessage());
+
+            return;
+        }
 
         Auth::login($user);
         session()->regenerate();
 
-        $this->redirectRoute('onboarding-age', navigate: true);
+        $this->redirectRoute($setup->nextRouteName($user), navigate: true);
     }
 };
 ?>
@@ -68,6 +127,9 @@ new class extends Component
     </section>
 
     <form class="px-6 mt-5 space-y-3" wire:submit="register">
+        @if ($phonePending)
+            <p class="text-xs" style="color:var(--color-k-muted)">{{ __('register.phone_pending_note') }}</p>
+        @endif
         <div class="input-wrap">
             <i class="ph ph-smiley i-left"></i>
             <input type="text" class="input has-left" placeholder="{{ __('register.kids_name') }}" wire:model="name" />
@@ -91,20 +153,26 @@ new class extends Component
         @enderror
         <div class="input-wrap">
             <i class="ph ph-envelope-simple i-left"></i>
-            <input type="email" class="input has-left" placeholder="{{ __('register.parent_email') }}" required wire:model="email" />
+            <input type="email" class="input has-left" placeholder="{{ __('register.parent_email') }}" @unless($socialPending) required @endunless @if($socialPending) readonly @endif wire:model="email" />
         </div>
+        @if ($socialPending)
+            <p class="text-xs" style="color:var(--color-k-muted)">{{ __('register.social_email_locked') }}</p>
+        @endif
         @error('email')
             <p class="text-sm" style="color:var(--color-k-coral)">{{ $message }}</p>
         @enderror
         <div class="input-wrap">
             <i class="ph ph-lock i-left"></i>
-            <input id="np" type="password" class="input has-left has-right" placeholder="{{ __('register.create_password') }}" required
+            <input id="np" type="password" class="input has-left has-right" placeholder="{{ __('register.create_password') }}" @unless($socialPending || $phonePending) required @endunless
                 wire:model="password" />
             <button type="button" class="i-right" data-pwd-toggle="np"><i class="ph ph-eye"></i></button>
         </div>
         @error('password')
             <p class="text-sm" style="color:var(--color-k-coral)">{{ $message }}</p>
         @enderror
+        @if ($socialPending || $phonePending)
+            <p class="text-xs" style="color:var(--color-k-muted)">{{ __('register.password_optional') }}</p>
+        @endif
 
         <label class="flex items-start gap-2 text-xs pt-1" style="color:var(--color-k-muted)">
             <input type="checkbox" class="mt-1 size-4 accent-[var(--color-k-primary)]" required wire:model="agreed" />

@@ -7,8 +7,6 @@
     const items = document.querySelectorAll('[data-badge-item]');
     const sections = document.querySelectorAll('[data-badge-section]');
     const noBadges = document.getElementById('noBadges');
-    const shareBtn = document.getElementById('shareBtn');
-
     let activeStatus = 'all';
     let activeCat = 'all';
 
@@ -67,19 +65,4 @@
       });
     });
 
-    // Share button
-    if (shareBtn) {
-      shareBtn.addEventListener('click', function () {
-        const shareText = shareBtn.getAttribute('data-share-text') || '';
-        const copied = shareBtn.getAttribute('data-share-copied') || '';
-        const url = window.location.href;
-        if (navigator.share) {
-          navigator.share({ title: shareText, text: shareText, url: url }).catch(function () {});
-        } else if (navigator.clipboard) {
-          navigator.clipboard.writeText(url).then(function () { toast(copied); });
-        } else {
-          toast(url);
-        }
-      });
-    }
   })();

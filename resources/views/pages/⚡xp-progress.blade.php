@@ -89,7 +89,7 @@ new class extends Component
             <p class="text-xs text-muted">{{ __('ranking.your_growth') }}</p>
             <h1 class="h-display text-lg leading-tight">{{ __('ranking.xp_progress') }}</h1>
         </div>
-        <button type="button" class="icon-btn" aria-label="Share"><i class="ph ph-share-fat text-xl"></i></button>
+        <button type="button" class="icon-btn" data-kidzio-share aria-label="{{ __('share.action') }}"><i class="ph ph-share-fat text-xl"></i></button>
         <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle theme"><i
                 class="ph ph-moon text-xl"></i></button>
     </header>

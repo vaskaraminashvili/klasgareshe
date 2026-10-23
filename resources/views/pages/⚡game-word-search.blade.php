@@ -99,6 +99,7 @@ new class extends PlaysWeekPlanPackComponent
 
             $this->foundWords[] = $word;
             $this->correctCount++;
+            $this->dispatch('kidzio-sfx', kind: 'correct');
             $this->combo++;
             $this->maxCombo = max($this->maxCombo, $this->combo);
 
@@ -218,6 +219,7 @@ new class extends PlaysWeekPlanPackComponent
             <p class="text-xs text-muted">{{ __('quiz.search_help') }}</p>
             <h1 class="h-display text-lg leading-tight">{{ __('games.word_search') }}</h1>
         </div>
+        <button type="button" class="icon-btn" aria-label="{{ __('quiz.hear') }}" data-speak="{{ collect($placements)->pluck('word')->implode(', ') }}" data-speak-auto="{{ collect($placements)->pluck('word')->implode(', ') }}"><i class="ph-fill ph-speaker-high"></i></button>
         <span class="chip chip-primary" id="progressChip">{{ count($foundWords) }} / {{ count($placements) }}</span>
     </header>
 

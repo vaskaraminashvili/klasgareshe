@@ -35,4 +35,32 @@ return [
         ],
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', rtrim((string) env('APP_URL', 'http://localhost'), '/').'/auth/google/callback'),
+    ],
+
+    'apple' => [
+        'client_id' => env('APPLE_CLIENT_ID'),
+        'client_secret' => env('APPLE_CLIENT_SECRET'),
+        'key_id' => env('APPLE_KEY_ID'),
+        'team_id' => env('APPLE_TEAM_ID'),
+        'private_key' => env('APPLE_PRIVATE_KEY'),
+        'redirect' => env('APPLE_REDIRECT_URI', rtrim((string) env('APP_URL', 'http://localhost'), '/').'/auth/apple/callback'),
+    ],
+
+    /*
+    | SMS_DRIVER is the key a real SMS gateway would use (for example "twilio"),
+    | together with SMS_FROM. Leave it empty — or set it to "log" — to deliver
+    | phone-login codes through the mail channel instead. MAIL_MAILER=log writes
+    | that message to the application log so local/dev can read the code.
+    | Any other driver name fails with a clear error. The app does not pretend
+    | an SMS was sent.
+    */
+    'sms' => [
+        'driver' => env('SMS_DRIVER'),
+        'from' => env('SMS_FROM'),
+    ],
+
 ];
