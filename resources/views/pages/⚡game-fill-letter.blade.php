@@ -102,7 +102,7 @@ new class extends PlaysWeekPlanPackComponent
         <p class="text-xs font-extrabold text-center mb-3" style="color:var(--color-k-muted)">{{ __('quiz.pick_letter') }}</p>
         <div class="grid grid-cols-4 gap-3">
             @foreach ($choices as $choice)
-                <button type="button" class="ans aspect-square justify-center h-display text-3xl{{ $this->choiceClass($choice['key']) }}{{ $pendingKey === $choice['key'] && ! $answered ? ' ring-2 ring-primary' : '' }}" wire:click="chooseLetter('{{ $choice['key'] }}')" @disabled($answered)>{{ $choice['label'] }}</button>
+                <button type="button" class="ans aspect-square justify-center h-display text-3xl{{ $this->choiceClass($choice['key']) }}{{ $pendingKey === $choice['key'] && ! $answered ? ' is-selected' : '' }}" wire:click="chooseLetter('{{ $choice['key'] }}')" @disabled($answered) @if ($pendingKey === $choice['key'] && ! $answered) aria-pressed="true" @endif>{{ $choice['label'] }}</button>
             @endforeach
         </div>
     </section>

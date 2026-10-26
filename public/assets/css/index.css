@@ -3173,7 +3173,8 @@ body {
   color: #fff;
 }
 
-.ans:hover {
+.ans:hover,
+.ans.is-selected {
   border-color: var(--color-k-primary);
 }
 
