@@ -147,11 +147,11 @@ new class extends PlaysWeekPlanPackComponent
         }
 
         if ($this->anchorRow === $row && $this->anchorCol === $column) {
-            return 'ring-2 ring-primary bg-[var(--color-k-bg)] text-ink';
+            return 'is-selected border-2 bg-[var(--color-k-bg)] text-ink';
         }
 
         if (in_array($row.':'.$column, $this->hintCells, true)) {
-            return 'ring-2 ring-primary bg-[var(--color-k-bg)] text-ink';
+            return 'is-selected border-2 bg-[var(--color-k-bg)] text-ink';
         }
 
         return 'bg-[var(--color-k-bg)] text-ink';

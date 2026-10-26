@@ -3174,7 +3174,9 @@ body {
 }
 
 .ans:hover,
-.ans.is-selected {
+.ans.is-selected,
+.k-card.is-selected,
+.cell.is-selected {
   border-color: var(--color-k-primary);
 }
 

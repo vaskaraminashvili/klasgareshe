@@ -135,12 +135,12 @@ new class extends PlaysWeekPlanPackComponent
     <section class="px-5 mt-5 grid grid-cols-2 gap-3">
         <div class="space-y-3" id="words">
             @foreach ($deck as $wordIndex => $card)
-                <button type="button" class="k-card p-3 text-center font-extrabold text-ink w-full {{ $activeWord === $wordIndex || $this->linkedPic($wordIndex) !== null ? 'ring-2 ring-primary' : '' }}" data-word="{{ $wordIndex }}" wire:click="selectWord({{ $wordIndex }})">{{ $card['prompt'] }}</button>
+                <button type="button" class="k-card p-3 text-center font-extrabold text-ink w-full {{ $activeWord === $wordIndex || $this->linkedPic($wordIndex) !== null ? 'is-selected' : '' }}" data-word="{{ $wordIndex }}" wire:click="selectWord({{ $wordIndex }})">{{ $card['prompt'] }}</button>
             @endforeach
         </div>
         <div class="space-y-3" id="pics">
             @foreach ($picOrder as $deckIndex)
-                <button type="button" class="k-card aspect-[16/9] grid place-items-center text-5xl w-full {{ in_array($deckIndex, $links, true) ? 'ring-2 ring-primary' : '' }}" data-pic="{{ $deckIndex }}" wire:click="selectPic({{ $deckIndex }})">{{ $deck[$deckIndex]['emoji'] }}</button>
+                <button type="button" class="k-card aspect-[16/9] grid place-items-center text-5xl w-full {{ in_array($deckIndex, $links, true) ? 'is-selected' : '' }}" data-pic="{{ $deckIndex }}" wire:click="selectPic({{ $deckIndex }})">{{ $deck[$deckIndex]['emoji'] }}</button>
             @endforeach
         </div>
     </section>

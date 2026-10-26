@@ -145,14 +145,14 @@ new class extends PlaysWeekPlanPackComponent
             <div class="absolute inset-0 p-4 flex justify-between">
                 <div class="flex flex-col justify-around" id="colLeft">
                     @foreach ($deck as $index => $card)
-                        <button type="button" class="k-card w-28 text-center pair-card {{ $activeLeft === $index ? 'ring-primary is-selected' : '' }}" data-side="L" data-key="{{ $index }}" data-pos="{{ $index }}" wire:click="selectLeft({{ $index }})">
+                        <button type="button" class="k-card w-28 text-center pair-card {{ $activeLeft === $index ? 'is-selected' : '' }}" data-side="L" data-key="{{ $index }}" data-pos="{{ $index }}" wire:click="selectLeft({{ $index }})">
                             <span class="text-3xl">{{ $card['emoji'] }}</span><p class="text-xs font-extrabold text-ink">{{ $card['prompt'] }}</p>
                         </button>
                     @endforeach
                 </div>
                 <div class="flex flex-col justify-around" id="colRight">
                     @foreach ($rightOrder as $position => $index)
-                        <button type="button" class="k-card w-28 text-center pair-card {{ in_array($index, $links, true) ? 'ring-2 ring-primary' : '' }}" data-side="R" data-key="{{ $index }}" data-pos="{{ $position }}" wire:click="selectRight({{ $index }})">
+                        <button type="button" class="k-card w-28 text-center pair-card {{ in_array($index, $links, true) ? 'is-selected' : '' }}" data-side="R" data-key="{{ $index }}" data-pos="{{ $position }}" wire:click="selectRight({{ $index }})">
                             <span class="text-3xl">{{ $deck[$index]['pairEmoji'] !== '' ? $deck[$index]['pairEmoji'] : $deck[$index]['emoji'] }}</span><p class="text-xs font-extrabold text-ink">{{ $deck[$index]['pairLabel'] }}</p>
                         </button>
                     @endforeach

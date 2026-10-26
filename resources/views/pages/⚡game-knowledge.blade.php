@@ -92,7 +92,7 @@ new class extends PlaysWeekPlanPackComponent
     public function knowledgeClass(string $key): string
     {
         if (! $this->answered && $this->pendingKey === $key) {
-            return ' ring-2 ring-primary';
+            return ' is-selected';
         }
 
         return $this->choiceClass($key);
