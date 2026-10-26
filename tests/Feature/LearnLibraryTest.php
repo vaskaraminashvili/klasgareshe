@@ -80,7 +80,7 @@ class LearnLibraryTest extends TestCase
         $this->assertNotNull($firstMath);
 
         $secondMath = WeekPlanItem::query()
-            ->where('grade', SchoolGrade::First)
+            ->where('grade', SchoolGrade::Fourth)
             ->where('subject', SchoolSubject::Math)
             ->where('weekday', 2)
             ->firstOrFail();
@@ -169,7 +169,7 @@ class LearnLibraryTest extends TestCase
         $this->assertNotNull($firstMath);
 
         $secondMath = WeekPlanItem::query()
-            ->where('grade', SchoolGrade::First)
+            ->where('grade', SchoolGrade::Fourth)
             ->where('subject', SchoolSubject::Math)
             ->where('weekday', 2)
             ->firstOrFail();
@@ -192,7 +192,7 @@ class LearnLibraryTest extends TestCase
             ->assertSee($secondMath->title, false);
     }
 
-    private function seedWeek(SchoolGrade $grade = SchoolGrade::First, int $weekdays = 2, int $perPack = 1): void
+    private function seedWeek(SchoolGrade $grade = SchoolGrade::Fourth, int $weekdays = 2, int $perPack = 1): void
     {
         Game::factory()->create([
             'slug' => GameType::MultipleChoice,

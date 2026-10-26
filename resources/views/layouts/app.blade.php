@@ -49,7 +49,6 @@
     <meta name="kidzio-share-text" content="{{ __('share.text') }}" />
     <meta name="kidzio-share-title" content="{{ __('share.title') }}" />
     <meta name="kidzio-share-copied" content="{{ __('share.copied') }}" />
-    <meta name="kidzio-speak-unavailable" content="{{ __('share.unavailable') }}" />
     <link rel="preload" href="{{ asset('assets/audio/'.$kidzioSoundPack.'/correct.wav') }}" as="audio" />
     <link rel="preload" href="{{ asset('assets/audio/'.$kidzioSoundPack.'/incorrect.wav') }}" as="audio" />
     <link rel="preload" href="{{ asset('assets/audio/'.$kidzioSoundPack.'/levelup.wav') }}" as="audio" />

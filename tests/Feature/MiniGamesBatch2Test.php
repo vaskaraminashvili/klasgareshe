@@ -6,7 +6,6 @@ use App\Enums\FavouriteSubject;
 use App\Enums\GameType;
 use App\Enums\PlayDifficulty;
 use App\Enums\QuestionFormat;
-use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 use App\Models\Game;
 use App\Models\Question;
@@ -14,10 +13,7 @@ use App\Models\User;
 use App\Models\WeekPlanItem;
 use App\Repositories\PackPlayRepository;
 use App\Services\GamePlayService;
-use App\Services\TraceStrokeService;
 use App\Services\WeekPlanService;
-use App\Support\GeorgianLetterStrokes;
-use Database\Seeders\WeekPlanQuestionBank;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
@@ -27,52 +23,21 @@ class MiniGamesBatch2Test extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_week_one_slots_use_the_new_players(): void
+    public function test_class_four_packs_have_ten_questions_and_mixed_games(): void
     {
-        $this->assertSame(
-            GameType::FillLetter,
-            WeekPlanQuestionBank::gameType(SchoolGrade::First, SchoolSubject::Georgian, 4, 1),
-        );
-        $this->assertSame(
-            GameType::SpellWord,
-            WeekPlanQuestionBank::gameType(SchoolGrade::Second, SchoolSubject::Georgian, 3, 1),
-        );
-        $this->assertSame(
-            GameType::WordSearch,
-            WeekPlanQuestionBank::gameType(SchoolGrade::Third, SchoolSubject::Georgian, 7, 1),
-        );
-        $this->assertSame(
-            GameType::Knowledge,
-            WeekPlanQuestionBank::gameType(SchoolGrade::First, SchoolSubject::History, 5, 1),
-        );
-        $this->assertSame(
-            GameType::ConnectPair,
-            WeekPlanQuestionBank::gameType(SchoolGrade::First, SchoolSubject::History, 6, 1),
-        );
-        $this->assertSame(
-            GameType::MultipleChoice,
-            WeekPlanQuestionBank::gameType(SchoolGrade::First, SchoolSubject::Georgian, 4, 2),
-        );
-        $this->assertSame(
-            GameType::TapCorrect,
-            WeekPlanQuestionBank::gameType(SchoolGrade::First, SchoolSubject::Math, 1, 1),
-        );
+        $this->seed(WeekPlanSeeder::class);
 
-        $pack = WeekPlanQuestionBank::pack(SchoolGrade::First, SchoolSubject::Georgian, 4, 1);
-        $this->assertCount(15, $pack['questions']);
-        $this->assertCount(5, array_filter(
-            $pack['questions'],
-            fn (array $row): bool => ($row['difficulty'] ?? '') === 'easy',
-        ));
+        $items = WeekPlanItem::query()->where('week_number', 1)->get();
 
-        foreach (SchoolGrade::cases() as $grade) {
-            $search = WeekPlanQuestionBank::pack($grade, SchoolSubject::Georgian, 7, 1);
+        $this->assertCount(21, $items);
 
-            foreach ($search['questions'] as $row) {
-                $this->assertLessThanOrEqual(8, mb_strlen($row['correct']));
-            }
+        foreach ($items as $item) {
+            $this->assertSame(10, $item->questions()->count());
         }
 
+        $this->assertGreaterThanOrEqual(8, $items->map(fn (WeekPlanItem $item): string => $item->game_slug->value)->unique()->count());
+
+        $this->assertFalse(Route::has('game-trace-letter'));
         $this->assertFalse(Route::has('game-match-animal'));
         $this->assertFalse(Route::has('game-guess-animal'));
         $this->assertFalse(Route::has('game-body-parts'));
@@ -184,21 +149,6 @@ class MiniGamesBatch2Test extends TestCase
             ->assertSet('showResult', true);
     }
 
-    public function test_trace_letter_passes_when_the_guide_is_followed(): void
-    {
-        $this->withoutVite();
-        $strokes = GeorgianLetterStrokes::for('ა');
-        $item = $this->seedPack(GameType::TraceLetter, SchoolSubject::Georgian, $this->traceQuestion($strokes));
-        $user = User::factory()->fullySetUp()->withStats()->create();
-        $points = app(TraceStrokeService::class)->sample($strokes);
-
-        Livewire::actingAs($user)
-            ->test('pages::game-trace-letter', ['item' => $item->id])
-            ->call('submitTrace', $points)
-            ->assertSet('answered', true)
-            ->assertSet('correctCount', 1);
-    }
-
     public function test_settings_saves_the_difficulty_row(): void
     {
         $this->withoutVite();
@@ -271,7 +221,7 @@ class MiniGamesBatch2Test extends TestCase
             'format' => QuestionFormat::Choice,
             'source' => GameType::FillLetter,
             'subject' => FavouriteSubject::Georgian,
-            'grade' => 1,
+            'grade' => 4,
             'locale' => 'ka',
             'prompt' => 'კ_ტა',
             'media' => ['emoji' => '🐱', 'tile' => 'tile-coral'],
@@ -296,7 +246,7 @@ class MiniGamesBatch2Test extends TestCase
             'format' => QuestionFormat::Spell,
             'source' => GameType::SpellWord,
             'subject' => FavouriteSubject::Georgian,
-            'grade' => 1,
+            'grade' => 4,
             'locale' => 'ka',
             'prompt' => 'დაწერე ცხოველის სახელი',
             'media' => ['emoji' => '🐱', 'tile' => 'tile-coral'],
@@ -321,7 +271,7 @@ class MiniGamesBatch2Test extends TestCase
             'format' => QuestionFormat::Grid,
             'source' => GameType::WordSearch,
             'subject' => FavouriteSubject::Georgian,
-            'grade' => 1,
+            'grade' => 4,
             'locale' => 'ka',
             'prompt' => 'კატა',
             'media' => ['emoji' => '🐱', 'tile' => 'tile-pink'],
@@ -330,31 +280,6 @@ class MiniGamesBatch2Test extends TestCase
                     ['key' => 'A', 'label' => 'კატა', 'emoji' => ''],
                     ['key' => 'B', 'label' => 'მზე', 'emoji' => ''],
                 ],
-            ],
-            'answer' => ['key' => 'A'],
-        ];
-    }
-
-    /**
-     * @param  list<list<array{0: int, 1: int}>>  $strokes
-     * @return array<string, mixed>
-     */
-    private function traceQuestion(array $strokes): array
-    {
-        return [
-            'format' => QuestionFormat::Trace,
-            'source' => GameType::TraceLetter,
-            'subject' => FavouriteSubject::Georgian,
-            'grade' => 1,
-            'locale' => 'ka',
-            'prompt' => 'ა',
-            'media' => ['emoji' => '✏️', 'tile' => 'tile-violet'],
-            'payload' => [
-                'choices' => [
-                    ['key' => 'A', 'label' => 'ა', 'emoji' => ''],
-                    ['key' => 'B', 'label' => 'ბ', 'emoji' => ''],
-                ],
-                'strokes' => $strokes,
             ],
             'answer' => ['key' => 'A'],
         ];

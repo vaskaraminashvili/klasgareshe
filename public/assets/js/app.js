@@ -137,7 +137,12 @@ window.toggleTheme = toggleTheme;
     if (!ans) return;
     const group = ans.closest("[data-ans-group]");
     if (!group) return;
+    if (group.hasAttribute("data-ans-done")) return;
+    group.setAttribute("data-ans-done", "");
     const correct = ans.getAttribute("data-ans") === "correct";
+    document.dispatchEvent(new CustomEvent("kidzio-sfx", { detail: { kind: correct ? "correct" : "incorrect" } }));
+    const next = document.querySelector('[wire\\:click="next"]');
+    if (next) next.disabled = false;
     group.querySelectorAll("[data-ans]").forEach((b) => b.classList.remove("correct", "wrong"));
     ans.classList.add(correct ? "correct" : "wrong");
     if (!correct) {
@@ -492,14 +497,13 @@ window.toggleTheme = toggleTheme;
   document.addEventListener("livewire:navigated", startResendCountdown);
 })();
 
-// ── Accent, text size, audio, voice, share ───────────────────────
+// ── Accent, text size, audio, share ───────────────────────
 (function () {
   const ACCENTS = ["violet", "pink", "mint", "sky", "sun"];
   const SIZES = ["sm", "md", "lg"];
   const RING = ["ring-2", "ring-[color:var(--color-k-primary)]", "ring-offset-2", "ring-offset-[color:var(--color-k-surface)]"];
   let clips = {};
   let music = null;
-  let lastSpoken = "";
 
   function meta(name) {
     return document.querySelector('meta[name="' + name + '"]')?.getAttribute("content") || "";
@@ -562,29 +566,6 @@ window.toggleTheme = toggleTheme;
     ensureMusic().play().catch(function () {});
   }
 
-  function speak(text) {
-    if (!text) return;
-    const synth = window.speechSynthesis;
-    if (!synth || typeof SpeechSynthesisUtterance === "undefined") {
-      if (window.toast) window.toast(meta("kidzio-speak-unavailable"));
-      return;
-    }
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "ka-GE";
-    synth.cancel();
-    synth.speak(utter);
-    lastSpoken = text;
-  }
-
-  function autoSpeak() {
-    if (!flag("kidzio-voice", true)) return;
-    const el = document.querySelector("[data-speak-auto]");
-    if (!el) return;
-    const text = el.getAttribute("data-speak-auto") || "";
-    if (text === "" || text === lastSpoken) return;
-    speak(text);
-  }
-
   function setChecked(selector, on) {
     document.querySelectorAll(selector).forEach(function (el) {
       if (el instanceof HTMLInputElement) el.checked = on;
@@ -605,7 +586,6 @@ window.toggleTheme = toggleTheme;
     });
     setChecked("[data-sfx-switch]", flag("kidzio-sfx", true));
     setChecked("[data-music-switch]", flag("kidzio-music", false));
-    setChecked("[data-voice-switch]", flag("kidzio-voice", true));
   }
 
   function share() {
@@ -651,9 +631,6 @@ window.toggleTheme = toggleTheme;
       localStorage.setItem("kidzio-music", on ? "1" : "0");
       syncMusic();
     },
-    setVoice: function (on) {
-      localStorage.setItem("kidzio-voice", on ? "1" : "0");
-    },
   };
   window.kidzioShare = share;
 
@@ -682,8 +659,6 @@ window.toggleTheme = toggleTheme;
         syncAppearance();
       }
     }
-    const speakBtn = event.target.closest("[data-speak]");
-    if (speakBtn) speak(speakBtn.getAttribute("data-speak") || "");
     if (event.target.closest("[data-kidzio-share]")) share();
   });
 
@@ -692,7 +667,6 @@ window.toggleTheme = toggleTheme;
     if (!(input instanceof HTMLInputElement)) return;
     if (input.matches("[data-sfx-switch]")) window.KidzioAudio.setSfx(input.checked);
     if (input.matches("[data-music-switch]")) window.KidzioAudio.setMusic(input.checked);
-    if (input.matches("[data-voice-switch]")) window.KidzioAudio.setVoice(input.checked);
   });
 
   document.addEventListener("visibilitychange", syncMusic);
@@ -705,21 +679,17 @@ window.toggleTheme = toggleTheme;
     ["correct", "incorrect", "levelup"].forEach(function (kind) {
       clip(kind);
     });
-    autoSpeak();
   }
 
   document.addEventListener("DOMContentLoaded", boot);
   document.addEventListener("livewire:navigated", function () {
-    lastSpoken = "";
     syncAppearance();
     syncMusic();
-    autoSpeak();
   });
   document.addEventListener("livewire:init", function () {
     if (window.Livewire && typeof Livewire.hook === "function") {
       Livewire.hook("morph.updated", function () {
         syncAppearance();
-        autoSpeak();
       });
     }
   });

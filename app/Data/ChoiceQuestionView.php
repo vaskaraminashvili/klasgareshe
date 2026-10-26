@@ -28,10 +28,11 @@ final readonly class ChoiceQuestionView
         public string $pairLabel = '',
         public string $pairEmoji = '',
         public int $slots = 0,
+        public string $correctKey = '',
     ) {}
 
     /**
-     * @return array{id: int, prompt: string, emoji: string, tile: string, playMode: string, letters: list<array{char: string, blank: bool}>, countItems: list<string>, choices: list<array{key: string, label: string, emoji: string}>, hint: string, keyboard: list<string>, strokes: list<list<array{0: float, 1: float}>>, pairLabel: string, pairEmoji: string, slots: int}
+     * @return array{id: int, prompt: string, emoji: string, tile: string, playMode: string, letters: list<array{char: string, blank: bool}>, countItems: list<string>, choices: list<array{key: string, label: string, emoji: string}>, hint: string, keyboard: list<string>, strokes: list<list<array{0: float, 1: float}>>, pairLabel: string, pairEmoji: string, slots: int, correctKey: string}
      */
     public function toArray(): array
     {
@@ -50,6 +51,7 @@ final readonly class ChoiceQuestionView
             'pairLabel' => $this->pairLabel,
             'pairEmoji' => $this->pairEmoji,
             'slots' => $this->slots,
+            'correctKey' => $this->correctKey,
         ];
     }
 }

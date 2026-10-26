@@ -78,7 +78,7 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         $this->name = $user->name;
         $this->email = $user->email;
         $this->age = $user->age !== null ? (string) $user->age : '';
-        $this->gradeLabel = ($user->grade ?? SchoolGrade::First)->label();
+        $this->gradeLabel = ($user->grade ?? SchoolGrade::Fourth)->label();
         $this->avatar = $profiles->defaultAvatar($user->avatar);
         $this->avatarTile = $profiles->tileForAvatar($this->avatar);
         $this->streak = $prefs['streak'];
@@ -261,7 +261,6 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
             __('settings.text_size').' '.__('settings.text_size_hint'),
             __('settings.sound_effects').' '.__('settings.sound_effects_hint'),
             __('settings.music').' '.__('settings.music_hint'),
-            __('settings.voice').' '.__('settings.voice_hint'),
             __('settings.clear_cache').' '.__('settings.clear_cache_hint'),
             __('settings.export_progress').' '.__('settings.export_progress_hint'),
             __('settings.help_faq').' '.__('settings.help_faq_hint'),
@@ -430,20 +429,6 @@ new #[Title('პარამეტრები · Kidzio')] class extends Compon
         </div>
         <span class="ks-switch">
           <input type="checkbox" data-music-switch onchange="KidzioAudio.setMusic(this.checked)"/>
-          <span class="track"></span>
-          <span class="thumb"></span>
-        </span>
-      </label>
-      @endif
-      @if ($this->matches(__('settings.voice'), __('settings.voice_hint')))
-      <label class="setting-row cursor-pointer" wire:ignore>
-        <div class="setting-ico tile-coral"><i class="ph-fill ph-microphone"></i></div>
-        <div class="grow min-w-0">
-          <p class="setting-text font-extrabold text-sm text-ink">{{ __('settings.voice') }}</p>
-          <p class="text-[11px] text-muted">{{ __('settings.voice_hint') }}</p>
-        </div>
-        <span class="ks-switch">
-          <input type="checkbox" data-voice-switch onchange="KidzioAudio.setVoice(this.checked)"/>
           <span class="track"></span>
           <span class="thumb"></span>
         </span>

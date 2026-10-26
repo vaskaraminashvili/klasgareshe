@@ -241,7 +241,7 @@ class ParentZoneService
         return new ParentControlsSnapshot(
             kidName: $user->name,
             age: $user->age ?? 0,
-            gradeLabel: ($user->grade ?? SchoolGrade::First)->label(),
+            gradeLabel: ($user->grade ?? SchoolGrade::Fourth)->label(),
             weekXp: $week->figures->xp,
             weekActiveDays: $week->figures->activeDays,
             weekLessons: $week->figures->packs,

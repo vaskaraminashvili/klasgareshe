@@ -75,7 +75,6 @@ new class extends PlaysWeekPlanPackComponent
     <header class="appbar">
         <a href="{{ route('daily-mission') }}" wire:navigate class="icon-btn" data-back aria-label="{{ __('quiz.close') }}"><i class="ph ph-x"></i></a>
         <div class="grow"><div class="progress"><span id="progressFill" style="width:{{ $this->progressPercent() }}%"></span></div></div>
-        <button type="button" class="icon-btn" aria-label="{{ __('quiz.hear') }}" data-speak="{{ $prompt }}"><i class="ph-fill ph-speaker-high"></i></button>
     </header>
 
     @if ($showWarn || $showBedtimeSoon)
@@ -101,7 +100,7 @@ new class extends PlaysWeekPlanPackComponent
             @endfor
         </div>
         <p id="feedback" class="text-center text-xs mt-3 text-muted">
-            <span data-speak-auto="{{ $prompt }}">{{ $prompt !== '' ? $prompt : __('quiz.spell_help') }}</span>
+            <span>{{ $prompt !== '' ? $prompt : __('quiz.spell_help') }}</span>
         </p>
     </section>
 

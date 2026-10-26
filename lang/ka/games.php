@@ -4,7 +4,6 @@ return [
     'multiple_choice' => 'მრავალარჩევანიანი',
     'tap_correct' => 'დააწკაპუნე სწორზე',
     'counting' => 'დათვლა',
-    'trace_letter' => 'ასოს დახაზვა',
     'fill_letter' => 'ასოს შევსება',
     'spell_word' => 'სიტყვის მართლწერა',
     'match_word' => 'სიტყვის შესატყვისი',

@@ -71,13 +71,13 @@ class KidSetupTest extends TestCase
 
         Livewire::actingAs($user)
             ->test('pages::onboarding-age')
-            ->assertSet('grade', SchoolGrade::Third->value)
+            ->assertSet('grade', SchoolGrade::Fourth->value)
             ->call('save')
             ->assertRedirect(route('onboarding-categories'));
 
         $user->refresh();
 
-        $this->assertSame(SchoolGrade::Third, $user->grade);
+        $this->assertSame(SchoolGrade::Fourth, $user->grade);
         $this->assertSame(AgeGroup::Explorer, $user->age_group);
         $this->assertSame(OnboardingStep::Categories, $user->onboarding_step);
     }

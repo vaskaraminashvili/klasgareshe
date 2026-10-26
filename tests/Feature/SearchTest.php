@@ -30,9 +30,9 @@ class SearchTest extends TestCase
     {
         $this->seed(BadgeSeeder::class);
 
-        $user = User::factory()->fullySetUp()->create(['grade' => SchoolGrade::First]);
+        $user = User::factory()->fullySetUp()->create(['grade' => SchoolGrade::Fourth]);
         WeekPlanItem::factory()->create([
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
             'subject' => 'math',
             'week_number' => 2,
             'title' => 'რიცხვები 1–10',
@@ -63,15 +63,15 @@ class SearchTest extends TestCase
 
     public function test_filters_narrow_the_index_by_subject_week_and_status(): void
     {
-        $user = User::factory()->fullySetUp()->create(['grade' => SchoolGrade::First]);
+        $user = User::factory()->fullySetUp()->create(['grade' => SchoolGrade::Fourth]);
         WeekPlanItem::factory()->create([
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
             'subject' => 'math',
             'week_number' => 1,
             'title' => 'დათვლა',
         ]);
         WeekPlanItem::factory()->create([
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
             'subject' => 'history',
             'week_number' => 2,
             'title' => 'დროშა',
@@ -130,9 +130,9 @@ class SearchTest extends TestCase
         $this->withoutVite();
         $this->seed(BadgeSeeder::class);
 
-        $user = User::factory()->fullySetUp()->create(['grade' => SchoolGrade::First]);
+        $user = User::factory()->fullySetUp()->create(['grade' => SchoolGrade::Fourth]);
         WeekPlanItem::factory()->create([
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
             'title' => 'რიცხვები 1–10',
         ]);
 

@@ -68,27 +68,23 @@ class RankingDepthTest extends TestCase
     public function test_suggestions_match_grade_and_league_and_skip_hidden_kids(): void
     {
         $me = User::factory()->fullySetUp()->withStats(['league' => League::Silver])->create([
-            'grade' => SchoolGrade::Second,
+            'grade' => SchoolGrade::Fourth,
             'nickname' => 'me-kid',
         ]);
         $match = User::factory()->fullySetUp()->withStats(['league' => League::Silver])->create([
-            'grade' => SchoolGrade::Second,
+            'grade' => SchoolGrade::Fourth,
             'name' => 'მეგი',
             'show_on_leaderboard' => true,
             'allow_friend_requests' => true,
         ]);
         User::factory()->fullySetUp()->withStats(['league' => League::Silver])->create([
-            'grade' => SchoolGrade::Second,
+            'grade' => SchoolGrade::Fourth,
             'name' => 'დამალული',
             'show_on_leaderboard' => false,
         ]);
         User::factory()->fullySetUp()->withStats(['league' => League::Bronze])->create([
-            'grade' => SchoolGrade::Second,
+            'grade' => SchoolGrade::Fourth,
             'name' => 'სხვა ლიგა',
-        ]);
-        User::factory()->fullySetUp()->withStats(['league' => League::Silver])->create([
-            'grade' => SchoolGrade::First,
-            'name' => 'სხვა კლასი',
         ]);
 
         $names = array_column(app(FriendshipService::class)->suggestions($me), 'name');
@@ -180,7 +176,7 @@ class RankingDepthTest extends TestCase
         ]);
         $item = WeekPlanItem::factory()->create([
             'subject' => SchoolSubject::Math,
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
         ]);
         app(WeekPlanRepository::class)->markCompleted($friend, $item->id, 5);
 

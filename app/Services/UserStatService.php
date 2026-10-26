@@ -74,7 +74,7 @@ class UserStatService
         $stat = $this->ensureFor($user);
         $level = $this->levels->forXp($stat->xp);
         $week = $this->weekActivity($user);
-        $grade = $user->grade ?? SchoolGrade::First;
+        $grade = $user->grade ?? SchoolGrade::Fourth;
 
         return new ProfileSnapshot(
             name: $user->name,

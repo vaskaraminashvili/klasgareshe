@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Enums\GameType;
 use App\Enums\QuestionFormat;
-use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 use App\Models\Game;
 use App\Models\Question;
@@ -13,7 +12,6 @@ use App\Models\UserPlanProgress;
 use App\Models\UserStat;
 use App\Models\WeekPlanItem;
 use App\Services\WeekPlanService;
-use Database\Seeders\WeekPlanQuestionBank;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -21,26 +19,6 @@ use Tests\TestCase;
 class MiniGamesTest extends TestCase
 {
     use RefreshDatabase;
-
-    public function test_week_one_class_one_mixes_three_formats(): void
-    {
-        $this->assertSame(
-            GameType::MultipleChoice,
-            WeekPlanQuestionBank::gameType(SchoolGrade::First, SchoolSubject::Georgian, 1, 1),
-        );
-        $this->assertSame(
-            GameType::TapCorrect,
-            WeekPlanQuestionBank::gameType(SchoolGrade::First, SchoolSubject::Math, 1, 1),
-        );
-        $this->assertSame(
-            GameType::Counting,
-            WeekPlanQuestionBank::gameType(SchoolGrade::First, SchoolSubject::Math, 3, 1),
-        );
-        $this->assertSame(
-            GameType::MultipleChoice,
-            WeekPlanQuestionBank::gameType(SchoolGrade::Second, SchoolSubject::Math, 3, 1),
-        );
-    }
 
     public function test_unbuilt_game_types_fall_back_to_the_quiz_player(): void
     {

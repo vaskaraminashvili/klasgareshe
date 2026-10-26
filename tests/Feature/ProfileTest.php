@@ -38,7 +38,7 @@ class ProfileTest extends TestCase
         ])->create([
             'name' => 'ნინო',
             'age' => 6,
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
         ]);
 
         $days = app(UserStatRepository::class);
@@ -48,7 +48,7 @@ class ProfileTest extends TestCase
         }
 
         $georgian = WeekPlanItem::query()
-            ->where('grade', SchoolGrade::First)
+            ->where('grade', SchoolGrade::Fourth)
             ->where('subject', SchoolSubject::Georgian)
             ->where('weekday', 1)
             ->firstOrFail();
@@ -103,7 +103,7 @@ class ProfileTest extends TestCase
             ->assertSee(__('profile.no_recent_achievements'), false);
     }
 
-    private function seedWeek(SchoolGrade $grade = SchoolGrade::First, int $weekdays = 2, int $perPack = 1): void
+    private function seedWeek(SchoolGrade $grade = SchoolGrade::Fourth, int $weekdays = 2, int $perPack = 1): void
     {
         Game::factory()->create([
             'slug' => GameType::MultipleChoice,

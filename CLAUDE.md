@@ -23,7 +23,7 @@ This is **Livewire, not Vue**. Do not add Vue, Nuxt, Vuex, or Inertia.
 - Parent-gated screens (PIN, reports, screen time, bedtime, delete account) must never be reachable by the kid without verification.
 - Password reset and parent verification go to the **parent email only**.
 - **Privacy:** `show_on_leaderboard` hides the kid from public (global all-time and weekly XP) ranking queries. Friends ranking still lists them (friendship is consent). League groups — and `/ranking-weekly`, which currently renders that closed cohort — still include them, because promote/relegate needs every member. New accounts default to visible.
-- **Class (`users.grade` 1–3)** drives week-plan packs (difficulty and question bank). Signup still stores `age`; `age_group` is set in the background and is not the content filter.
+- **Class (`users.grade`) is 4 only** (`SchoolGrade::Fourth`). `WeekPlanSeeder` holds all content: 3 subjects × 7 weekdays, one game type and 10 `ka` questions per pack, reused for weeks 1–2. The trace-letter game was removed (not Georgian-ready). Signup still stores `age`; `age_group` is set in the background and is not the content filter.
 - Scoring loop: play week pack → XP → level up → ranks / leagues / badges.
 
 Tabs: Home · Learn · Rewards · Ranking · Profile.

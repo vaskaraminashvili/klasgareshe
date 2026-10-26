@@ -8,4 +8,5 @@ enum QuestionPlayMode: string
     case TapCorrect = 'tap';
     case FillLetter = 'fill';
     case Count = 'count';
+    case Picture = 'picture';
 }

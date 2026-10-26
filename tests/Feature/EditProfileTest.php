@@ -35,7 +35,7 @@ class EditProfileTest extends TestCase
             'name' => 'ნინო',
             'nickname' => 'nino-star',
             'avatar' => '🐻',
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
         ]);
 
         Livewire::actingAs($user)
@@ -43,7 +43,7 @@ class EditProfileTest extends TestCase
             ->set('name', 'ანა')
             ->set('nickname', 'ana-fox')
             ->set('avatar', '🦊')
-            ->set('grade', SchoolGrade::Second->value)
+            ->set('grade', SchoolGrade::Fourth->value)
             ->call('save')
             ->assertRedirect(route('profile'));
 
@@ -52,7 +52,7 @@ class EditProfileTest extends TestCase
         $this->assertSame('ანა', $user->name);
         $this->assertSame('ana-fox', $user->nickname);
         $this->assertSame('🦊', $user->avatar);
-        $this->assertSame(SchoolGrade::Second, $user->grade);
+        $this->assertSame(SchoolGrade::Fourth, $user->grade);
     }
 
     public function test_nickname_uniqueness_fails(): void

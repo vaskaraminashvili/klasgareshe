@@ -81,7 +81,6 @@ return [
     'find_5_words' => 'იპოვე 5 სიტყვა',
     'counting' => 'დათვლა',
     'counting_range' => '1–20',
-    'trace_letter' => 'ასოს დახაზვა',
     'follow_dots' => 'მიჰყევი წერტილებს',
 
     'new_this_week' => '🆕 ახალი ამ კვირაში',

@@ -326,9 +326,6 @@ new class extends Component
     <div class="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
         <div class="mx-auto max-w-[430px] pointer-events-auto">
             <div class="bg-surface border-t border-token safe-bottom px-5 pt-3 pb-3 flex items-center gap-2">
-                <button type="button" class="icon-btn shrink-0" data-speak="{{ $titleText }}" aria-label="{{ __('learn.preview_audio') }}">
-                    <i class="ph-fill ph-speaker-high text-xl"></i>
-                </button>
                 @if ($state === 'playable')
                     <a href="{{ $playHref }}" wire:navigate class="btn btn-primary grow">
                         <i class="ph-fill ph-play"></i> {{ __('learn.continue_lesson') }}

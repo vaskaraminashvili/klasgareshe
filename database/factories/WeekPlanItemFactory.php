@@ -21,7 +21,7 @@ class WeekPlanItemFactory extends Factory
         $weekday = fake()->numberBetween(1, 7);
 
         return [
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
             'week_number' => 1,
             'weekday' => $weekday,
             'subject' => SchoolSubject::Math,

@@ -365,7 +365,7 @@ class FriendshipService
      */
     public function suggestions(User $user): array
     {
-        $grade = $user->grade ?? SchoolGrade::First;
+        $grade = $user->grade ?? SchoolGrade::Fourth;
         $league = $this->userStats->ensureFor($user)->league ?? League::Bronze;
         $cards = [];
 

@@ -20,7 +20,7 @@ trait PlaysWeekPlanPack
     public array $questionIds = [];
 
     /**
-     * @var list<array{id: int, prompt: string, emoji: string, tile: string, playMode: string, letters: list<array{char: string, blank: bool}>, countItems: list<string>, choices: list<array{key: string, label: string, emoji: string}>, hint: string, keyboard: list<string>, strokes: list<list<array{0: float, 1: float}>>, pairLabel: string, pairEmoji: string, slots: int}>
+     * @var list<array{id: int, prompt: string, emoji: string, tile: string, playMode: string, letters: list<array{char: string, blank: bool}>, countItems: list<string>, choices: list<array{key: string, label: string, emoji: string}>, hint: string, keyboard: list<string>, strokes: list<list<array{0: float, 1: float}>>, pairLabel: string, pairEmoji: string, slots: int, correctKey: string}>
      */
     #[Locked]
     public array $deck = [];
@@ -99,6 +99,8 @@ trait PlaysWeekPlanPack
 
     public ?string $correctKey = null;
 
+    public string $deckCorrectKey = '';
+
     public bool $showBreak = false;
 
     public bool $showWarn = false;
@@ -148,7 +150,8 @@ trait PlaysWeekPlanPack
             return;
         }
 
-        $this->applyGrade($play->gradeChoice($this->questionIds[$this->index], $key), $key);
+        // The browser already played the sound and coloured the answer (data-ans).
+        $this->applyGrade($play->gradeChoice($this->questionIds[$this->index], $key), $key, false);
     }
 
     public function next(GamePlayService $play, UserRepository $users, BadgeService $badges): void
@@ -278,7 +281,7 @@ trait PlaysWeekPlanPack
 
     protected function afterPackReady(): void {}
 
-    protected function applyGrade(ChoiceGrade $grade, ?string $pickedKey): void
+    protected function applyGrade(ChoiceGrade $grade, ?string $pickedKey, bool $sfx = true): void
     {
         $this->answered = true;
         $this->pickedKey = $pickedKey;
@@ -288,14 +291,19 @@ trait PlaysWeekPlanPack
             $this->correctCount++;
             $this->combo++;
             $this->maxCombo = max($this->maxCombo, $this->combo);
-            $this->dispatch('kidzio-sfx', kind: 'correct');
+            if ($sfx) {
+                $this->dispatch('kidzio-sfx', kind: 'correct');
+            }
 
             return;
         }
 
         $this->lives = max(0, $this->lives - 1);
         $this->combo = 0;
-        $this->dispatch('kidzio-sfx', kind: 'incorrect');
+
+        if ($sfx) {
+            $this->dispatch('kidzio-sfx', kind: 'incorrect');
+        }
     }
 
     protected function showCurrent(): void
@@ -317,6 +325,7 @@ trait PlaysWeekPlanPack
         $this->keyboard = $view['keyboard'];
         $this->strokes = $view['strokes'];
         $this->letterSlots = $view['slots'];
+        $this->deckCorrectKey = $view['correctKey'];
         $this->afterShowCurrent();
     }
 

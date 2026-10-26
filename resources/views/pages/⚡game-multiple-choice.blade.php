@@ -30,7 +30,6 @@ new class extends PlaysWeekPlanPackComponent
         <div class="grow">
             <div class="progress"><span style="width:{{ $this->progressPercent() }}%"></span></div>
         </div>
-        <button type="button" class="icon-btn" aria-label="{{ __('quiz.hear') }}" data-speak="{{ $prompt }}"><i class="ph-fill ph-speaker-high"></i></button>
         <span class="chip chip-coral">❤️ {{ $lives }}</span>
     </header>
 
@@ -57,7 +56,7 @@ new class extends PlaysWeekPlanPackComponent
                 {{ __('quiz.question_n_of', ['current' => $index + 1, 'total' => count($questionIds)]) }}
             @endif
         </p>
-        <h1 class="h-display text-2xl mt-2" data-speak-auto="{{ $prompt }}">{{ $prompt }}</h1>
+        <h1 class="h-display text-2xl mt-2">{{ $prompt }}</h1>
     </section>
 
     @if ($playMode === 'fill' && $emoji !== '')
@@ -75,10 +74,10 @@ new class extends PlaysWeekPlanPackComponent
                 </div>
             </div>
         </section>
-    @elseif ($playMode === 'choice' && $emoji !== '')
+    @elseif (in_array($playMode, ['choice', 'picture'], true) && $emoji !== '')
         <section class="px-6 mt-4" wire:key="q-emoji-{{ $index }}">
             <div class="k-card-lg {{ $tile }} grid place-items-center aspect-[16/10]">
-                <div class="text-8xl">{{ $emoji }}</div>
+                <div class="{{ $playMode === 'picture' ? 'text-5xl text-center leading-tight px-3' : 'text-8xl' }}">{{ $emoji }}</div>
             </div>
         </section>
     @endif
@@ -106,7 +105,7 @@ new class extends PlaysWeekPlanPackComponent
                 @foreach ($choices as $choice)
                     <button type="button"
                         class="ans aspect-square justify-center h-display text-3xl{{ $this->choiceClass($choice['key']) }}"
-                        wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>{{ $choice['label'] }}</button>
+                        data-ans="{{ $choice['key'] === $deckCorrectKey ? 'correct' : 'wrong' }}" wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>{{ $choice['label'] }}</button>
                 @endforeach
             </div>
         </section>
@@ -115,7 +114,15 @@ new class extends PlaysWeekPlanPackComponent
             @foreach ($choices as $choice)
                 <button type="button"
                     class="ans aspect-square justify-center h-display text-2xl{{ $this->choiceClass($choice['key']) }}"
-                    wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>{{ $choice['label'] }}</button>
+                    data-ans="{{ $choice['key'] === $deckCorrectKey ? 'correct' : 'wrong' }}" wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>{{ $choice['label'] }}</button>
+            @endforeach
+        </section>
+    @elseif ($playMode === 'picture')
+        <section class="px-6 mt-5 grid grid-cols-2 gap-3" data-ans-group wire:key="q-choices-{{ $index }}">
+            @foreach ($choices as $choice)
+                <button type="button"
+                    class="ans aspect-[4/3] justify-center text-center leading-tight {{ mb_strlen($choice['label']) > 10 ? 'text-xl' : (mb_strlen($choice['label']) > 3 ? 'text-3xl' : 'text-6xl') }}{{ $this->choiceClass($choice['key']) }}"
+                    data-ans="{{ $choice['key'] === $deckCorrectKey ? 'correct' : 'wrong' }}" wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>{{ $choice['label'] }}</button>
             @endforeach
         </section>
     @elseif ($playMode === 'tap')
@@ -123,7 +130,7 @@ new class extends PlaysWeekPlanPackComponent
             @foreach ($choices as $choice)
                 <button type="button"
                     class="ans aspect-square flex-col justify-center text-4xl{{ $this->choiceClass($choice['key']) }}"
-                    wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>
+                    data-ans="{{ $choice['key'] === $deckCorrectKey ? 'correct' : 'wrong' }}" wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>
                     <span class="h-display">{{ $choice['label'] }}</span>
                 </button>
             @endforeach
@@ -132,7 +139,7 @@ new class extends PlaysWeekPlanPackComponent
         <section class="px-6 mt-5 space-y-3" data-ans-group wire:key="q-choices-{{ $index }}">
             @foreach ($choices as $choice)
                 <button type="button" class="ans{{ $this->choiceClass($choice['key']) }}"
-                    wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>
+                    data-ans="{{ $choice['key'] === $deckCorrectKey ? 'correct' : 'wrong' }}" wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)>
                     <span class="ans-key">{{ $choice['key'] }}</span>
                     <span class="grow">{{ $choice['label'] }}</span>
                     @if ($choice['emoji'] !== '')

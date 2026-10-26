@@ -113,7 +113,6 @@ new class extends PlaysWeekPlanPackComponent
     <header class="appbar">
         <a href="{{ route('daily-mission') }}" wire:navigate class="icon-btn" data-back aria-label="{{ __('quiz.close') }}"><i class="ph ph-x"></i></a>
         <div class="grow"><div class="progress"><span id="progressFill" style="width:{{ count($deck) === 0 ? 0 : (int) round((count($links) / count($deck)) * 100) }}%"></span></div></div>
-        <button type="button" class="icon-btn" aria-label="{{ __('quiz.hear') }}" data-speak="{{ collect($deck)->pluck('prompt')->implode(', ') }}" data-speak-auto="{{ collect($deck)->pluck('prompt')->implode(', ') }}"><i class="ph-fill ph-speaker-high"></i></button>
         <span class="chip chip-primary" id="scoreChip">{{ count($links) }} / {{ count($deck) }}</span>
     </header>
 

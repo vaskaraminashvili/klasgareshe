@@ -35,6 +35,10 @@ class QuestionPlayModeResolver
             }
         }
 
+        if (($question->payload['picture_only'] ?? false) === true) {
+            return new QuestionPlayShape(QuestionPlayMode::Picture);
+        }
+
         if ($question->source === GameType::TapCorrect) {
             return new QuestionPlayShape(QuestionPlayMode::TapCorrect);
         }

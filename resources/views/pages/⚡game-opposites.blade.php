@@ -45,7 +45,6 @@ new class extends PlaysWeekPlanPackComponent
     <header class="appbar">
         <a href="{{ route('daily-mission') }}" wire:navigate class="icon-btn" data-back aria-label="{{ __('quiz.close') }}"><i class="ph ph-x"></i></a>
         <div class="grow"><div class="progress progress-coral"><span id="progressFill" style="width:{{ $this->progressPercent() }}%"></span></div></div>
-        <button type="button" class="icon-btn" aria-label="{{ __('quiz.hear') }}" data-speak="{{ $prompt }}"><i class="ph-fill ph-speaker-high"></i></button>
         <span class="chip chip-coral" id="heartsChip">❤️ {{ $lives }}</span>
     </header>
 
@@ -67,7 +66,7 @@ new class extends PlaysWeekPlanPackComponent
 
     <section class="px-6 mt-3">
         <div class="k-card-lg tile-coral grid place-items-center py-8 relative">
-            <span class="h-display text-5xl text-coral-ink" id="promptWord" data-speak-auto="{{ $prompt }}">{{ $prompt }}</span>
+            <span class="h-display text-5xl text-coral-ink" id="promptWord">{{ $prompt }}</span>
             <span class="text-6xl absolute left-6 top-6" id="promptEmoji">{{ $emoji !== '' ? $emoji : '🔁' }}</span>
             <span class="absolute right-6 bottom-6 text-xs font-extrabold chip bg-white/70 border-0 text-coral-ink">⇄ {{ __('quiz.pick_opposite') }}</span>
         </div>
@@ -75,7 +74,7 @@ new class extends PlaysWeekPlanPackComponent
 
     <section class="px-6 mt-5 grid grid-cols-2 gap-3" data-ans-group id="ansGroup" wire:key="q-choices-{{ $index }}">
         @foreach ($choices as $choice)
-            <button type="button" class="ans py-6 h-display text-xl{{ $this->choiceClass($choice['key']) }}" wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)><span class="grow text-center">{{ $choice['label'] }}</span></button>
+            <button type="button" class="ans py-6 h-display text-xl{{ $this->choiceClass($choice['key']) }}" data-ans="{{ $choice['key'] === $deckCorrectKey ? 'correct' : 'wrong' }}" wire:click="pick('{{ $choice['key'] }}')" @disabled($answered)><span class="grow text-center">{{ $choice['label'] }}</span></button>
         @endforeach
     </section>
 

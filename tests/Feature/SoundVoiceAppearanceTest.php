@@ -173,7 +173,7 @@ class SoundVoiceAppearanceTest extends TestCase
             ->assertSee('content="fun"', false);
     }
 
-    public function test_every_live_game_screen_has_a_hear_control(): void
+    public function test_no_game_screen_has_a_hear_control(): void
     {
         $games = [
             'game-multiple-choice',
@@ -181,7 +181,6 @@ class SoundVoiceAppearanceTest extends TestCase
             'game-counting',
             'game-fill-letter',
             'game-spell-word',
-            'game-trace-letter',
             'game-opposites',
             'game-knowledge',
             'game-word-search',
@@ -192,7 +191,7 @@ class SoundVoiceAppearanceTest extends TestCase
         foreach ($games as $game) {
             $path = resource_path('views/pages/⚡'.$game.'.blade.php');
             $this->assertFileExists($path);
-            $this->assertStringContainsString('data-speak=', (string) file_get_contents($path), $game);
+            $this->assertStringNotContainsString('data-speak=', (string) file_get_contents($path), $game);
         }
     }
 }

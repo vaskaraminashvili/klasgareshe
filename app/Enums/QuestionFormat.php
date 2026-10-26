@@ -9,6 +9,5 @@ enum QuestionFormat: string
     case Spell = 'spell';
     case Pairs = 'pairs';
     case Grid = 'grid';
-    case Trace = 'trace';
     case Hotspot = 'hotspot';
 }

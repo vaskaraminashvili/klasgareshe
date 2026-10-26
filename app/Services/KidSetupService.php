@@ -67,7 +67,6 @@ class KidSetupService
                 'game-word-search',
                 'game-fill-letter',
                 'game-spell-word',
-                'game-trace-letter',
                 'game-match-word',
                 'game-connect-pair',
                 'game-opposites',
@@ -190,7 +189,7 @@ class KidSetupService
             return SchoolGrade::fromAge($user->age);
         }
 
-        return SchoolGrade::First;
+        return SchoolGrade::Fourth;
     }
 
     public function defaultAgeGroup(User $user): AgeGroup

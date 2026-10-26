@@ -28,7 +28,7 @@ class SettingsTest extends TestCase
             'name' => 'ნინო',
             'email' => 'parent@example.com',
             'age' => 6,
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
             'daily_goal' => DailyGoal::Casual,
             'favourite_subjects' => ['georgian', 'history'],
             'notification_preferences' => [

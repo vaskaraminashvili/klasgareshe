@@ -4,9 +4,7 @@ namespace App\Enums;
 
 enum SchoolGrade: int
 {
-    case First = 1;
-    case Second = 2;
-    case Third = 3;
+    case Fourth = 4;
 
     public function label(): string
     {
@@ -20,10 +18,6 @@ enum SchoolGrade: int
 
     public static function fromAge(int $age): self
     {
-        return match (true) {
-            $age <= 6 => self::First,
-            $age === 7 => self::Second,
-            default => self::Third,
-        };
+        return self::Fourth;
     }
 }

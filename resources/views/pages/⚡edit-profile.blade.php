@@ -23,7 +23,7 @@ new #[Title('პროფილის რედაქტირება · Kidzi
 
     public string $gender = 'Girl';
 
-    public int $grade = 1;
+    public int $grade = 4;
 
     public string $favouriteSubject = 'georgian';
 
@@ -75,7 +75,7 @@ new #[Title('პროფილის რედაქტირება · Kidzi
         $this->nickname = $user->nickname;
         $this->age = (string) ($user->age ?? 6);
         $this->gender = ($user->gender ?? Gender::Girl)->value;
-        $this->grade = ($user->grade ?? SchoolGrade::First)->value;
+        $this->grade = ($user->grade ?? SchoolGrade::Fourth)->value;
         $this->favouriteSubject = $this->favouriteFrom($user->favourite_subjects);
         $this->dailyGoal = ($user->daily_goal ?? DailyGoal::Regular)->value;
         $this->avatar = $profiles->defaultAvatar($user->avatar);

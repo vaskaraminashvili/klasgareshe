@@ -165,7 +165,7 @@ class FriendshipRepository
             ->where('allow_friend_requests', true)
             ->where(function ($query) use ($grade): void {
                 $query->where('grade', $grade->value);
-                if ($grade === SchoolGrade::First) {
+                if ($grade === SchoolGrade::Fourth) {
                     $query->orWhereNull('grade');
                 }
             })

@@ -24,7 +24,7 @@ class QuestionFactory extends Factory
             'source' => GameType::MultipleChoice,
             'subject' => FavouriteSubject::Math,
             'age_group' => null,
-            'grade' => 1,
+            'grade' => 4,
             'difficulty' => PlayDifficulty::Medium,
             'code' => fake()->unique()->bothify('test-####-????'),
             'locale' => 'ka',

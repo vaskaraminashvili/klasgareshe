@@ -8,7 +8,7 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public int $grade = 1;
+    public int $grade = 4;
 
     public function title(): string
     {
@@ -78,25 +78,11 @@ new class extends Component
     <p class="section-label">{{ __('onboarding.age.pick_range') }}</p>
     <div class="mt-3 grid grid-cols-2 gap-3" id="ageGroup">
 
-      <button type="button" class="age-card{{ $grade === 1 ? ' is-selected' : '' }}" wire:click="select(1)" data-age data-name="Grade 1" data-range="6–7">
+      <button type="button" class="age-card{{ $grade === 4 ? ' is-selected' : '' }}" wire:click="select(4)" data-age data-name="Grade 4" data-range="9–10">
         <span class="age-tag">{{ __('onboarding.age.popular') }}</span>
-        <div class="age-emoji tile-sun">1️⃣</div>
-        <p class="age-range">{{ __('onboarding.age.grade_ranges.1') }}</p>
-        <p class="age-label">{{ __('onboarding.age.grades.1') }}</p>
-        <span class="age-check"></span>
-      </button>
-
-      <button type="button" class="age-card{{ $grade === 2 ? ' is-selected' : '' }}" wire:click="select(2)" data-age data-name="Grade 2" data-range="7–8">
-        <div class="age-emoji tile-mint">2️⃣</div>
-        <p class="age-range">{{ __('onboarding.age.grade_ranges.2') }}</p>
-        <p class="age-label">{{ __('onboarding.age.grades.2') }}</p>
-        <span class="age-check"></span>
-      </button>
-
-      <button type="button" class="age-card{{ $grade === 3 ? ' is-selected' : '' }}" wire:click="select(3)" data-age data-name="Grade 3" data-range="8–9">
-        <div class="age-emoji tile-coral">3️⃣</div>
-        <p class="age-range">{{ __('onboarding.age.grade_ranges.3') }}</p>
-        <p class="age-label">{{ __('onboarding.age.grades.3') }}</p>
+        <div class="age-emoji tile-sun">4️⃣</div>
+        <p class="age-range">{{ __('onboarding.age.grade_ranges.4') }}</p>
+        <p class="age-label">{{ __('onboarding.age.grades.4') }}</p>
         <span class="age-check"></span>
       </button>
     </div>

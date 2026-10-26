@@ -429,7 +429,6 @@ class LearnLibraryService
             [GameType::WordSearch, '🔎', 'tile-pink', 'games georgian'],
             [GameType::FillLetter, '✏️', 'tile-coral', 'games georgian'],
             [GameType::SpellWord, '🔤', 'tile-sun', 'games georgian'],
-            [GameType::TraceLetter, '✍️', 'tile-violet', 'games georgian'],
             [GameType::MatchWord, '🧩', 'tile-mint', 'games georgian'],
             [GameType::Opposites, '🔁', 'tile-coral', 'games georgian'],
             [GameType::Knowledge, '🌍', 'tile-sky', 'games history'],
@@ -614,9 +613,7 @@ class LearnLibraryService
     private function ageForGrade(SchoolGrade $grade): int
     {
         return match ($grade) {
-            SchoolGrade::First => 6,
-            SchoolGrade::Second => 7,
-            SchoolGrade::Third => 8,
+            SchoolGrade::Fourth => 9,
         };
     }
 }

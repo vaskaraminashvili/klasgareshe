@@ -56,7 +56,7 @@ class ProgressReportTest extends TestCase
 
         $user = User::factory()->fullySetUp()->withStats()->withParentPin()->create([
             'name' => 'ნინო',
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
         ]);
 
         $days = app(UserStatRepository::class);
@@ -66,7 +66,7 @@ class ProgressReportTest extends TestCase
         }
 
         $georgian = WeekPlanItem::query()
-            ->where('grade', SchoolGrade::First)
+            ->where('grade', SchoolGrade::Fourth)
             ->where('subject', SchoolSubject::Georgian)
             ->where('weekday', 1)
             ->firstOrFail();
@@ -183,7 +183,7 @@ class ProgressReportTest extends TestCase
         $this->assertStringContainsString('NotoSansGeorgian', $binary);
     }
 
-    private function seedWeek(SchoolGrade $grade = SchoolGrade::First, int $weekdays = 2, int $perPack = 1): void
+    private function seedWeek(SchoolGrade $grade = SchoolGrade::Fourth, int $weekdays = 2, int $perPack = 1): void
     {
         Game::factory()->create([
             'slug' => GameType::MultipleChoice,

@@ -263,7 +263,7 @@ class StreakXpTest extends TestCase
 
         foreach ($subjects as $index => $subject) {
             $item = WeekPlanItem::factory()->create([
-                'grade' => SchoolGrade::First,
+                'grade' => SchoolGrade::Fourth,
                 'week_number' => 1,
                 'weekday' => $index + 1,
                 'subject' => $subject,
@@ -274,7 +274,7 @@ class StreakXpTest extends TestCase
 
             $questions = Question::factory()->count(5)->create([
                 'subject' => $subject->favourite(),
-                'grade' => 1,
+                'grade' => 4,
             ]);
 
             $sync = [];

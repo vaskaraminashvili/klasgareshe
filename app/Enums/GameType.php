@@ -7,7 +7,6 @@ enum GameType: string
     case MultipleChoice = 'multiple-choice';
     case TapCorrect = 'tap-correct';
     case Counting = 'counting';
-    case TraceLetter = 'trace-letter';
     case FillLetter = 'fill-letter';
     case SpellWord = 'spell-word';
     case MatchWord = 'match-word';
@@ -36,7 +35,6 @@ enum GameType: string
             self::MatchWord,
             self::ConnectPair => QuestionFormat::Pairs,
             self::WordSearch => QuestionFormat::Grid,
-            self::TraceLetter => QuestionFormat::Trace,
             self::BodyParts => QuestionFormat::Hotspot,
         };
     }
@@ -47,7 +45,6 @@ enum GameType: string
             self::MultipleChoice => __('games.multiple_choice'),
             self::TapCorrect => __('games.tap_correct'),
             self::Counting => __('games.counting'),
-            self::TraceLetter => __('games.trace_letter'),
             self::FillLetter => __('games.fill_letter'),
             self::SpellWord => __('games.spell_word'),
             self::MatchWord => __('games.match_word'),
@@ -76,7 +73,6 @@ enum GameType: string
             self::MultipleChoice,
             self::TapCorrect,
             self::Counting,
-            self::TraceLetter,
             self::FillLetter,
             self::SpellWord,
             self::MatchWord,

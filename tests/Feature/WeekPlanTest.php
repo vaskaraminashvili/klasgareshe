@@ -14,7 +14,6 @@ use App\Models\UserStat;
 use App\Models\WeekPlanItem;
 use App\Services\GamePlayService;
 use App\Services\WeekPlanService;
-use Database\Seeders\WeekPlanQuestionBank;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -140,27 +139,6 @@ class WeekPlanTest extends TestCase
             ->assertDontSee('georgian-w1-d2', false);
     }
 
-    public function test_grade_two_cannot_play_a_grade_one_pack(): void
-    {
-        $this->withoutVite();
-        $this->seedWeek(SchoolGrade::First);
-        $this->seedWeek(SchoolGrade::Second);
-
-        $user = User::factory()->fullySetUp()->withStats()->create([
-            'grade' => SchoolGrade::Second,
-        ]);
-
-        $gradeOne = WeekPlanItem::query()
-            ->where('grade', SchoolGrade::First)
-            ->where('subject', SchoolSubject::Math)
-            ->where('weekday', 1)
-            ->firstOrFail();
-
-        Livewire::actingAs($user)
-            ->test('pages::game-multiple-choice', ['item' => $gradeOne->id])
-            ->assertRedirect(route('home'));
-    }
-
     public function test_incomplete_monday_pack_is_still_next_later_in_the_week(): void
     {
         $this->seedWeek();
@@ -270,39 +248,6 @@ class WeekPlanTest extends TestCase
         }
     }
 
-    public function test_week_three_grade_one_uses_the_first_grade_quiz_bank(): void
-    {
-        $georgian = $this->weekPrompts(SchoolSubject::Georgian);
-        $math = $this->weekPrompts(SchoolSubject::Math);
-
-        $this->assertContains('რომელია ქართული ანბანის ბოლო ასო?', $georgian);
-        $this->assertContains('რომელი ასოთი იწყება სიტყვა «დათვი»?', $georgian);
-        $this->assertContains('რამდენი მარცვალია სიტყვაში «წ-ი-გ-ნ-ი»?', $georgian);
-        $this->assertContains('რომელი ასოთი მთავრდება სიტყვა «ვაშლი»?', $georgian);
-        $this->assertContains('რა არის სიტყვა «დიდის» საპირისპირო სიტყვა?', $georgian);
-        $this->assertContains('რამდენი ხმოვანია სიტყვაში «ს-კ-ო-ლ-ა»?', $georgian);
-        $this->assertContains('რომელი სიტყვა იწყება «ა» ასოზე?', $georgian);
-        $this->assertContains('რამდენი თვალი აქვს ადამიანს?', $georgian);
-        $this->assertContains('რა ფერისაა ცა მზიან და მოწმენდილ დღეს?', $georgian);
-        $this->assertContains('რომელი ცხოველი კნავის («მიაუ»)?', $georgian);
-        $this->assertContains('წელიწადის რომელ დროში თოვს ჩვეულებრივ?', $georgian);
-        $this->assertContains('რას ეძახიან ძაღლის პატარა შვილს?', $georgian);
-        $this->assertContains('რას ვხედავთ ცაზე ღამით?', $georgian);
-        $this->assertContains('სხეულის რომელი ორგანოთი ვუსმენთ მუსიკას?', $georgian);
-        $this->assertContains('ჩამოთვლილთაგან რომელია ფრინველი?', $georgian);
-        $this->assertContains('რამდენი ფეხი აქვს ობობას?', $georgian);
-
-        $this->assertContains('რამდენია 2 + 3?', $math);
-        $this->assertContains('რომელ გეომეტრიულ ფიგურას აქვს 3 კუთხე?', $math);
-        $this->assertContains('თუ გაქვს 5 ვაშლი და 2 შეჭამე, რამდენი ვაშლი დარჩება?', $math);
-        $this->assertContains('რომელი რიცხვია მეტი: 7 თუ 4?', $math);
-
-        $alphabet = WeekPlanQuestionBank::pack(SchoolGrade::First, SchoolSubject::Georgian, 1, 3);
-        $this->assertSame('ანბანი და ასოები', $alphabet['title']);
-        $this->assertCount(5, $alphabet['questions']);
-        $this->assertSame('ჰ', $alphabet['questions'][0]['correct']);
-    }
-
     public function test_completing_week_two_advances_to_week_three_when_seeded(): void
     {
         $this->withoutVite();
@@ -329,7 +274,7 @@ class WeekPlanTest extends TestCase
             ->assertSee('georgian-w3-d1', false);
     }
 
-    private function seedWeek(SchoolGrade $grade = SchoolGrade::First, int $weekdays = 2, int $perPack = 1): void
+    private function seedWeek(SchoolGrade $grade = SchoolGrade::Fourth, int $weekdays = 2, int $perPack = 1): void
     {
         $this->seedCurriculumWeeks($grade, weekNumbers: [1], weekdays: $weekdays, perPack: $perPack);
     }
@@ -338,7 +283,7 @@ class WeekPlanTest extends TestCase
      * @param  list<int>  $weekNumbers
      */
     private function seedCurriculumWeeks(
-        SchoolGrade $grade = SchoolGrade::First,
+        SchoolGrade $grade = SchoolGrade::Fourth,
         array $weekNumbers = [1, 2],
         int $weekdays = 2,
         int $perPack = 1,
@@ -378,28 +323,10 @@ class WeekPlanTest extends TestCase
         }
     }
 
-    /**
-     * @return list<string>
-     */
-    private function weekPrompts(SchoolSubject $subject, int $weekNumber = 3): array
-    {
-        $prompts = [];
-
-        for ($weekday = 1; $weekday <= 7; $weekday++) {
-            $pack = WeekPlanQuestionBank::pack(SchoolGrade::First, $subject, $weekday, $weekNumber);
-
-            foreach ($pack['questions'] as $question) {
-                $prompts[] = $question['prompt'];
-            }
-        }
-
-        return $prompts;
-    }
-
     private function completeWeekPacks(User $user, int $weekNumber, int $weekdays = 2): void
     {
         $items = WeekPlanItem::query()
-            ->where('grade', $user->grade ?? SchoolGrade::First)
+            ->where('grade', $user->grade ?? SchoolGrade::Fourth)
             ->where('week_number', $weekNumber)
             ->where('weekday', '<=', $weekdays)
             ->get();

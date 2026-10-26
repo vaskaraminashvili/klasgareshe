@@ -282,8 +282,7 @@ class GamePlayService
             QuestionFormat::Count,
             QuestionFormat::Spell,
             QuestionFormat::Pairs,
-            QuestionFormat::Grid,
-            QuestionFormat::Trace => true,
+            QuestionFormat::Grid => true,
             QuestionFormat::Hotspot => false,
         };
     }
@@ -320,7 +319,17 @@ class GamePlayService
             pairLabel: $pair['label'],
             pairEmoji: $pair['emoji'],
             slots: $slots,
+            correctKey: $this->safeCorrectKey($question),
         );
+    }
+
+    private function safeCorrectKey(Question $question): string
+    {
+        try {
+            return $question->correctKey();
+        } catch (InvalidArgumentException) {
+            return '';
+        }
     }
 
     /**

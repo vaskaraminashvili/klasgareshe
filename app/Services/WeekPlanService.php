@@ -25,7 +25,7 @@ class WeekPlanService
 
     public function gradeFor(User $user): SchoolGrade
     {
-        return $user->grade ?? SchoolGrade::First;
+        return $user->grade ?? SchoolGrade::Fourth;
     }
 
     public function findItem(int $id): ?WeekPlanItem

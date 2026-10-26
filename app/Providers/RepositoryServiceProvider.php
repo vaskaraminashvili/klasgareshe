@@ -47,7 +47,6 @@ use App\Services\ShareService;
 use App\Services\ShopService;
 use App\Services\SocialAuthService;
 use App\Services\SupportService;
-use App\Services\TraceStrokeService;
 use App\Services\UserProfileService;
 use App\Services\UserRegistrationService;
 use App\Services\UserStatService;
@@ -76,7 +75,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(QuestionRepository::class);
         $this->app->singleton(PackPlayRepository::class);
         $this->app->singleton(WordSearchBoard::class);
-        $this->app->singleton(TraceStrokeService::class);
         $this->app->singleton(LevelCalculator::class);
         $this->app->singleton(UserRegistrationService::class);
         $this->app->singleton(SocialAuthService::class);

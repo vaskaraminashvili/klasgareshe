@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\GameType;
 use App\Enums\GameVisibility;
-use App\Enums\PlayDifficulty;
 use App\Enums\SchoolGrade;
 use App\Enums\SchoolSubject;
 use App\Models\Game;
@@ -12,117 +11,279 @@ use App\Models\Question;
 use App\Models\WeekPlanItem;
 use Illuminate\Database\Seeder;
 
+/**
+ * Class 4 only: 3 subjects x 7 weekdays, one game type and 10 questions per pack.
+ * Every seeded week reuses the same packs (repeats are fine for now).
+ */
 class WeekPlanSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    private const WEEKS = 2;
+
     public function run(): void
     {
-        foreach ([GameType::MultipleChoice, GameType::TapCorrect, GameType::Counting] as $type) {
-            $this->gameFor($type);
-        }
+        foreach ($this->packs() as $subjectKey => $days) {
+            $subject = SchoolSubject::from($subjectKey);
 
-        foreach (SchoolGrade::cases() as $grade) {
-            $weeks = $grade === SchoolGrade::First ? [1, 2, 3] : [1, 2];
+            foreach ($days as $weekday => [$type, $title, $rows]) {
+                $game = $this->gameFor($type);
+                $ids = [];
 
-            foreach ($weeks as $weekNumber) {
-                foreach (SchoolSubject::ordered() as $subject) {
-                    for ($weekday = 1; $weekday <= 7; $weekday++) {
-                        $this->seedPack($grade, $subject, $weekday, $weekNumber);
-                    }
+                foreach ($this->normalize($type, $rows) as $i => $row) {
+                    $ids[] = $this->question($game, $type, $subject, $weekday, $i, $row)->id;
                 }
+
+                for ($week = 1; $week <= self::WEEKS; $week++) {
+                    $item = WeekPlanItem::query()->updateOrCreate(
+                        [
+                            'grade' => SchoolGrade::Fourth,
+                            'week_number' => $week,
+                            'weekday' => $weekday,
+                            'subject' => $subject,
+                        ],
+                        [
+                            'level' => (($week - 1) * 7) + $weekday,
+                            'title' => $title,
+                            'game_slug' => $type,
+                            'questions_per_round' => 5,
+                        ],
+                    );
+                    $item->questions()->sync(collect($ids)->mapWithKeys(fn ($id, $n) => [$id => ['sort_order' => $n]])->all());
+                }
+
+                $game->questions()->syncWithoutDetaching($ids);
             }
         }
     }
 
-    private function seedPack(
-        SchoolGrade $grade,
-        SchoolSubject $subject,
-        int $weekday,
-        int $weekNumber = 1,
-    ): void {
-        $type = WeekPlanQuestionBank::gameType($grade, $subject, $weekday, $weekNumber);
-        $game = $this->gameFor($type);
-        $pack = WeekPlanQuestionBank::pack($grade, $subject, $weekday, $weekNumber);
+    /**
+     * Rows are 'prompt|correct|wrong,wrong,wrong|emoji'. Spell/match/search rows
+     * are 'prompt|word|emoji' style and take their wrong answers from the pack.
+     *
+     * @return array<string, array<int, array{0: GameType, 1: string, 2: list<string>}>>
+     */
+    private function packs(): array
+    {
+        return [
+            'georgian' => [
+                1 => [GameType::FillLetter, 'გამოტოვებული ასო', [
+                    'წიგ_ი|ნ|მ,ბ,დ|📚', 'ფან_არა|ჯ|ქ,ღ,შ|🪟', 'მეგო_არი|ბ|პ,ფ,დ|👫', 'ბა_შვი|ვ|ბ,მ,ფ|🧒',
+                    'მდი_არე|ნ|მ,ლ,რ|🏞️', 'ქა_აქი|ლ|რ,ნ,მ|🏙️', 'ს_ხლი|ა|ე,ო,უ|🏠', 'ფრი_ველი|ნ|მ,რ,ლ|🐦',
+                    'მთ_ვრობა|ა|ე,ო,უ|🏛️', 'ბიბლიო_ეკა|თ|ტ,ფ,ქ|📖',
+                ]],
+                2 => [GameType::SpellWord, 'დაწერე სიტყვა', [
+                    'დაწერე, რასაც ვკითხულობთ|წიგნი|📚', 'დაწერე, რით ვწერთ|ფანქარი|✏️', 'დაწერე, რაში ვწერთ|რვეული|📓',
+                    'დაწერე, სად ვსწავლობთ|სკოლა|🏫', 'დაწერე, რაც მთიდან ზღვაში მიდის|მდინარე|🏞️',
+                    'დაწერე, ვინც გვერდით გვიდგას|მეგობარი|👫', 'დაწერე, საიდანაც გარეთ ვიყურებით|ფანჯარა|🪟',
+                    'დაწერე, დიდი დასახლებული ადგილი|ქალაქი|🏙️', 'დაწერე, პატარა ადამიანი|ბავშვი|🧒',
+                    'დაწერე, რას ჭამს ძროხა|ბალახი|🌿',
+                ]],
+                3 => [GameType::Opposites, 'საპირისპირო სიტყვები', [
+                    'მაღალი|დაბალი|ვიწრო,მსუბუქი,დიდი|⬆️', 'სუფთა|ბინძური|ახალი,თბილი,ტკბილი|✨', 'მდიდარი|ღარიბი|ძლიერი,დიდი,ბედნიერი|💰',
+                    'მტკიცე|სუსტი|მძიმე,ცივი,ახალი|💪', 'ბნელი|ნათელი|ცივი,ღრმა,მწარე|🌑', 'ახლოს|შორს|ზევით,ადრე,ბევრი|📍',
+                    'ადრე|გვიან|შორს,სწრაფად,ხვალ|⏰', 'ხმამაღლა|ჩუმად|სწრაფად,შორს,ბევრი|📢', 'სწორი|მრუდე|გრძელი,დიდი,ცივი|📏',
+                    'მხიარული|მოწყენილი|ახალგაზრდა,ძლიერი,დიდი|😊',
+                ]],
+                4 => [GameType::MatchWord, 'სიტყვა და სურათი', [
+                    'სკოლა|🏫', 'მთა|⛰️', 'ზღვა|🌊', 'ტყე|🌲', 'თევზი|🐟', 'მზე|☀️', 'წიგნი|📚', 'ფანქარი|✏️', 'სახლი|🏠', 'ვაშლი|🍎',
+                ]],
+                5 => [GameType::WordSearch, 'სიტყვის ძიება', [
+                    'მდინარე|🏞️', 'ფანჯარა|🪟', 'მეგობარი|👫', 'ბავშვი|🧒', 'სკოლა|🏫', 'ქალაქი|🏙️', 'ფანქარი|✏️', 'რვეული|📓', 'ბალახი|🌿', 'წიგნი|📚',
+                ]],
+                6 => [GameType::MultipleChoice, 'გრამატიკა', [
+                    'რომელია არსებითი სახელი?|მაგიდა|ლამაზი,დიდი,სწრაფად|📝', 'რომელია ზედსართავი სახელი?|ლამაზი|მაგიდა,სირბილი,ბავშვი|📝',
+                    'რომელია ზმნა?|წერს|წიგნი,მწვანე,სახლი|📝', 'რომელი ასო მოდის „ა“-ს შემდეგ?|ბ|გ,დ,ე|🔤',
+                    'რომელი სიტყვაა მრავლობით რიცხვში?|წიგნები|წიგნი,წიგნის,წიგნს|📚', 'რამდენი ხმოვანია ქართულში?|ხუთი|სამი,შვიდი,ცხრა|🔤',
+                    'რამდენი მარცვალია სიტყვაში „სკოლა“?|ორი|ერთი,სამი,ოთხი|🏫', 'რომელი ნიშნით მთავრდება კითხვითი წინადადება?|?|.,!,;|❓',
+                    'რომელი სიტყვაა ზედმეტი: ვაშლი, მსხალი, ატამი, მაგიდა?|მაგიდა|ვაშლი,მსხალი,ატამი|🍐', 'რომელია თანხმოვანი ასო?|ბ|ა,ე,ო|🔤',
+                ]],
+                7 => [GameType::Knowledge, 'ლიტერატურა', [
+                    'ვინ დაწერა „ვეფხისტყაოსანი“?|შოთა რუსთაველი|ილია ჭავჭავაძე,აკაკი წერეთელი,ვაჟა-ფშაველა|📖',
+                    'ვინ არის „დედა ენის“ ავტორი?|იაკობ გოგებაშვილი|ილია ჭავჭავაძე,აკაკი წერეთელი,გალაკტიონ ტაბიძე|📘',
+                    'ვინ დაწერა „ხევისბერი გოჩა“?|ვაჟა-ფშაველა|ილია ჭავჭავაძე,აკაკი წერეთელი,შოთა რუსთაველი|✍️',
+                    'ვინ დაწერა ლექსი „მერანი“?|ნიკოლოზ ბარათაშვილი|ილია ჭავჭავაძე,აკაკი წერეთელი,ვაჟა-ფშაველა|🐎',
+                    'ვინ არის „ბაში-აჩუკის“ ავტორი?|აკაკი წერეთელი|ილია ჭავჭავაძე,შოთა რუსთაველი,ვაჟა-ფშაველა|📜',
+                    'ვინ დაწერა „გლახის ნაამბობი“?|ილია ჭავჭავაძე|აკაკი წერეთელი,ვაჟა-ფშაველა,შოთა რუსთაველი|📜',
+                    'რამდენი ასოა ქართულ ანბანში?|33|28,30,36|🔤',
+                    'როგორ ჰქვია წიგნების საცავს?|ბიბლიოთეკა|მაღაზია,სკოლა,მუზეუმი|📚',
+                    'რომელი ჟანრია „იყო და არა იყო რა...“?|ზღაპარი|ლექსი,მოთხრობა,იგავი|🧚',
+                    'რომელია ჩვენი დედაენა?|ქართული|ინგლისური,რუსული,თურქული|🇬🇪',
+                ]],
+            ],
+            'math' => [
+                1 => [GameType::MultipleChoice, 'შეკრება და გამოკლება', [
+                    '235 + 164 = ?|399|389,409,299|➕', '500 − 275 = ?|225|235,325,215|➖', '1000 − 1 = ?|999|900,1001,990|➖',
+                    '48 + 37 = ?|85|75,84,95|➕', '602 − 138 = ?|464|474,564,454|➖', '1250 + 750 = ?|2000|1900,2100,1750|➕',
+                    '999 − 456 = ?|543|553,443,533|➖', '376 + 248 = ?|624|614,634,524|➕', '1000 − 358 = ?|642|652,742,632|➖',
+                    '725 + 275 = ?|1000|900,1100,990|➕',
+                ]],
+                2 => [GameType::TapCorrect, 'რიცხვები', [
+                    'რომელია უდიდესი რიცხვი?|9870|987,9078,970|🔢', 'რომელია უმცირესი რიცხვი?|1089|1098,1809,1980|🔢',
+                    'რომელია ლუწი რიცხვი?|348|347,349,351|🔢', 'რომელია კენტი რიცხვი?|575|574,576,580|🔢',
+                    'რომელი რიცხვი იყოფა 5-ზე?|135|134,136,138|🔢', 'რომელია ათასეულთა ციფრი 4725-ში?|4|7,2,5|🔢',
+                    'რომელია ათეულთა ციფრი 3482-ში?|8|3,4,2|🔢', 'რომელი რიცხვია 7 ათასი და 2 ასეული?|7200|720,7020,2700|🔢',
+                    'რომელია 6000 + 50 + 3?|6053|653,6503,6530|🔢', 'რომელი რიცხვი არის ლუწი და იყოფა 3-ზე?|12|9,10,15|🔢',
+                ]],
+                3 => [GameType::Counting, 'დათვლა', [
+                    'დათვალე ვაშლები|12|10,11,13|🍎', 'დათვალე ვარსკვლავები|9|7,8,10|⭐', 'დათვალე თევზები|14|12,13,15|🐟',
+                    'დათვალე ყვავილები|11|9,10,12|🌸', 'დათვალე მანქანები|13|11,12,14|🚗', 'დათვალე ბუშტები|15|13,14,16|🎈',
+                    'დათვალე მარწყვები|10|8,9,11|🍓', 'დათვალე ფუტკრები|16|14,15,17|🐝', 'დათვალე ბურთები|8|6,7,9|⚽',
+                    'დათვალე ნამცხვრები|12|10,13,14|🍪',
+                ]],
+                4 => [GameType::MultipleChoice, 'გამრავლება', [
+                    '6 × 7 = ?|42|36,48,49|✖️', '8 × 9 = ?|72|64,81,63|✖️', '12 × 5 = ?|60|50,65,70|✖️', '9 × 9 = ?|81|72,90,99|✖️',
+                    '15 × 4 = ?|60|45,50,64|✖️', '25 × 4 = ?|100|50,75,125|✖️', '13 × 3 = ?|39|36,33,49|✖️', '7 × 8 = ?|56|54,49,63|✖️',
+                    '11 × 11 = ?|121|111,112,131|✖️', '20 × 30 = ?|600|60,500,6000|✖️',
+                ]],
+                5 => [GameType::Knowledge, 'მათემატიკის ფაქტები', [
+                    'რამდენ სანტიმეტრს შეიცავს 1 მეტრი?|100|10,1000,60|📏', 'რამდენი გრამია 1 კილოგრამში?|1000|100,10,500|⚖️',
+                    'რამდენი წუთია 1 საათში?|60|30,100,24|⏰', 'რამდენი გვერდი აქვს სამკუთხედს?|3|4,5,6|🔺',
+                    'რამდენი გვერდი აქვს ექვსკუთხედს?|6|5,7,8|⬡', 'რამდენი დღეა კვირაში?|7|5,6,8|📅',
+                    'როგორია კვადრატის ყველა გვერდი?|ერთმანეთის ტოლი|ერთმანეთისგან განსხვავებული,ორი ტოლი და ორი არატოლი,ყველა მოკლე|🟦',
+                    'რამდენი თვეა წელიწადში?|12|10,11,13|🗓️', 'რამდენი მეტრია 1 კილომეტრში?|1000|100,500,10000|🛣️',
+                    'რამდენი წამია 1 წუთში?|60|100,30,24|⏱️',
+                ]],
+                6 => [GameType::MultipleChoice, 'გაყოფა', [
+                    '56 ÷ 7 = ?|8|7,9,6|➗', '63 ÷ 9 = ?|7|6,8,9|➗', '100 ÷ 4 = ?|25|20,24,40|➗', '90 ÷ 10 = ?|9|10,8,99|➗',
+                    '48 ÷ 6 = ?|8|7,9,6|➗', '81 ÷ 9 = ?|9|8,7,11|➗', '144 ÷ 12 = ?|12|11,14,10|➗', '45 ÷ 5 = ?|9|8,7,10|➗',
+                    '36 ÷ 6 = ?|6|5,7,9|➗', '200 ÷ 20 = ?|10|100,20,1|➗',
+                ]],
+                7 => [GameType::TapCorrect, 'ამოცანები', [
+                    'ნინოს 12 ვაშლი ჰქონდა, 5 შეჭამა. რამდენი დარჩა?|7|6,8,17|🍎', 'კალათაში 3 რიგია, თითო რიგში 8 კვერცხი. სულ რამდენია?|24|11,21,32|🥚',
+                    'საათი 3:00-ია. რამდენი საათი გავა 7:00-მდე?|4|3,5,10|⏰', 'ერთი კალამი 2 ლარი ღირს. 5 კალამი რამდენი ღირს?|10|7,12,25|🖊️',
+                    '20 ვაშლი თანაბრად გაინაწილეს 4 ბავშვზე. თითოს რამდენი ერგო?|5|4,6,16|🍏', 'ყუთში 36 ფანქარია, 9 გავიდა. რამდენი დარჩა?|27|26,28,45|✏️',
+                    'მართკუთხედის გვერდებია 4 სმ და 6 სმ. რას უდრის პერიმეტრი?|20|10,24,14|▭', 'კვადრატის გვერდი 7 სმ-ია. რას უდრის პერიმეტრი?|28|14,21,49|🟦',
+                    'რომელია 18-ის ნახევარი?|9|8,2,36|½', 'რომელია 40-ის მეოთხედი?|10|4,20,36|¼',
+                ]],
+            ],
+            'history' => [
+                1 => [GameType::Knowledge, 'ჩემი საქართველო', [
+                    'რომელია საქართველოს დედაქალაქი?|თბილისი|ბათუმი,ქუთაისი,გორი|🏛️', 'რომელი ზღვა ესაზღვრება საქართველოს?|შავი ზღვა|კასპიის ზღვა,წითელი ზღვა,ხმელთაშუა ზღვა|🌊',
+                    'რომელია საქართველოს უმაღლესი მწვერვალი?|შხარა|ყაზბეგი,ელბრუსი,თეთნულდი|🏔️', 'რომელი მდინარე ჩაედინება შავ ზღვაში?|რიონი|მტკვარი,ალაზანი,არაგვი|🏞️',
+                    'რომელი მდინარე ჩამოუდის თბილისს?|მტკვარი|რიონი,ენგური,ალაზანი|🏞️', 'როდის აღინიშნება დამოუკიდებლობის დღე?|26 მაისი|1 იანვარი,9 აპრილი,14 ოქტომბერი|🇬🇪',
+                    'რამდენი ჯვარია საქართველოს დროშაზე?|ხუთი|ერთი,სამი,ოთხი|🏳️', 'რომელია აჭარის დედაქალაქი?|ბათუმი|ფოთი,ზუგდიდი,თელავი|🌴',
+                    'რომელი ქალაქი იყო საქართველოს ძველი დედაქალაქი?|მცხეთა|გორი,ფოთი,ზუგდიდი|🏰', 'რომელია საქართველოს სახელმწიფო ენა?|ქართული|ინგლისური,რუსული,თურქული|🗣️',
+                ]],
+                2 => [GameType::ConnectPair, 'ქალაქები და ადგილები', [
+                    'თბილისი|🏙️|მტკვარი|🌊', 'ბათუმი|🌴|შავი ზღვა|🏖️', 'ქუთაისი|🏛️|რიონი|🏞️', 'მცხეთა|⛪|ჯვარი|✝️', 'ვარძია|🕳️|გამოქვაბული|⛰️',
+                    'სვანეთი|🏔️|კოშკები|🏰', 'კახეთი|🍇|ღვინო|🍷', 'ბორჯომი|🌲|მინერალური წყალი|💧', 'ყაზბეგი|🗻|მყინვარი|❄️', 'ბაკურიანი|⛷️|თხილამურები|🎿',
+                ]],
+                3 => [GameType::MultipleChoice, 'ისტორიული პირები', [
+                    'ვინ იყო მეფე „აღმაშენებელი“?|დავით IV|თამარ,ერეკლე II,ვახტანგ გორგასალი|👑', 'ვინ იყო ქალი მეფე, რომლის დროსაც საქართველო ძლიერი იყო?|თამარ მეფე|დავით აღმაშენებელი,ერეკლე II,ფარნავაზი|👸',
+                    'ვის უკავშირდება თბილისის დაარსების ლეგენდა?|ვახტანგ გორგასალს|დავით აღმაშენებელს,თამარ მეფეს,ერეკლე II-ს|🏙️', 'რომელ წელს გამოცხადდა ქრისტიანობა ქართლის სახელმწიფო რელიგიად?|337|1008,1801,1921|⛪',
+                    'ვის მიეწერება ქართული დამწერლობის შექმნა?|ფარნავაზს|ვახტანგ გორგასალს,დავით აღმაშენებელს,თამარ მეფეს|✍️', 'რომელი ტაძარია მცხეთაში?|სვეტიცხოველი|გელათი,ბაგრატი,ალავერდი|⛪',
+                    'სად არის გელათის მონასტერი?|ქუთაისთან|თბილისთან,ბათუმთან,ზუგდიდთან|🏰', 'ვინ დააარსა გელათი?|დავით აღმაშენებელმა|თამარ მეფემ,ერეკლე II-მ,ფარნავაზმა|🏰',
+                    'რომელია ქართული საკრავი?|ჩონგური|გიტარა,პიანინო,ვიოლინო|🎶', 'რომელი დღესასწაულია 14 ოქტომბერს?|სვეტიცხოვლობა|ახალი წელი,შობა,აღდგომა|⛪',
+                ]],
+                4 => [GameType::TapCorrect, 'გეოგრაფია', [
+                    'რომელი ქალაქია შავი ზღვის პირას?|ბათუმი|ქუთაისი,გორი,თელავი|🌊', 'რომელი რეგიონია ღვინის სამშობლო?|კახეთი|სვანეთი,აჭარა,რაჭა|🍷',
+                    'რომელი ქალაქია კახეთში?|თელავი|ბათუმი,ფოთი,ზუგდიდი|🏘️', 'სად არის სვეტიცხოველი?|მცხეთაში|ბათუმში,ფოთში,გორში|⛪',
+                    'რომელია საქართველოს მეზობელი ქვეყანა?|სომხეთი|საფრანგეთი,იტალია,ესპანეთი|🗺️', 'რომელი მეზობელია ჩრდილოეთით?|რუსეთი|თურქეთი,აზერბაიჯანი,სომხეთი|🧭',
+                    'რომელი მეზობელია სამხრეთ-დასავლეთით?|თურქეთი|რუსეთი,აზერბაიჯანი,სომხეთი|🧭', 'რომელია მთა საქართველოში?|ყაზბეგი|ვეზუვი,ევერესტი,ფუჯი|🗻',
+                    'რომელი ქალაქი დგას რიონზე?|ქუთაისი|თბილისი,ბათუმი,თელავი|🏞️', 'რა ჰქვია საქართველოს ფულს?|ლარი|დოლარი,ევრო,მანეთი|💰',
+                ]],
+                5 => [GameType::MatchWord, 'სიტყვა და სურათი', [
+                    'მთა|⛰️', 'ზღვა|🌊', 'ტაძარი|⛪', 'ციხე|🏰', 'ღვინო|🍷', 'ყურძენი|🍇', 'ხიდი|🌉', 'დროშა|🏳️', 'რუკა|🗺️', 'ხმალი|⚔️',
+                ]],
+                6 => [GameType::WordSearch, 'ქალაქების ძიება', [
+                    'თბილისი|🏙️', 'ბათუმი|🌴', 'ქუთაისი|🏛️', 'მცხეთა|⛪', 'კახეთი|🍇', 'სვანეთი|🏔️', 'რაჭა|🌲', 'გორი|🏘️', 'ფოთი|⚓', 'ბორჯომი|💧',
+                ]],
+                7 => [GameType::MultipleChoice, 'დრო და ისტორია', [
+                    'რამდენ წელს შეიცავს საუკუნე?|100|10,50,1000|⏳', 'რამდენ წელს შეიცავს ათწლეული?|10|5,20,100|⏳',
+                    'რომელ საუკუნეშია 1850 წელი?|მე-19|მე-18,მე-20,მე-17|📅', 'როდის იწყება ახალი წელი?|1 იანვარს|1 მაისს,1 ივნისს,1 სექტემბერს|🎆',
+                    'რა ჰქვია წარსულის შემსწავლელ მეცნიერებას?|ისტორია|გეოგრაფია,ბიოლოგია,მათემატიკა|📜', 'რა ჰქვია რუკის ზედა მხარეს?|ჩრდილოეთი|სამხრეთი,აღმოსავლეთი,დასავლეთი|🧭',
+                    'რომელი მხრიდან ამოდის მზე?|აღმოსავლეთიდან|დასავლეთიდან,ჩრდილოეთიდან,სამხრეთიდან|🌅', 'ვინ ათხრის ძველ ნივთებს მიწიდან?|არქეოლოგი|ბოტანიკოსი,მძღოლი,მკურნალი|⛏️',
+                    'სად ინახავენ ძველ ნივთებს?|მუზეუმში|მაღაზიაში,სკვერში,სადგურზე|🏛️', 'რა ჰქვია ქვეყნის მთავარ ქალაქს?|დედაქალაქი|სოფელი,ეზო,ქუჩა|🏙️',
+                ]],
+            ],
+        ];
+    }
 
-        $item = WeekPlanItem::query()->updateOrCreate(
-            [
-                'grade' => $grade,
-                'week_number' => $weekNumber,
-                'weekday' => $weekday,
-                'subject' => $subject,
-            ],
-            [
-                'level' => (($weekNumber - 1) * 7) + $weekday,
-                'title' => $pack['title'],
-                'game_slug' => $type,
-                'questions_per_round' => 5,
-            ],
+    /**
+     * @param  list<string>  $rows
+     * @return list<array{prompt: string, correct: string, wrongs: list<string>, emoji: string, match_emoji?: string}>
+     */
+    private function normalize(GameType $type, array $rows): array
+    {
+        $parts = array_map(fn (string $row): array => explode('|', $row), $rows);
+        // Word-style games have no authored wrong answers: borrow them from the pack.
+        $siblings = fn (int $i, int $col): array => array_map(
+            fn (int $n): string => $parts[($i + $n) % count($parts)][$col],
+            [1, 2, 3],
         );
 
-        $questionIds = [];
+        return match ($type) {
+            GameType::MatchWord, GameType::WordSearch => array_map(fn (array $p, int $i): array => [
+                'prompt' => $p[0],
+                'correct' => $type === GameType::MatchWord ? $p[1] : $p[0],
+                'wrongs' => $siblings($i, $type === GameType::MatchWord ? 1 : 0),
+                'emoji' => $p[1],
+            ], $parts, array_keys($parts)),
+            GameType::SpellWord => array_map(fn (array $p, int $i): array => [
+                'prompt' => $p[0], 'correct' => $p[1], 'wrongs' => $siblings($i, 1), 'emoji' => $p[2],
+            ], $parts, array_keys($parts)),
+            GameType::ConnectPair => array_map(fn (array $p, int $i): array => [
+                'prompt' => $p[0], 'correct' => $p[2], 'wrongs' => $siblings($i, 2), 'emoji' => $p[1], 'match_emoji' => $p[3],
+            ], $parts, array_keys($parts)),
+            default => array_map(fn (array $p): array => [
+                'prompt' => $p[0], 'correct' => $p[1], 'wrongs' => explode(',', $p[2]), 'emoji' => $p[3],
+            ], $parts),
+        };
+    }
 
-        foreach ($pack['questions'] as $index => $row) {
-            $code = sprintf(
-                'g%d-w%d-d%d-%s-%02d',
-                $grade->value,
-                $weekNumber,
-                $weekday,
-                $subject->value,
-                $index + 1,
-            );
+    /**
+     * @param  array{prompt: string, correct: string, wrongs: list<string>, emoji: string, match_emoji?: string}  $row
+     */
+    private function question(Game $game, GameType $type, SchoolSubject $subject, int $weekday, int $i, array $row): Question
+    {
+        $labels = array_slice(array_values(array_unique([$row['correct'], ...$row['wrongs']])), 0, 4);
+        shuffle($labels);
 
-            $choices = $this->choices($row['correct'], $row['wrongs']);
+        $choices = [];
+        $correctKey = 'A';
 
-            if (isset($row['match_emoji'])) {
-                foreach ($choices as $index => $choice) {
-                    if ($choice['label'] === $row['correct']) {
-                        $choices[$index]['emoji'] = $row['match_emoji'];
-                    }
-                }
-            }
-
-            $correctKey = 'A';
-
-            foreach ($choices as $choice) {
-                if ($choice['label'] === $row['correct']) {
-                    $correctKey = $choice['key'];
-                    break;
-                }
-            }
-
-            $question = Question::query()->updateOrCreate(
-                ['code' => $code],
-                [
-                    'format' => $type->format(),
-                    'source' => $type,
-                    'subject' => $subject->favourite(),
-                    'age_group' => null,
-                    'grade' => $grade->value,
-                    'difficulty' => PlayDifficulty::tryFrom((string) ($row['difficulty'] ?? 'medium')) ?? PlayDifficulty::Medium,
-                    'locale' => 'ka',
-                    'prompt' => $row['prompt'],
-                    'hint' => $type === GameType::TapCorrect
-                        ? 'რიცხვები ციფრებით იწერება, მაგალითად 0–9.'
-                        : null,
-                    'media' => [
-                        'emoji' => $row['emoji'],
-                        'tile' => $subject->tile(),
-                    ],
-                    'payload' => $this->payloadFor($type, $row, $choices),
-                    'answer' => $type === GameType::Counting
-                        ? ['key' => $correctKey, 'value' => (int) $row['correct']]
-                        : ['key' => $correctKey],
-                    'is_active' => true,
-                ],
-            );
-
-            $questionIds[$question->id] = ['sort_order' => $index];
+        foreach ($labels as $n => $label) {
+            $key = chr(65 + $n);
+            $correctKey = $label === $row['correct'] ? $key : $correctKey;
+            $choices[] = [
+                'key' => $key,
+                'label' => $label,
+                'emoji' => $label === $row['correct'] ? ($row['match_emoji'] ?? '') : '',
+            ] + ($type === GameType::Counting ? ['value' => (int) $label] : []);
         }
 
-        $item->questions()->sync($questionIds);
-        $game->questions()->syncWithoutDetaching(array_keys($questionIds));
+        $payload = ['choices' => $choices];
+
+        if ($type === GameType::Counting) {
+            $payload = ['item_emoji' => $row['emoji'], 'count' => (int) $row['correct']] + $payload;
+        }
+
+        if ($type === GameType::SpellWord) {
+            $word = $row['correct'];
+            $letters = array_unique(mb_str_split($word));
+            $decoys = array_diff(mb_str_split('აეიოუბგდვზთკლმნსპრტქ'), $letters);
+            $payload['keyboard'] = array_slice([...$letters, ...$decoys], 0, mb_strlen($word) + 3);
+            $payload['slots'] = mb_strlen($word);
+        }
+
+        return Question::query()->updateOrCreate(
+            ['code' => sprintf('g4-%s-d%d-%02d', $subject->value, $weekday, $i + 1)],
+            [
+                'format' => $type->format(),
+                'source' => $type,
+                'subject' => $subject->favourite(),
+                'age_group' => null,
+                'grade' => SchoolGrade::Fourth->value,
+                'locale' => 'ka',
+                'prompt' => $row['prompt'],
+                'hint' => null,
+                'media' => ['emoji' => $row['emoji'], 'tile' => $subject->tile()],
+                'payload' => $payload,
+                'answer' => $type === GameType::Counting
+                    ? ['key' => $correctKey, 'value' => (int) $row['correct']]
+                    : ['key' => $correctKey],
+                'is_active' => true,
+            ],
+        );
     }
 
     private function gameFor(GameType $type): Game
@@ -130,10 +291,7 @@ class WeekPlanSeeder extends Seeder
         $defaults = $type->playDefaults();
 
         return Game::query()->updateOrCreate(
-            [
-                'slug' => $type,
-                'user_id' => null,
-            ],
+            ['slug' => $type, 'user_id' => null],
             [
                 'format' => $type->format(),
                 'lives' => 3,
@@ -143,87 +301,5 @@ class WeekPlanSeeder extends Seeder
                 'visibility' => GameVisibility::Public,
             ],
         );
-    }
-
-    /**
-     * @param  array{prompt: string, correct: string, wrongs: list<string>, emoji: string, difficulty?: string, match_emoji?: string, keyboard?: list<string>, strokes?: list<list<array{0: float, 1: float}>>, slots?: int}  $row
-     * @param  list<array{key: string, label: string, emoji: string}>  $choices
-     * @return array<string, mixed>
-     */
-    private function payloadFor(GameType $type, array $row, array $choices): array
-    {
-        if ($type === GameType::Counting) {
-            return $this->countPayload($row, $choices);
-        }
-
-        $payload = ['choices' => $choices];
-
-        if (isset($row['keyboard'])) {
-            $payload['keyboard'] = $row['keyboard'];
-        }
-
-        if (isset($row['strokes'])) {
-            $payload['strokes'] = $row['strokes'];
-        }
-
-        if (isset($row['slots'])) {
-            $payload['slots'] = $row['slots'];
-        }
-
-        return $payload;
-    }
-
-    /**
-     * @param  array{prompt: string, correct: string, wrongs: list<string>, emoji: string}  $row
-     * @param  list<array{key: string, label: string, emoji: string}>  $choices
-     * @return array{item_emoji: string, count: int, choices: list<array{key: string, label: string, emoji: string, value: int}>}
-     */
-    private function countPayload(array $row, array $choices): array
-    {
-        $payloadChoices = [];
-
-        foreach ($choices as $choice) {
-            $payloadChoices[] = [
-                'key' => $choice['key'],
-                'label' => $choice['label'],
-                'emoji' => $choice['emoji'],
-                'value' => (int) $choice['label'],
-            ];
-        }
-
-        return [
-            'item_emoji' => $row['emoji'],
-            'count' => (int) $row['correct'],
-            'choices' => $payloadChoices,
-        ];
-    }
-
-    /**
-     * @param  list<string>  $wrongs
-     * @return list<array{key: string, label: string, emoji: string}>
-     */
-    private function choices(string $correct, array $wrongs): array
-    {
-        $labels = array_values(array_unique(array_merge([$correct], $wrongs)));
-        $labels = array_slice($labels, 0, 4);
-
-        while (count($labels) < 4) {
-            $labels[] = $correct.'?';
-        }
-
-        shuffle($labels);
-
-        $keys = ['A', 'B', 'C', 'D'];
-        $choices = [];
-
-        foreach ($labels as $index => $label) {
-            $choices[] = [
-                'key' => $keys[$index],
-                'label' => $label,
-                'emoji' => '',
-            ];
-        }
-
-        return $choices;
     }
 }

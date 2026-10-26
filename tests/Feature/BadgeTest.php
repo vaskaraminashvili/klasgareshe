@@ -199,7 +199,7 @@ class BadgeTest extends TestCase
         foreach ($subjects as $subject) {
             for ($day = 1; $day <= $weekdays; $day++) {
                 $item = WeekPlanItem::factory()->create([
-                    'grade' => SchoolGrade::First,
+                    'grade' => SchoolGrade::Fourth,
                     'week_number' => 1,
                     'weekday' => $day,
                     'subject' => $subject,
@@ -210,7 +210,7 @@ class BadgeTest extends TestCase
 
                 $questions = Question::factory()->count($perPack)->create([
                     'subject' => $subject->favourite(),
-                    'grade' => 1,
+                    'grade' => 4,
                 ]);
 
                 $sync = [];

@@ -309,7 +309,7 @@ class BadgeService
         $params = $badge->rule_params ?? [];
         $count = (int) ($params['count'] ?? 0);
         $subject = SchoolSubject::tryFrom((string) ($params['subject'] ?? ''));
-        $grade = $user->grade ?? SchoolGrade::First;
+        $grade = $user->grade ?? SchoolGrade::Fourth;
 
         $current = 0;
         $target = max(1, $count);

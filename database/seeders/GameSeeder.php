@@ -319,20 +319,6 @@ class GameSeeder extends Seeder
                 'answer' => ['words' => ['კატა', 'მზე', 'ძაღლი', 'ვაშლი', 'თევზი']],
             ],
             [
-                'format' => QuestionFormat::Trace,
-                'source' => GameType::TraceLetter,
-                'subject' => FavouriteSubject::Alphabet,
-                'locale' => 'ka',
-                'prompt' => 'მიჰყევი წერტილებს და დახატე ასო ა',
-                'hint' => null,
-                'media' => ['emoji' => '', 'tile' => 'tile-violet'],
-                'payload' => [
-                    'letter' => 'ა',
-                    'path' => 'M30 200 L100 30 L170 200 M60 140 L140 140',
-                ],
-                'answer' => ['letter' => 'ა'],
-            ],
-            [
                 'format' => QuestionFormat::Hotspot,
                 'source' => GameType::BodyParts,
                 'subject' => FavouriteSubject::Knowledge,

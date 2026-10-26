@@ -307,7 +307,7 @@ class NotificationsTest extends TestCase
         ]);
 
         $item = WeekPlanItem::factory()->create([
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
             'week_number' => 1,
             'weekday' => 1,
             'subject' => SchoolSubject::Georgian,
@@ -315,7 +315,7 @@ class NotificationsTest extends TestCase
         ]);
         $question = Question::factory()->create([
             'subject' => SchoolSubject::Georgian->favourite(),
-            'grade' => 1,
+            'grade' => 4,
         ]);
         $item->questions()->sync([$question->id => ['sort_order' => 0]]);
 
@@ -332,7 +332,7 @@ class NotificationsTest extends TestCase
         foreach ([1, 2] as $weekNumber) {
             foreach (SchoolSubject::ordered() as $subject) {
                 $item = WeekPlanItem::factory()->create([
-                    'grade' => SchoolGrade::First,
+                    'grade' => SchoolGrade::Fourth,
                     'week_number' => $weekNumber,
                     'weekday' => 1,
                     'subject' => $subject,
@@ -340,7 +340,7 @@ class NotificationsTest extends TestCase
                 ]);
                 $question = Question::factory()->create([
                     'subject' => $subject->favourite(),
-                    'grade' => 1,
+                    'grade' => 4,
                 ]);
                 $item->questions()->sync([$question->id => ['sort_order' => 0]]);
             }

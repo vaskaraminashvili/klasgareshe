@@ -64,7 +64,7 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'age_group' => AgeGroup::Kindergarten,
-            'grade' => SchoolGrade::First,
+            'grade' => SchoolGrade::Fourth,
             'favourite_subjects' => ['georgian', 'math', 'history'],
             'daily_goal' => DailyGoal::Regular,
             'onboarding_step' => OnboardingStep::Verify,
