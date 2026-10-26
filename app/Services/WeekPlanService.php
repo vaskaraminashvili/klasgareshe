@@ -226,15 +226,6 @@ class WeekPlanService
         return null;
     }
 
-    public function packHref(User $user, WeekPlanItem $item): string
-    {
-        if ($this->isCompleted($user, $item) || $this->isPlayable($user, $item)) {
-            return route('lesson-details', ['item' => $item->id]);
-        }
-
-        return route('lesson-locked', ['item' => $item->id]);
-    }
-
     /**
      * @return list<int>
      */

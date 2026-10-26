@@ -90,8 +90,8 @@ class LearnLibraryTest extends TestCase
             ->assertOk()
             ->assertSee($firstMath->title, false)
             ->assertSee($secondMath->title, false)
-            ->assertSee(route('lesson-details', ['item' => $firstMath->id]), false)
-            ->assertSee(route('lesson-locked', ['item' => $secondMath->id]), false)
+            ->assertDontSee(route('lesson-details', ['item' => $firstMath->id]), false)
+            ->assertDontSee(route('lesson-locked', ['item' => $secondMath->id]), false)
             ->assertSee($week->playUrl($firstMath->id), false);
 
         Livewire::actingAs($user)

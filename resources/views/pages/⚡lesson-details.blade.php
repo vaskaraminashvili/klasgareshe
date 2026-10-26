@@ -271,7 +271,7 @@ new class extends Component
     @if ($previous)
         <section class="px-5 mt-5">
             <p class="section-label">{{ __('learn.before_you_start') }}</p>
-            <a href="{{ $previous['href'] }}" wire:navigate class="setting-row mt-3">
+            <div class="setting-row mt-3">
                 <div class="setting-ico {{ $previous['done'] ? 'tile-mint' : 'tile-violet' }}"><i
                         class="ph-fill {{ $previous['done'] ? 'ph-check-circle' : 'ph-play-circle' }}"></i></div>
                 <div class="grow min-w-0">
@@ -280,10 +280,8 @@ new class extends Component
                 </div>
                 @if ($previous['done'])
                     <span class="chip chip-mint">✓</span>
-                @else
-                    <i class="ph ph-caret-right text-muted"></i>
                 @endif
-            </a>
+            </div>
         </section>
     @endif
 
@@ -292,7 +290,7 @@ new class extends Component
         <section class="px-5 mt-5">
             <p class="section-label">{{ __('learn.up_next') }}</p>
             <div class="mt-3 space-y-2">
-                <a href="{{ $next['href'] }}" wire:navigate class="setting-row">
+                <div class="setting-row">
                     <div class="setting-ico tile-sky text-2xl">{{ $emoji }}</div>
                     <div class="grow min-w-0">
                         <p class="setting-text font-extrabold text-sm text-ink">{{ $next['title'] }}</p>
@@ -300,10 +298,8 @@ new class extends Component
                     </div>
                     @if ($next['locked'])
                         <i class="ph ph-lock-simple text-muted"></i>
-                    @else
-                        <i class="ph ph-caret-right text-muted"></i>
                     @endif
-                </a>
+                </div>
             </div>
         </section>
     @endif

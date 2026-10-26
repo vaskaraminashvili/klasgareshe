@@ -243,8 +243,8 @@ new class extends Component
 
         <div class="space-y-3">
             @foreach ($lessons as $lesson)
-                <a href="{{ $lesson['href'] }}" wire:navigate
-                    class="lesson-item {{ $this->lessonClass($lesson['state']) }}">
+                {{-- lesson-details / lesson-locked links removed until those screens are wanted. --}}
+                <div class="lesson-item {{ $this->lessonClass($lesson['state']) }}">
                     <div class="lesson-node"><i class="{{ $lesson['icon'] }}"></i></div>
                     <div class="lesson-body">
                         <p class="lesson-title">{{ $lesson['title'] }}</p>
@@ -258,7 +258,7 @@ new class extends Component
                         </div>
                     </div>
                     <span class="{{ $lesson['chipClass'] }} shrink-0">{{ $lesson['chip'] }}</span>
-                </a>
+                </div>
             @endforeach
         </div>
     </section>

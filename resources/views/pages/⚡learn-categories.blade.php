@@ -247,7 +247,7 @@ new class extends Component
             </div>
             <div class="grid grid-cols-1 gap-3">
                 @foreach ($latest as $row)
-                    <a href="{{ $row['href'] }}" wire:navigate class="k-card flex items-center gap-3" data-item
+                    <div class="k-card flex items-center gap-3" data-item
                         data-name="{{ $row['title'] }}" data-keywords="{{ $row['keywords'] }}" data-tags="new"
                         data-subject="{{ $row['subject'] ?? '' }}" data-week="{{ $row['week'] ?? '' }}"
                         data-status="{{ $row['status'] ?? 'new' }}">
@@ -259,8 +259,7 @@ new class extends Component
                             </div>
                             <p class="text-xs text-muted">{{ $row['subtitle'] }}</p>
                         </div>
-                        <i class="ph ph-caret-right text-xl text-muted"></i>
-                    </a>
+                    </div>
                 @endforeach
             </div>
         </section>

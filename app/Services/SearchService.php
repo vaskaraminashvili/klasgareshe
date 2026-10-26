@@ -211,7 +211,10 @@ class SearchService
             $entries[] = [
                 'name' => $item->title,
                 'keys' => trim($item->title.' '.$item->subject->label().' '.(string) __('learn.week_n', ['n' => $item->week_number])),
-                'href' => $this->week->packHref($user, $item),
+                'href' => route('section-list', [
+                    'subject' => $item->subject->value,
+                    'week' => $item->week_number,
+                ]),
                 'ico' => $item->subject->emoji(),
                 'tile' => $item->subject->tile(),
                 'kind' => 'pack',
